@@ -13,9 +13,10 @@ class AllSeeder extends Seeder
 {
     public function run()
     {
+        $this->call(KelasSeeder::class);
         $this->call(AdminSeeder::class);
-        // Seeder untuk Kelas
-        Kelas::factory()->count(2)->create(); // Menambahkan 2 kelas
+
+
         // Seeder untuk Profile
         $profiles = Profile::factory()->count(10)->create(); // Menghasilkan 10 profile
 
@@ -44,7 +45,6 @@ class AllSeeder extends Seeder
                 'orang_tua_id' => $orangTua->orang_tua_id,
                 'nis' => '12345',
                 'nisn' => '54321',
-                'Status' => 'Aktif'
             ]);
         });
     }

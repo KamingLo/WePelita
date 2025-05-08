@@ -8,13 +8,15 @@ use App\Models\Guru;
 use App\Models\Admin;
 use App\Models\OrangTua;
 use App\Models\Murid;
+use App\Models\Kelas;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
     public function showForm()
     {
-        return view('admin.register');
+        $kelasList = Kelas::all();
+        return view('admin.register', compact('kelasList'));
     }
 
     public function register(Request $request)
@@ -57,7 +59,6 @@ class AdminController extends Controller
                 $request->validate([
                     'nis' => 'required|string',
                     'nisn' => 'required|string',
-                    'status' => 'required|string',
                     'kelas_id' => 'required|integer|exists:kelas,kelas_id',
 
                     // Data orang tua
@@ -89,7 +90,6 @@ class AdminController extends Controller
                     'orang_tua_id' => $orangTua->orang_tua_id,
                     'nis' => $request->nis,
                     'nisn' => $request->nisn,
-                    'Status' => $request->status,
                 ]);
                 break;
         }

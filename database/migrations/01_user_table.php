@@ -54,7 +54,6 @@ return new class extends Migration
             $table->foreignId('orang_tua_id')->constrained('orang_tua', 'orang_tua_id')->onDelete('cascade');
             $table->string('nis');
             $table->string('nisn');
-            $table->string('Status');
         });
     }
 

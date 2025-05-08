@@ -1,4 +1,4 @@
-@include('partials.header', ['NamaPage' => 'Registrasi Pengguna', 'isiPage' => 'Tes Register'])
+@include('partials.header', ['NamaPage' => 'Registrasi Pengguna', 'isiPage' => 'Registrasi Siswa Baru'])
 
 <form method="POST" action="{{ route('admin.register') }}">
 
@@ -38,8 +38,14 @@
         <h4>Data Murid</h4>
         <input type="text" name="nis" placeholder="NIS">
         <input type="text" name="nisn" placeholder="NISN">
-        <input type="text" name="status" placeholder="Status">
-        <input type="number" name="kelas_id" placeholder="Kelas ID">
+        <label>Kelas:</label>
+        <select name="kelas_id">
+            <option value="">-- Pilih Kelas --</option>
+            @foreach ($kelasList as $kelas)
+                <option value="{{ $kelas->kelas_id }}">{{ $kelas->nama_kelas }} - {{ $kelas->tahun_ajaran }}</option>
+            @endforeach
+        </select>
+
     
         <h4>Data Orang Tua</h4>
         <input type="text" name="ortu_name" placeholder="Nama Orang Tua">
