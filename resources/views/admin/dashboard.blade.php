@@ -6,7 +6,7 @@
     <form method="POST" action="{{ url('logout') }}">
         @csrf
         <button type="submit">Logout</button>
-    
+    </form>
 @elseif (session('role') == 'guru')
     <p>Kamu belum login</p>
     <a href="/login">Login kembali disini</a>>
