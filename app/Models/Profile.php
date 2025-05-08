@@ -10,6 +10,8 @@ class Profile extends Model
 
     protected $table = 'profiles';
     protected $primaryKey = 'profile_id'; // Penting!
+    public $incrementing = true;
+    protected $keyType = 'int'; // Tipe primary key
     protected $fillable = ['name', 'email', 'nik', 'password', 'no_telp'];
 
     public function guru()

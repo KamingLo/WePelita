@@ -8,6 +8,12 @@ class Murid extends Model
 {
     use HasFactory;
 
+    public $timestamps = false; // Jika tidak ada kolom created_at dan updated_at
+    protected $table = 'murid';
+    protected $primaryKey = 'murid_id'; // WAJIB
+    public $incrementing = true;
+    protected $keyType = 'int';
+
     protected $fillable = ['profile_id', 'kelas_id', 'orang_tua_id', 'nis', 'nisn', 'Status'];
 
     public function profile()

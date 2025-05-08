@@ -8,11 +8,17 @@ class Kelas extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+    protected $table = 'kelas';
+    protected $primaryKey = 'kelas_id';
+    public $incrementing = true;
+    protected $keyType = 'int';
+
     protected $fillable = ['jurusan_id', 'nama_kelas', 'tahun_ajaran'];
 
     public function jurusan()
     {
-        return $this->belongsTo(Jurusan::class, 'jurusan_id');
+        return $this->belongsTo(Jurusan::class, 'jurusan_id', 'jurusan_id');
     }
 
     public function murid()
