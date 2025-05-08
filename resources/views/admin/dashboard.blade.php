@@ -3,6 +3,8 @@
 @if (session('role') == 'admin')
     <p>Selamat datang, admin!</p>
 
+    <a href="/admin/register">Register user</a>
+
     <form method="POST" action="{{ url('logout') }}">
         @csrf
         <button type="submit">Logout</button>

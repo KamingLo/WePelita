@@ -3,6 +3,7 @@
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,7 +14,7 @@ Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
-    Route::get('/admin/dashboard', function() {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', function() {return view('admin.dashboard');})->name('admin.dashboard');
+    Route::get('/admin/register', [AdminController::class, 'showForm']);
+    Route::post('/admin/register', [AdminController::class, 'register'])->name('admin.register');
 });
