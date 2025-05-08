@@ -1,7 +1,11 @@
 @include('partials.header', ['NamaPage' => 'Halaman Utama', 'isiPage' => 'Jangan lupa ganti'])
 
 @if (session('role') == 'admin')
-    <p>Selamat datang, Guru!</p>
+    <p>Selamat datang, admin!</p>
+
+    <form method="POST" action="{{ url('logout') }}">
+        @csrf
+        <button type="submit">Logout</button>
     
 @elseif (session('role') == 'guru')
     <p>Kamu belum login</p>

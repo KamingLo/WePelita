@@ -14,7 +14,7 @@ class AllSeeder extends Seeder
 {
     public function run()
     {
-        
+        $this->call(AdminSeeder::class);
         // Seeder untuk Jurusan
         Jurusan::factory()->count(2)->create(); // Menambahkan 2 jurusan
         
