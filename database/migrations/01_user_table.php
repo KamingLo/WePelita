@@ -15,20 +15,21 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id('profile_id');
-            $table->binary("avatar");
             $table->string('name');
             $table->string('email')->unique();
             $table->string('nik');
             $table->string('password');
             $table->string('no_telp');
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
 
-        Schema::create('guru', function (Blueprint $table){
+        Schema::create('guru', function (Blueprint $table) {
             $table->id('guru_id');
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
         });
+        
 
         Schema::create('orang_tua', function (Blueprint $table){
             $table -> id('orang_tua_id');
@@ -68,7 +69,13 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student');
+        Schema::dropIfExists('kegiatan');
+        Schema::dropIfExists('pengumuman');
+        Schema::dropIfExists('jadwal_pelajaran');
+        Schema::dropIfExists('nilai');
+        Schema::dropIfExists('pelajaran');
+        Schema::dropIfExists('absensi');
+        Schema::dropIfExists('murid');
         Schema::dropIfExists('kelas');
         Schema::dropIfExists('jurusan');
         Schema::dropIfExists('admin');

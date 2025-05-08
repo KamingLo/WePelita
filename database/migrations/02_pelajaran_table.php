@@ -32,8 +32,8 @@ return new class extends Migration
             $table->string('tahun_ajaran');
             $table->string('nilai_uts');
             $table->string('nilai_uas');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
                 
         Schema::create('jadwal_pelajaran', function (Blueprint $table){
@@ -44,16 +44,5 @@ return new class extends Migration
             $table->string('waktu_mulai');
             $table->string('waktu_selesai');
         });
-    }
-    
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('absensi');
-        Schema::dropIfExists('nilai');
-        Schema::dropIfExists('pelajaran');
-        Schema::dropIfExists('jadwal_pelajaran');
     }
 };
