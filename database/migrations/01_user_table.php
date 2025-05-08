@@ -41,14 +41,8 @@ return new class extends Migration
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
         });
 
-        Schema::create('jurusan', function (Blueprint $table){
-            $table -> id('jurusan_id');
-            $table -> string('nama_jurusan');
-        });
-
         Schema::create('kelas', function (Blueprint $table){
             $table -> id('kelas_id');
-            $table -> foreignId('jurusan_id')->constrained('jurusan', 'jurusan_id')->onDelete('cascade');
             $table -> string('nama_kelas');
             $table -> string('tahun_ajaran');
         });
@@ -77,7 +71,6 @@ return new class extends Migration
         Schema::dropIfExists('absensi');
         Schema::dropIfExists('murid');
         Schema::dropIfExists('kelas');
-        Schema::dropIfExists('jurusan');
         Schema::dropIfExists('admin');
         Schema::dropIfExists('orang_tua');
         Schema::dropIfExists('guru');

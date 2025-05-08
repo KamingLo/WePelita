@@ -7,7 +7,6 @@ use App\Models\Guru;
 use App\Models\Admin;
 use App\Models\OrangTua;
 use App\Models\Murid;
-use App\Models\Jurusan;
 use App\Models\Kelas;
 
 class AllSeeder extends Seeder
@@ -15,9 +14,6 @@ class AllSeeder extends Seeder
     public function run()
     {
         $this->call(AdminSeeder::class);
-        // Seeder untuk Jurusan
-        Jurusan::factory()->count(2)->create(); // Menambahkan 2 jurusan
-        
         // Seeder untuk Kelas
         Kelas::factory()->count(2)->create(); // Menambahkan 2 kelas
         // Seeder untuk Profile

@@ -14,13 +14,8 @@ class Kelas extends Model
     public $incrementing = true;
     protected $keyType = 'int';
 
-    protected $fillable = ['jurusan_id', 'nama_kelas', 'tahun_ajaran'];
-
-    public function jurusan()
-    {
-        return $this->belongsTo(Jurusan::class, 'jurusan_id', 'jurusan_id');
-    }
-
+    protected $fillable = ['nama_kelas', 'tahun_ajaran'];
+    
     public function murid()
     {
         return $this->hasMany(Murid::class, 'kelas_id');
