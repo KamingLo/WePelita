@@ -9,6 +9,9 @@ class Pelajaran extends Model
 {
     use HasFactory;
 
+    public $timestamps = false; 
+    protected $table = 'pelajaran';
+    protected $primaryKey = 'pelajaran_id';
     protected $fillable = ['guru_id', 'namaPelajaran'];
 
     public function guru()

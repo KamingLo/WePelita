@@ -1,5 +1,6 @@
 @include('partials.header', ['NamaPage' => 'Registrasi Pengguna', 'isiPage' => 'Registrasi Siswa Baru'])
 
+
 <form method="POST" action="{{ route('admin.register') }}">
 
     @csrf
