@@ -9,6 +9,7 @@
                 @foreach($pelajaran as $item)
                     <option value="{{ $item->pelajaran_id }}">{{ $item->namaPelajaran }}</option>
                 @endforeach
+
             </select>
         </div>
 
@@ -16,7 +17,7 @@
             <label for="kelas_id">Kelas</label>
             <select name="kelas_id" id="kelas_id" class="form-control" required>
                 @foreach($kelas as $item)
-                    <option value="{{ $item->kelas_id }}">{{ $item->namaKelas }}</option>
+                    <option value="{{ $item->kelas_id }}">{{ $item->nama_kelas }}</option>
                 @endforeach
             </select>
         </div>
@@ -55,7 +56,7 @@
             @foreach($jadwals as $jadwal)
                 <tr>
                     <td>{{ $jadwal->pelajaran->namaPelajaran }}</td>
-                    <td>{{ $jadwal->kelas->namaKelas }}</td>
+                    <td>{{ $jadwal->kelas->nama_kelas }}</td>
                     <td>{{ $jadwal->hari }}</td>
                     <td>{{ $jadwal->waktu_mulai }}</td>
                     <td>{{ $jadwal->waktu_selesai }}</td>

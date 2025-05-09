@@ -15,37 +15,5 @@ class AllSeeder extends Seeder
     {
         $this->call(KelasSeeder::class);
         $this->call(AdminSeeder::class);
-
-
-        // Seeder untuk Profile
-        $profiles = Profile::factory()->count(10)->create(); // Menghasilkan 10 profile
-
-        // Seeder untuk Guru
-        $profiles->each(function ($profile) {
-            $profile->guru()->create();
-        });
-
-        // Seeder untuk Admin
-        $profiles->each(function ($profile) {
-            $profile->admin()->create();
-        });
-
-        // Seeder untuk OrangTua
-        $profiles->each(function ($profile) {
-            $profile->orangTua()->create();
-        });
-
-        // Seeder untuk Murid
-        $kelas = Kelas::first();  // Mengambil kelas pertama yang ada
-        $orangTua = OrangTua::first();  // Mengambil orang tua pertama yang ada
-       
-        $profiles->each(function ($profile) use ($kelas, $orangTua) {
-            $profile->murid()->create([
-                'kelas_id' => $kelas->kelas_id,
-                'orang_tua_id' => $orangTua->orang_tua_id,
-                'nis' => '12345',
-                'nisn' => '54321',
-            ]);
-        });
     }
 }

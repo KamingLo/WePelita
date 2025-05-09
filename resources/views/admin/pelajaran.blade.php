@@ -15,10 +15,13 @@
         <div class="form-group">
             <label for="guru_id">Guru</label>
             <select name="guru_id" id="guru_id" class="form-control" required>
-                <option value="">Pilih Guru</option>
-                @foreach($gurus as $guru)
-                    <option value="{{ $guru->guru_id }}">{{ $guru->namaGuru }}</option>
-                @endforeach
+            @foreach($gurus as $guru)
+                <option value="{{ $guru->guru_id }}">
+                    {{ json_encode($guru->profile->name) }}
+                </option>
+            @endforeach
+            
+
             </select>
             @error('guru_id')
                 <div class="alert alert-danger">{{ $message }}</div>

@@ -5,7 +5,8 @@
 
     <a href="/admin/register">Register user</a>
     <a href="/admin/jadwal">Pendaftaran jadwal belajar</a>
-    <a href="/admin/jadwal">Pendaftaran Pelajaran baru</a>
+    <a href="/admin/pelajaran">Pendaftaran Pelajaran baru</a>
+    <a href="/admin/posting">Postingan baru</a>
 
     <form method="POST" action="{{ url('logout') }}">
         @csrf

@@ -32,6 +32,6 @@ class PelajaranController extends Controller
         ]);
 
         // Redirect ke halaman pelajaran dengan pesan sukses
-        return redirect()->route('pelajaran.create')->with('success', 'Pelajaran berhasil ditambahkan');
+        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil ditambahkan');
     }
 }
