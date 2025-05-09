@@ -17,19 +17,39 @@ class JadwalPelajaranController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
-            'kelas_id' => 'required|exists:kelas,kelas_id',
-            'hari' => 'required',
-            'waktu_mulai' => 'required',
-            'waktu_selesai' => 'required',
-        ]);
+{
+    $request->validate([
+        'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
+        'kelas_id' => 'required|exists:kelas,kelas_id',
+        'hari' => 'required',
+        'waktu_mulai' => 'required',
+        'waktu_selesai' => 'required',
+    ]);
 
-        JadwalPelajaran::create($request->all());
+    // Cek apakah ada jadwal bentrok
+    $bentrok = JadwalPelajaran::where('kelas_id', $request->kelas_id)
+        ->where('hari', $request->hari)
+        ->where(function ($query) use ($request) {
+            $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
+                  ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
+                  ->orWhere(function ($q) use ($request) {
+                      $q->where('waktu_mulai', '<=', $request->waktu_mulai)
+                        ->where('waktu_selesai', '>=', $request->waktu_selesai);
+                  });
+        })
+        ->exists();
 
-        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil ditambahkan');
+    if ($bentrok) {
+        return redirect()->back()
+            ->withInput()
+            ->withErrors(['jadwal' => 'Sudah ada jadwal lain pada waktu tersebut.']);
     }
+
+    JadwalPelajaran::create($request->all());
+
+    return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil ditambahkan');
+}
+
 
     public function update(Request $request, $id)
     {
@@ -44,7 +64,7 @@ class JadwalPelajaranController extends Controller
         $jadwal = JadwalPelajaran::findOrFail($id);
         $jadwal->update($request->all());
 
-        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil diperbarui');
+        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil diperbarui');
     }
 
     public function destroy($id)
@@ -52,6 +72,6 @@ class JadwalPelajaranController extends Controller
         $jadwal = JadwalPelajaran::findOrFail($id);
         $jadwal->delete();
 
-        return redirect()->route('jadwal.index')->with('success', 'Jadwal berhasil dihapus');
+        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil dihapus');
     }
 }

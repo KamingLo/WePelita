@@ -49,6 +49,7 @@
                 <th>Hari</th>
                 <th>Waktu Mulai</th>
                 <th>Waktu Selesai</th>
+                <th>Guru pengajar</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -60,6 +61,7 @@
                     <td>{{ $jadwal->hari }}</td>
                     <td>{{ $jadwal->waktu_mulai }}</td>
                     <td>{{ $jadwal->waktu_selesai }}</td>
+                    <td>{{ $jadwal->pelajaran->guru->profile->name }}</td>
                     <td>
                         <form action="{{ route('jadwal.destroy', $jadwal->jadwal_id) }}" method="POST">
                             @csrf
