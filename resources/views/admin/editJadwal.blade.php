@@ -5,18 +5,21 @@
 
 <body>
     <div class="ContainerJadwal">
-        <h1>Pengaturan Jadwal Pembelajaran</h1>
+        <h1>Edit Jadwal Pembelajaran</h1>
         
         <div class="form-container">
             <h2>Tambah Jadwal</h2>
-            <form action="{{ route('jadwal.update', ['id' => $jadwal->jadwal_id]) }}" method="POST">
+            <form action="{{ route('pelajaran.update', ['id' => $jadwal->jadwal_id]) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="form-group">
                     <label for="pelajaran_id">Pelajaran</label>
                     <select name="pelajaran_id" id="pelajaran_id" class="form-control" required>
                         @foreach($pelajaran as $item)
-                            <option value="{{ $item->pelajaran_id }}">{{ $item->namaPelajaran }}</option>
+                            <option value="{{ $item->pelajaran_id }}" 
+                                {{ old('pelajaran_id', $jadwal->pelajaran_id) == $item->pelajaran_id ? 'selected' : '' }}>
+                                {{ $item->namaPelajaran }}
+                            </option>
                         @endforeach
                     </select>
                 </div>

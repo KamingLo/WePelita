@@ -5,7 +5,7 @@
 
 <body>
     <div class="ContainerJadwal">
-        <h1>Pengaturan Jadwal Pembelajaran</h1>
+        <h1>Tambah Jadwal Pembelajaran</h1>
         
         <div class="form-container">
             <h2>Tambah Jadwal</h2>
@@ -79,7 +79,7 @@
                                         <button type="submit" class="btn btn-danger">Hapus</button>
                                     </form>
                                     <form action="{{ route('jadwal.update', $jadwal->jadwal_id) }}" method="GET">
-                                        <a href="jadwal/update/{{ $jadwal->jadwal_id }}">Edit</a>
+                                        <a href="jadwal/edit/{{ $jadwal->jadwal_id }}">Edit</a>
                                     </form>
                                 </td>
                             </tr>

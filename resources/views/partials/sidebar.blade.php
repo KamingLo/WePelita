@@ -27,7 +27,7 @@
         <a href="/admin/pelajaran"><i class='bx bx-list-plus IconSideBar'></i>Tambah Pelajaran</a>
       </li>
         <li>
-        <a href="/admin/posting"><i class='bx bx-send IconSideBar'></i>Tambah posting</a>
+        <a href="/admin/post"><i class='bx bx-send IconSideBar'></i>Tambah posting</a>
       </li>
       <h4>
         <span>General</span>

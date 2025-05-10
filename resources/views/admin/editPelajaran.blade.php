@@ -2,7 +2,7 @@
 @include('partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/pelajaran.css') }}" />
 <div class="ContainerPelajaran">
-    <h1>Tambah Pelajaran Baru</h1>
+    <h1>Edit Pelajaran Baru</h1>
 
     <!-- Menampilkan pesan sukses jika pelajaran berhasil ditambahkan -->
     @if(session('success'))
@@ -12,7 +12,7 @@
     @endif
 
     <!-- Form untuk menambah pelajaran baru -->
-    <form action="{{ route('admin.pelajaran') }}" method="POST">
+    <form action="{{ route('pelajaran.update', ['id' => $pelajaran->pelajaran_id]) }}" method="POST">
         @csrf
 
         <div class="form-group">
@@ -39,7 +39,7 @@
             @enderror
         </div>
 
-        <button type="submit" class="btn btn-primary mt-3">Tambah Pelajaran</button>
+        <button type="submit" class="btn btn-primary mt-3">Simpan Pelajaran</button>
     </form>
 
     <div class="table-responsive">
@@ -51,22 +51,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pelajarans as $pelajaran)
                             <tr>
                                 <td>{{ $pelajaran->guru->profile->name }}</td>
                                 <td>{{ $pelajaran->namaPelajaran }}</td>
-                                <td>
-                                    <form action="{{ route('pelajaran.destroy', $pelajaran->pelajaran_id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
-                                    </form>
-                                    <form action="{{ route('pelajaran.update', $pelajaran->pelajaran_id) }}" method="GET">
-                                        <a href="pelajaran/edit/{{ $pelajaran->pelajaran_id }}">Edit</a>
-                                    </form>
-                                </td>
                             </tr>
-                        @endforeach
                     </tbody>
                 </table>
             </div>

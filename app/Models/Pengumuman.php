@@ -9,7 +9,10 @@ class Pengumuman extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['admin_id', 'judul_pengumuman', 'isi_pengumuman', 'lampiran'];
+    public $timestamps = false; 
+    protected $table = 'pengumuman';
+    protected $primaryKey = 'pengumuman_id';
+    protected $fillable = ['admin_id', 'judul_pengumuman', 'isi_pengumuman', 'lampiran', 'created_at'];
 
     public function admin()
     {

@@ -1,7 +1,13 @@
 <div class="container">
     <h2>Buat Postingan</h2>
 
-    <form action="{{ route('admin.post') }}" method="POST" enctype="multipart/form-data">
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <form action="{{ route('admin.posting') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <!-- Pilih tipe postingan -->
@@ -34,4 +40,19 @@
 
         <button type="submit" class="btn btn-primary">Posting</button>
     </form>
+
+    @if ($errors->has('lampiran'))
+        <div class="alert alert-danger">
+            {{ $errors->first('lampiran') }}
+        </div>
+    @endif
+
+
+@foreach($pengumumans as $pengumuman)
+    @if ($pengumuman->lampiran)
+        <img src="{{ asset('storage/' . $pengumuman->lampiran) }}" alt="Lampiran" />
+    @else
+        <p>Gambar tidak tersedia.</p>
+    @endif
+@endforeach
 </div>

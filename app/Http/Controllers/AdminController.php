@@ -110,7 +110,7 @@ class AdminController extends Controller
         $pelajaran = Pelajaran::all();
         $kelas = Kelas::all();
         $jadwal = JadwalPelajaran::findOrFail($id);
-        return view('admin.edit', compact('pelajaran', 'kelas', 'jadwal'));
+        return view('admin.editJadwal', compact('pelajaran', 'kelas', 'jadwal'));
     }
 
     public function simpanJadwal(Request $request){
@@ -177,12 +177,13 @@ class AdminController extends Controller
         return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil dihapus');
     }
 
-    public function buatPelajaran()
+    public function tampilkanPelajaran()
     {
         // Mengambil data guru untuk dropdown
         $gurus = Guru::all();
+        $pelajarans = Pelajaran::all();
 
-        return view('admin.pelajaran', compact('gurus'));
+        return view('admin.pelajaran', compact('gurus', 'pelajarans'));
     }
 
     // Menyimpan pelajaran baru
@@ -204,44 +205,85 @@ class AdminController extends Controller
         return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil ditambahkan');
     }
 
-    public function simpanPostingan(Request $request)
+    public function tampilkanUpdatePelajaran($id){
+        $gurus = Guru::all();
+        $pelajaran = Pelajaran::findOrFail($id);
+
+        return view('admin.editPelajaran', compact('gurus', 'pelajaran'));
+    }
+
+    public function updatePelajaran(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            'guru_id' => 'required|exists:guru,guru_id',
+            'namaPelajaran' => 'required|string|max:255',
+        ]);
+
+        // Temukan pelajaran berdasarkan ID
+        $pelajaran = Pelajaran::findOrFail($id);
+
+        // Perbarui data pelajaran
+        $pelajaran->update([
+            'guru_id' => $request->guru_id,
+            'namaPelajaran' => $request->namaPelajaran,
+        ]);
+
+        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil diperbarui');
+    }
+
+    public function hapusPelajaran($id){
+        $pelajaran = Pelajaran::findOrFail($id);
+        $pelajaran->delete();
+
+        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil dihapus');
+    }
+
+    public function tampilkanPost()
+    {
+        $pengumumans = Pengumuman::all();
+        $kegiatans = Kegiatan::all();
+        return view('admin.post', compact('pengumumans', 'kegiatans'));
+    }
+
+    public function tambahPostingan(Request $request)
     {
         // Validasi input
         $validated = $request->validate([
             'tipe' => 'required|in:pengumuman,kegiatan',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
-            'lampiran' => 'nullable|file|max:2048',
+            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
         ]);
 
         // Simpan lampiran jika ada
-        $lampiran = null;
+        $lampiranPath = null;
         if ($request->hasFile('lampiran')) {
-            $lampiran = file_get_contents($request->file('lampiran')->getRealPath());
+            $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
         }
 
         // Simulasi ambil ID admin yang sedang login (ganti dengan auth jika ada)
-        $adminId = 1;
-
+        $adminId = auth()->id();
+        
         // Masukkan data ke tabel sesuai tipe
         if ($validated['tipe'] === 'pengumuman') {
-            DB::table('pengumuman')->insert([
+            Pengumuman::create([
                 'admin_id' => $adminId,
                 'judul_pengumuman' => $validated['judul'],
                 'isi_pengumuman' => $validated['isi'],
-                'lampiran' => $lampiran,
+                'lampiran' => $lampiranPath,
                 'created_at' => now(),
             ]);
         } else {
-            DB::table('kegiatan')->insert([
+            Kegiatan::create([
                 'admin_id' => $adminId,
                 'judul_kegiatan' => $validated['judul'],
                 'isi_kegiatan' => $validated['isi'],
-                'lampiran' => $lampiran,
+                'lampiran' => $lampiranPath,
                 'created_at' => now(),
             ]);
         }
 
-        return redirect()->back()->with('success', 'Postingan berhasil dibuat!');
+        return redirect()->route('admin.post')->with('success', 'Postingan berhasil dibuat!');
     }
 }
