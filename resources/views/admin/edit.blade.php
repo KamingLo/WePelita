@@ -9,8 +9,9 @@
         
         <div class="form-container">
             <h2>Tambah Jadwal</h2>
-            <form action="{{ route('jadwal.store') }}" method="POST">
+            <form action="{{ route('jadwal.update', ['id' => $jadwal->jadwal_id]) }}" method="POST">
                 @csrf
+                @method('PUT')
                 <div class="form-group">
                     <label for="pelajaran_id">Pelajaran</label>
                     <select name="pelajaran_id" id="pelajaran_id" class="form-control" required>
@@ -44,7 +45,7 @@
                     <input type="time" name="waktu_selesai" id="waktu_selesai" class="form-control" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Tambah Jadwal</button>
+                <button type="submit" class="btn btn-primary">Simpan Jadwal</button>
             </form>
         </div>
         
@@ -64,7 +65,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($jadwals as $jadwal)
                             <tr>
                                 <td>{{ $jadwal->pelajaran->namaPelajaran }}</td>
                                 <td>{{ $jadwal->kelas->nama_kelas }}</td>
@@ -72,18 +72,7 @@
                                 <td>{{ $jadwal->waktu_mulai }}</td>
                                 <td>{{ $jadwal->waktu_selesai }}</td>
                                 <td>{{ $jadwal->pelajaran->guru->profile->name }}</td>
-                                <td>
-                                    <form action="{{ route('jadwal.destroy', $jadwal->jadwal_id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">Hapus</button>
-                                    </form>
-                                    <form action="{{ route('jadwal.update', $jadwal->jadwal_id) }}" method="GET">
-                                        <a href="jadwal/update/{{ $jadwal->jadwal_id }}">Edit</a>
-                                    </form>
-                                </td>
                             </tr>
-                        @endforeach
                     </tbody>
                 </table>
             </div>

@@ -1,37 +1,49 @@
-<?php
 namespace App\Http\Controllers;
 
-use App\Models\Pelajaran;
-use App\Models\Guru;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
-class PelajaranController extends Controller
+class PostinganController extends Controller
 {
-    // Menampilkan form untuk membuat pelajaran baru
-    public function create()
-    {
-        // Mengambil data guru untuk dropdown
-        $gurus = Guru::all();
-
-        return view('admin.pelajaran', compact('gurus'));
-    }
-
-    // Menyimpan pelajaran baru
     public function store(Request $request)
     {
         // Validasi input
-        $request->validate([
-            'guru_id' => 'required|exists:guru,guru_id',
-            'namaPelajaran' => 'required|string|max:255',
+        $validated = $request->validate([
+            'tipe' => 'required|in:pengumuman,kegiatan',
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string',
+            'lampiran' => 'nullable|file|max:2048',
         ]);
 
-        // Menyimpan data pelajaran
-        Pelajaran::create([
-            'guru_id' => $request->guru_id,
-            'namaPelajaran' => $request->namaPelajaran,
-        ]);
+        // Simpan lampiran jika ada
+        $lampiran = null;
+        if ($request->hasFile('lampiran')) {
+            $lampiran = file_get_contents($request->file('lampiran')->getRealPath());
+        }
 
-        // Redirect ke halaman pelajaran dengan pesan sukses
-        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil ditambahkan');
+        // Simulasi ambil ID admin yang sedang login (ganti dengan auth jika ada)
+        $adminId = 1;
+
+        // Masukkan data ke tabel sesuai tipe
+        if ($validated['tipe'] === 'pengumuman') {
+            DB::table('pengumuman')->insert([
+                'admin_id' => $adminId,
+                'judul_pengumuman' => $validated['judul'],
+                'isi_pengumuman' => $validated['isi'],
+                'lampiran' => $lampiran,
+                'created_at' => now(),
+            ]);
+        } else {
+            DB::table('kegiatan')->insert([
+                'admin_id' => $adminId,
+                'judul_kegiatan' => $validated['judul'],
+                'isi_kegiatan' => $validated['isi'],
+                'lampiran' => $lampiran,
+                'created_at' => now(),
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Postingan berhasil dibuat!');
     }
 }

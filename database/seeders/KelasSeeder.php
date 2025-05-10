@@ -7,7 +7,8 @@ use App\Models\Kelas;
 class KelasSeeder extends Seeder
 {
     public function run(): void
-    {
+    {   
+        //Gunakan ini setiap tahun ajaran baru
         $tahunAjaran = '2025/2026'; // Ganti sesuai tahun baru
 
         if (Kelas::where('tahun_ajaran', $tahunAjaran)->exists()) {
