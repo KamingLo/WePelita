@@ -1,40 +1,42 @@
 @include('partials.header', ['NamaPage' => 'Halaman Utama'])
 @include('partials.navbar')
-<link rel="stylesheet" href="{{ asset('css/Welcome.css') }}" />
+
+<link rel="stylesheet" href="{{ asset('css/welcome.css') }}" />
 
 <div class="ContainerWelcomePage">
-    <div class="cards">
-        <div class="card card1">
-            <div class="container">
-                <img src="las vegas.jpg">
+    <div class="LayoutWePelita">
+        
+        <div class="Layout Murid">
+            <div class="IsiDalemanLayout">
+                <img src="/image/WePelitaMurid.png">
             </div>
             <div class="details">
                 <h3>WePelita Murid</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dignissimos, minus aperiam adipisci exercitationem.</p>
+                <p>Klik Disini Untuk Siswa/Siswi</p>
             </div>
         </div>
 
-        <div class="card card2">
-            <div class="container">
-                <img src="newyork.jpg">
+        <div class="Layout Guru">
+            <div class="IsiDalemanLayout">
+                <img src="/image/WePelitaGuru.png">
             </div>
             <div class="details">
                 <h3>WePelita Guru</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dignissimos, minus aperiam adipisci exercitationem.</p>
+                <p>Klik Disini Untuk Para Guru</p>
             </div>
         </div>
 
-        <div class="card card3">
-            <div class="container">
-                <img src="singapore.jpg">
+        <div class="Layout Orangtua">
+            <div class="IsiDalemanLayout">
+                <img src="" alt="Soon">
             </div>
             <div class="details">
                 <h3>WePelita OrangTua</h3>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium dignissimos, minus aperiam adipisci exercitationem.</p>
+                <p>Klik Disini Untuk Para Orangtua Murid</p>
             </div>
         </div>
+
     </div>
 </div>
-
 
 @include('partials.footer')

@@ -6,5 +6,5 @@
     <title>{{$NamaPage}}</title>
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="{{ asset('css/default.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/Login.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/login.css') }}" />
 </head>

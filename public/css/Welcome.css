@@ -1,4 +1,6 @@
-
+/* ----------------------------------------------- */
+/* ----------------- welcome.css ----------------- */
+/* ----------------------------------------------- */
 .ContainerWelcomePage {
     display: flex;
     justify-content: center;
@@ -6,9 +8,10 @@
     width: 100%;
     height: 35rem;
     margin-bottom: 5rem;
+    min-height: 70vh;
 }
 
-.car {
+.LayoutWePelita {
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: repeat(400px, 1fr);
@@ -16,35 +19,38 @@
     width: 80rem;
 }
 
-
-.card{
+.Layout{
     background-color: #1c1b29;
     border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     border-radius: 20px;
     box-shadow: 0 0 30px rgba(0,0,0,0.18);
     cursor: pointer;
+    width: 25rem;
     transition: transform 0.3s ease;
 }
 
-.card:hover {
+.Layout:hover {
     transform: scale(1.05);
 }
 
 
-.container{
+.IsiDalemanLayout{
     position: relative;
     clip-path: polygon(0 0,100% 0, 100% 85%, 0 100%);
     height: 20rem;
 }
 
-img{
+.IsiDalemanLayout img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    border-radius: 20px 20px 0 0;
+    border-radius: 20px;
 }
 
-.container:after{
+
+.IsiDalemanLayout:after{
     content: "";
     height: 100%;
     width: 100%;
@@ -55,17 +61,15 @@ img{
     opacity: 0.7;
 }
 
-.card1>.container:after{
+.Murid>.IsiDalemanLayout:after{
     background-image: linear-gradient(
         135deg,
         #0100ec,
         #fb36f4
     );
-
-
 }
 
-.card2>.container:after{
+.Guru>.IsiDalemanLayout:after{
     background-image: linear-gradient(
         135deg,
         #2bdce3,
@@ -73,7 +77,7 @@ img{
     );
 }
 
-.card3>.container:after{
+.Orangtua>.IsiDalemanLayout:after{
     background-image: linear-gradient(
         135deg,
         #ffab1d,
@@ -81,33 +85,22 @@ img{
     );
 }
 
-.details{
+.details {
     padding: 20px 10px;
 }
 
-.details>h3{
+.details>h3 {
     color: #ffffff;
     font-weight: 600;
     font-size: 18px;
     margin: 10px 0 15px 0;
 }
 
-.details>p{
+.details>p {
     color: #a0a0a0;
     font-size: 15px;
     line-height: 30px;
     font-weight: 400;
 }
 
-
-.las-vegas-card {
-    background: linear-gradient(135deg, #0100ec, #fb36f4);
-}
-
-.new-york-card {
-    background: linear-gradient(135deg, #2bdce3, #42ffdb);
-}
-
-.singapore-card {
-    background: linear-gradient(135deg, #ffab1d, #f8501c);
-}
+/* ---------------------- End ---------------------- */
