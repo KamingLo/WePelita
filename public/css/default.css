@@ -1,0 +1,483 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 10rem !important;
+  overflow-x: hidden;
+  position: relative;
+  user-select: none;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  box-sizing: border-box;
+}
+
+.content-wrapper {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.navbar {
+  height: 70px;
+  width: 90vw;
+  max-width: 100rem;
+  margin: 0 auto;
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1em;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border-radius: 0.75rem;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.1);
+  border-width: 0.1rem;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.navbar .GambarLogo {
+    width: 15rem;
+    height: auto;
+}
+
+.navbtn a {
+  padding: 0.25em 0.5em;
+  color: #000000;
+  text-decoration: none;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 400;
+  transition: all ease 0.3s;
+}
+
+.sign-btn span {
+  display: inline-block;
+  padding: 5px 10px;
+  background-color: rgba(255, 255, 255, 0.01);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.1);
+  border-width: 0.1rem;
+}
+
+.sign-btn span:hover {
+  background-color: #4e4e4e;
+  color: rgb(196, 196, 196);
+}
+
+.navbtn a:hover {
+  padding: 0.25em 1em;
+  color: #777;
+  transition: all ease 0.3s;
+}
+/* CSS untuk Footer Kompak */
+footer {
+  background-color: #2563EB; /* Warna biru seperti yang ditampilkan */
+  color: #fff;
+  padding: 25px 0 10px; /* Kurangi padding atas dan bawah */
+  width: 100%;
+  flex-shrink: 0;
+  margin-top: 5rem;
+}
+
+.containerFooter {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px; /* Kurangi margin bawah */
+  align-items: flex-start; /* Rata atas untuk setiap kolom */
+}
+
+.footer-column {
+  flex: 1;
+  min-width: 150px;
+  margin-bottom: 15px; /* Kurangi margin bawah */
+  padding-right: 20px;
+}
+
+.brand-column {
+  flex: 1.5;
+}
+
+/* Kompres logo dan informasi alamat */
+.footer-logo {
+  height: 50px; /* Tentukan tinggi logo yang lebih kecil */
+  width: auto;
+  margin-bottom: 10px;
+}
+
+.brand-description {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 15px;
+  max-width: 300px;
+  line-height: 1.4; /* Kurangi line-height */
+  font-size: 14px; /* Ukuran teks lebih kecil */
+}
+
+.footer-column h3 {
+  font-size: 16px;
+  margin-bottom: 10px; /* Kurangi margin bawah */
+  font-weight: 500;
+  color: #fff;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 8px; /* Kurangi margin antar link */
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s;
+  font-size: 14px;
+}
+
+.footer-links a:hover {
+  color: #fff;
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.IconLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; /* Buat ikon lebih kecil */
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: #fff;
+  transition: transform 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.IconLink:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  padding-top: 10px; /* Beri sedikit padding di atas teks copyright */
+}
+
+/* --------------------- */
+/* Importing Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: #F0F4FF;
+}
+
+.IconSidebar{
+  font-size: 30px;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 85px;
+  display: flex;
+  overflow-x: hidden;
+  flex-direction: column;
+  background: #161a2d;
+  padding: 25px 20px;
+  transition: all 0.4s ease;
+}
+
+.sidebar:hover {
+  width: 260px;
+}
+
+.sidebar .sidebar-header {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar .sidebar-header img {
+  width: 42px;
+  border-radius: 50%;
+}
+
+.sidebar .sidebar-header h2 {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-left: 23px;
+}
+
+.sidebar-links h4 {
+  color: #fff;
+  font-weight: 500;
+  white-space: nowrap;
+  margin: 10px 0;
+  position: relative;
+}
+
+.sidebar-links h4 span {
+  opacity: 0;
+}
+
+.sidebar:hover .sidebar-links h4 span {
+  opacity: 1;
+}
+
+.sidebar-links .menu-separator {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1px;
+  transform: scaleX(1);
+  transform: translateY(-50%);
+  background: #4f52ba;
+  transform-origin: right;
+  transition-delay: 0.2s;
+}
+
+.sidebar:hover .sidebar-links .menu-separator {
+  transition-delay: 0s;
+  transform: scaleX(0);
+}
+
+.sidebar-links {
+  list-style: none;
+  margin-top: 20px;
+  height: 80%;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.sidebar-links::-webkit-scrollbar {
+  display: none;
+}
+
+.sidebar-links li a {
+  display: flex;
+  align-items: center;
+  gap: 0 20px;
+  color: #fff;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 15px 10px;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.sidebar-links li a:hover {
+  color: #161a2d;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.user-account {
+  margin-top: auto;
+  padding: 12px 10px;
+  margin-left: -10px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  color: #161a2d;
+}
+
+.user-profile img {
+  width: 42px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.user-profile h3 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.user-profile span {
+  font-size: 0.775rem;
+  font-weight: 600;
+}
+
+.user-detail {
+  margin-left: 23px;
+  white-space: nowrap;
+}
+
+.sidebar:hover .user-account {
+  background: #fff;
+  border-radius: 4px;
+}
+
+.sidebar:hover {
+  width: 260px;
+}
+
+/* Bagian Header */
+
+.sidebar .HeaderUser {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar .HeaderUser img {
+  width: 42px;
+  border-radius: 50%;
+  transform: translateY(0.75rem);
+  cursor: pointer;
+}
+
+.sidebar .HeaderUser h2 {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-left: 23px;
+}
+
+.UseridName {
+  margin-left: 4.07rem;
+  font-size: 20px;
+  color: #fff;
+  transform: translateY(-0.5rem);
+}
+
+.ProfileSiUser H2 {
+  color: white ;
+}
+
+/* --------------- */
+
+/* Logout Button Styling to match sidebar */
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #fff;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 15px 10px;
+  text-decoration: none;
+  transition: 0.2s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  margin-top: 15px;
+}
+
+.logout-button:hover {
+  color: #161a2d;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.logout-button i {
+  font-size: 30px; /* Match .IconSidebar */
+  min-width: 30px;
+}
+
+.logout-button span {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar:hover .logout-button span {
+  opacity: 1;
+}
+
+/* Position at bottom but above user-account if present */
+.logout-container {
+  margin-top: auto;
+  margin-bottom: 10px;
+}
+
+/* If user-account exists, adjust position */
+.logout-container + .user-account {
+  margin-top: 0;
+}
+
+  .logout-button button[type="submit"] {
+    grid-column: span 2;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: var(--transition);
+  }
+
+  .logout-button button[type="submit"]:hover {
+    background-color: var(--accent-color);
+  }
+
+
+            .TombolRegister {
+    grid-column: span 2;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: var(--transition);
+        }
+        
+        .TombolCongifure {
+            color: white;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .TombolCongifure:hover {
+            background-color: #3959d9;
+            border-color: #3959d9;
+        }

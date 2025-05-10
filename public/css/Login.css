@@ -1,0 +1,137 @@
+/* -------------------------------------------------------- */
+/* --------------------- CSS Login.ejs -------------------- */
+/* -------------------------------------------------------- */
+/* ------------------ Bagian Kotak Utama ------------------ */
+
+.KotakUtamaLog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+  /*background-color: rgb(0, 0, 0);*/
+}
+
+/* ------------------ bagian dalam login ------------------ */
+.ImgVidLogin {
+  height: 450px;
+  width: 650px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  overflow: hidden;
+}
+
+.ImgVidLogin video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* memenuhi kotak tanpa merusak proporsi */
+  border-radius: 10px;
+  display: block;
+}
+
+.KotakGridLog {
+  height: 35rem;
+  width: 40rem;
+  border-radius: 0.5rem;
+  border: 0px solid white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.KotakLoginLog {
+  background-color: rgba(27, 27, 27, 0.9);
+  height: 370px;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  width: 350px;
+  text-align: center;
+  border: 1px solid #333;
+}
+
+.KotakLogin h2 {
+  margin-bottom: -5px;
+  transform: translateY(-2rem);
+  margin-top: 2.5rem;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+label {
+
+  font-size: 14px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background-color: #222;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+input::placeholder {
+  color: #888;
+}
+
+.PsnErrorLog {
+  transform: translateY(-1rem);
+  color: red;
+  font-size: 1rem;
+}
+
+.PsnSuccessLog {
+  transform: translateY(-3rem);
+  color: rgb(0, 255, 98);
+  font-size: 1rem;
+}
+
+.SubmitLog {
+  font-family: "Montserrat", sans-serif;
+  width: 100%;
+  padding: 15px;
+  transform: translateY(5rem);
+  background-color: #fff;
+  color: #000;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.SubmitLog:hover {
+  background-color: #ddd;
+}
+
+.LinkRegis {
+  margin-top: 0.5rem;
+  font-size: 14px;
+}
+
+.LinkRegis a {
+  color: #1e90ff;
+  text-decoration: none;
+}
+
+.LinkRegis a:hover {
+  text-decoration: underline;
+}
+
+/* -------------------------- End ------------------------- */
+/* -------------------------- End ------------------------- */

@@ -1,4 +1,7 @@
-<div class="container">
+@include('partials.header', ['NamaPage' => 'Registrasi Pengguna'])
+@include('partials.sidebar')
+<link rel="stylesheet" href="{{ asset('css/pelajaran.css') }}" />
+<div class="ContainerPelajaran">
     <h1>Tambah Pelajaran Baru</h1>
 
     <!-- Menampilkan pesan sukses jika pelajaran berhasil ditambahkan -->

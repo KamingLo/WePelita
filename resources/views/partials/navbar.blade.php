@@ -1,10 +1,15 @@
 <header>
   <nav class="navbar">
-    <div class="logo"><a href="/">WePelita</a></div>
+    <div class="logo" >
+      <a href="/">
+    <img class="GambarLogo" src="/image/LogoPelitaProject.png" alt="Logo Pelita Project">
+  </a>
+    </div>
+    
     <div class="navbtn">
-      <a href="/post">post</a>
-      <a href="/about">About</a>
-      <a class="sign-btn" href="/login"><span>Sign in</span></a>
+      <a href="#">post</a>
+      <a href="#">About</a>
+      <a class="sign-btn" href="/login"><span>Login disini</span></a>
     </div>
   </nav>
 </header>

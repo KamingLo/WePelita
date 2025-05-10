@@ -1,20 +1,16 @@
-@include('partials.header', ['NamaPage' => 'Halaman Utama', 'isiPage' => 'Jangan lupa ganti'])
+{{-- resources/views/admin/dashboard.blade.php --}}
+@include('partials.header', ['NamaPage' => 'Halaman Utama'])
 
 @if (session('role') == 'admin')
-    <p>Selamat datang, admin!</p>
+  {{-- Include sidebar dari partial --}}
+  @include('partials.sidebar')
 
-    <a href="/admin/register">Register user</a>
-    <a href="/admin/jadwal">Pendaftaran jadwal belajar</a>
-    <a href="/admin/pelajaran">Pendaftaran Pelajaran baru</a>
-    <a href="/admin/posting">Postingan baru</a>
+  <div class="home">
+    <div class="text">Dashboard Admin</div>
+    {{-- Konten dashboard di sini --}}
+  </div>
 
-    <form method="POST" action="{{ url('logout') }}">
-        @csrf
-        <button type="submit">Logout</button>
-    </form>
 @elseif (session('role') == 'guru')
-    <p>Kamu belum login</p>
-    <a href="/login">Login kembali disini</a>>
+  <p>Kamu belum login</p>
+  <a href="/login">Login kembali disini</a>
 @endif
-
-@include('partials.footer')
