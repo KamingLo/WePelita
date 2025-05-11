@@ -17,12 +17,20 @@
       </h4>
       <li>
         <a href="/admin/register" class="{{ request()->is('admin/register') ? 'active-link' : '' }}">
-          <i class='bx bx-user-plus IconSidebar'></i>Register User
+          <i class='bx bx-user-plus IconSidebar'></i>Daftar User Baru
         </a>
       </li>
+      
       <li>
-        <a href="/admin/jadwal" class="{{ request()->is('admin/jadwal') ? 'active-link' : '' }}">
-          <i class='bx bx-layer-plus IconSideBar'></i>Jadwal Pembelajaran
+        <a href="/admin/manajemenUser" class="{{ request()->is('admin/post') ? 'active-link' : '' }}">
+          <i class='bx bx-send IconSideBar'></i>Manajemen User
+        </a>
+      </li>
+
+      <li>
+        <a href="/admin/jadwal"
+          class="{{ request()->is('admin/jadwal*') ? 'active-link' : '' }}">
+          <i class='bx bx-layer-plus IconSideBar'></i>Tambahkan Jadwal
         </a>
       </li>
       <li>
@@ -35,6 +43,13 @@
           <i class='bx bx-send IconSideBar'></i>Tambah posting
         </a>
       </li>
+
+            <li>
+        <a href="/admin/manajemenPost" class="{{ request()->is('admin/post') ? 'active-link' : '' }}">
+          <i class='bx bx-send IconSideBar'></i>Manajemen postingan
+        </a>
+      </li>
+
       <h4>
         <span>General</span>
         <div class="menu-separator"></div>

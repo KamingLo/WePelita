@@ -46,13 +46,4 @@
             {{ $errors->first('lampiran') }}
         </div>
     @endif
-
-
-@foreach($pengumumans as $pengumuman)
-    @if ($pengumuman->lampiran)
-        <img src="{{ asset('storage/' . $pengumuman->lampiran) }}" alt="Lampiran" />
-    @else
-        <p>Gambar tidak tersedia.</p>
-    @endif
-@endforeach
 </div>

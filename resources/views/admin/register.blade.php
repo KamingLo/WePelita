@@ -8,6 +8,12 @@
     <div class="text">Register User</div>
     
     <div class="register-form">
+
+        @if(session('success'))
+          <div class="alert alert-success">
+              {{ session('success') }}
+          </div>
+        @endif
       <form method="POST" action="{{ route('admin.register') }}">
           @csrf
           <div>
