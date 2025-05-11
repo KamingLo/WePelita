@@ -9,6 +9,9 @@ class Kegiatan extends Model
 {
     use HasFactory;
 
+    public $timestamps = false; 
+    protected $table = 'kegiatan';
+    protected $primaryKey = 'kegiatan_id';
     protected $fillable = ['admin_id', 'judul_kegiatan', 'isi_kegiatan', 'lampiran'];
 
     public function admin()

@@ -14,8 +14,8 @@ return new class extends Migration
             $table -> id('pengumuman_id');
             $table -> foreignId('admin_id')->constrained('admin', 'admin_id')->onDelete('cascade');
             $table -> string('judul_pengumuman');
-            $table -> string('isi_pengumuman');
-            $table -> binary('lampiran');
+            $table -> text('isi_pengumuman');
+            $table -> string('lampiran');
             $table -> timestamp('created_at')->useCurrent();
         });
 
@@ -23,8 +23,8 @@ return new class extends Migration
             $table -> id('kegiatan_id');
             $table -> foreignId('admin_id')->constrained('admin', 'admin_id')->onDelete('cascade');
             $table -> string('judul_kegiatan');
-            $table -> string('isi_kegiatan');
-            $table -> binary('lampiran');
+            $table -> text('isi_kegiatan');
+            $table -> string('lampiran');
             $table -> timestamp('created_at')->useCurrent();
         });
     }
