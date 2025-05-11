@@ -350,4 +350,13 @@ class AdminController extends Controller
 
         return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil dihapus');
     }
+
+    public function tampilkanManajemenUser(){
+        $Murids = Murid::all();
+        $Gurus = Guru::all();
+        $Admins = Admin::all();
+        $OrangTuas = OrangTua::all();
+        
+        return view('admin.manajemenUser', compact('Murids', 'Gurus', 'Admins', 'OrangTuas'));
+    }
 }

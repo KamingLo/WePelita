@@ -42,4 +42,6 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::post('admin/manajemenPost/update/{id}', [AdminController::class, 'updatePengumuman'])->name('edit.pengumuman');
     Route::delete('admin/manajemenPost/destroy/{id}', [AdminController::class, 'hapusPengumuman'])->name('pengumuman.destroy');
 
+    route::get('admin/manajemenUser', [AdminController::class, 'tampilkanManajemenUser'])->name('admin.manajemenUser');
+
 });

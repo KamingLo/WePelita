@@ -21,7 +21,7 @@
         </a>
       </li>
       <li>
-        <a href="/admin/editUser" class="{{ request()->is('admin/post') ? 'active-link' : '' }}">
+        <a href="/admin/manajemenUser" class="{{ request()->is('admin/post') ? 'active-link' : '' }}">
           <i class='bx bx-send IconSideBar'></i>Manajemen User
         </a>
       </li>
