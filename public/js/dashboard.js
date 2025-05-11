@@ -2,18 +2,23 @@ function OhayooUser() {
   const SapaanUser = document.getElementById("Sapaan");
   const jamIRL = new Date().getHours();
 
-  let Sapaan = "Selamat";
-  if (jamIRL >= 5 && jamIRL < 12) {
-    greeting = "Selamat yoo";
-  } else if (jamIRL >= 12 && jamIRL < 15) {
-    Sapaan = "Selamat siang";
+  let Sapaan = " ";
+
+  if (jamIRL >= 3 && jamIRL < 6) {
+    Sapaan = "Waktu Tenang";
+  } else if (jamIRL >= 6 && jamIRL < 11) {
+    Sapaan = "Selamat Pagi";
+  } else if (jamIRL >= 11 && jamIRL < 15) {
+    Sapaan = "Selamat Siang";
   } else if (jamIRL >= 15 && jamIRL < 18) {
-    Sapaan = "Selamat sore";
+    Sapaan = "Selamat Sore";
   } else {
-    Sapaan = "Selamat malam";
+    Sapaan = "Selamat Malam";
   }
 
-  SapaanUser.textContent = Sapaan;
+  if (SapaanUser) {
+    SapaanUser.textContent = Sapaan;
+  }
 }
 
 OhayooUser();

@@ -129,7 +129,6 @@ body {
     margin-top: 5px;
 }
 
-/* Murid Fields Styling */
 #murid-fields {
     grid-column: 1 / -1;
     display: grid;
@@ -153,7 +152,6 @@ body {
     margin-bottom: 15px;
 }
 
-/* Custom scrollbar styling */
 #murid-fields::-webkit-scrollbar {
     width: 8px;
 }
@@ -173,7 +171,7 @@ body {
 }
 
 .register-form.extra-bottom {
-  padding-bottom: 100px; /* atau sesuaikan */
+  padding-bottom: 100px;
 }
 
 .TombolRegister {

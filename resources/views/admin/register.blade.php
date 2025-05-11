@@ -1,13 +1,18 @@
 @include('partials.header', ['NamaPage' => 'Registrasi Pengguna', 'isiPage' => 'Registrasi Siswa Baru'])
 <link rel="stylesheet" href="{{ asset('css/register.css') }}" />
-
+@include('partials.sidebar')
 @if (session('role') == 'admin')
-  @include('partials.sidebar')
 
   <div class="home">
     <div class="text">Register User</div>
     
     <div class="register-form">
+
+        @if(session('success'))
+          <div class="alert alert-success">
+              {{ session('success') }}
+          </div>
+        @endif
       <form method="POST" action="{{ route('admin.register') }}">
           @csrf
           <div>
@@ -59,7 +64,6 @@
               @enderror
           </div>
           
-          {{-- Data tambahan untuk murid + orang tua --}}
           <div id="murid-fields" style="display:none;">
               <h4>Data Murid</h4>
               <div>

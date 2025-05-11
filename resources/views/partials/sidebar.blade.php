@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="{{ asset('css/default/SidebarAdmin.css') }}" />
 <body>
   <aside class="ContainerSideBar">
     <div class="ProfileSiUser">
@@ -5,40 +6,46 @@
             <a href="/admin/dashboard">
                 <img src="/image/logo_pelita.png"/>
             </a>
-            <h2 class="ohayo" id="Sapaan">Selamat Pagi</h2>
+            <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
         </div>
 
-        <h2 class="UseridName">Admin</h2>
+        <h6 class="UseridName">No Reason</h6>
     </div>
 
     <ul class="ListSideBar">
       <h4>
-        <span>Main Menu</span>
+        <span>Admin Tools</span>
       </h4>
       <li>
         <a href="/admin/register" class="{{ request()->is('admin/register') ? 'active-link' : '' }}">
-          <i class='bx bx-user-plus IconSidebar'></i>Register User
+          <i class='bx bx-user-plus IconSidebar'></i>Daftar User Baru
         </a>
       </li>
       <li>
-        <a href="/admin/jadwal" class="{{ request()->is('admin/jadwal') ? 'active-link' : '' }}">
-          <i class='bx bx-layer-plus IconSideBar'></i>Jadwal Pembelajaran
+        <a href="/admin/manajemenUser" class="{{ request()->is('admin/manajemenUser') ? 'active-link' : '' }}">
+          <i class='bx bx-user IconSideBar' ></i>Manajemen User
         </a>
       </li>
       <li>
-        <a href="/admin/pelajaran" class="{{ request()->is('admin/pelajaran') ? 'active-link' : '' }}">
+        <a href="/admin/jadwal" class="{{ request()->is('admin/jadwal*') ? 'active-link' : '' }}">
+          <i class='bx bx-layer-plus IconSideBar'></i>Tambahkan Jadwal
+        </a>
+      </li>
+      <li>
+        <a href="/admin/pelajaran" class="{{ request()->is('admin/pelajaran*') ? 'active-link' : '' }}">
           <i class='bx bx-list-plus IconSideBar'></i>Tambah Pelajaran
         </a>
       </li>
       <li>
         <a href="/admin/post" class="{{ request()->is('admin/post') ? 'active-link' : '' }}">
-          <i class='bx bx-send IconSideBar'></i>Tambah posting
+          <i class='bx bx-message-square-add IconSideBar'></i>Tambah posting
         </a>
       </li>
-      <h4>
-        <span>General</span>
-        <div class="menu-separator"></div>
-      </h4>
+      <li>
+        <a href="/admin/manajemenPost" class="{{ request()->is('admin/manajemenPost*') ? 'active-link' : '' }}">
+          <i class='bx bx-message-square-edit IconSideBar'></i>Manajemen postingan
+        </a>
+      </li>
 
     </ul>
     <div class="logout-container">
