@@ -1,13 +1,4 @@
-<div class="container">
-    <h2>Buat Postingan</h2>
-
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <form action="{{ route('admin.posting') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('edit.pengumuman', ['id' => $pengumuman->pengumuman_id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <!-- Pilih tipe postingan -->
@@ -38,12 +29,5 @@
             <input type="file" class="form-control" id="lampiran" name="lampiran">
         </div>
 
-        <button type="submit" class="btn btn-primary">Posting</button>
+        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
     </form>
-
-    @if ($errors->has('lampiran'))
-        <div class="alert alert-danger">
-            {{ $errors->first('lampiran') }}
-        </div>
-    @endif
-</div>
