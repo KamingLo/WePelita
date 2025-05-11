@@ -6,9 +6,9 @@
 
     <!-- Form untuk menambah pelajaran baru -->
     <form action="{{ route('pelajaran.update', ['id' => $pelajaran->pelajaran_id]) }}" method="POST">
-    @csrf
-
-    <div class="form-group">
+        @csrf
+        @method('PUT')
+        <div class="form-group">
         <label for="guru_id">Guru</label>
         <select name="guru_id" id="guru_id" class="form-control" required>
             @foreach($gurus as $guru)
