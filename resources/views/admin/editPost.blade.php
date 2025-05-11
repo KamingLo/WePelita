@@ -1,33 +1,28 @@
 <form action="{{ route('edit.pengumuman', ['id' => $pengumuman->pengumuman_id]) }}" method="POST" enctype="multipart/form-data">
-        @csrf
+    @csrf
+    <!-- Judul -->
+    <div class="mb-3">
+        <label for="judul" class="form-label">Judul</label>
+        <input type="text" class="form-control" id="judul" name="judul" required
+            value="{{ old('judul', $pengumuman->judul_pengumuman) }}">
+    </div>
 
-        <!-- Pilih tipe postingan -->
-        <div class="mb-3">
-            <label class="form-label">Tipe Postingan</label><br>
-            <input type="radio" id="announcement" name="tipe" value="pengumuman" checked>
-            <label for="announcement">Pengumuman</label>
+    <!-- Isi -->
+    <div class="mb-3">
+        <label for="isi" class="form-label">Isi</label>
+        <textarea class="form-control" id="isi" name="isi" rows="4" required>{{ old('isi', $pengumuman->isi_pengumuman) }}</textarea>
+    </div>
 
-            <input type="radio" id="event" name="tipe" value="kegiatan">
-            <label for="event">Kegiatan</label>
-        </div>
+    <!-- Lampiran -->
+    <div class="mb-3">
+        <label for="lampiran" class="form-label">Foto Kegiatan (Opsional)</label>
+        <input type="file" class="form-control" id="lampiran" name="lampiran">
+        @if ($pengumuman->lampiran)
+            <p class="mt-2">Lampiran saat ini:
+                <a href="{{ asset('storage/' . $pengumuman->lampiran) }}" target="_blank">Lihat lampiran</a>
+            </p>
+        @endif
+    </div>
 
-        <!-- Judul -->
-        <div class="mb-3">
-            <label for="judul" class="form-label">Judul</label>
-            <input type="text" class="form-control" id="judul" name="judul" required>
-        </div>
-
-        <!-- Isi -->
-        <div class="mb-3">
-            <label for="isi" class="form-label">Isi</label>
-            <textarea class="form-control" id="isi" name="isi" rows="4" required></textarea>
-        </div>
-
-        <!-- Lampiran -->
-        <div class="mb-3">
-            <label for="lampiran" class="form-label">Foto Kegiatan</label>
-            <input type="file" class="form-control" id="lampiran" name="lampiran">
-        </div>
-
-        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-    </form>
+    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+</form>

@@ -9,6 +9,13 @@
         
         <div class="form-container">
             <h2>Tambah Jadwal</h2>
+
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <form action="{{ route('jadwal.store') }}" method="POST">
                 @csrf
                 <div class="form-group">

@@ -245,6 +245,8 @@ class AdminController extends Controller
 
     public function tampilkanPost()
     {
+        $pengumumans = Pengumuman::all();
+        $kegiatans = Kegiatan::all();
         return view('admin.post', compact('pengumumans', 'kegiatans'));
     }
 
@@ -306,31 +308,38 @@ class AdminController extends Controller
     {
         // Validasi input
         $validated = $request->validate([
-            'tipe' => 'required|in:pengumuman,kegiatan',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
             'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
         ]);
 
-        // Simpan lampiran jika ada
-        $lampiranPath = null;
+        $pengumuman = Pengumuman::findOrFail($id);
+
+        // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
+        $adminId = auth()->id();
+
+        // Jika user upload file baru
         if ($request->hasFile('lampiran')) {
+            // Hapus lampiran lama jika ada
+            if ($pengumuman->lampiran) {
+                Storage::disk('public')->delete($pengumuman->lampiran);
+            }
+
+            // Simpan lampiran baru
             $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
+            $pengumuman->lampiran = $lampiranPath;
         }
 
-        // Simulasi ambil ID admin yang sedang login (ganti dengan auth jika ada)
-        $adminId = auth()->id();
-    
-            $Pengumuman = Pengumuman::findOrFail($id);
-            $Pengumuman->update([
-                'admin_id' => $adminId,
-                'judul_pengumuman' => $validated['judul'],
-                'isi_pengumuman' => $validated['isi'],
-                'lampiran' => $lampiranPath,
-            ]);
+        // Update data lainnya
+        $pengumuman->update([
+            'judul_pengumuman' => $validated['judul'],
+            'isi_pengumuman' => $validated['isi'],
+            'admin_id' => $adminId,
+        ]);
 
         return redirect()->route('admin.manajemenPost')->with('success', 'Perubahan berhasil disimpan!');
     }
+
 
     public function hapusPengumuman($id){
         $pengumuman = Pengumuman::findOrFail($id);
