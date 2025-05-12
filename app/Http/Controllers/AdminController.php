@@ -22,7 +22,8 @@ class AdminController extends Controller
     public function formUser()
     {
         $kelasList = Kelas::all();
-        return view('admin.register', compact('kelasList'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.register', compact('kelasList', 'admin'));
     }
     
     public function tambahkanUser(Request $request){
@@ -105,19 +106,21 @@ class AdminController extends Controller
 
     public function tampilkanJadwal(){
         $pelajaran = Pelajaran::all();
+        $admin = Admin::findOrFail(auth()->id());
         $kelas = Kelas::all();
         $jadwals = JadwalPelajaran::orderBy('kelas_id', 'asc')
                                   ->orderBy('hari', 'desc')
                                   ->orderBy('waktu_mulai', 'asc')
                                   ->get();
-        return view('admin.jadwal', compact('pelajaran', 'kelas', 'jadwals'));
+        return view('admin.jadwal', compact('pelajaran', 'kelas', 'jadwals', 'admin'));
     }
 
     public function tampilkanUpdateJadwal($id){
         $pelajaran = Pelajaran::all();
         $kelas = Kelas::all();
         $jadwal = JadwalPelajaran::findOrFail($id);
-        return view('admin.editJadwal', compact('pelajaran', 'kelas', 'jadwal'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.editJadwal', compact('pelajaran', 'kelas', 'jadwal', 'admin'));
     }
 
     public function simpanJadwal(Request $request)
@@ -239,8 +242,8 @@ class AdminController extends Controller
         // Mengambil data guru untuk dropdown
         $gurus = Guru::all();
         $pelajarans = Pelajaran::all();
-
-        return view('admin.pelajaran', compact('gurus', 'pelajarans'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.pelajaran', compact('gurus', 'pelajarans', 'admin'));
     }
 
     // Menyimpan pelajaran baru
@@ -263,10 +266,11 @@ class AdminController extends Controller
     }
 
     public function tampilkanUpdatePelajaran($id){
+        $admin = Admin::findOrFail(auth()->id());
         $gurus = Guru::all();
         $pelajaran = Pelajaran::findOrFail($id);
 
-        return view('admin.editPelajaran', compact('gurus', 'pelajaran'));
+        return view('admin.editPelajaran', compact('gurus', 'pelajaran', 'admin'));
     }
 
     public function updatePelajaran(Request $request, $id)
@@ -300,7 +304,8 @@ class AdminController extends Controller
     {
         $pengumumans = Pengumuman::all();
         $kegiatans = Kegiatan::all();
-        return view('admin.post', compact('pengumumans', 'kegiatans'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.post', compact('pengumumans', 'kegiatans', 'admin'));
     }
 
     public function tambahPostingan(Request $request)
@@ -348,19 +353,22 @@ class AdminController extends Controller
     {
         $pengumumans = Pengumuman::all();
         $kegiatans = Kegiatan::all();
-        return view('admin.manajemenPost', compact('pengumumans', 'kegiatans'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.manajemenPost', compact('pengumumans', 'kegiatans', 'admin'));
     }
 
     public function tampilkanPengumuman($id)
     {
         $pengumuman = Pengumuman::findOrFail($id);
-        return view('admin.editPengumuman', compact('pengumuman'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.editPengumuman', compact('pengumuman', 'admin'));
     }
 
     public function tampilkanKegiatan($id)
     {
         $kegiatan = Kegiatan::findOrFail($id);
-        return view('admin.editKegiatan', compact('kegiatan'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.editKegiatan', compact('kegiatan', 'admin'));
     }
 
 
@@ -462,7 +470,7 @@ class AdminController extends Controller
         $Gurus = Guru::all();
         $Admins = Admin::all();
         $OrangTuas = OrangTua::all();
-        
-        return view('admin.manajemenUser', compact('Murids', 'Gurus', 'Admins', 'OrangTuas'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.manajemenUser', compact('Murids', 'Gurus', 'Admins', 'OrangTuas', 'admin'));
     }
 }
