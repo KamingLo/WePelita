@@ -22,8 +22,8 @@
         </a>
       </li>
       <li>
-        <a href="/admin/manajemenUser" class="{{ request()->is('admin/manajemenUser') ? 'active-link' : '' }}">
-          <i class='bx bx-user IconSideBar' ></i>Manajemen User
+        <a href="/admin/pelajaran" class="{{ request()->is('admin/pelajaran*') ? 'active-link' : '' }}">
+          <i class='bx bx-list-plus IconSideBar'></i>Tambah Pelajaran
         </a>
       </li>
       <li>
@@ -32,13 +32,13 @@
         </a>
       </li>
       <li>
-        <a href="/admin/pelajaran" class="{{ request()->is('admin/pelajaran*') ? 'active-link' : '' }}">
-          <i class='bx bx-list-plus IconSideBar'></i>Tambah Pelajaran
+        <a href="/admin/post" class="{{ request()->is('admin/post') ? 'active-link' : '' }}">
+          <i class='bx bx-message-square-add IconSideBar'></i>Tambah posting
         </a>
       </li>
       <li>
-        <a href="/admin/post" class="{{ request()->is('admin/post') ? 'active-link' : '' }}">
-          <i class='bx bx-message-square-add IconSideBar'></i>Tambah posting
+        <a href="/admin/manajemenUser" class="{{ request()->is('admin/manajemenUser') ? 'active-link' : '' }}">
+          <i class='bx bx-user IconSideBar' ></i>Manajemen User
         </a>
       </li>
       <li>
