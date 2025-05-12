@@ -35,7 +35,6 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Judul</th>
                         <th>Isi</th>
                         <th>Admin</th>
@@ -46,7 +45,6 @@
                 <tbody>
                 @foreach($pengumumans as $pengumuman)
                     <tr>
-                        <td>{{ $pengumuman->pengumuman_id }}</td>
                         <td>{{ $pengumuman->judul_pengumuman }}</td>
                         <td class="truncate">{{ $pengumuman->isi_pengumuman }}</td>
                         <td>{{ $pengumuman->admin->profile->name }}</td>
@@ -69,10 +67,9 @@
         @elseif ($TipePost === 'kegiatan')
             <h2>Daftar Kegiatan</h2>
             
-            {{-- <table class="table">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Judul</th>
                         <th>Isi</th>
                         <th>Admin</th>
@@ -83,7 +80,6 @@
                 <tbody>
                 @foreach($kegiatans as $kegiatan)
                     <tr>
-                        <td>{{ $kegiatan->kegiatan_id }}</td>
                         <td>{{ $kegiatan->judul_kegiatan }}</td>
                         <td class="truncate">{{ $kegiatan->isi_kegiatan }}</td>
                         <td>{{ $kegiatan->admin->profile->name }}</td>
@@ -102,7 +98,7 @@
                 @endforeach
                 </tbody>
             </table>
-             --}}
+            
         @else
             <div class="no-preview-message">
                 <p>Silakan pilih tipe post untuk menampilkan data.</p>

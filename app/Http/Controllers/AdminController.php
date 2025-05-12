@@ -304,8 +304,15 @@ class AdminController extends Controller
     public function tampilkanPengumuman($id)
     {
         $pengumuman = Pengumuman::findOrFail($id);
-        return view('admin.editPost', compact('pengumuman'));
+        return view('admin.editPengumuman', compact('pengumuman'));
     }
+
+    public function tampilkanKegiatan($id)
+    {
+        $kegiatan = Kegiatan::findOrFail($id);
+        return view('admin.editKegiatan', compact('kegiatan'));
+    }
+
 
     public function updatePengumuman(Request $request, $id)
     {
@@ -342,6 +349,42 @@ class AdminController extends Controller
 
         return redirect()->route('admin.manajemenPost')->with('success', 'Perubahan berhasil disimpan!');
     }
+    
+    public function updateKegiatan(Request $request, $id)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string',
+            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
+        ]);
+
+        $kegiatan = Kegiatan::findOrFail($id);
+
+        // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
+        $adminId = auth()->id();
+
+        // Jika user upload file baru
+        if ($request->hasFile('lampiran')) {
+            // Hapus lampiran lama jika ada
+            if ($kegiatan->lampiran) {
+                Storage::disk('public')->delete($kegiatan->lampiran);
+            }
+
+            // Simpan lampiran baru
+            $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
+            $kegiatan->lampiran = $lampiranPath;
+        }
+
+        // Update data lainnya
+        $kegiatan->update([
+            'judul_pengumuman' => $validated['judul'],
+            'isi_pengumuman' => $validated['isi'],
+            'admin_id' => $adminId,
+        ]);
+
+        return redirect()->route('admin.manajemenPost')->with('success', 'Perubahan berhasil disimpan!');
+    }
 
 
     public function hapusPengumuman($id){
@@ -352,6 +395,16 @@ class AdminController extends Controller
         $pengumuman->delete();
 
         return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil dihapus');
+    }
+
+    public function hapusKegiatan($id){
+        $kegiatan = Kegiatan::findOrFail($id);
+        if ($kegiatan->lampiran) {
+            Storage::disk('public')->delete($kegiatan->lampiran);
+        }
+        $kegiatan->delete();
+
+        return redirect()->route('admin.manajemenPost')->with('success', 'Kegiatan berhasil dihapus');
     }
 
     public function tampilkanManajemenUser(){
