@@ -36,7 +36,7 @@
                 </div>
 
                 <button type="submit" class="TombolOJT TambahPelajaran">
-                    <i class='bx bx-layer-plus IconOJT'></i>Tambah Pelajaran
+                    Tambah Pelajaran
                 </button>
             </form>
         </div>

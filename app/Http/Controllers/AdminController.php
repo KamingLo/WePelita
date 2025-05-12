@@ -13,6 +13,7 @@ use App\Models\Pelajaran;
 use App\Models\JadwalPelajaran;
 use App\Models\Pengumuman;
 use App\Models\Kegiatan;
+use App\Models\MuridOrangTua;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -22,11 +23,13 @@ class AdminController extends Controller
     public function formUser()
     {
         $kelasList = Kelas::all();
-        return view('admin.register', compact('kelasList'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.register', compact('kelasList', 'admin'));
     }
     
-    public function tambahkanUser(Request $request){
-    // Validasi umum untuk profile utama
+    public function tambahkanUser(Request $request)
+    {
+        // Validasi umum untuk profile utama
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:profiles,email',
@@ -45,7 +48,6 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Sesuaikan role
         switch ($request->role) {
             case 'guru':
                 Guru::create(['profile_id' => $profile->profile_id]);
@@ -60,13 +62,11 @@ class AdminController extends Controller
                 break;
 
             case 'murid':
-                // Validasi tambahan untuk murid dan orang tua-nya
+                // Validasi tambahan untuk murid dan orang tua
                 $request->validate([
                     'nis' => 'required|string',
                     'nisn' => 'required|string',
                     'kelas_id' => 'required|integer|exists:kelas,kelas_id',
-
-                    // Data orang tua
                     'ortu_name' => 'required|string',
                     'ortu_email' => 'required|email|unique:profiles,email',
                     'ortu_nik' => 'required|string',
@@ -74,7 +74,7 @@ class AdminController extends Controller
                     'ortu_password' => 'required|min:6|string',
                 ]);
 
-                // 1. Buat profil orang tua
+                // Buat profil orang tua
                 $ortuProfile = Profile::create([
                     'name' => $request->ortu_name,
                     'email' => $request->ortu_email,
@@ -83,44 +83,49 @@ class AdminController extends Controller
                     'password' => Hash::make($request->ortu_password),
                 ]);
 
-                // 2. Simpan ke tabel orang_tua
+                // Simpan ke tabel orang_tua
                 $orangTua = OrangTua::create([
                     'profile_id' => $ortuProfile->profile_id,
                 ]);
 
-                // 3. Simpan data murid
-                Murid::create([
+                // Simpan data murid
+                $murid = Murid::create([
                     'profile_id' => $profile->profile_id,
                     'kelas_id' => $request->kelas_id,
-                    'orang_tua_id' => $orangTua->orang_tua_id,
                     'nis' => $request->nis,
                     'nisn' => $request->nisn,
                 ]);
+
+                // Tambahkan relasi many-to-many
+                $murid->orangTua()->attach($orangTua->orang_tua_id);
+
                 break;
         }
 
         return redirect()->route('admin.register')->with('success', 'User baru berhasil ditambahkan');
     }
 
-
     public function tampilkanJadwal(){
         $pelajaran = Pelajaran::all();
+        $admin = Admin::findOrFail(auth()->id());
         $kelas = Kelas::all();
         $jadwals = JadwalPelajaran::orderBy('kelas_id', 'asc')
                                   ->orderBy('hari', 'desc')
                                   ->orderBy('waktu_mulai', 'asc')
                                   ->get();
-        return view('admin.jadwal', compact('pelajaran', 'kelas', 'jadwals'));
+        return view('admin.jadwal', compact('pelajaran', 'kelas', 'jadwals', 'admin'));
     }
 
     public function tampilkanUpdateJadwal($id){
         $pelajaran = Pelajaran::all();
         $kelas = Kelas::all();
         $jadwal = JadwalPelajaran::findOrFail($id);
-        return view('admin.editJadwal', compact('pelajaran', 'kelas', 'jadwal'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.editJadwal', compact('pelajaran', 'kelas', 'jadwal', 'admin'));
     }
 
-    public function simpanJadwal(Request $request){
+    public function simpanJadwal(Request $request)
+    {
         $request->validate([
             'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
             'kelas_id' => 'required|exists:kelas,kelas_id',
@@ -129,49 +134,98 @@ class AdminController extends Controller
             'waktu_selesai' => 'required',
         ]);
 
-        // Cek apakah ada jadwal bentrok
-        $bentrok = JadwalPelajaran::where('kelas_id', $request->kelas_id)
+        // 1. Cek apakah jadwal sudah ada untuk kelas ini pada jam yang sama
+        $bentrokKelas = JadwalPelajaran::where('kelas_id', $request->kelas_id)
             ->where('hari', $request->hari)
             ->where(function ($query) use ($request) {
                 $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
                     ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
                     ->orWhere(function ($q) use ($request) {
                         $q->where('waktu_mulai', '<=', $request->waktu_mulai)
-                            ->where('waktu_selesai', '>=', $request->waktu_selesai);
+                        ->where('waktu_selesai', '>=', $request->waktu_selesai);
                     });
             })
             ->exists();
 
-        if ($bentrok) {
+        if ($bentrokKelas) {
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['jadwal' => 'Sudah ada jadwal lain pada waktu tersebut.']);
+                ->withErrors(['jadwal' => 'Sudah ada jadwal lain untuk kelas ini pada waktu tersebut.']);
         }
 
+        // 2. Cek apakah pelajaran ini sedang diajarkan di kelas lain pada waktu yang sama
+        $bentrokPelajaran = JadwalPelajaran::where('pelajaran_id', $request->pelajaran_id)
+            ->where('kelas_id', '!=', $request->kelas_id)
+            ->where('hari', $request->hari)
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
+                    ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
+                    ->orWhere(function ($q) use ($request) {
+                        $q->where('waktu_mulai', '<=', $request->waktu_mulai)
+                        ->where('waktu_selesai', '>=', $request->waktu_selesai);
+                    });
+            })
+            ->exists();
+
+        if ($bentrokPelajaran) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['jadwal' => 'Pelajaran ini sudah dijadwalkan di kelas lain pada waktu tersebut.']);
+        }
+
+        // Simpan jadwal jika tidak ada bentrok
         JadwalPelajaran::create($request->all());
 
         return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil ditambahkan');
     }
 
 
-    public function updateJadwal(Request $request, $id){
+
+    public function updateJadwal(Request $request, $id)
+    {
         $validated = $request->validate([
             'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
             'kelas_id' => 'required|exists:kelas,kelas_id',
             'hari' => 'required',
             'waktu_mulai' => 'required',
-            'waktu_selesai' => 'required',
+            'waktu_selesai' => 'required|after:waktu_mulai',
         ]);
 
         $jadwal = JadwalPelajaran::findOrFail($id);
-        $jadwal->update([
-            'pelajaran_id' => $validated['pelajaran_id'],
-            'kelas_id' => $validated['kelas_id'],
-            'hari' => $validated['hari'],
-            'waktu_mulai' => $validated['waktu_mulai'],
-            'waktu_selesai' => $validated['waktu_selesai'],
-        ]);
 
+        $bentrokKelas = JadwalPelajaran::where('jadwal_id', '!=', $id)
+            ->where('kelas_id', $validated['kelas_id'])
+            ->where('hari', $validated['hari'])
+            ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
+                $validated['waktu_mulai'],
+                $validated['waktu_selesai'],
+            ])
+            ->exists();
+
+        if ($bentrokKelas) {
+            return back()->withInput()->withErrors([
+                'jadwal' => 'Sudah ada jadwal lain untuk kelas ini pada waktu tersebut.',
+            ]);
+        }
+
+
+        $bentrokPelajaran = JadwalPelajaran::where('jadwal_id', '!=', $id)
+            ->where('pelajaran_id', $validated['pelajaran_id'])
+            ->where('kelas_id', '!=', $validated['kelas_id'])
+            ->where('hari', $validated['hari'])
+            ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
+                $validated['waktu_mulai'],
+                $validated['waktu_selesai'],
+            ])
+            ->exists();
+
+        if ($bentrokPelajaran) {
+            return back()->withInput()->withErrors([
+                'jadwal' => 'Pelajaran ini sudah dijadwalkan di kelas lain pada waktu tersebut.',
+            ]);
+        }
+
+        $jadwal->update($validated);
 
         return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil diperbarui');
     }
@@ -189,8 +243,8 @@ class AdminController extends Controller
         // Mengambil data guru untuk dropdown
         $gurus = Guru::all();
         $pelajarans = Pelajaran::all();
-
-        return view('admin.pelajaran', compact('gurus', 'pelajarans'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.pelajaran', compact('gurus', 'pelajarans', 'admin'));
     }
 
     // Menyimpan pelajaran baru
@@ -213,10 +267,11 @@ class AdminController extends Controller
     }
 
     public function tampilkanUpdatePelajaran($id){
+        $admin = Admin::findOrFail(auth()->id());
         $gurus = Guru::all();
         $pelajaran = Pelajaran::findOrFail($id);
 
-        return view('admin.editPelajaran', compact('gurus', 'pelajaran'));
+        return view('admin.editPelajaran', compact('gurus', 'pelajaran', 'admin'));
     }
 
     public function updatePelajaran(Request $request, $id)
@@ -250,7 +305,8 @@ class AdminController extends Controller
     {
         $pengumumans = Pengumuman::all();
         $kegiatans = Kegiatan::all();
-        return view('admin.post', compact('pengumumans', 'kegiatans'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.post', compact('pengumumans', 'kegiatans', 'admin'));
     }
 
     public function tambahPostingan(Request $request)
@@ -298,14 +354,24 @@ class AdminController extends Controller
     {
         $pengumumans = Pengumuman::all();
         $kegiatans = Kegiatan::all();
-        return view('admin.manajemenPost', compact('pengumumans', 'kegiatans'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.manajemenPost', compact('pengumumans', 'kegiatans', 'admin'));
     }
 
     public function tampilkanPengumuman($id)
     {
         $pengumuman = Pengumuman::findOrFail($id);
-        return view('admin.editPost', compact('pengumuman'));
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.editPengumuman', compact('pengumuman', 'admin'));
     }
+
+    public function tampilkanKegiatan($id)
+    {
+        $kegiatan = Kegiatan::findOrFail($id);
+        $admin = Admin::findOrFail(auth()->id());
+        return view('admin.editKegiatan', compact('kegiatan', 'admin'));
+    }
+
 
     public function updatePengumuman(Request $request, $id)
     {
@@ -342,6 +408,42 @@ class AdminController extends Controller
 
         return redirect()->route('admin.manajemenPost')->with('success', 'Perubahan berhasil disimpan!');
     }
+    
+    public function updateKegiatan(Request $request, $id)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string',
+            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
+        ]);
+
+        $kegiatan = Kegiatan::findOrFail($id);
+
+        // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
+        $adminId = auth()->id();
+
+        // Jika user upload file baru
+        if ($request->hasFile('lampiran')) {
+            // Hapus lampiran lama jika ada
+            if ($kegiatan->lampiran) {
+                Storage::disk('public')->delete($kegiatan->lampiran);
+            }
+
+            // Simpan lampiran baru
+            $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
+            $kegiatan->lampiran = $lampiranPath;
+        }
+
+        // Update data lainnya
+        $kegiatan->update([
+            'judul_pengumuman' => $validated['judul'],
+            'isi_pengumuman' => $validated['isi'],
+            'admin_id' => $adminId,
+        ]);
+
+        return redirect()->route('admin.manajemenPost')->with('success', 'Perubahan berhasil disimpan!');
+    }
 
 
     public function hapusPengumuman($id){
@@ -354,12 +456,92 @@ class AdminController extends Controller
         return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil dihapus');
     }
 
+    public function hapusKegiatan($id){
+        $kegiatan = Kegiatan::findOrFail($id);
+        if ($kegiatan->lampiran) {
+            Storage::disk('public')->delete($kegiatan->lampiran);
+        }
+        $kegiatan->delete();
+
+        return redirect()->route('admin.manajemenPost')->with('success', 'Kegiatan berhasil dihapus');
+    }
+
     public function tampilkanManajemenUser(){
-        $Murids = Murid::all();
+        
         $Gurus = Guru::all();
         $Admins = Admin::all();
-        $OrangTuas = OrangTua::all();
-        
-        return view('admin.manajemenUser', compact('Murids', 'Gurus', 'Admins', 'OrangTuas'));
+        $MuridOrangTuas = MuridOrangTua::with([
+            'murid.profile',
+            'murid.kelas',
+            // 'orang_tua.profile'
+        ])->get();
+        $admin = Admin::findOrFail(auth()->id());
+
+        return view('admin.manajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin'));
+    }
+
+    public function editUser($id, Request $request)
+    {
+        $role = request('role');
+        $model = $this->getModelByRole($role);
+        $user = $model::with(['profile'])->findOrFail($id);
+
+        $kelasList = [];
+        if ($role === 'murid') {
+            $kelasList = Kelas::all();
+        }
+
+    return view('admin.editUser', compact('user', 'role', 'kelasList'))->with('id', $id);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $role = $request->input('role');
+        $model = $this->getModelByRole($role);
+        $user = $model::with('profile')->findOrFail($id);
+
+        // Update profile
+        $user->profile->name = $request->name;
+        $user->profile->email = $request->email;
+        $user->profile->nik = $request->nik;
+
+        // Ubah password jika diisi
+        if ($request->filled('password')) {
+            $user->profile->password = Hash::make($request->password);
+        }
+
+        $user->profile->save();
+
+        // Update data spesifik murid
+        if ($role === 'murid') {
+            $user->nis = $request->nis;
+            $user->nisn = $request->nisn;
+            $user->kelas_id = $request->kelas_id;
+            $user->save();
+        }
+
+        return redirect()->route('admin.manajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
+    }
+
+    public function destroyUser($id, Request $request)
+    {
+        $role = $request->query('role');
+        $model = $this->getModelByRole($role);
+        $user = $model::findOrFail($id);
+        $user->profile()->delete();
+        $user->delete();
+
+        return back()->with('success', 'User berhasil dihapus');
+    }
+
+    private function getModelByRole($role)
+    {
+        return match ($role) {
+            'admin' => Admin::class,
+            'guru' => Guru::class,
+            'murid' => Murid::class,
+            'orangtua' => OrangTua::class,
+            default => abort(404),
+        };
     }
 }

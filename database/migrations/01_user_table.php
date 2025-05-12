@@ -51,9 +51,14 @@ return new class extends Migration
             $table->id('murid_id');
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
             $table->foreignId('kelas_id')->constrained('kelas', 'kelas_id')->onDelete('cascade');
-            $table->foreignId('orang_tua_id')->constrained('orang_tua', 'orang_tua_id')->onDelete('cascade');
             $table->string('nis');
             $table->string('nisn');
+        });
+
+        Schema::create('murid_orang_tua', function (Blueprint $table){
+            $table->id('murid_orang_tua_id');
+            $table->foreignId('murid_id')->constrained('murid', 'murid_id')->onDelete('cascade');
+            $table->foreignId('orang_tua_id')->constrained('orang_tua', 'orang_tua_id')->onDelete('cascade');
         });
     }
 

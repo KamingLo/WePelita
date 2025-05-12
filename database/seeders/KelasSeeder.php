@@ -28,7 +28,8 @@ class KelasSeeder extends Seeder
             ['nama_kelas' => 'XII AK', 'tahun_ajaran' => $tahunAjaran],
             ['nama_kelas' => 'XII AP', 'tahun_ajaran' => $tahunAjaran],
             ['nama_kelas' => 'XII MM 1', 'tahun_ajaran' => $tahunAjaran],
-            ['nama_kelas' => 'XII MM 2', 'tahun_ajaran' => $tahunAjaran]
+            ['nama_kelas' => 'XII MM 2', 'tahun_ajaran' => $tahunAjaran],
+            ['nama_kelas' => 'Alumni', 'tahun_ajaran' => 'Selamanya'],
         ];
 
         Kelas::insert($kelasBaru);

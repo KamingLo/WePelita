@@ -10,7 +10,7 @@
 
         <div class="LayoutJadwalForm">
             <h2>Edit Jadwal</h2>
-            <form action="{{ route('pelajaran.update', ['id' => $jadwal->jadwal_id]) }}" method="POST">
+            <form action="{{ route('jadwal.update', ['id' => $jadwal->jadwal_id]) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -67,6 +67,13 @@
                     <i class='bx bx-layer-plus IconOJT'></i>Simpan Jadwal
                 </button>
             </form>
+
+            @if ($errors->has('jadwal'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('jadwal') }}
+                </div>
+            @endif
+
         </div>
 
         <div class="LayoutJadwalTable">
