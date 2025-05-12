@@ -177,24 +177,51 @@ class AdminController extends Controller
 
 
 
-    public function updateJadwal(Request $request, $id){
+    public function updateJadwal(Request $request, $id)
+    {
         $validated = $request->validate([
             'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
             'kelas_id' => 'required|exists:kelas,kelas_id',
             'hari' => 'required',
             'waktu_mulai' => 'required',
-            'waktu_selesai' => 'required',
+            'waktu_selesai' => 'required|after:waktu_mulai',
         ]);
 
         $jadwal = JadwalPelajaran::findOrFail($id);
-        $jadwal->update([
-            'pelajaran_id' => $validated['pelajaran_id'],
-            'kelas_id' => $validated['kelas_id'],
-            'hari' => $validated['hari'],
-            'waktu_mulai' => $validated['waktu_mulai'],
-            'waktu_selesai' => $validated['waktu_selesai'],
-        ]);
 
+        $bentrokKelas = JadwalPelajaran::where('jadwal_id', '!=', $id)
+            ->where('kelas_id', $validated['kelas_id'])
+            ->where('hari', $validated['hari'])
+            ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
+                $validated['waktu_mulai'],
+                $validated['waktu_selesai'],
+            ])
+            ->exists();
+
+        if ($bentrokKelas) {
+            return back()->withInput()->withErrors([
+                'jadwal' => 'Sudah ada jadwal lain untuk kelas ini pada waktu tersebut.',
+            ]);
+        }
+
+
+        $bentrokPelajaran = JadwalPelajaran::where('jadwal_id', '!=', $id)
+            ->where('pelajaran_id', $validated['pelajaran_id'])
+            ->where('kelas_id', '!=', $validated['kelas_id'])
+            ->where('hari', $validated['hari'])
+            ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
+                $validated['waktu_mulai'],
+                $validated['waktu_selesai'],
+            ])
+            ->exists();
+
+        if ($bentrokPelajaran) {
+            return back()->withInput()->withErrors([
+                'jadwal' => 'Pelajaran ini sudah dijadwalkan di kelas lain pada waktu tersebut.',
+            ]);
+        }
+
+        $jadwal->update($validated);
 
         return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil diperbarui');
     }
