@@ -13,6 +13,7 @@ use App\Models\Pelajaran;
 use App\Models\JadwalPelajaran;
 use App\Models\Pengumuman;
 use App\Models\Kegiatan;
+use App\Models\MuridOrangTua;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -26,8 +27,9 @@ class AdminController extends Controller
         return view('admin.register', compact('kelasList', 'admin'));
     }
     
-    public function tambahkanUser(Request $request){
-    // Validasi umum untuk profile utama
+    public function tambahkanUser(Request $request)
+    {
+        // Validasi umum untuk profile utama
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:profiles,email',
@@ -46,7 +48,6 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Sesuaikan role
         switch ($request->role) {
             case 'guru':
                 Guru::create(['profile_id' => $profile->profile_id]);
@@ -61,13 +62,11 @@ class AdminController extends Controller
                 break;
 
             case 'murid':
-                // Validasi tambahan untuk murid dan orang tua-nya
+                // Validasi tambahan untuk murid dan orang tua
                 $request->validate([
                     'nis' => 'required|string',
                     'nisn' => 'required|string',
                     'kelas_id' => 'required|integer|exists:kelas,kelas_id',
-
-                    // Data orang tua
                     'ortu_name' => 'required|string',
                     'ortu_email' => 'required|email|unique:profiles,email',
                     'ortu_nik' => 'required|string',
@@ -75,7 +74,7 @@ class AdminController extends Controller
                     'ortu_password' => 'required|min:6|string',
                 ]);
 
-                // 1. Buat profil orang tua
+                // Buat profil orang tua
                 $ortuProfile = Profile::create([
                     'name' => $request->ortu_name,
                     'email' => $request->ortu_email,
@@ -84,25 +83,27 @@ class AdminController extends Controller
                     'password' => Hash::make($request->ortu_password),
                 ]);
 
-                // 2. Simpan ke tabel orang_tua
+                // Simpan ke tabel orang_tua
                 $orangTua = OrangTua::create([
                     'profile_id' => $ortuProfile->profile_id,
                 ]);
 
-                // 3. Simpan data murid
-                Murid::create([
+                // Simpan data murid
+                $murid = Murid::create([
                     'profile_id' => $profile->profile_id,
                     'kelas_id' => $request->kelas_id,
-                    'orang_tua_id' => $orangTua->orang_tua_id,
                     'nis' => $request->nis,
                     'nisn' => $request->nisn,
                 ]);
+
+                // Tambahkan relasi many-to-many
+                $murid->orangTua()->attach($orangTua->orang_tua_id);
+
                 break;
         }
 
         return redirect()->route('admin.register')->with('success', 'User baru berhasil ditambahkan');
     }
-
 
     public function tampilkanJadwal(){
         $pelajaran = Pelajaran::all();
@@ -466,11 +467,81 @@ class AdminController extends Controller
     }
 
     public function tampilkanManajemenUser(){
-        $Murids = Murid::all();
+        
         $Gurus = Guru::all();
         $Admins = Admin::all();
-        $OrangTuas = OrangTua::all();
+        $MuridOrangTuas = MuridOrangTua::with([
+            'murid.profile',
+            'murid.kelas',
+            // 'orang_tua.profile'
+        ])->get();
         $admin = Admin::findOrFail(auth()->id());
-        return view('admin.manajemenUser', compact('Murids', 'Gurus', 'Admins', 'OrangTuas', 'admin'));
+
+        return view('admin.manajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin'));
+    }
+
+    public function editUser($id, Request $request)
+    {
+        $role = request('role');
+        $model = $this->getModelByRole($role);
+        $user = $model::with(['profile'])->findOrFail($id);
+
+        $kelasList = [];
+        if ($role === 'murid') {
+            $kelasList = Kelas::all();
+        }
+
+    return view('admin.editUser', compact('user', 'role', 'kelasList'))->with('id', $id);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $role = $request->input('role');
+        $model = $this->getModelByRole($role);
+        $user = $model::with('profile')->findOrFail($id);
+
+        // Update profile
+        $user->profile->name = $request->name;
+        $user->profile->email = $request->email;
+        $user->profile->nik = $request->nik;
+
+        // Ubah password jika diisi
+        if ($request->filled('password')) {
+            $user->profile->password = Hash::make($request->password);
+        }
+
+        $user->profile->save();
+
+        // Update data spesifik murid
+        if ($role === 'murid') {
+            $user->nis = $request->nis;
+            $user->nisn = $request->nisn;
+            $user->kelas_id = $request->kelas_id;
+            $user->save();
+        }
+
+        return redirect()->route('admin.manajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
+    }
+
+    public function destroyUser($id, Request $request)
+    {
+        $role = $request->query('role');
+        $model = $this->getModelByRole($role);
+        $user = $model::findOrFail($id);
+        $user->profile()->delete();
+        $user->delete();
+
+        return back()->with('success', 'User berhasil dihapus');
+    }
+
+    private function getModelByRole($role)
+    {
+        return match ($role) {
+            'admin' => Admin::class,
+            'guru' => Guru::class,
+            'murid' => Murid::class,
+            'orangtua' => OrangTua::class,
+            default => abort(404),
+        };
     }
 }

@@ -19,11 +19,21 @@
     @if ($role === 'admin')
         <h3>Data Admin</h3>
         <table class="table table-bordered">
-            <tr><th>Nama</th><th>Email</th></tr>
-            @foreach ($Admins as $admin)
+            <tr><th>Nama</th><th>Email</th><th>Nik</th><th>Password</th></tr>
+            @foreach ($Admins as $Admin)
                 <tr>
-                    <td>{{ $admin->profile->name }}</td>
-                    <td>{{ $admin->profile->email }}</td>
+                    <td>{{ $Admin->profile->name }}</td>
+                    <td>{{ $Admin->profile->email }}</td>
+                    <td>{{ $Admin->profile->nik }}</td>
+                    <td>********</td>
+                    <td>
+                        <a href="{{ route('admin.user.edit', ['id' => $Admin->admin_id, 'role' => 'admin']) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form method="POST" action="{{ route('admin.user.delete', $Admin->admin_id) }}" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus user ini?')">Hapus</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </table>
@@ -31,11 +41,21 @@
     @elseif ($role === 'guru')
         <h3>Data Guru</h3>
         <table class="table table-bordered">
-            <tr><th>Nama</th><th>Email</th></tr>
+            <tr><th>Nama</th><th>Email</th><th>Nik</th><th>Password</th></tr>
             @foreach ($Gurus as $guru)
                 <tr>
                     <td>{{ $guru->profile->name }}</td>
                     <td>{{ $guru->profile->email }}</td>
+                    <td>{{ $guru->profile->nik }}</td>
+                    <td>********</td>
+                    <td>
+                        <a href="{{ route('admin.user.edit', ['id' => $guru->guru_id, 'role' => 'guru']) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form method="POST" action="{{ route('admin.user.delete', $guru->guru_id) }}" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus user ini?')">Hapus</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </table>
@@ -43,12 +63,30 @@
     @elseif ($role === 'murid')
         <h3>Data Murid</h3>
         <table class="table table-bordered">
-            <tr><th>Nama</th><th>Email</th><th>Kelas</th></tr>
-            @foreach ($Murids as $murid)
+            <tr><th>Nama</th>
+                <th>Email</th>
+                <th>Kelas</th>
+                <th>Nis</th>
+                <th>Nisn</th>
+                <th>Nik</th>
+                <th>Password</th></tr>
+            @foreach ($MuridOrangTuas as $MuridOrang_tua)
                 <tr>
-                    <td>{{ $murid->profile->name }}</td>
-                    <td>{{ $murid->profile->email }}</td>
-                    <td>{{ $murid->kelas }}</td>
+                    <td>{{ $MuridOrang_tua->Murid->profile->name }}</td>
+                    <td>{{ $MuridOrang_tua->Murid->profile->email }}</td>
+                    <td>{{ $MuridOrang_tua->Murid->kelas->nama_kelas }}</td>
+                    <td>{{ $MuridOrang_tua->Murid->nis }}</td>
+                    <td>{{ $MuridOrang_tua->Murid->nisn }}</td>
+                    <td>{{ $MuridOrang_tua->Murid->profile->nik }}</td>
+                    <td>********</td>
+                    <td>
+                        <a href="{{ route('admin.user.edit', ['id' => $MuridOrang_tua->Murid->murid_id, 'role' => 'murid']) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form method="POST" action="{{ route('admin.user.delete', $MuridOrang_tua->Murid->murid_id) }}" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus user ini?')">Hapus</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </table>
@@ -56,11 +94,21 @@
     @elseif ($role === 'orangtua')
         <h3>Data Orang Tua</h3>
         <table class="table table-bordered">
-            <tr><th>Nama</th><th>Email</th></tr>
-            @foreach ($OrangTuas as $ortu)
+            <tr><th>Nama</th><th>Email</th><th>Nik</th><th>Password</th></tr>
+            @foreach ($MuridOrangTuas as $MuridOrang_tua)
                 <tr>
-                    <td>{{ $ortu->profile->name }}</td>
-                    <td>{{ $ortu->profile->email }}</td>
+                    <td>{{ $MuridOrang_tua->orangTua->profile->name }}</td>
+                    <td>{{ $MuridOrang_tua->orangTua->profile->email }}</td>
+                    <td>{{ $MuridOrang_tua->orangTua->profile->nik }}</td>
+                    <td>********</td>
+                    <td>
+                        <a href="{{ route('admin.user.edit', ['id' => $MuridOrang_tua->orangTua->orang_tua_id, 'role' => 'orangtua']) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form method="POST" action="{{ route('admin.user.delete', $MuridOrang_tua->orangTua->orang_tua_id) }}" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus user ini?')">Hapus</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
         </table>

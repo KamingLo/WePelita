@@ -18,4 +18,14 @@ class OrangTua extends Model
     {
         return $this->belongsTo(Profile::class, 'profile_id');
     }
+    
+    public function murid()
+    {
+        return $this->belongsToMany(
+            Murid::class,
+            'murid_orang_tua',
+            'orang_tua_id',
+            'murid_id'
+        );
+    }
 }

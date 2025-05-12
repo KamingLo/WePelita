@@ -52,4 +52,8 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
 
     route::get('admin/manajemenUser', [AdminController::class, 'tampilkanManajemenUser'])->name('admin.manajemenUser');
 
+    Route::get('/admin/user/edit/{id}', [AdminController::class, 'editUser'])->name('admin.user.edit');
+    Route::put('/admin/user/update/{id}', [AdminController::class, 'updateUser'])->name('admin.user.update');
+    Route::delete('/admin/user/delete/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.delete');
+
 });

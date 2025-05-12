@@ -28,8 +28,14 @@ class Murid extends Model
 
     public function orangTua()
     {
-        return $this->belongsTo(OrangTua::class, 'orang_tua_id');
+        return $this->belongsToMany(
+            OrangTua::class,
+            'murid_orang_tua',
+            'murid_id',
+            'orang_tua_id'
+        );
     }
+
 
     public function absensi()
     {
