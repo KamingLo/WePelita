@@ -60,6 +60,13 @@
                     <i class='bx bx-layer-plus IconOJT'></i>Tambah Jadwal
                 </button>
             </form>
+
+            @if ($errors->has('jadwal'))
+                <div class="alert alert-danger">
+                    {{ $errors->first('jadwal') }}
+                </div>
+            @endif
+
         </div>
 
         <div class="LayoutJadwalTable">

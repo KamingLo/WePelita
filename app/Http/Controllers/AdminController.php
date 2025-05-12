@@ -120,7 +120,8 @@ class AdminController extends Controller
         return view('admin.editJadwal', compact('pelajaran', 'kelas', 'jadwal'));
     }
 
-    public function simpanJadwal(Request $request){
+    public function simpanJadwal(Request $request)
+    {
         $request->validate([
             'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
             'kelas_id' => 'required|exists:kelas,kelas_id',
@@ -129,29 +130,51 @@ class AdminController extends Controller
             'waktu_selesai' => 'required',
         ]);
 
-        // Cek apakah ada jadwal bentrok
-        $bentrok = JadwalPelajaran::where('kelas_id', $request->kelas_id)
+        // 1. Cek apakah jadwal sudah ada untuk kelas ini pada jam yang sama
+        $bentrokKelas = JadwalPelajaran::where('kelas_id', $request->kelas_id)
             ->where('hari', $request->hari)
             ->where(function ($query) use ($request) {
                 $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
                     ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
                     ->orWhere(function ($q) use ($request) {
                         $q->where('waktu_mulai', '<=', $request->waktu_mulai)
-                            ->where('waktu_selesai', '>=', $request->waktu_selesai);
+                        ->where('waktu_selesai', '>=', $request->waktu_selesai);
                     });
             })
             ->exists();
 
-        if ($bentrok) {
+        if ($bentrokKelas) {
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['jadwal' => 'Sudah ada jadwal lain pada waktu tersebut.']);
+                ->withErrors(['jadwal' => 'Sudah ada jadwal lain untuk kelas ini pada waktu tersebut.']);
         }
 
+        // 2. Cek apakah pelajaran ini sedang diajarkan di kelas lain pada waktu yang sama
+        $bentrokPelajaran = JadwalPelajaran::where('pelajaran_id', $request->pelajaran_id)
+            ->where('kelas_id', '!=', $request->kelas_id)
+            ->where('hari', $request->hari)
+            ->where(function ($query) use ($request) {
+                $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
+                    ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
+                    ->orWhere(function ($q) use ($request) {
+                        $q->where('waktu_mulai', '<=', $request->waktu_mulai)
+                        ->where('waktu_selesai', '>=', $request->waktu_selesai);
+                    });
+            })
+            ->exists();
+
+        if ($bentrokPelajaran) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['jadwal' => 'Pelajaran ini sudah dijadwalkan di kelas lain pada waktu tersebut.']);
+        }
+
+        // Simpan jadwal jika tidak ada bentrok
         JadwalPelajaran::create($request->all());
 
         return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil ditambahkan');
     }
+
 
 
     public function updateJadwal(Request $request, $id){
