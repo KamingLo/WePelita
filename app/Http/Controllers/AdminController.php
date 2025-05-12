@@ -406,7 +406,7 @@ class AdminController extends Controller
             'admin_id' => $adminId,
         ]);
 
-        return redirect()->route('admin.manajemenPost')->with('success', 'Perubahan berhasil disimpan!');
+        return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil disimpan!');
     }
     
     public function updateKegiatan(Request $request, $id)
@@ -437,12 +437,12 @@ class AdminController extends Controller
 
         // Update data lainnya
         $kegiatan->update([
-            'judul_pengumuman' => $validated['judul'],
-            'isi_pengumuman' => $validated['isi'],
             'admin_id' => $adminId,
+            'judul_kegiatan' => $validated['judul'],
+            'isi_kegiatan' => $validated['isi'],
         ]);
 
-        return redirect()->route('admin.manajemenPost')->with('success', 'Perubahan berhasil disimpan!');
+        return redirect()->route('admin.manajemenPost')->with('success', 'kegiatan berhasil disimpan!');
     }
 
 
