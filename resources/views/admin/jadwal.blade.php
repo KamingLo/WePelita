@@ -17,7 +17,7 @@
                     <select name="pelajaran_id" id="pelajaran_id" class="form-control" required>
                         <option value="" disabled selected>-- Pilih Pelajaran --</option>
                         @foreach($pelajaran as $item)
-                            <option value="{{ $item->pelajaran_id }}">{{ $item->namaPelajaran }}</option>
+                            <option value="{{ $item->pelajaran_id }}">{{ $item->namaPelajaran }} ({{ $item ->guru->profile->name }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -41,8 +41,6 @@
                         <option value="Rabu">Rabu</option>
                         <option value="Kamis">Kamis</option>
                         <option value="Jumat">Jumat</option>
-                        <option value="Sabtu">Sabtu</option>
-                        <option value="Minggu">Minggu</option>
                     </select>
                 </div>
 
