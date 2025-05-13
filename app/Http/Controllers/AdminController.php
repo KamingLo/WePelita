@@ -43,21 +43,41 @@ class AdminController extends Controller
             'role' => 'required|in:guru,admin,murid',
         ]);
 
-        // Buat profile utama
-        $profile = Profile::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'alamat' => $request->alamat,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'tempat_lahir' => $request->tempat_lahir,
-            'pendidikan' => $request->pendidikan,
-            'no_telp' => $request->no_telp,
-            'password' => Hash::make($request->password),
-        ]);
+        if($request->role == 'admin'){
+            $profile = Profile::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'alamat' => $request->alamat,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'tempat_lahir' => $request->tempat_lahir,
+                'pendidikan' => $request->pendidikan,
+                'no_telp' => $request->no_telp,
+                'password' => Hash::make($request->password),
+            ]);
+        }
 
         switch ($request->role) {
             case 'guru':
+                $request->validate([
+                    'gelar' => 'required|string',
+                    'statusMenikah' => 'required',
+                    'statusKerja' => 'required',
+                    'nuptk' => 'required|string',
+                ]);
+
+                $profile = Profile::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'alamat' => $request->alamat,
+                    'jenis_kelamin' => $request->jenis_kelamin,
+                    'tanggal_lahir' => $request->tanggal_lahir,
+                    'tempat_lahir' => $request->tempat_lahir,
+                    'pendidikan' => $request->pendidikan,
+                    'no_telp' => $request->no_telp,
+                    'password' => Hash::make($request->password),
+                ]);
+
                 Guru::create([
                     'profile_id' => $profile->profile_id,
                     'gelar' => $request->gelar,
@@ -65,6 +85,7 @@ class AdminController extends Controller
                     'statusKerja' => $request->statusKerja,
                     'nuptk' => $request->nuptk,
                 ]);
+
                 break;
 
             case 'admin':
@@ -88,6 +109,18 @@ class AdminController extends Controller
                     'ortu_no_telp' => 'required|string',
                     'ortu_profesi' => 'required|string',
                     'ortu_password' => 'required|min:6|string',
+                ]);
+
+                $profile = Profile::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'alamat' => $request->alamat,
+                    'jenis_kelamin' => $request->jenis_kelamin,
+                    'tanggal_lahir' => $request->tanggal_lahir,
+                    'tempat_lahir' => $request->tempat_lahir,
+                    'pendidikan' => $request->pendidikan,
+                    'no_telp' => $request->no_telp,
+                    'password' => Hash::make($request->password),
                 ]);
 
                 // Buat profil orang tua

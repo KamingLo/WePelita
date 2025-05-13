@@ -21,7 +21,7 @@
                 @csrf
                 <div class="FormFor">
                     <label for="name">Nama:</label>
-                    <input type="text" name="name" id="name" class="form-control" required placeholder="Masukkan nama lengkap">
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Masukkan nama lengkap">
                     @error('name')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -29,7 +29,7 @@
                 
                 <div class="FormFor">
                     <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" class="form-control" required placeholder="Masukkan email">
+                    <input type="email" name="email" id="email" class="form-control"  placeholder="Masukkan email">
                     @error('email')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -37,7 +37,7 @@
                 
                 <div class="FormFor">
                     <label for="alamat">Alamat:</label>
-                    <input type="text" name="alamat" id="alamat" class="form-control" required placeholder="Masukkan Alamat">
+                    <input type="text" name="alamat" id="alamat" class="form-control" placeholder="Masukkan Alamat">
                     @error('alamat')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -45,7 +45,7 @@
 
                 <div class="FormFor">
                     <label for="jenis_kelamin">Jenis_kelamin:</label>
-                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
+                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" >
                         <option value="none" disabled selected>-- Pilih Jenis Kelamin --</option>
                         <option value="Laki-laki">Laki-laki</option>
                         <option value="Perempuan">Perempuan</option>
@@ -57,7 +57,7 @@
                 
                 <div class="FormFor">
                     <label for="tanggal_lahir">Tanggal lahir:</label>
-                    <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" required placeholder="Masukkan nomor telepon">
+                    <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control"  placeholder="Masukkan nomor telepon">
                     @error('tanggal_lahir')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -65,7 +65,7 @@
 
                 <div class="FormFor">
                     <label for="tempat_lahir">Tempat Lahir:</label>
-                    <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" required placeholder="Masukkan nomor telepon">
+                    <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" placeholder="Masukkan nomor telepon">
                     @error('tempat_lahir')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -73,7 +73,7 @@
 
                 <div class="FormFor">
                     <label for="pendidikan">Pendidikan :</label>
-                    <input type="text" name="pendidikan" id="pendidikan" class="form-control" required placeholder="Masukkan nomor telepon">
+                    <input type="text" name="pendidikan" id="pendidikan" class="form-control" placeholder="Masukkan nomor telepon">
                     @error('pendidikan')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -81,7 +81,7 @@
 
                 <div class="FormFor">
                     <label for="no_telp">No Telp:</label>
-                    <input type="text" name="no_telp" id="no_telp" class="form-control" required placeholder="Masukkan nomor telepon">
+                    <input type="text" name="no_telp" id="no_telp" class="form-control" placeholder="Masukkan nomor telepon">
                     @error('no_telp')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -89,7 +89,7 @@
                 
                 <div class="FormFor">
                     <label for="password">Password:</label>
-                    <input type="password" name="password" id="password" class="form-control" required placeholder="Masukkan password">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Masukkan password">
                     @error('password')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -99,16 +99,16 @@
                     <label for="role-select">Role:</label>
                     <select name="role" id="role-select" class="form-control" required>
                         <option value="" disabled selected>-- Pilih Role --</option>
-                        <option value="guru">Guru</option>
                         <option value="admin">Admin</option>
-                        <option value="murid">Murid</option>
+                        <option value="guru"{{ old('role') == 'guru' ? 'selected' : '' }}>Guru</option>
+                        <option value="murid"{{ old('role') == 'murid' ? 'selected' : '' }}>Murid</option>
                     </select>
                     @error('role')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
                 </div>
-                
-                <div class="DisplayDataTable" id="murid-fields" style="display: none;">
+              
+              <div class="DisplayDataTable" id="murid-fields">
                     <h2>Data Murid</h2>
                     
                     <div class="FormFor">
@@ -176,12 +176,12 @@
                       
                       <div class="FormFor">
                           <label for="ortu_jenis_kelamin">Jenis Kelamin Wali Murid:</label>
-                          <select name="ortu_jenis_kelamin" id="ortu_jenis_kelamin" class="form-control" required>
+                          <select name="ortu_jenis_kelamin" id="ortu_jenis_kelamin" class="form-control">
                               <option value="none" disabled selected>-- Pilih Jenis Kelamin --</option>
                               <option value="Laki-laki">Laki-laki</option>
                               <option value="Perempuan">Perempuan</option>
                           </select>
-                          @error('jenis_kelamin')
+                          @error('ortu_jenis_kelamin')
                             <span class="error-message">{{ $message }}</span>
                           @enderror
                       </div>
@@ -196,7 +196,7 @@
                       
                       <div class="FormFor">
                           <label for="ortu_tanggal_lahir">Tanggal lahir:</label>
-                          <input type="date" name="ortu_tanggal_lahir" id="ortu_tanggal_lahir" class="form-control" required placeholder="Masukkan nomor telepon">
+                          <input type="date" name="ortu_tanggal_lahir" id="ortu_tanggal_lahir" class="form-control" placeholder="Masukkan nomor telepon">
                           @error('ortu_tanggal_lahir')
                             <span class="error-message">{{ $message }}</span>
                           @enderror
@@ -235,8 +235,8 @@
                       </div>
                     </div>
                 </div>
-                
-                <div class="DisplayDataTable" id="guru-fields" style="display: none;">
+
+                <div class="DisplayDataTable" id="guru-fields">
                   <h2>Data Guru</h2>
 
                     <div class="FormFor">
@@ -251,6 +251,9 @@
                     <div class="FormFor">
                       <label for="nuptk">Masukkan Nomor Unik Pendidik dan Tenaga Kependidikan:</label>
                       <input type="text" name="nuptk" id="nuptk" class="form-control" placeholder="Masukkan NUPTK">
+                      @error('nuptk')
+                        <span class="error-message">{{ $message }}</span>
+                      @enderror
                     </div>
                     
                     <div class="FormFor">
@@ -260,6 +263,9 @@
                               <option value="Menikah">Menikah</option>
                               <option value="Belum Menikah">Belum Menikah</option>
                       </select>
+                      @error('statusMenikah')
+                        <span class="error-message">{{ $message }}</span>
+                      @enderror
                     </div>
 
                     <div class="FormFor">
@@ -269,6 +275,9 @@
                               <option value="Full time">Full time</option>
                               <option value="Honorer">Honorer</option>
                       </select>
+                      @error('statusKerja')
+                        <span class="error-message">{{ $message }}</span>
+                      @enderror
                     </div>
                 </div>
 
@@ -277,21 +286,36 @@
         </div>
     </div>
 
-    <script>
-      const roleSelect = document.getElementById('role-select');
-      const muridFields = document.getElementById('murid-fields');
-      const guruFields = document.getElementById('guru-fields');
-
-      roleSelect.addEventListener('change', function () {
-          const isMurid = this.value === 'murid';
-          const isGuru = this.value === 'guru';
-          muridFields.style.display = isMurid ? 'block' : 'none';
-          guruFields.style.display = isGuru ? 'block' : 'none';
-      });
-    </script>
-
     @else
       <p>Anda tidak memiliki akses ke halaman ini</p>
       <a href="/login">Login kembali disini</a>
     @endif
 </body>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const roleSelect = document.getElementById('role-select');
+    const muridFields = document.getElementById('murid-fields');
+    const guruFields = document.getElementById('guru-fields');
+
+    function toggleFields() {
+        const selectedRole = roleSelect.value;
+        if (selectedRole === 'murid') {
+            muridFields.style.display = 'block';
+            guruFields.style.display = 'none';
+        } else if (selectedRole === 'guru') {
+            guruFields.style.display = 'block';
+            muridFields.style.display = 'none';
+        } else {
+            guruFields.style.display = 'none';
+            muridFields.style.display = 'none';
+        }
+    }
+
+    // Hide fields on load
+    toggleFields();
+
+    // Listen for role changes
+    roleSelect.addEventListener('change', toggleFields);
+});
+</script>
