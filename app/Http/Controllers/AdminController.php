@@ -521,28 +521,57 @@ class AdminController extends Controller
         $model = $this->getModelByRole($role);
         $user = $model::with('profile')->findOrFail($id);
 
-        // Update profile
+        // Update data profil umum
         $user->profile->name = $request->name;
         $user->profile->email = $request->email;
-        $user->profile->nik = $request->nik;
+        $user->profile->alamat = $request->alamat;
+        $user->profile->jenis_kelamin = $request->jenis_kelamin;
+        $user->profile->tanggal_lahir = $request->tanggal_lahir;
+        $user->profile->tempat_lahir = $request->tempat_lahir;
+        $user->profile->pendidikan = $request->pendidikan;
+        $user->profile->no_telp = $request->no_telp;
 
-        // Ubah password jika diisi
+        // Update password jika diisi
         if ($request->filled('password')) {
             $user->profile->password = Hash::make($request->password);
         }
 
         $user->profile->save();
 
-        // Update data spesifik murid
-        if ($role === 'murid') {
-            $user->nis = $request->nis;
-            $user->nisn = $request->nisn;
-            $user->kelas_id = $request->kelas_id;
-            $user->save();
+        // Update data berdasarkan peran
+        switch ($role) {
+            case 'murid':
+                $user->nis = $request->nis;
+                $user->nisn = $request->nisn;
+                $user->asal_sekolah = $request->asal_sekolah;
+                $user->kelas_id = $request->kelas_id;
+                break;
+
+            case 'guru':
+                $user->gelar = $request->gelar;
+                $user->statusMenikah = $request->statusMenikah;
+                $user->statusKerja = $request->statusKerja;
+                $user->nuptk = $request->nuptk;
+                break;
+
+            case 'orang_tua':
+                $user->profesi = $request->profesi;
+                break;
+
+            // Admin hanya update profile, tidak ada field tambahan
+            case 'admin':
+                // Tidak ada field tambahan di tabel admin
+                break;
+
+            default:
+                return redirect()->back()->with('error', 'Peran tidak dikenali.');
         }
+
+        $user->save();
 
         return redirect()->route('admin.ManajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
     }
+
 
     public function destroyUser($id, Request $request)
     {
