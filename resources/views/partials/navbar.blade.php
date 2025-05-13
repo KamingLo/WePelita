@@ -7,7 +7,7 @@
     </div>
     
     <div class="navbtn">
-      <a href="#">post</a>
+      <a href="/post">Kegiatan</a>
       <a href="#">About</a>
       <a class="sign-btn" href="/login"><span>Login disini</span></a>
     </div>

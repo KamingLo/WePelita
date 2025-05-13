@@ -14,6 +14,7 @@ return new class extends Migration
             $table->id('absensi_id');
             $table->foreignId('murid_id')->constrained('murid', 'murid_id')->onDelete('cascade');
             $table->string('kehadiran');
+            $table->text('keterangan');
             $table->string('tanggal_absensi');
         });
 

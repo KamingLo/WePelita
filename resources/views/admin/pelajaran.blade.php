@@ -1,5 +1,5 @@
-@include('partials.header', ['NamaPage' => 'Registrasi Pengguna'])
-@include('partials.sidebar')
+@include('admin.partials.header', ['NamaPage' => 'Tambahkan pelajaran'])
+@include('admin.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/pelajaran.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 

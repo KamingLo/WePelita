@@ -316,7 +316,7 @@ class AdminController extends Controller
             'tipe' => 'required|in:pengumuman,kegiatan',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
-            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
+            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:5120|image',
         ]);
 
         // Simpan lampiran jika ada
@@ -379,7 +379,7 @@ class AdminController extends Controller
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
-            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
+            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:5120|image',
         ]);
 
         $pengumuman = Pengumuman::findOrFail($id);

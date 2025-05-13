@@ -1,4 +1,4 @@
-@include('partials.header', ['NamaPage' => 'Halaman Utama', 'isiPage' => 'Jangan lupa ganti'])
+@include('partials.header', ['NamaPage' => 'Halaman Utama'])
 
 @if (session('role') == 'admin')
     <p>Selamat datang, Guru!</p>

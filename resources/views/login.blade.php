@@ -1,6 +1,4 @@
 @include('partials.header', ['NamaPage' => 'Halaman Login'])
-@include('partials.navbar')
-
 <div class="ContainerLogin">
     <div class="LayoutLogin">
         <div class="LayoutVideo">
