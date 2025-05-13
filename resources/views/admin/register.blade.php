@@ -36,13 +36,49 @@
                 </div>
                 
                 <div class="FormFor">
-                    <label for="nik">NIK:</label>
-                    <input type="text" name="nik" id="nik" class="form-control" required placeholder="Masukkan NIK">
-                    @error('nik')
+                    <label for="alamat">Alamat:</label>
+                    <input type="text" name="alamat" id="alamat" class="form-control" required placeholder="Masukkan Alamat">
+                    @error('alamat')
+                      <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="FormFor">
+                    <label for="jenis_kelamin">Jenis_kelamin:</label>
+                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
+                        <option value="none" disabled selected>-- Pilih Jenis Kelamin --</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                    @error('jenis_kelamin')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
                 </div>
                 
+                <div class="FormFor">
+                    <label for="tanggal_lahir">Tanggal lahir:</label>
+                    <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control" required placeholder="Masukkan nomor telepon">
+                    @error('tanggal_lahir')
+                      <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="FormFor">
+                    <label for="tempat_lahir">Tempat Lahir:</label>
+                    <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" required placeholder="Masukkan nomor telepon">
+                    @error('tempat_lahir')
+                      <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="FormFor">
+                    <label for="pendidikan">Pendidikan :</label>
+                    <input type="text" name="pendidikan" id="pendidikan" class="form-control" required placeholder="Masukkan nomor telepon">
+                    @error('pendidikan')
+                      <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
                 <div class="FormFor">
                     <label for="no_telp">No Telp:</label>
                     <input type="text" name="no_telp" id="no_telp" class="form-control" required placeholder="Masukkan nomor telepon">
