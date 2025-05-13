@@ -14,4 +14,4 @@
 
 <div class="BgPelita"></div>
 
-@include('partials.navbar')
+{{-- @include('partials.navbar') --}}

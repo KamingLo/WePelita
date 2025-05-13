@@ -1,14 +1,19 @@
+
 <?php
 
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PublicController;
 use App\Models\Admin;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('post', [PublicController::class, 'tampilkanPostingan'])->name('postingan');
+Route::get('post/{id}', [PublicController::class, 'tampilkanPostinganByIndex'])->name('postingan.index');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);

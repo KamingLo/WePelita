@@ -1,17 +1,24 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Absensi extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['murid_id', 'kehadiran', 'tanggal_absensi'];
+    protected $primaryKey = 'absensi_id';
 
-    public function murid()
+    protected $fillable = [
+        'murid_id',
+        'pelajaran_id',
+        'jumlah_kehadiran'
+    ];
+
+    public function kehadiran()
     {
-        return $this->belongsTo(Murid::class, 'murid_id');
+        return $this->hasMany(Kehadiran::class, 'absensi_id');
     }
 }

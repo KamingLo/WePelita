@@ -1,5 +1,4 @@
 @include('partials.header', ['NamaPage' => 'Halaman Utama'])
-@include('partials.navbar')
 
 <link rel="stylesheet" href="{{ asset('css/welcome.css') }}" />
 
