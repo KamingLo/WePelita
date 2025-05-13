@@ -41,9 +41,16 @@ class AdminController extends Controller
             'no_telp' => 'required|string',
             'password' => 'required|min:8|string',
             'role' => 'required|in:guru,admin,murid',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if($request->role == 'admin'){
+            
+            $avatarPath = null;
+                if ($request->hasFile('avatar')) {
+                    $avatarPath = $request->file('avatar')->store('avatar', 'public');
+                }
+
             $profile = Profile::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -54,8 +61,11 @@ class AdminController extends Controller
                 'pendidikan' => $request->pendidikan,
                 'no_telp' => $request->no_telp,
                 'password' => Hash::make($request->password),
+                'foto' => $lampiranPath,
             ]);
         }
+
+        
 
         switch ($request->role) {
             case 'guru':
@@ -66,10 +76,16 @@ class AdminController extends Controller
                     'nuptk' => 'required|string',
                 ]);
 
+                $avatarPath = null;
+                if ($request->hasFile('avatar')) {
+                    $avatarPath = $request->file('avatar')->store('avatar', 'public');
+                }
+
                 $profile = Profile::create([
                     'name' => $request->name,
                     'email' => $request->email,
                     'alamat' => $request->alamat,
+                    'foto' => $avatarPath,
                     'jenis_kelamin' => $request->jenis_kelamin,
                     'tanggal_lahir' => $request->tanggal_lahir,
                     'tempat_lahir' => $request->tempat_lahir,
@@ -107,9 +123,15 @@ class AdminController extends Controller
                     'ortu_jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
                     'ortu_pendidikan' => 'required|string',
                     'ortu_no_telp' => 'required|string',
+                    'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                     'ortu_profesi' => 'required|string',
                     'ortu_password' => 'required|min:6|string',
                 ]);
+
+                $avatarPath = null;
+                if ($request->hasFile('avatar')) {
+                    $avatarPath = $request->file('avatar')->store('avatar', 'public');
+                }
 
                 $profile = Profile::create([
                     'name' => $request->name,
@@ -120,6 +142,7 @@ class AdminController extends Controller
                     'tempat_lahir' => $request->tempat_lahir,
                     'pendidikan' => $request->pendidikan,
                     'no_telp' => $request->no_telp,
+                    'foto' => $avatarPath,
                     'password' => Hash::make($request->password),
                 ]);
 
@@ -561,6 +584,7 @@ class AdminController extends Controller
         $user->profile->tanggal_lahir = $request->tanggal_lahir;
         $user->profile->tempat_lahir = $request->tempat_lahir;
         $user->profile->pendidikan = $request->pendidikan;
+        $user->profile->foto = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $user->profile->foto;
         $user->profile->no_telp = $request->no_telp;
 
         // Update password jika diisi
