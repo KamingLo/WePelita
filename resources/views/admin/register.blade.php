@@ -36,14 +36,6 @@
                 </div>
                 
                 <div class="FormFor">
-                    <label for="nik">NIK:</label>
-                    <input type="text" name="nik" id="nik" class="form-control" required placeholder="Masukkan NIK" value="{{ old('nik') }}">
-                    @error('nik')
-                      <span class="error-message">{{ $message }}</span>
-                    @enderror
-                </div>
-                
-                <div class="FormFor">
                     <label for="no_telp">No Telp:</label>
                     <input type="text" name="no_telp" id="no_telp" class="form-control" required placeholder="Masukkan nomor telepon" value="{{ old('no_telp') }}">
                     @error('no_telp')
@@ -126,6 +118,11 @@
                       <label for="nisn">NISN:</label>
                       <input type="text" name="nisn" id="nisn" class="form-control" placeholder="Masukkan NISN" value="{{ old('nisn') }}">
                     </div>
+
+                    <div class="FormFor">
+                      <label for="asal_sekolah">Asal Sekolah:</label>
+                      <input type="text" name="asal_sekolah" id="asal_sekolah" class="form-control" placeholder="Masukkan Asal Sekolah" value="{{ old('asal_sekolah') }}">
+                    </div>
                     
                     <div class="FormFor">
                       <label for="kelas_id">Kelas:</label>
@@ -149,9 +146,30 @@
                         <input type="email" name="ortu_email" id="ortu_email" class="form-control" placeholder="Email Orang Tua" value="{{ old('ortu_email') }}">
                       </div>
                       
+                      <label for="jenis_kelamin">Jenis Kelamin</label>
+                    <select name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
+                        <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
+                        <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                      
                       <div class="FormFor">
-                        <label for="ortu_nik">NIK Orang Tua:</label>
-                        <input type="text" name="ortu_nik" id="ortu_nik" class="form-control" placeholder="NIK Orang Tua" value="{{ old('ortu_nik') }}">
+                        <label for="ortu_tanggal_lahir">Tanggal lahir orang tua:</label>
+                        <input type="date" name="ortu_tanggal_lahir" id="ortu_tanggal_lahir" class="form-control" placeholder="Tanggal lahir orang tua" value="{{ old('ortu_tanggal_lahir') }}">
+                      </div>
+                      
+                      <div class="FormFor">
+                        <label for="ortu_tempat_lahir">Tempat lahir orang tua:</label>
+                        <input type="text" name="ortu_tempat_lahir" id="ortu_tempat_lahir" class="form-control" placeholder="Tempat lahir orang tua" value="{{ old('ortu_tempat_lahir') }}">
+                      </div>
+
+                      <div class="FormFor">
+                        <label for="ortu_pendidikan">Pendidikan terakhir orang tua:</label>
+                        <input type="text" name="ortu_pendidikan" id="ortu_pendidikan" class="form-control" placeholder="Pendidikan terakhir orang tua" value="{{ old('ortu_pendidikan') }}">
+                      </div>
+
+                      <div class="FormFor">
+                        <label for="ortu_profesi">Profesi orang tua:</label>
+                        <input type="text" name="ortu_profesi" id="ortu_profesi" class="form-control" placeholder="profesi orang tua" value="{{ old('ortu_profesi') }}">
                       </div>
                       
                       <div class="FormFor">
@@ -165,6 +183,19 @@
                       </div>
                     </div>
                 </div>
+
+                <div class="DisplayDataTable" id="guru-fields" style="display:none;">
+                    <h2>Data Guru</h2>
+                    <div class="FormFor">
+                      <label for="nis">NIS:</label>
+                      <input type="text" name="nis" id="nis" class="form-control" placeholder="Masukkan NIS" value="{{ old('nis') }}">
+                    </div>
+                    
+                    <div class="FormFor">
+                      <label for="nisn">NISN:</label>
+                      <input type="text" name="nisn" id="nisn" class="form-control" placeholder="Masukkan NISN" value="{{ old('nisn') }}">
+                    </div>
+                </div>
                 
                 <button type="submit" class="TombolOJT TambahRegister">Daftarkan</button>
             </form>
@@ -172,13 +203,24 @@
     </div>
 
     <script>
-      const roleSelect = document.getElementById('role-select');
-      const muridFields = document.getElementById('murid-fields');
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const roleSelect = document.getElementById('role-select');
+    const muridFields = document.getElementById('murid-fields');
+    const guruFields = document.getElementById('guru-fields'); // tambahkan ini di form nanti
 
-      roleSelect.addEventListener('change', function () {
-          const isMurid = this.value === 'murid';
-          muridFields.style.display = isMurid ? 'block' : 'none';
-      });
+    function toggleFields() {
+        const role = roleSelect.value;
+        muridFields.style.display = role === 'murid' ? 'block' : 'none';
+        guruFields.style.display = role === 'guru' ? 'block' : 'none';
+    }
+
+    roleSelect.addEventListener('change', toggleFields);
+    toggleFields(); // jalan saat pertama kali halaman dibuka
+});
+</script>
+
+
     </script>
 
     @else

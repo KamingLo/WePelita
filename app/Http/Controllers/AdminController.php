@@ -33,7 +33,6 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:profiles,email',
-            'nik' => 'required|string',
             'no_telp' => 'required|string',
             'password' => 'required|min:6|string',
             'alamat' => 'required|string',
@@ -41,14 +40,13 @@ class AdminController extends Controller
             'tanggal_lahir' => 'required|date',
             'tempat_lahir' => 'required|string',
             'pendidikan' => 'required|string',
-            'role' => 'required|in:guru,orang_tua,admin,murid',
+            'role' => 'required|in:guru,admin,murid',
         ]);
 
         // Buat profile utama
         $profile = Profile::create([
             'name' => $request->name,
             'email' => $request->email,
-            'nik' => $request->nik,
             'no_telp' => $request->no_telp,
             'password' => Hash::make($request->password),
             'alamat' => $request->alamat,
@@ -78,16 +76,6 @@ class AdminController extends Controller
                 case 'admin':
                 Admin::create(['profile_id' => $profile->profile_id]);
                 break;
-                
-            case 'orang_tua':
-                $request->validate([
-                    'profesi' => 'required|string',
-                ]);
-                OrangTua::create([
-                    'profile_id' => $profile->profile_id,
-                    'profesi' => $request->profesi,
-                ]);
-                break;
 
             case 'murid':
                 // Validasi tambahan untuk murid dan orang tua
@@ -100,10 +88,8 @@ class AdminController extends Controller
                     // data ortu
                     'ortu_name' => 'required|string',
                     'ortu_email' => 'required|email|unique:profiles,email',
-                    'ortu_nik' => 'required|string',
                     'ortu_no_telp' => 'required|string',
                     'ortu_password' => 'required|min:6|string',
-                    'ortu_alamat' => 'required|string',
                     'ortu_jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
                     'ortu_tanggal_lahir' => 'required|date',
                     'ortu_tempat_lahir' => 'required|string',
@@ -115,7 +101,6 @@ class AdminController extends Controller
                 $ortuProfile = Profile::create([
                     'name' => $request->ortu_name,
                     'email' => $request->ortu_email,
-                    'nik' => $request->ortu_nik,
                     'no_telp' => $request->ortu_no_telp,
                     'password' => Hash::make($request->ortu_password),
                     'alamat' => $request->ortu_alamat,
@@ -145,59 +130,139 @@ class AdminController extends Controller
             return redirect()->route('admin.register')->with('success', 'User baru berhasil ditambahkan');
         }
 
-        public function tampilkanManajemenUser(){
-            
-            $Gurus = Guru::all();
-            $Admins = Admin::all();
-            $MuridOrangTuas = MuridOrangTua::all();
-            $admin = Admin::findOrFail(auth()->id());
+    public function tampilkanManajemenUser(){
+        $Gurus = Guru::all();
+        $Admins = Admin::all();
+        $MuridOrangTuas = MuridOrangTua::all();
+        $admin = Admin::findOrFail(auth()->id());
         
-            return view('admin.ManajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin'));
+        return view('admin.ManajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin'));
+    }
+        
+    public function editUser($id, Request $request){
+        $role = request('role');
+        $model = $this->getModelByRole($role);
+        $user = $model::with(['profile'])->findOrFail($id);
+        $admin = Admin::findOrFail(auth()->id());
+        
+        $kelasList = [];
+        if ($role === 'murid') {
+            $kelasList = Kelas::all();
         }
-        
-        public function editUser($id, Request $request)
-        {
-            $role = request('role');
-            $model = $this->getModelByRole($role);
-            $user = $model::with(['profile'])->findOrFail($id);
-            $admin = Admin::findOrFail(auth()->id());
-        
-            $kelasList = [];
-            if ($role === 'murid') {
-                $kelasList = Kelas::all();
-            }
-        
         return view('admin.ManajemenUserEdit', compact('user', 'role', 'kelasList', 'admin'))->with('id', $id);
-        }
+    }
         
-        public function updateUser(Request $request, $id)
-        {
-            $role = $request->input('role');
-            $model = $this->getModelByRole($role);
-            $user = $model::with('profile')->findOrFail($id);
-        
+    public function updateUser(Request $request, $id){
+        $role = $request->input('role');
+        $model = $this->getModelByRole($role);
+        $user = $model::with('profile')->findOrFail($id);
+
+        // Validasi langsung dalam 1 blok
+        $validated = $request->validate(
+        match ($role) {
+                    'murid' => [
+                        'name' => 'required|string|max:255',
+                        'email' => 'required|email|unique:profiles,email,' . $user->profile->profile_id . ',profile_id',
+                        'alamat' => 'required|string|max:255',
+                        'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                        'tanggal_lahir' => 'required|date',
+                        'tempat_lahir' => 'required|string|max:100',
+                        'pendidikan' => 'required|string|max:100',
+                        'no_telp' => 'required|string|max:20',
+                        'password' => 'nullable|string|min:8|confirmed',
+
+                        'nis' => 'required|string|max:20',
+                        'nisn' => 'required|string|max:20',
+                        'asal_sekolah' => 'required|string|max:255',
+                        'kelas_id' => 'required|exists:kelas,kelas_id',
+                    ],
+                    'guru' => [
+                        'name' => 'required|string|max:255',
+                        'email' => 'required|email|unique:profiles,email,' . $user->profile->profile_id . ',profile_id',
+                        'alamat' => 'required|string|max:255',
+                        'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                        'tanggal_lahir' => 'required|date',
+                        'tempat_lahir' => 'required|string|max:100',
+                        'pendidikan' => 'required|string|max:100',
+                        'no_telp' => 'required|string|max:20',
+                        'password' => 'nullable|string|min:8|confirmed',
+
+                        'gelar' => 'required|string|max:50',
+                        'statusMenikah' => 'required|string|max:20',
+                        'statusKerja' => 'required|string|max:20',
+                        'nuptk' => 'required|string|max:20',
+                    ],
+                    'orang_tua' => [
+                        'name' => 'required|string|max:255',
+                        'email' => 'required|email|unique:profiles,email,' . $user->profile->profile_id . ',profile_id',
+                        'alamat' => 'required|string|max:255',
+                        'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                        'tanggal_lahir' => 'required|date',
+                        'tempat_lahir' => 'required|string|max:100',
+                        'pendidikan' => 'required|string|max:100',
+                        'no_telp' => 'required|string|max:20',
+                        'password' => 'nullable|string|min:8|confirmed',
+
+                        'profesi' => 'required|string|max:100',
+                    ],
+                    'admin' => [
+                        'name' => 'required|string|max:255',
+                        'email' => 'required|email|unique:profiles,email,' . $user->profile->profile_id . ',profile_id',
+                        'alamat' => 'required|string|max:255',
+                        'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                        'tanggal_lahir' => 'required|date',
+                        'tempat_lahir' => 'required|string|max:100',
+                        'pendidikan' => 'required|string|max:100',
+                        'no_telp' => 'required|string|max:20',
+                        'password' => 'nullable|string|min:8|confirmed',
+                    ],
+                    default => abort(404, 'Role tidak dikenali'),
+                }
+            );
+
             // Update profile
-            $user->profile->name = $request->name;
-            $user->profile->email = $request->email;
-            $user->profile->nik = $request->nik;
-        
-            // Ubah password jika diisi
-            if ($request->filled('password')) {
-                $user->profile->password = Hash::make($request->password);
+            $user->profile->fill([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'alamat' => $validated['alamat'],
+                'jenis_kelamin' => $validated['jenis_kelamin'],
+                'tanggal_lahir' => $validated['tanggal_lahir'],
+                'tempat_lahir' => $validated['tempat_lahir'],
+                'pendidikan' => $validated['pendidikan'],
+                'no_telp' => $validated['no_telp'],
+            ]);
+
+            if (!empty($validated['password'])) {
+                $user->profile->password = Hash::make($validated['password']);
             }
-        
+
             $user->profile->save();
-        
-            // Update data spesifik murid
-            if ($role === 'murid') {
-                $user->nis = $request->nis;
-                $user->nisn = $request->nisn;
-                $user->kelas_id = $request->kelas_id;
-                $user->save();
+
+            // Update sesuai role
+            switch ($role) {
+                case 'murid':
+                    $user->nis = $validated['nis'];
+                    $user->nisn = $validated['nisn'];
+                    $user->asal_sekolah = $validated['asal_sekolah'];
+                    $user->kelas_id = $validated['kelas_id'];
+                    break;
+                case 'guru':
+                    $user->gelar = $validated['gelar'];
+                    $user->statusMenikah = $validated['statusMenikah'];
+                    $user->statusKerja = $validated['statusKerja'];
+                    $user->nuptk = $validated['nuptk'];
+                    break;
+                case 'orang_tua':
+                    $user->profesi = $validated['profesi'];
+                    break;
             }
-        
-            return redirect()->route('admin.ManajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
+
+            $user->save();
+
+            return redirect()->route('admin.ManajemenUser', ['role' => $role])
+                            ->with('success', 'User berhasil diperbarui.');
         }
+
         
         public function destroyUser($id, Request $request)
         {
@@ -220,12 +285,13 @@ class AdminController extends Controller
                 default => abort(404),
             };
         }
-        public function tampilkanJadwal(){
-            $pelajaran = Pelajaran::all();
+
+    public function tampilkanJadwal(){
+        $pelajaran = Pelajaran::all();
         $admin = Admin::findOrFail(auth()->id());
         $kelas = Kelas::all();
         $jadwals = JadwalPelajaran::orderBy('kelas_id', 'asc')
-        ->orderBy('hari', 'desc')
+                                  ->orderBy('hari', 'desc')
                                   ->orderBy('waktu_mulai', 'asc')
                                   ->get();
         return view('admin.jadwal', compact('pelajaran', 'kelas', 'jadwals', 'admin'));
