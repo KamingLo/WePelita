@@ -1,7 +1,6 @@
 @include('partials.header', ['NamaPage' => 'Registrasi Pengguna'])
 @include('partials.sidebar')
-
-<link rel="stylesheet" href="{{ asset('css/jadwal.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/AdminCSS/jadwal.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
@@ -63,9 +62,14 @@
                     <input type="time" name="waktu_selesai" id="waktu_selesai" class="form-control" value="{{ old('waktu_selesai', $jadwal->waktu_selesai) }}" required>
                 </div>
 
-                <button type="submit" class="TombolOJT TambahJadwal">
-                    <i class='bx bx-layer-plus IconOJT'></i>Simpan Jadwal
-                </button>
+                <div class="OptionPelajaranTabelEdit">
+                    <button type="submit" class="TombolOJTEdit TambahJadwalEdit">
+                        <i class='bx bx-layer-plus IconOJT'></i>Simpan Jadwal
+                    </button>
+
+                    <a href="{{ route('admin.pelajaran') }}" class="TombolOJTEdit btn-danger">Batal</a>
+                </div>
+
             </form>
 
             @if ($errors->has('jadwal'))

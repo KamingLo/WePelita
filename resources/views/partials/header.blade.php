@@ -11,3 +11,5 @@
     <link rel="stylesheet" href="{{ asset('css/default.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/login.css') }}" />
 </head>
+
+<div class="BgPelita"></div>

@@ -362,14 +362,14 @@ class AdminController extends Controller
     {
         $pengumuman = Pengumuman::findOrFail($id);
         $admin = Admin::findOrFail(auth()->id());
-        return view('admin.editPengumuman', compact('pengumuman', 'admin'));
+        return view('admin.ManajemenPostPengumumanEdit', compact('pengumuman', 'admin'));
     }
 
     public function tampilkanKegiatan($id)
     {
         $kegiatan = Kegiatan::findOrFail($id);
         $admin = Admin::findOrFail(auth()->id());
-        return view('admin.editKegiatan', compact('kegiatan', 'admin'));
+        return view('admin.ManajemenPostKegiatanEdit', compact('kegiatan', 'admin'));
     }
 
 
@@ -406,7 +406,7 @@ class AdminController extends Controller
             'admin_id' => $adminId,
         ]);
 
-        return redirect()->route('admin.manajemenPost')->with('success', 'Perubahan berhasil disimpan!');
+        return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil disimpan!');
     }
     
     public function updateKegiatan(Request $request, $id)
@@ -437,12 +437,12 @@ class AdminController extends Controller
 
         // Update data lainnya
         $kegiatan->update([
-            'judul_pengumuman' => $validated['judul'],
-            'isi_pengumuman' => $validated['isi'],
             'admin_id' => $adminId,
+            'judul_kegiatan' => $validated['judul'],
+            'isi_kegiatan' => $validated['isi'],
         ]);
 
-        return redirect()->route('admin.manajemenPost')->with('success', 'Perubahan berhasil disimpan!');
+        return redirect()->route('admin.manajemenPost')->with('success', 'kegiatan berhasil disimpan!');
     }
 
 
@@ -477,7 +477,7 @@ class AdminController extends Controller
         ])->get();
         $admin = Admin::findOrFail(auth()->id());
 
-        return view('admin.manajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin'));
+        return view('admin.ManajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin'));
     }
 
     public function editUser($id, Request $request)
@@ -485,13 +485,14 @@ class AdminController extends Controller
         $role = request('role');
         $model = $this->getModelByRole($role);
         $user = $model::with(['profile'])->findOrFail($id);
+        $admin = Admin::findOrFail(auth()->id());
 
         $kelasList = [];
         if ($role === 'murid') {
             $kelasList = Kelas::all();
         }
 
-    return view('admin.editUser', compact('user', 'role', 'kelasList'))->with('id', $id);
+    return view('admin.ManajemenUserEdit', compact('user', 'role', 'kelasList', 'admin'))->with('id', $id);
     }
 
     public function updateUser(Request $request, $id)
@@ -520,7 +521,7 @@ class AdminController extends Controller
             $user->save();
         }
 
-        return redirect()->route('admin.manajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
+        return redirect()->route('admin.ManajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
     }
 
     public function destroyUser($id, Request $request)

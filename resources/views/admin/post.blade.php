@@ -1,7 +1,8 @@
 @include('partials.header', ['NamaPage' => 'Registrasi Pengguna'])
 @include('partials.sidebar')
+<link rel="stylesheet" href="{{ asset('css/AdminCSS/NewPost.css') }}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
-<link rel="stylesheet" href="{{ asset('css/NewPost.css') }}">
 <div class="ContainerNewPost">
     <h1>Postingan Baru</h1>
 

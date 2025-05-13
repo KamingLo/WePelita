@@ -1,0 +1,259 @@
+/* ----------------------------------------------- */
+/* -------------- manajemenUser.css -------------- */
+/* ----------------------------------------------- */
+
+:root {
+    --primary-color: #4a6cf7;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --dark-color: #343a40;
+    --light-color: #f8f9fa;
+    --border-radius: 10px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    margin-left: 280px;
+    padding: 30px;
+}
+
+/* ------------- */
+/* Bagian Header */
+.container h1 {
+    width: 100%;
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 26px;
+    position: relative;
+    padding-bottom: 10px;
+    transform: translateY(-10rem);
+}
+
+.container h1:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+.container h3 {
+    color: var(--dark-color);
+    font-size: 20px;
+    margin: 25px 0 15px;
+    position: relative;
+    padding-bottom: 8px;
+    display: inline-block;
+    transform: translateY(-1.5rem);
+}
+
+.container h3:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+/* ------------- */
+/* Bagian Filter */
+.filter-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 25px;
+    width: 27.2rem;
+}
+
+.filter-container,
+.table-container {
+    transform: translateY(-8.5rem);
+}
+
+select {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: var(--transition);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M8 9.5a.5.5 0 01-.354-.146l-4-4a.5.5 0 01.708-.708L8 8.293l3.646-3.647a.5.5 0 01.708.708l-4 4A.5.5 0 018 9.5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 35px;
+    width: 200px;
+}
+
+select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+}
+
+label {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+/* ------------- */
+/* Bagian Tabel */
+.table-container {
+    background-color: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: auto;
+    margin-bottom: 30px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 0;
+    color: #212529;
+    border-collapse: collapse;
+    transform: translateY(-1.5rem);
+}
+
+.table th {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+    font-size: 14px;
+}
+
+.table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-top: 1px solid #dee2e6;
+    font-size: 14px;
+    justify-items: center;
+    text-align: center;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: var(--light-color);
+    color: var(--dark-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* ------------- */
+/* Bagian Button */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 8px 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 6px;
+    transition: var(--transition);
+    cursor: pointer;
+    justify-content: center;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+.btn-warning {
+    color: white;
+    background-color: #4a6cf7;
+    border-color: #4a6cf7;
+    padding: 6px 12px;
+    font-size: 13px;
+    text-decoration: none;
+    width: 100%;
+}
+
+.btn-warning i {
+    transform: translate(-0.1rem, 0.1rem);
+}
+
+.btn-warning:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
+}
+
+.btn-danger {
+    color: white;
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.OptionManajemenTabel {
+    gap: 0.5rem;
+    width: 4rem;
+    display: grid;
+    justify-content: center;
+}
+
+.OptionManajemenTabel a {
+text-decoration: none;
+}
+
+.IconForButton {
+  font-size: 15px;
+  letter-spacing: 10px;
+  transform: translate(-0.10rem, 0.10rem);
+  color: white;
+}
+
+/* ------------- */
+/* Responsif */
+@media (max-width: 1200px) {
+    .container {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    select {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
+
+/* --------------------------------------- */
+

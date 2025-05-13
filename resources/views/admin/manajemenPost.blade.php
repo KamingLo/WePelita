@@ -1,20 +1,17 @@
 @include('partials.header', ['NamaPage' => 'Registrasi Pengguna'])
 @include('partials.sidebar')
-<link rel="stylesheet" href="{{ asset('css/EditPost.css') }}">
-<link rel="stylesheet" href="{{ asset('css/PostPreview.css') }}">
+<link rel="stylesheet" href="{{ asset('css/AdminCSS/ManajemenPost.css') }}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <div class="ContainerPostManagement">
     <h1>Manajemen Post</h1>
 
-    <!-- Alert Success Message -->
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
 
-    <!-- Filter Section -->
     <div class="filter-container">
         <form method="GET" action="{{ route('admin.manajemenPost') }}">
             <label for="TipePost">Filter berdasarkan peran:</label>
@@ -28,7 +25,6 @@
 
     @php $TipePost = request('TipePost'); @endphp
 
-    <!-- Data Table/Preview Section -->
     <div class="table-container">
         @if ($TipePost === 'pengumuman')
             <h2>Daftar Pengumuman</h2>
@@ -51,9 +47,9 @@
                             </div>
                             <div class="mini-post-actions">
                                 <div class="post-action-icons">
-                                    <span><i class="fas fa-thumbs-up"></i> {{ $pengumuman->likes_count ?? 0 }}</span>
-                                    <span><i class="fas fa-thumbs-down"></i> {{ $pengumuman->dislikes_count ?? 0 }}</span>
-                                    <span><i class="fas fa-comment"></i> {{ $pengumuman->comments_count ?? 0 }}</span>
+                                    <span>‎ </span>
+                                    <span>‎ </span>
+                                    <span>‎ </span>
                                 </div>
                                 <div class="post-preview-buttons">
                                     <form action="{{ route('pengumuman.update', ['id' => $pengumuman->pengumuman_id]) }}" method="GET" style="display:inline;">
@@ -91,11 +87,9 @@
                                 <div class="mini-post-body">{{ $kegiatan->isi_kegiatan }}</div>
                             </div>
                             <div class="mini-post-actions">
-                                <div class="post-action-icons">
-                                    <span><i class="fas fa-thumbs-up"></i> {{ $kegiatan->likes_count ?? 0 }}</span>
-                                    <span><i class="fas fa-thumbs-down"></i> {{ $kegiatan->dislikes_count ?? 0 }}</span>
-                                    <span><i class="fas fa-comment"></i> {{ $kegiatan->comments_count ?? 0 }}</span>
-                                </div>
+                                       <span>‎ </span>
+                                    <span>‎ </span>
+                                    <span>‎ </span>
                                 <div class="post-preview-buttons">
                                     <form action="{{ route('kegiatan.update', ['id' => $kegiatan->kegiatan_id]) }}" method="GET" style="display:inline;">
                                         <button type="submit" class="btn btn-primary">Edit</button>

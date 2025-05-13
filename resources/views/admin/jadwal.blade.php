@@ -1,6 +1,6 @@
 @include('partials.header', ['NamaPage' => 'Registrasi Pengguna'])
 @include('partials.sidebar')
-<link rel="stylesheet" href="{{ asset('css/jadwal.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/AdminCSS/jadwal.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
@@ -59,8 +59,14 @@
                 </button>
             </form>
 
+            @if(session('success'))
+              <div class="alert alert-success">
+                  {{ session('success') }}
+              </div>
+            @endif
+
             @if ($errors->has('jadwal'))
-                <div class="alert alert-danger">
+                <div class="alertD alert-danger">
                     {{ $errors->first('jadwal') }}
                 </div>
             @endif
@@ -93,18 +99,18 @@
                                 <td>{{ $jadwal->pelajaran->guru->profile->name }}</td>
                                 <td>
                                     <div class="OptionJadwalTabel">
+                                        <form action="{{ route('jadwal.update', $jadwal->jadwal_id) }}" method="GET">
+                                            <a href="jadwal/edit/{{ $jadwal->jadwal_id }}" class="TombolOJT Tedit">
+                                                <i class='bx bx-edit-alt IconOJT'></i>Edit‎ ‎ ‎ ‎ ‎ 
+                                            </a> {{-- Jan diubah wa sengaja bikin cam tu 😂 --}}
+                                        </form>
+
                                         <form action="{{ route('jadwal.destroy', $jadwal->jadwal_id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="TombolOJT TombolDelete">
                                                 <i class='bx bx-trash IconOJT'></i>Hapus
                                             </button>
-                                        </form>
-
-                                        <form action="{{ route('jadwal.update', $jadwal->jadwal_id) }}" method="GET">
-                                            <a href="jadwal/edit/{{ $jadwal->jadwal_id }}" class="TombolOJT Tedit">
-                                                <i class='bx bx-edit-alt IconOJT'></i>Edit‎ ‎ ‎ ‎ ‎ 
-                                            </a> {{-- Jan diubah wa sengaja bikin cam tu 😂 --}}
                                         </form>
                                     </div>
                                 </td>

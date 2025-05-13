@@ -1,6 +1,6 @@
 @include('partials.header', ['NamaPage' => 'Registrasi Pengguna'])
 @include('partials.sidebar')
-<link rel="stylesheet" href="{{ asset('css/pelajaran.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/AdminCSS/pelajaran.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
@@ -38,6 +38,12 @@
                 <button type="submit" class="TombolOJT TambahPelajaran">
                     Tambah Pelajaran
                 </button>
+
+                            @if(session('success'))
+              <div class="alert alert-success">
+                  {{ session('success') }}
+              </div>
+            @endif
             </form>
         </div>
 
@@ -59,18 +65,18 @@
                                 <td>{{ $pelajaran->namaPelajaran }}</td>
                                 <td>
                                     <div class="OptionPelajaranTabel">
+                                        <form action="{{ route('pelajaran.update', $pelajaran->pelajaran_id) }}" method="GET">
+                                            <a href="pelajaran/edit/{{ $pelajaran->pelajaran_id }}" class="TombolOJT Tedit">
+                                                <i class='bx bx-edit-alt IconOJT'></i>Edit‎ ‎ ‎ ‎ ‎ {{-- jan diubah kocak --}}
+                                            </a>
+                                        </form>
+                                        
                                         <form action="{{ route('pelajaran.destroy', $pelajaran->pelajaran_id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="TombolOJT TombolDelete">
                                                 <i class='bx bx-trash IconOJT'></i>Hapus
                                             </button>
-                                        </form>
-
-                                        <form action="{{ route('pelajaran.update', $pelajaran->pelajaran_id) }}" method="GET">
-                                            <a href="pelajaran/edit/{{ $pelajaran->pelajaran_id }}" class="TombolOJT Tedit">
-                                                <i class='bx bx-edit-alt IconOJT'></i>Edit‎ ‎ ‎ ‎ ‎ {{-- jan diubah kocak --}}
-                                            </a>
                                         </form>
                                     </div>
                                 </td>

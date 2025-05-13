@@ -9,15 +9,25 @@
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
         </div>
 
-        <h6 class="UseridName">No Reason</h6>
+        <h6 class="UseridName">{{ $admin->profile->name }}</h6>
     </div>
 
     <ul class="ListSideBar">
+
+        <span>‎</span> {{-- ‎ ni buat teks kosong --}}
+
+      <li>
+        <a href="/admin/dashboard" class="{{ request()->is('admin/dashboard*') ? 'active-link' : '' }}">
+          <i class='bx bx-home-alt IconSidebar'></i>Halaman Utama
+        </a>
+      </li>
+
       <h4>
         <span>Admin Tools</span>
       </h4>
+
       <li>
-        <a href="/admin/register" class="{{ request()->is('admin/register') ? 'active-link' : '' }}">
+        <a href="/admin/register" class="{{ request()->is('admin/register*') ? 'active-link' : '' }}">
           <i class='bx bx-user-plus IconSidebar'></i>Daftar User Baru
         </a>
       </li>
@@ -32,12 +42,12 @@
         </a>
       </li>
       <li>
-        <a href="/admin/post" class="{{ request()->is('admin/post') ? 'active-link' : '' }}">
+        <a href="/admin/post" class="{{ request()->is('admin/post*') ? 'active-link' : '' }}">
           <i class='bx bx-message-square-add IconSideBar'></i>Tambah posting
         </a>
       </li>
       <li>
-        <a href="/admin/manajemenUser" class="{{ request()->is('admin/manajemenUser') ? 'active-link' : '' }}">
+        <a href="/admin/manajemenUser" class="{{ request()->is(['admin/manajemenUser*', 'admin/user*']) ? 'active-link' : '' }}">
           <i class='bx bx-user IconSideBar' ></i>Manajemen User
         </a>
       </li>

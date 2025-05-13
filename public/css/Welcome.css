@@ -19,25 +19,26 @@
     width: 80rem;
 }
 
-.Layout{
+.Layout {
     background-color: #1c1b29;
     border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     border-radius: 20px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.18);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.18);
     cursor: pointer;
     width: 25rem;
     transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .Layout:hover {
     transform: scale(1.05);
 }
 
-
-.IsiDalemanLayout{
+.IsiDalemanLayout {
     position: relative;
-    clip-path: polygon(0 0,100% 0, 100% 85%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
     height: 20rem;
 }
 
@@ -49,8 +50,7 @@
     border-radius: 20px;
 }
 
-
-.IsiDalemanLayout:after{
+.IsiDalemanLayout::after {
     content: "";
     height: 100%;
     width: 100%;
@@ -58,45 +58,56 @@
     top: 0;
     left: 0;
     border-radius: 20px 20px 0 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+}
+
+.Murid::before,
+.Guru::before,
+.Orangtua::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 20rem;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 2;
+}
+
+.Murid::before {
+    background-image: linear-gradient(135deg, #0100ec, #fb36f4);
+}
+
+.Guru::before {
+    background-image: linear-gradient(135deg, #2bdce3, #42ffdb);
+}
+
+.Orangtua::before {
+    background-image: linear-gradient(135deg, #ffab1d, #f8501c);
+}
+
+.Murid:hover::before,
+.Guru:hover::before,
+.Orangtua:hover::before {
     opacity: 0.7;
-}
-
-.Murid>.IsiDalemanLayout:after{
-    background-image: linear-gradient(
-        135deg,
-        #0100ec,
-        #fb36f4
-    );
-}
-
-.Guru>.IsiDalemanLayout:after{
-    background-image: linear-gradient(
-        135deg,
-        #2bdce3,
-        #42ffdb
-    );
-}
-
-.Orangtua>.IsiDalemanLayout:after{
-    background-image: linear-gradient(
-        135deg,
-        #ffab1d,
-        #f8501c
-    );
 }
 
 .details {
     padding: 20px 10px;
 }
 
-.details>h3 {
+.details > h3 {
     color: #ffffff;
     font-weight: 600;
     font-size: 18px;
     margin: 10px 0 15px 0;
 }
 
-.details>p {
+.details > p {
     color: #a0a0a0;
     font-size: 15px;
     line-height: 30px;

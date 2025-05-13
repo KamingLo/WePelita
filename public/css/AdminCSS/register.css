@@ -1,10 +1,13 @@
 /* ----------------------------------------------- */
-/* ----------------- pelajaran.css ------------------ */
+/* ----------------- register.css ------------------ */
 /* ----------------------------------------------- */
 
 :root {
     --primary-color: #4a6cf7;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
     --danger-color: #dc3545;
+    --light-color: #f8f9fa;
     --dark-color: #343a40;
     --border-radius: 10px;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -16,13 +19,13 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 /* ------------- */
 /* Bagian Header */
 
-.ContainerPelajaran {
+.ContainerRegister {
     margin-left: 280px;
     padding: 30px;
     display: flex;
@@ -53,19 +56,19 @@ h1:after {
 /* ----------------------------------------------- */
 /* ----------------- Bagian Form ----------------- */
 
-.LayoutPelajaranForm {
-    flex: 1;
-    min-width: 300px;
-    max-width: 400px;
+.LayoutRegisterForm {
     background-color: white;
     padding: 25px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     transform: translateY(-10.5rem);
-    min-height: 80vh;
+    min-width: 600px;
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.LayoutPelajaranForm h2 {
+.LayoutRegisterForm h2 {
     color: var(--dark-color);
     margin-top: 0;
     font-size: 20px;
@@ -74,7 +77,7 @@ h1:after {
     padding-bottom: 10px;
 }
 
-.LayoutPelajaranForm h2:after {
+.LayoutRegisterForm h2:after {
     content: "";
     position: absolute;
     left: 0;
@@ -103,12 +106,13 @@ label {
     border-radius: 6px;
     font-size: 14px;
     transition: var(--transition);
+    box-sizing: border-box;
 }
 
 .form-control:focus {
     border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
 }
 
 input.form-control {
@@ -136,33 +140,49 @@ select.form-control {
     padding-right: 35px;
 }
 
+.error-message {
+    color: var(--danger-color);
+    font-size: 12px;
+    display: block;
+    margin-top: 5px;
+}
+
+/* Layout form */
+.LayoutRegisterForm form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+
 /* ----------------------------------------------- */
-/* ----------------- Bagian Table ---------------- */
+/* ----------------- Bagian Murid ---------------------- */
 
-.LayoutPelajaranTable {
-    flex: 2;
-    min-width: 600px;
+.DisplayDataTable {
+    grid-column: 1 / -1;
     background-color: white;
-    padding: 25px;
+    padding: 20px;
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    max-height: 600px;
-    display: flex;
-    flex-direction: column;
-    transform: translateY(-10.5rem);
-    min-height: 80vh;
-}
-
-.LayoutPelajaranTable h2 {
-    color: var(--dark-color);
-    margin-top: 0;
-    font-size: 20px;
+    border: 1px solid #ddd;
+    margin-top: 20px;
     margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
-.LayoutPelajaranTable h2:after {
+.DisplayDataTable h2 {
+    grid-column: 1 / -1;
+    color: var(--dark-color);
+    margin-top: 10px;
+    font-size: 18px;
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 8px;
+}
+
+.DisplayDataTable h2:after {
     content: "";
     position: absolute;
     left: 0;
@@ -172,43 +192,50 @@ select.form-control {
     background-color: var(--primary-color);
 }
 
-.DisplayDataTable {
-    overflow-y: auto;
-    flex: 1;
-}
-
-.table {
-    width: 100%;
-    margin-bottom: 1rem;
-    color: #212529;
-    border-collapse: collapse;
-}
-
-.table th,
-.table td {
-    padding: 12px 15px;
-    vertical-align: top;
-    border-top: 1px solid #dee2e6;
-    font-size: 14px;
-}
-
-.table thead th {
-    vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6;
-    background-color: #f8f9fa;
+.DisplayDataTable h5 {
+    grid-column: 1 / -1;
     color: var(--dark-color);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    margin-top: 50px;
+    font-size: 18px;
+    margin-bottom: 15px;
+    position: relative;
+    padding-bottom: 8px;
 }
 
-.table tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.02);
+.DisplayDataTable h5:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 40px;
+    background-color: var(--primary-color);
+}
+
+/* New style for parent data section */
+.parent-data-container {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+
+.DisplayDataTable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.DisplayDataTable::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.DisplayDataTable::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+.DisplayDataTable::-webkit-scrollbar-thumb:hover {
+    background: #3959d9;
 }
 
 /* ----------------------------------------------- */
@@ -230,93 +257,84 @@ select.form-control {
     cursor: pointer;
 }
 
-.TambahPelajaran {
+.TambahRegister {
     color: white;
     background-color: var(--primary-color);
     border-color: var(--primary-color);
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%);
-    margin-top: 1rem;
+    grid-column: 1 / -1;
+    justify-self: center;
+    padding: 12px 20px;
+    font-size: 14px;
+    width: 200px;
+    margin-top: 20px;
 }
 
-.TambahPelajaran:hover {
+.TambahRegister:hover {
     background-color: #3959d9;
     border-color: #3959d9;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
 }
 
-.TombolDelete {
-    color: white;
-    background-color: var(--danger-color);
-    border-color: var(--danger-color);
-    padding: 6px 12px;
-    font-size: 13px;
+/* Alert */
+.alert {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    grid-column: 1 / -1;
 }
 
-.TombolDelete:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-}
-
-.Tedit {
-    color: white;
-    background-color: #4a6cf7;
-    border-color: #4a6cf7;
-    padding: 6px 12px;
-    font-size: 13px;
-    text-decoration: none;
-    width: 100%;
-}
-
-.Tedit i {
-    transform: translate(-0.1rem, 0.1rem);
-}
-
-.Tedit:hover {
-    background-color: #3959d9;
-    border-color: #3959d9;
-}
-
-.IconOJT {
-  font-size: 15px;
-  letter-spacing: 10px;
-  transform: translate(-0.10rem, 0.10rem);
-}
-
-.OptionPelajaranTabel {
-  gap: 0.5rem;
-  width: 4rem;
-  display: grid;
-}
-
-.alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    font-size: 12px;
-    padding: 8px 12px;
-    margin-top: 5px;
-    border-radius: 4px;
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
 }
 
 /* ----------------------------------------------- */
 /* ---------------- Bagian View ------------------ */
 
 @media (max-width: 1200px) {
-  body {
-    overflow: visible;
-  }
+    body {
+        overflow: visible;
+    }
 
-  .LayoutPelajaranForm,
-  .LayoutPelajaranTable {
-    max-width: 100%;
-  }
+    .LayoutRegisterForm {
+        width: 100%;
+        max-width: 100%;
+        min-width: auto;
+    }
+    
+    .LayoutRegisterForm form {
+        grid-template-columns: 1fr;
+    }
+    
+    .DisplayDataTable {
+        grid-template-columns: 1fr;
+    }
+    
+    .parent-data-container {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 768px) {
-  body {
-    overflow: visible;
-  }
+    body {
+        overflow: visible;
+    }
+    
+    .ContainerRegister {
+        margin-left: 0;
+        padding: 15px;
+    }
+    
+    h1 {
+        transform: none;
+    }
+    
+    .LayoutRegisterForm {
+        transform: none;
+    }
 }
 
 /* ---------------------- End ---------------------- */
