@@ -1,6 +1,5 @@
 @include('partials.header', ['NamaPage' => $kegiatans->judul_kegiatan])
 <link rel="stylesheet" href="{{ asset('css/bombaclat.css') }}" />
-
 <section class="container" id="article1">
         <div class="article-container">
             <div class="article-header">

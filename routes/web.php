@@ -5,8 +5,10 @@ use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GuruController;
 use App\Http\Controllers\PublicController;
 use App\Models\Admin;
+use App\Models\Guru;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,8 +22,8 @@ Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
-    Route::get('/admin/dashboard', function() {
-        $admin = Admin::findOrFail(auth()->id());
+    Route::get('admin/dashboard', function() {
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.dashboard', compact('admin'));
     })->name('admin.dashboard');
 
@@ -61,4 +63,11 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::put('/admin/user/update/{id}', [AdminController::class, 'updateUser'])->name('admin.user.update');
     Route::delete('/admin/user/delete/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.delete');
 
+});
+
+Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
+    Route::get('/guru/dashboard', function() {
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
+        return view('guru.dashboard', compact('guru'));
+    })->name('guru.dashboard');
 });

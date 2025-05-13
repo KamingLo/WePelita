@@ -43,20 +43,23 @@ class LoginController extends Controller
         return back()->withErrors([
             'email' => 'Kredensial tidak valid.',
         ]);
-    }
-
-    // Set session berdasarkan role
+    }    // Set session berdasarkan role
+    
     private function setRoleSession(Profile $profile)
     {
         // Menyimpan session berdasarkan role
         if ($profile->guru()->exists()) {
             session(['role' => 'guru']);
+            session(['user_id' => $profile->profile_id]);
         } elseif ($profile->orangTua()->exists()) {
             session(['role' => 'orang_tua']);
+            session(['user_id' => $profile->profile_id]);
         } elseif ($profile->admin()->exists()) {
             session(['role' => 'admin']);
+            session(['user_id' => $profile->profile_id]);
         } else {
             session(['role' => 'murid']);
+            session(['user_id' => $profile->profile_id]);
         }
     }
 

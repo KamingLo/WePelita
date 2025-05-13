@@ -23,7 +23,7 @@ class AdminController extends Controller
     public function formUser()
     {
         $kelasList = Kelas::all();
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.register', compact('kelasList', 'admin'));
     }
     
@@ -162,7 +162,7 @@ class AdminController extends Controller
 
     public function tampilkanJadwal(){
         $pelajaran = Pelajaran::all();
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         $kelas = Kelas::all();
         $jadwals = JadwalPelajaran::orderBy('kelas_id', 'asc')
                                   ->orderBy('hari', 'desc')
@@ -175,7 +175,7 @@ class AdminController extends Controller
         $pelajaran = Pelajaran::all();
         $kelas = Kelas::all();
         $jadwal = JadwalPelajaran::findOrFail($id);
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.editJadwal', compact('pelajaran', 'kelas', 'jadwal', 'admin'));
     }
 
@@ -298,7 +298,7 @@ class AdminController extends Controller
         // Mengambil data guru untuk dropdown
         $gurus = Guru::all();
         $pelajarans = Pelajaran::all();
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.pelajaran', compact('gurus', 'pelajarans', 'admin'));
     }
 
@@ -322,7 +322,7 @@ class AdminController extends Controller
     }
 
     public function tampilkanUpdatePelajaran($id){
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         $gurus = Guru::all();
         $pelajaran = Pelajaran::findOrFail($id);
 
@@ -360,7 +360,7 @@ class AdminController extends Controller
     {
         $pengumumans = Pengumuman::all();
         $kegiatans = Kegiatan::all();
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.post', compact('pengumumans', 'kegiatans', 'admin'));
     }
 
@@ -380,10 +380,8 @@ class AdminController extends Controller
             $lampiranPath = $validated['lampiran']->store('lampiran', 'public');
         }
 
-        // Simulasi ambil ID admin yang sedang login (ganti dengan auth jika ada)
-        $adminId = auth()->id();
-        
-        // Masukkan data ke tabel sesuai tipe
+        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
+
         if ($validated['tipe'] === 'pengumuman') {
             Pengumuman::create([
                 'admin_id' => $adminId,
@@ -409,21 +407,21 @@ class AdminController extends Controller
     {
         $pengumumans = Pengumuman::all();
         $kegiatans = Kegiatan::all();
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.manajemenPost', compact('pengumumans', 'kegiatans', 'admin'));
     }
 
     public function tampilkanPengumuman($id)
     {
         $pengumuman = Pengumuman::findOrFail($id);
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.ManajemenPostPengumumanEdit', compact('pengumuman', 'admin'));
     }
 
     public function tampilkanKegiatan($id)
     {
         $kegiatan = Kegiatan::findOrFail($id);
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.ManajemenPostKegiatanEdit', compact('kegiatan', 'admin'));
     }
 
@@ -440,7 +438,7 @@ class AdminController extends Controller
         $pengumuman = Pengumuman::findOrFail($id);
 
         // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
-        $adminId = auth()->id();
+        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail();
 
         // Jika user upload file baru
         if ($request->hasFile('lampiran')) {
@@ -476,7 +474,7 @@ class AdminController extends Controller
         $kegiatan = Kegiatan::findOrFail($id);
 
         // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
-        $adminId = auth()->id();
+        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail();
 
         // Jika user upload file baru
         if ($request->hasFile('lampiran')) {
@@ -530,7 +528,7 @@ class AdminController extends Controller
             'murid.kelas',
             // 'orang_tua.profile'
         ])->get();
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
 
         return view('admin.ManajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin'));
     }
