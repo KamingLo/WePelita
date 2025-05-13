@@ -41,7 +41,7 @@ class AdminController extends Controller
             'no_telp' => 'required|string',
             'password' => 'required|min:8|string',
             'role' => 'required|in:guru,admin,murid',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
         ]);
 
         if($request->role == 'admin'){
@@ -74,6 +74,7 @@ class AdminController extends Controller
                     'statusMenikah' => 'required',
                     'statusKerja' => 'required',
                     'nuptk' => 'required|string',
+                    'foto' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
                 ]);
 
                 $avatarPath = null;
@@ -123,7 +124,7 @@ class AdminController extends Controller
                     'ortu_jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
                     'ortu_pendidikan' => 'required|string',
                     'ortu_no_telp' => 'required|string',
-                    'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                    'foto' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
                     'ortu_profesi' => 'required|string',
                     'ortu_password' => 'required|min:6|string',
                 ]);
