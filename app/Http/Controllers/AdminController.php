@@ -438,7 +438,7 @@ class AdminController extends Controller
         $pengumuman = Pengumuman::findOrFail($id);
 
         // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
-        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail();
+        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
 
         // Jika user upload file baru
         if ($request->hasFile('lampiran')) {
@@ -474,7 +474,7 @@ class AdminController extends Controller
         $kegiatan = Kegiatan::findOrFail($id);
 
         // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
-        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail();
+        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
 
         // Jika user upload file baru
         if ($request->hasFile('lampiran')) {
@@ -529,7 +529,6 @@ class AdminController extends Controller
             // 'orang_tua.profile'
         ])->get();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-
         return view('admin.ManajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin'));
     }
 
@@ -538,7 +537,7 @@ class AdminController extends Controller
         $role = request('role');
         $model = $this->getModelByRole($role);
         $user = $model::with(['profile'])->findOrFail($id);
-        $admin = Admin::findOrFail(auth()->id());
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
 
         $kelasList = [];
         if ($role === 'murid') {
