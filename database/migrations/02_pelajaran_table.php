@@ -40,8 +40,6 @@ return new class extends Migration
             $table->string('tahun_ajaran');
             $table->string('nilai_uts');
             $table->string('nilai_uas');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
                 
         Schema::create('jadwal_pelajaran', function (Blueprint $table){

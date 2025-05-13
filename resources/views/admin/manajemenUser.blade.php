@@ -14,7 +14,7 @@
                 <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                 <option value="guru" {{ request('role') == 'guru' ? 'selected' : '' }}>Guru</option>
                 <option value="murid" {{ request('role') == 'murid' ? 'selected' : '' }}>Murid</option>
-                <option value="orangtua" {{ request('role') == 'orangtua' ? 'selected' : '' }}>Orang Tua</option>
+                <option value="orang_tua" {{ request('role') == 'orang_tua' ? 'selected' : '' }}>Orang Tua</option>
             </select>
         </form>
     </div>
@@ -104,8 +104,8 @@
                         <th>Kelas</th>
                         <th>Nis</th>
                         <th>Nisn</th>
-                        <th>Nik</th>
-                        <th>Password</th>
+                        <th>Nama orang tua</th>
+                        <th>Asal Sekolah</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -117,8 +117,9 @@
                             <td>{{ $MuridOrang_tua->Murid->kelas->nama_kelas }}</td>
                             <td>{{ $MuridOrang_tua->Murid->nis }}</td>
                             <td>{{ $MuridOrang_tua->Murid->nisn }}</td>
-                            <td>{{ $MuridOrang_tua->Murid->profile->nik }}</td>
-                            <td>********</td>
+                            <td>{{ $MuridOrang_tua->orangTua->profile->name }}</td>
+                            <td>{{ $MuridOrang_tua->Murid->asal_sekolah }}</td>
+
                             <td>
                                 <div class="OptionManajemenTabel">
                                     <a href="{{ route('admin.user.edit', ['id' => $MuridOrang_tua->Murid->murid_id, 'role' => 'murid']) }}" class="btn btn-sm btn-warning">
@@ -136,7 +137,7 @@
                 </tbody>
             </table>
 
-        @elseif ($role === 'orangtua')
+        @elseif ($role === 'orang_tua')
             <h3>Data Orang Tua</h3>
             <table class="table">
                 <thead>
@@ -157,9 +158,9 @@
                             <td>********</td>
                             <td>
                                 <div class="OptionManajemenTabel">
-                                    <a href="{{ route('admin.user.edit', ['id' => $MuridOrang_tua->orangTua->orang_tua_id, 'role' => 'orangtua']) }}" class="btn btn-sm btn-warning">
+                                    <a href="{{ route('admin.user.edit', ['id' => $MuridOrang_tua->orangTua->orang_tua_id, 'role' => 'orang_tua']) }}" class="btn btn-sm btn-warning">
                                         <i class='bx bx-edit-alt IconForButton'></i>Edit‎ ‎ ‎ ‎ ‎ </a>
-                                    <form method="POST" action="{{ route('admin.user.delete', ['id' => $MuridOrang_tua->orangTua->orang_tua_id, 'role' => 'orangtua']) }}" style="display:inline-block;">
+                                    <form method="POST" action="{{ route('admin.user.delete', ['id' => $MuridOrang_tua->orangTua->orang_tua_id, 'role' => 'orang_tua']) }}" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus user ini?')">

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('pendidikan');
             $table->string('password');
             $table->string('no_telp');
-            $table->rememberToken();
+            $table->timestamps();
         });
 
         Schema::create('guru', function (Blueprint $table) {

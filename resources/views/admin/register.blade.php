@@ -108,7 +108,7 @@
                     @enderror
                 </div>
                 
-                {{-- <div class="DisplayDataTable" id="murid-fields">
+                <div class="DisplayDataTable" id="murid-fields" style="display: none;">
                     <h2>Data Murid</h2>
                     
                     <div class="FormFor">
@@ -234,10 +234,11 @@
                         @enderror
                       </div>
                     </div>
-                </div> --}}
+                </div>
                 
-                {{-- <div class="DisplayDataTable" id="guru-fields">
-                    <h2>Data Guru</h2>
+                <div class="DisplayDataTable" id="guru-fields" style="display: none;">
+                  <h2>Data Guru</h2>
+
                     <div class="FormFor">
                       <label for="gelar">Gelar:</label>
                       <input type="text" name="gelar" id="gelar" class="form-control" placeholder="Masukkan gelar">
@@ -269,22 +270,25 @@
                               <option value="Honorer">Honorer</option>
                       </select>
                     </div>
-                </div> --}} 
+                </div>
 
                 <button type="submit" class="TombolOJT TambahRegister">Daftarkan</button>
             </form>
         </div>
     </div>
 
-    {{-- <script>
+    <script>
       const roleSelect = document.getElementById('role-select');
       const muridFields = document.getElementById('murid-fields');
+      const guruFields = document.getElementById('guru-fields');
 
       roleSelect.addEventListener('change', function () {
           const isMurid = this.value === 'murid';
+          const isGuru = this.value === 'guru';
           muridFields.style.display = isMurid ? 'block' : 'none';
+          guruFields.style.display = isGuru ? 'block' : 'none';
       });
-    </script> --}}
+    </script>
 
     @else
       <p>Anda tidak memiliki akses ke halaman ini</p>

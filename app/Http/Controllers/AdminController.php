@@ -592,7 +592,7 @@ class AdminController extends Controller
             'admin' => Admin::class,
             'guru' => Guru::class,
             'murid' => Murid::class,
-            'orangtua' => OrangTua::class,
+            'orang_tua' => OrangTua::class,
             default => abort(404),
         };
     }
