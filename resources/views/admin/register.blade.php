@@ -108,7 +108,7 @@
                     @enderror
                 </div>
                 
-                <div class="DisplayDataTable" id="murid-fields">
+                {{-- <div class="DisplayDataTable" id="murid-fields">
                     <h2>Data Murid</h2>
                     
                     <div class="FormFor">
@@ -234,7 +234,7 @@
                         @enderror
                       </div>
                     </div>
-                </div>
+                </div> --}}
                 
                 {{-- <div class="DisplayDataTable" id="guru-fields">
                     <h2>Data Guru</h2>
