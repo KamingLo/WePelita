@@ -33,43 +33,58 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:profiles,email',
-            'nik' => 'required|string',
+            'alamat' => 'required|string',
+            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+            'tanggal_lahir' => 'required|date',
+            'tempat_lahir' => 'required|string',
+            'pendidikan' => 'required|string',
             'no_telp' => 'required|string',
-            'password' => 'required|min:6|string',
-            'role' => 'required|in:guru,orang_tua,admin,murid',
+            'password' => 'required|min:8|string',
+            'role' => 'required|in:guru,admin,murid',
         ]);
 
         // Buat profile utama
         $profile = Profile::create([
             'name' => $request->name,
             'email' => $request->email,
-            'nik' => $request->nik,
+            'alamat' => $request->alamat,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'tempat_lahir' => $request->tempat_lahir,
+            'pendidikan' => $request->pendidikan,
             'no_telp' => $request->no_telp,
             'password' => Hash::make($request->password),
         ]);
 
         switch ($request->role) {
             case 'guru':
-                Guru::create(['profile_id' => $profile->profile_id]);
+                Guru::create([
+                    'profile_id' => $profile->profile_id,
+                    'gelar' => $request->gelar,
+                    'statusMenikah' => $request->statusMenikah,
+                    'statusKerja' => $request->statusKerja,
+                    'nuptk' => $request->nuptk,
+                ]);
                 break;
 
             case 'admin':
                 Admin::create(['profile_id' => $profile->profile_id]);
                 break;
 
-            case 'orang_tua':
-                OrangTua::create(['profile_id' => $profile->profile_id]);
-                break;
-
             case 'murid':
                 // Validasi tambahan untuk murid dan orang tua
                 $request->validate([
+                    'asal_sekolah' => 'required|string',
                     'nis' => 'required|string',
                     'nisn' => 'required|string',
                     'kelas_id' => 'required|integer|exists:kelas,kelas_id',
                     'ortu_name' => 'required|string',
+                    'ortu_jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                    'ortu_alamat' => 'required|string',
+                    'ortu_tanggal_lahir' => 'required|date',
+                    'ortu_tempat_lahir' => 'required|string',
+                    'ortu_pendidikan' => 'required|string',
                     'ortu_email' => 'required|email|unique:profiles,email',
-                    'ortu_nik' => 'required|string',
                     'ortu_no_telp' => 'required|string',
                     'ortu_password' => 'required|min:6|string',
                 ]);
@@ -78,7 +93,11 @@ class AdminController extends Controller
                 $ortuProfile = Profile::create([
                     'name' => $request->ortu_name,
                     'email' => $request->ortu_email,
-                    'nik' => $request->ortu_nik,
+                    'alamat' => $request->ortu_alamat,
+                    'jenis_kelamin' => $request->ortu_jenis_kelamin,
+                    'tanggal_lahir' => $request->ortu_tanggal_lahir,
+                    'tempat_lahir' => $request->ortu_tempat_lahir,
+                    'pendidikan' => $request->ortu_pendidikan,
                     'no_telp' => $request->ortu_no_telp,
                     'password' => Hash::make($request->ortu_password),
                 ]);
@@ -91,6 +110,7 @@ class AdminController extends Controller
                 // Simpan data murid
                 $murid = Murid::create([
                     'profile_id' => $profile->profile_id,
+                    'asal_sekolah' => $request->asal_sekolah,
                     'kelas_id' => $request->kelas_id,
                     'nis' => $request->nis,
                     'nisn' => $request->nisn,
