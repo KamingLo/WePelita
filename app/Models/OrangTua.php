@@ -12,7 +12,7 @@ class OrangTua extends Model
     public $timestamps = false;
     protected $table = 'orang_tua';
     protected $primaryKey = 'orang_tua_id';
-    protected $fillable = ['profile_id'];
+    protected $fillable = ['profile_id', 'profesi'];
 
     public function profile()
     {

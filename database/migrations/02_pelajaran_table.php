@@ -10,21 +10,28 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('absensi', function (Blueprint $table) {
-            $table->id('absensi_id');
-            $table->foreignId('murid_id')->constrained('murid', 'murid_id')->onDelete('cascade');
-            $table->string('kehadiran');
-            $table->text('keterangan');
-            $table->string('tanggal_absensi');
-        });
-
         Schema::create('pelajaran', function (Blueprint $table){
             $table->id('pelajaran_id');
             $table->foreignId('guru_id')->constrained('guru', 'guru_id')->onDelete('cascade');
             $table->string('namaPelajaran');
         });
-
         
+        Schema::create('absensi', function (Blueprint $table) {
+            $table->id('absensi_id');
+            $table->foreignId('murid_id')->constrained('murid', 'murid_id')->onDelete('cascade');
+            $table->foreignId('pelajaran_id')->constrained('pelajaran', 'pelajaran_id')->onDelete('cascade');
+            $table->integer('jumlah_kehadiran');
+            $table->timestamps();
+        });
+
+        Schema::create('kehadiran',function(Blueprint $table){
+            $table->id('kehadiran_id');
+            $table->foreignId('absensi_id')->constrained('absensi', 'absensi_id')->onDelete('cascade');
+            $table->string('status_kehadiran');
+            $table->date('tanggal')->default(DB::raw('CURRENT_DATE'));
+        });
+
+
         Schema::create('nilai', function (Blueprint $table){
             $table->id('nilai_id');
             $table->foreignId('murid_id')->constrained('murid', 'murid_id')->onDelete('cascade');

@@ -15,9 +15,14 @@ class AdminSeeder extends Seeder
         $profile = Profile::create([
             'name' => 'Admin',
             'email' => 'admin@example.com',
-            'nik' => '1234567890', // Sesuaikan dengan format NIK yang diinginkan
             'password' => Hash::make('admin1'), // Password admin
             'no_telp' => '08123456789', // Sesuaikan dengan nomor telepon
+            'alamat' => 'Jl. Admin No. 1',
+            'jenis_kelamin' => 'Laki-laki', // Sesuaikan dengan jenis kelamin
+            'tanggal_lahir' => '1990-01-01', // Sesuaikan dengan tanggal lahir
+            'tempat_lahir' => 'Kota Admin', // Sesuaikan dengan tempat lahir
+            'pendidikan' => 'S1', // Sesuaikan dengan pendidikan
+
         ]);
 
         // Buat data admin yang berhubungan dengan profile

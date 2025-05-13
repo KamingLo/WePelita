@@ -17,7 +17,11 @@ return new class extends Migration
             $table->id('profile_id');
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('nik');
+            $table->string('alamat');
+            $table->string('jenis_kelamin');
+            $table->date('tanggal_lahir');
+            $table->string('tempat_lahir');
+            $table->string('pendidikan');
             $table->string('password');
             $table->string('no_telp');
             $table->rememberToken();
@@ -27,12 +31,17 @@ return new class extends Migration
 
         Schema::create('guru', function (Blueprint $table) {
             $table->id('guru_id');
+            $table->string('gelar');
+            $table->string('statusMenikah');
+            $table->string('statusKerja');
+            $table->string('nuptk');
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
         });
         
 
         Schema::create('orang_tua', function (Blueprint $table){
             $table -> id('orang_tua_id');
+            $table -> string('profesi');
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
         });
 
@@ -49,6 +58,7 @@ return new class extends Migration
 
         Schema::create('murid', function (Blueprint $table){
             $table->id('murid_id');
+            $table->string('asal_sekolah');
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
             $table->foreignId('kelas_id')->constrained('kelas', 'kelas_id')->onDelete('cascade');
             $table->string('nis');
