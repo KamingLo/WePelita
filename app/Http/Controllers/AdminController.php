@@ -79,13 +79,14 @@ class AdminController extends Controller
                     'nisn' => 'required|string',
                     'kelas_id' => 'required|integer|exists:kelas,kelas_id',
                     'ortu_name' => 'required|string',
-                    'ortu_jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-                    'ortu_alamat' => 'required|string',
-                    'ortu_tanggal_lahir' => 'required|date',
-                    'ortu_tempat_lahir' => 'required|string',
-                    'ortu_pendidikan' => 'required|string',
                     'ortu_email' => 'required|email|unique:profiles,email',
+                    'ortu_alamat' => 'required|string',
+                    'ortu_tempat_lahir' => 'required|string',
+                    'ortu_tanggal_lahir' => 'required|date',
+                    'ortu_jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                    'ortu_pendidikan' => 'required|string',
                     'ortu_no_telp' => 'required|string',
+                    'ortu_profesi' => 'required|string',
                     'ortu_password' => 'required|min:6|string',
                 ]);
 
@@ -94,16 +95,17 @@ class AdminController extends Controller
                     'name' => $request->ortu_name,
                     'email' => $request->ortu_email,
                     'alamat' => $request->ortu_alamat,
+                    'tempat_lahir' => $request->ortu_tempat_lahir,
                     'jenis_kelamin' => $request->ortu_jenis_kelamin,
                     'tanggal_lahir' => $request->ortu_tanggal_lahir,
-                    'tempat_lahir' => $request->ortu_tempat_lahir,
                     'pendidikan' => $request->ortu_pendidikan,
                     'no_telp' => $request->ortu_no_telp,
                     'password' => Hash::make($request->ortu_password),
                 ]);
-
+                
                 // Simpan ke tabel orang_tua
                 $orangTua = OrangTua::create([
+                    'profesi' => $request->ortu_profesi,
                     'profile_id' => $ortuProfile->profile_id,
                 ]);
 

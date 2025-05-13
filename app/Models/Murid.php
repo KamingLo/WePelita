@@ -14,7 +14,7 @@ class Murid extends Model
     public $incrementing = true;
     protected $keyType = 'int';
 
-    protected $fillable = ['profile_id', 'kelas_id', 'orang_tua_id', 'nis', 'nisn', 'Status'];
+    protected $fillable = ['profile_id', 'kelas_id', 'nis', 'nisn', 'asal_sekolah'];
 
     public function profile()
     {
@@ -35,7 +35,6 @@ class Murid extends Model
             'orang_tua_id'
         );
     }
-
 
     public function absensi()
     {
