@@ -29,8 +29,6 @@
                     <tr>
                         <th>Nama</th>
                         <th>Email</th>
-                        <th>Nik</th>
-                        <th>Password</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -39,8 +37,7 @@
                         <tr>
                             <td>{{ $Admin->profile->name }}</td>
                             <td>{{ $Admin->profile->email }}</td>
-                            <td>{{ $Admin->profile->nik }}</td>
-                            <td>********</td>
+                            <td>{{ $Admin->profile->alamat }}</td>
                             <td>
                                 <div class="OptionManajemenTabel">
                                     <a href="{{ route('admin.user.edit', ['id' => $Admin->admin_id, 'role' => 'admin']) }}" class="btn btn-sm btn-warning">
@@ -64,19 +61,21 @@
                 <thead>
                     <tr>
                         <th>Nama</th>
+                        <th>Nuptk</th>
+                        <th>Status Kerja</th>
                         <th>Email</th>
-                        <th>Nik</th>
-                        <th>Password</th>
+                        <th>No telpon</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($Gurus as $guru)
                         <tr>
-                            <td>{{ $guru->profile->name }}</td>
+                            <td>{{ $guru->profile->name }} {{ $guru->gelar }}</td>
+                            <td>{{ $guru->nuptk }}</td>
+                            <td>{{ $guru->statusKerja }}</td>
                             <td>{{ $guru->profile->email }}</td>
-                            <td>{{ $guru->profile->nik }}</td>
-                            <td>********</td>
+                            <td>{{ $guru->profile->no_telp }}</td>
                             <td>
                                 <div class="OptionManajemenTabel">
                                     <a href="{{ route('admin.user.edit', ['id' => $guru->guru_id, 'role' => 'guru']) }}" class="btn btn-sm btn-warning">
@@ -145,7 +144,6 @@
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Nik</th>
-                        <th>Password</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -155,7 +153,6 @@
                             <td>{{ $MuridOrang_tua->orangTua->profile->name }}</td>
                             <td>{{ $MuridOrang_tua->orangTua->profile->email }}</td>
                             <td>{{ $MuridOrang_tua->orangTua->profile->nik }}</td>
-                            <td>********</td>
                             <td>
                                 <div class="OptionManajemenTabel">
                                     <a href="{{ route('admin.user.edit', ['id' => $MuridOrang_tua->orangTua->orang_tua_id, 'role' => 'orang_tua']) }}" class="btn btn-sm btn-warning">

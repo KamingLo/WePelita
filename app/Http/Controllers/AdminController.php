@@ -61,7 +61,7 @@ class AdminController extends Controller
                 'pendidikan' => $request->pendidikan,
                 'no_telp' => $request->no_telp,
                 'password' => Hash::make($request->password),
-                'foto' => $lampiranPath,
+                'foto' => $avatarPath,
             ]);
         }
 
