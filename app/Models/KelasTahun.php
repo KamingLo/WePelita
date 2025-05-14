@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class KelasTahun extends Model
+{
+    protected $table ='kelas_tahun';
+    protected $primaryKey = 'kelas_tahun_id';
+    public $timestamps = false;
+
+    protected $fillable = [
+        'kelas_id',
+        'tahun_ajar_id',
+    ];
+
+    public function kelas()
+{
+    return $this->belongsTo(Kelas::class, 'kelas_id');
+}
+
+    public function tahunAjar(){
+        return $this->belongsTo(TahunAjar::class, 'tahun_ajar_id');
+    }
+}

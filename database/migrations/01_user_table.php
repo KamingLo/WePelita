@@ -52,16 +52,33 @@ return new class extends Migration
         Schema::create('kelas', function (Blueprint $table){
             $table -> id('kelas_id');
             $table -> string('nama_kelas');
+        });
+
+        Schema::create('tahun_ajaran', function(Blueprint $table){
+            $table -> id('tahun_ajaran_id');
             $table -> string('tahun_ajaran');
+            $table -> string('semester');
+            $table -> string('status');
         });
 
         Schema::create('murid', function (Blueprint $table){
             $table->id('murid_id');
             $table->string('asal_sekolah');
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
-            $table->foreignId('kelas_id')->constrained('kelas', 'kelas_id')->onDelete('cascade');
             $table->string('nis');
             $table->string('nisn');
+        });
+
+        Schema::create('kelas_tahun', function(Blueprint $table){
+            $table->id('kelas_tahun_id');
+            $table->string('kelas_id')->constrained('kelas', 'kelas_id')->onDelete('cascade');
+            $table->string('tahun_ajar_id')->constrained('tahun_ajar', 'tahun_ajar_id')->onDelete('cascade');
+        });
+
+        Schema::create('murid_kelas', function(Blueprint $table){
+            $table->id('murid_kelas_id');
+            $table->foreignId('murid_id')->constrained('murid', 'murid_id')->onDelete('cascade');
+            $table->foreignId('kelas_tahun_id')->constrained('kelas_tahun', 'kelas_tahun_id')->onDelete('cascade');
         });
 
         Schema::create('murid_orang_tua', function (Blueprint $table){

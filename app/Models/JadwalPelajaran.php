@@ -12,15 +12,15 @@ class JadwalPelajaran extends Model
     public $timestamps = false; 
     protected $table = 'jadwal_pelajaran';
     protected $primaryKey = 'jadwal_id';
-    protected $fillable = ['pelajaran_id', 'kelas_id', 'hari', 'waktu_mulai', 'waktu_selesai'];
+    protected $fillable = ['pelajaran_id', 'kelas_tahun_id', 'hari', 'waktu_mulai', 'waktu_selesai'];
 
     public function pelajaran()
     {
         return $this->belongsTo(Pelajaran::class, 'pelajaran_id');
     }
 
-    public function kelas()
+    public function kelasTahun()
     {
-        return $this->belongsTo(Kelas::class, 'kelas_id');
+        return $this->belongsTo(KelasTahun::class, 'kelas_tahun_id');
     }
 }

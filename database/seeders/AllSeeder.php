@@ -13,7 +13,6 @@ class AllSeeder extends Seeder
 {
     public function run()
     {
-        $this->call(KelasSeeder::class);
         $this->call(AdminSeeder::class);
     }
 }

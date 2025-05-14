@@ -9,10 +9,13 @@ use App\Models\Admin;
 use App\Models\OrangTua;
 use App\Models\Murid;
 use App\Models\Kelas;
+use App\Models\TahunAjar;
 use App\Models\Pelajaran;
 use App\Models\JadwalPelajaran;
 use App\Models\Pengumuman;
 use App\Models\Kegiatan;
+use App\Models\KelasTahun;
+use App\Models\MuridKelas;
 use App\Models\MuridOrangTua;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -184,15 +187,55 @@ class AdminController extends Controller
         return redirect()->route('admin.register')->with('success', 'User baru berhasil ditambahkan');
     }
 
+    public function tampilkanManajemenKelas(){
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+        return view('admin.ManajemenKelas', compact('admin'));
+    }
+
+    public function tambahKelas(Request $request)
+{
+    $request->validate([
+        'nama_kelas' => 'required|string',
+        'tahun_ajar' => 'required|string',
+        'semester' => 'required|string',
+    ]);
+
+    $status = 'Aktif';
+
+    // Cek apakah tahun ajaran + semester sudah ada
+    $tahunAjar = TahunAjar::where('tahun_ajaran', $request->tahun_ajar)
+        ->where('semester', $request->semester)
+        ->first();
+
+    if (!$tahunAjar) {
+        $tahunAjar = TahunAjar::create([
+            'tahun_ajaran' => $request->tahun_ajar,
+            'semester' => $request->semester,
+            'status' => $status,
+        ]);
+    }
+
+    $kelas = Kelas::create([
+        'nama_kelas' => $request->nama_kelas
+    ]);
+
+    // PERHATIKAN: pakai tahun_ajaran_id, sesuai primaryKey
+    $kelas->tahun()->attach($tahunAjar->tahun_ajaran_id);
+
+    return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas baru berhasil dibuat');
+}
+
+
+
     public function tampilkanJadwal(){
         $pelajaran = Pelajaran::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $kelas = Kelas::all();
-        $jadwals = JadwalPelajaran::orderBy('kelas_id', 'asc')
+        $kelasTahun = KelasTahun::all();
+        $jadwals = JadwalPelajaran::orderBy('kelas_tahun_id', 'asc')
                                   ->orderBy('hari', 'desc')
                                   ->orderBy('waktu_mulai', 'asc')
                                   ->get();
-        return view('admin.jadwal', compact('pelajaran', 'kelas', 'jadwals', 'admin'));
+        return view('admin.jadwal', compact('pelajaran', 'kelasTahun', 'jadwals', 'admin'));
     }
 
     public function tampilkanUpdateJadwal($id){
@@ -207,14 +250,14 @@ class AdminController extends Controller
     {
         $request->validate([
             'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
-            'kelas_id' => 'required|exists:kelas,kelas_id',
+            'kelas_tahun_id' => 'required|exists:kelas_tahun,kelas_tahun_id',
             'hari' => 'required',
             'waktu_mulai' => 'required',
             'waktu_selesai' => 'required',
         ]);
 
         // 1. Cek apakah jadwal sudah ada untuk kelas ini pada jam yang sama
-        $bentrokKelas = JadwalPelajaran::where('kelas_id', $request->kelas_id)
+        $bentrokKelas = JadwalPelajaran::where('kelas_tahun_id', $request->kelas_tahun_id)
             ->where('hari', $request->hari)
             ->where(function ($query) use ($request) {
                 $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
@@ -234,7 +277,7 @@ class AdminController extends Controller
 
         // 2. Cek apakah pelajaran ini sedang diajarkan di kelas lain pada waktu yang sama
         $bentrokPelajaran = JadwalPelajaran::where('pelajaran_id', $request->pelajaran_id)
-            ->where('kelas_id', '!=', $request->kelas_id)
+            ->where('kelas_tahun_id', '!=', $request->kelas_tahun_id)
             ->where('hari', $request->hari)
             ->where(function ($query) use ($request) {
                 $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])

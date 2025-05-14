@@ -18,7 +18,7 @@ return new class extends Migration
         
         Schema::create('absensi', function (Blueprint $table) {
             $table->id('absensi_id');
-            $table->foreignId('murid_id')->constrained('murid', 'murid_id')->onDelete('cascade');
+            $table->foreignId('murid_kelas_id')->constrained('murid_kelas', 'murid_kelas_id')->onDelete('cascade');
             $table->foreignId('pelajaran_id')->constrained('pelajaran', 'pelajaran_id')->onDelete('cascade');
             $table->integer('jumlah_kehadiran');
             $table->timestamps();
@@ -34,10 +34,8 @@ return new class extends Migration
 
         Schema::create('nilai', function (Blueprint $table){
             $table->id('nilai_id');
-            $table->foreignId('murid_id')->constrained('murid', 'murid_id')->onDelete('cascade');
+            $table->foreignId('murid_kelas_id')->constrained('murid_kelas', 'murid_kelas_id')->onDelete('cascade');
             $table->foreignId('pelajaran_id')->constrained('pelajaran', 'pelajaran_id')->onDelete('cascade');
-            $table->string('semester');
-            $table->string('tahun_ajaran');
             $table->string('nilai_uts');
             $table->string('nilai_uas');
         });
@@ -45,7 +43,7 @@ return new class extends Migration
         Schema::create('jadwal_pelajaran', function (Blueprint $table){
             $table->id('jadwal_id');
             $table->foreignId('pelajaran_id')->constrained('pelajaran', 'pelajaran_id')->onDelete('cascade');
-            $table->foreignId('kelas_id')->constrained('kelas', 'kelas_id')->onDelete('cascade');
+            $table->foreignId('kelas_tahun_id')->constrained('kelas_tahun', 'kelas_tahun_id')->onDelete('cascade');
             $table->string('hari');
             $table->string('waktu_mulai');
             $table->string('waktu_selesai');

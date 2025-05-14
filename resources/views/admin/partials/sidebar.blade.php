@@ -37,6 +37,11 @@
         </a>
       </li>
       <li>
+        <a href="/admin/manajemenKelas" class="{{ request()->is('admin/pelajaran*') ? 'active-link' : '' }}">
+          <i class='bx bx-list-plus IconSideBar'></i>Manajemen Kelas
+        </a>
+      </li>
+      <li>
         <a href="/admin/jadwal" class="{{ request()->is('admin/jadwal*') ? 'active-link' : '' }}">
           <i class='bx bx-layer-plus IconSideBar'></i>Tambahkan Jadwal
         </a>

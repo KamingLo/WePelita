@@ -5,60 +5,37 @@
 
 <body>
     <div class="ContainerJadwal">
-        <h1>Tambah Jadwal Pembelajaran</h1>
+        <h1>Tambah Kelas Baru</h1>
 
         <div class="LayoutJadwalForm">
-            <h2>Tambah Jadwal</h2>
-            <form action="{{ route('jadwal.store') }}" method="POST">
+            <h2>Tambah Kelas</h2>
+            <form action="{{ route('admin.tambahKelas') }}" method="POST">
                 @csrf
 
                 <div class="FormFor">
-                    <label for="pelajaran_id">Pelajaran</label>
-                    <select name="pelajaran_id" id="pelajaran_id" class="form-control" required>
-                        <option value="" disabled selected>-- Pilih Pelajaran --</option>
-                        @foreach($pelajaran as $item)
-                            <option value="{{ $item->pelajaran_id }}">{{ $item->namaPelajaran }} ({{ $item ->guru->profile->name }})</option>
-                        @endforeach
+                    <label for="nama_kelas">Nama Kelas</label>
+                    <input type="text" name="nama_kelas" id="nama_kelas">
+                </div>
+
+                <div class="FormFor">
+                    <label for="tahunAjar">Tahun ajar</label>
+                    <select name="tahun_ajar" id="tahunAjar">
+                        <option value="{{ (now()->year) }}/{{ (now()->year)+1}}">{{ (now()->year) }}/{{ (now()->year)+1}}</option>
+                        <option value="{{ (now()->year)-1 }}/{{ (now()->year)}}">{{ (now()->year)-1 }}/{{ (now()->year)}}</option>
+                        <option value="{{ (now()->year)-2 }}/{{ (now()->year)}}">{{ (now()->year)-2 }}/{{ (now()->year)-1}}</option>
                     </select>
                 </div>
 
                 <div class="FormFor">
-                    <label for="kelas_tahun_id">Kelas</label>
-                    <select name="kelas_tahun_id" id="kelas_tahun_id" class="form-control" required>
-                        <option value="" disabled selected>-- Pilih Kelas --</option>
-                        @foreach($kelasTahun as $item)
-                            <option value="{{ $item->kelas_tahun_id }}">{{ $item->kelas->nama_kelas }} ({{ $item->TahunAjar->tahun_ajaran }})</option>
-                        @endforeach
+                    <label for="semester">Semester</label>
+                    <select name="semester" id="semester">
+                        <option value="Ganjil">Ganjil</option>
+                        <option value="Genap">Genap</option>
                     </select>
-                    @error('namaPelajaran')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="FormFor">
-                    <label for="hari">Hari</label>
-                    <select name="hari" id="hari" class="form-control" required>
-                        <option value="" disabled selected>-- Pilih Hari --</option>
-                        <option value="Senin">Senin</option>
-                        <option value="Selasa">Selasa</option>
-                        <option value="Rabu">Rabu</option>
-                        <option value="Kamis">Kamis</option>
-                        <option value="Jumat">Jumat</option>
-                    </select>
-                </div>
-
-                <div class="FormFor">
-                    <label for="waktu_mulai">Waktu Mulai</label>
-                    <input type="time" name="waktu_mulai" id="waktu_mulai" class="form-control" required>
-                </div>
-
-                <div class="FormFor">
-                    <label for="waktu_selesai">Waktu Selesai</label>
-                    <input type="time" name="waktu_selesai" id="waktu_selesai" class="form-control" required>
                 </div>
 
                 <button type="submit" class="TombolOJT TambahJadwal">
-                    Tambah Jadwal
+                    Tambah Kelas Baru
                 </button>
             </form>
 
@@ -76,7 +53,7 @@
 
         </div>
 
-        <div class="LayoutJadwalTable">
+        {{-- <div class="LayoutJadwalTable">
             <h2>Jadwal Pembelajaran</h2>
             <div class="DisplayDataTable">
                 <table class="table">
@@ -95,7 +72,7 @@
                         @foreach($jadwals as $jadwal)
                             <tr>
                                 <td>{{ $jadwal->pelajaran->namaPelajaran }}</td>
-                                <td>{{ $jadwal->kelasTahun->kelas->nama_kelas }}</td>
+                                <td>{{ $jadwal->kelas->nama_kelas }}</td>
                                 <td>{{ $jadwal->hari }}</td>
                                 <td>{{ $jadwal->waktu_mulai }}</td>
                                 <td>{{ $jadwal->waktu_selesai }}</td>
@@ -105,7 +82,7 @@
                                         <form action="{{ route('jadwal.update', $jadwal->jadwal_id) }}" method="GET">
                                             <a href="jadwal/edit/{{ $jadwal->jadwal_id }}" class="TombolOJT Tedit">
                                                 <i class='bx bx-edit-alt IconOJT'></i>Edit‎ ‎ ‎ ‎ ‎ 
-                                            </a> {{-- Jan diubah wa sengaja bikin cam tu 😂 --}}
+                                            </a> {{-- Jan diubah wa sengaja bikin cam tu 😂 
                                         </form>
 
                                         <form action="{{ route('jadwal.destroy', $jadwal->jadwal_id) }}" method="POST">
@@ -122,6 +99,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> --}}
     </div>
 </body>

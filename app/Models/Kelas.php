@@ -14,12 +14,16 @@ class Kelas extends Model
     public $incrementing = true;
     protected $keyType = 'int';
 
-    protected $fillable = ['nama_kelas', 'tahun_ajaran'];
+    protected $fillable = ['nama_kelas'];
     
     public function murid()
     {
         return $this->hasMany(Murid::class, 'kelas_id');
     }
+
+    public function tahun(){
+        return $this->belongsToMany(TahunAjar::class, 'kelas_tahun', 'kelas_id', 'tahun_ajar_id');
+    }    
 
     public function jadwalPelajaran()
     {
