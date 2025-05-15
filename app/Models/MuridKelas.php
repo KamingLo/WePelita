@@ -17,11 +17,15 @@ class MuridKelas extends Model
 
     public function murid()
     {
-        return $this->belongsTo(Murid::class, 'murid_id');
+        return $this->belongsTo(Murid::class, 'murid_id', 'murid_id');
     }
 
     public function kelastahun()
     {
         return $this->belongsTo(KelasTahun::class, 'kelas_tahun_id');
+    }
+
+    public function muridOrangTua(){
+        return $this->hasMany(MuridOrangTua::class, 'murid_kelas_id');
     }
 }

@@ -20,7 +20,7 @@ class KelasTahun extends Model
     return $this->belongsTo(Kelas::class, 'kelas_id');
 }
 
-    public function tahunAjar(){
+    public function tahunajar(){
         return $this->belongsTo(TahunAjar::class, 'tahun_ajar_id');
     }
 }

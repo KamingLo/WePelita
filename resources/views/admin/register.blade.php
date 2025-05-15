@@ -137,10 +137,10 @@
                     
                     <div class="FormFor">
                       <label for="kelas_id">Kelas:</label>
-                      <select name="kelas_id" id="kelas_id" class="form-control">
+                      <select name="kelas_tahun_id" id="kelas_id" class="form-control">
                           <option value="">-- Pilih Kelas --</option>
                           @foreach ($kelasList as $kelas)
-                              <option value="{{ $kelas->kelas_id }}">{{ $kelas->nama_kelas }} - {{ $kelas->tahun_ajaran }}</option>
+                              <option value="{{ $kelas->kelas_tahun_id }}">{{ $kelas->kelas->nama_kelas }} - {{ $kelas->tahunajar->tahun_ajaran }}</option>
                           @endforeach
                       </select>
                       @error('kelas_id')

@@ -25,7 +25,7 @@ class AdminController extends Controller
 {
     public function formUser()
     {
-        $kelasList = Kelas::all();
+        $kelasList = KelasTahun::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.register', compact('kelasList', 'admin'));
     }
@@ -118,7 +118,7 @@ class AdminController extends Controller
                     'asal_sekolah' => 'required|string',
                     'nis' => 'required|string',
                     'nisn' => 'required|string',
-                    'kelas_id' => 'required|integer|exists:kelas,kelas_id',
+                    'kelas_tahun_id' => 'required|integer|exists:kelas_tahun,kelas_tahun_id',
                     'ortu_name' => 'required|string',
                     'ortu_email' => 'required|email|unique:profiles,email',
                     'ortu_alamat' => 'required|string',
@@ -173,14 +173,13 @@ class AdminController extends Controller
                 $murid = Murid::create([
                     'profile_id' => $profile->profile_id,
                     'asal_sekolah' => $request->asal_sekolah,
-                    'kelas_id' => $request->kelas_id,
                     'nis' => $request->nis,
                     'nisn' => $request->nisn,
                 ]);
 
                 // Tambahkan relasi many-to-many
+                $murid->muridKelas()->attach($request->kelas_tahun_id);
                 $murid->orangTua()->attach($orangTua->orang_tua_id);
-
                 break;
         }
 
@@ -240,7 +239,7 @@ class AdminController extends Controller
 
     public function tampilkanUpdateJadwal($id){
         $pelajaran = Pelajaran::all();
-        $kelas = Kelas::all();
+        $kelas = KelasTahun::all();
         $jadwal = JadwalPelajaran::findOrFail($id);
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.editJadwal', compact('pelajaran', 'kelas', 'jadwal', 'admin'));
@@ -307,7 +306,7 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
-            'kelas_id' => 'required|exists:kelas,kelas_id',
+            'kelas_tahun_id' => 'required|exists:kelas_tahun,kelas_tahun_id',
             'hari' => 'required',
             'waktu_mulai' => 'required',
             'waktu_selesai' => 'required|after:waktu_mulai',
@@ -316,7 +315,7 @@ class AdminController extends Controller
         $jadwal = JadwalPelajaran::findOrFail($id);
 
         $bentrokKelas = JadwalPelajaran::where('jadwal_id', '!=', $id)
-            ->where('kelas_id', $validated['kelas_id'])
+            ->where('kelas_tahun_id', $validated['kelas_tahun_id'])
             ->where('hari', $validated['hari'])
             ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
                 $validated['waktu_mulai'],
@@ -333,7 +332,7 @@ class AdminController extends Controller
 
         $bentrokPelajaran = JadwalPelajaran::where('jadwal_id', '!=', $id)
             ->where('pelajaran_id', $validated['pelajaran_id'])
-            ->where('kelas_id', '!=', $validated['kelas_id'])
+            ->where('kelas_tahun_id', '!=', $validated['kelas_tahun_id'])
             ->where('hari', $validated['hari'])
             ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
                 $validated['waktu_mulai'],
@@ -590,29 +589,35 @@ class AdminController extends Controller
         
         $Gurus = Guru::all();
         $Admins = Admin::all();
-        $MuridOrangTuas = MuridOrangTua::with([
-            'murid.profile',
-            'murid.kelas',
-            // 'orang_tua.profile'
-        ])->get();
+        $MuridOrangTuas = MuridOrangTua::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.ManajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin'));
     }
 
     public function editUser($id, Request $request)
-    {
-        $role = request('role');
-        $model = $this->getModelByRole($role);
-        $user = $model::with(['profile'])->findOrFail($id);
-        $admin = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
+{
+    $role = request('role');
+    $admin = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
 
-        $kelasList = [];
-        if ($role === 'murid') {
-            $kelasList = Kelas::all();
-        }
+    if ($role === 'murid') {
+        // Ambil data berdasarkan tabel pivot murid_kelas
+        $muridKelas = MuridKelas::with(['murid.profile', 'kelastahun'])->findOrFail($id);
+        $user = $muridKelas; // supaya tetap konsisten dengan view
+        $kelasList = KelasTahun::with(['kelas', 'tahunAjar'])
+            ->whereHas('tahunAjar', function ($query) {
+                $query->where('status', 'aktif'); // Atau sesuai nilainya
+            })->get();
+
+        return view('admin.ManajemenUserEdit', compact('user', 'role', 'admin', 'kelasList'))->with('id', $id);
+    }
+
+    // Untuk role lain, tetap pakai cara lama
+    $model = $this->getModelByRole($role);
+    $user = $model::with(['profile'])->findOrFail($id);
 
     return view('admin.ManajemenUserEdit', compact('user', 'role', 'kelasList', 'admin'))->with('id', $id);
-    }
+}
+
 
     public function updateUser(Request $request, $id)
     {
@@ -644,7 +649,7 @@ class AdminController extends Controller
                 $user->nis = $request->nis;
                 $user->nisn = $request->nisn;
                 $user->asal_sekolah = $request->asal_sekolah;
-                $user->kelas_id = $request->kelas_id;
+                $user->kelas_tahun_id = $request->kelas_tahun_id;
                 break;
 
             case 'guru':
@@ -689,7 +694,7 @@ class AdminController extends Controller
         return match ($role) {
             'admin' => Admin::class,
             'guru' => Guru::class,
-            'murid' => Murid::class,
+            'murid' => MuridKelas::class,
             'orang_tua' => OrangTua::class,
             default => abort(404),
         };

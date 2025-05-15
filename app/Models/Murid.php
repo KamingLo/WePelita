@@ -14,26 +14,31 @@ class Murid extends Model
     public $incrementing = true;
     protected $keyType = 'int';
 
-    protected $fillable = ['profile_id', 'kelas_id', 'nis', 'nisn', 'asal_sekolah'];
+    protected $fillable = ['profile_id', 'kelas_tahun_id', 'nis', 'nisn', 'asal_sekolah'];
 
-    public function profile()
-    {
-        return $this->belongsTo(Profile::class, 'profile_id');
-    }
+public function profile()
+{
+    return $this->belongsTo(Profile::class, 'profile_id');
+}
 
-    public function kelas()
-    {
-        return $this->belongsTo(Kelas::class, 'kelas_id');
-    }
+
 
     public function orangTua()
     {
         return $this->belongsToMany(
             OrangTua::class,
             'murid_orang_tua',
-            'murid_id',
+            'murid_kelas_id',
             'orang_tua_id'
         );
+    }
+
+    public function muridkelas()
+    {
+        return $this->belongsToMany(KelasTahun::class,
+        'murid_kelas',
+        'murid_id',
+        'kelas_tahun_id');
     }
 
     public function absensi()

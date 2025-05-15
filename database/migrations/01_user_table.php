@@ -71,8 +71,8 @@ return new class extends Migration
 
         Schema::create('kelas_tahun', function(Blueprint $table){
             $table->id('kelas_tahun_id');
-            $table->string('kelas_id')->constrained('kelas', 'kelas_id')->onDelete('cascade');
-            $table->string('tahun_ajar_id')->constrained('tahun_ajar', 'tahun_ajar_id')->onDelete('cascade');
+            $table->foreignId('kelas_id')->constrained('kelas', 'kelas_id')->onDelete('cascade');
+            $table->foreignId('tahun_ajaran_id')->constrained('tahun_ajaran', 'tahun_ajaran_id')->onDelete('cascade');
         });
 
         Schema::create('murid_kelas', function(Blueprint $table){
@@ -83,7 +83,7 @@ return new class extends Migration
 
         Schema::create('murid_orang_tua', function (Blueprint $table){
             $table->id('murid_orang_tua_id');
-            $table->foreignId('murid_id')->constrained('murid', 'murid_id')->onDelete('cascade');
+            $table->foreignId('murid_kelas_id')->constrained('murid_kelas', 'murid_kelas_id')->onDelete('cascade');
             $table->foreignId('orang_tua_id')->constrained('orang_tua', 'orang_tua_id')->onDelete('cascade');
         });
     }

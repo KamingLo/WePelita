@@ -111,19 +111,19 @@
                 <tbody>
                     @foreach ($MuridOrangTuas as $MuridOrang_tua)
                         <tr>
-                            <td>{{ $MuridOrang_tua->Murid->profile->name }}</td>
-                            <td>{{ $MuridOrang_tua->Murid->profile->email }}</td>
-                            <td>{{ $MuridOrang_tua->Murid->kelas->nama_kelas }}</td>
-                            <td>{{ $MuridOrang_tua->Murid->nis }}</td>
-                            <td>{{ $MuridOrang_tua->Murid->nisn }}</td>
+                            <td>{{ $MuridOrang_tua->muridKelas->murid->profile->name }}</td>
+                            <td>{{ $MuridOrang_tua->muridKelas->Murid->profile->email }}</td>
+                            <td>{{ $MuridOrang_tua->muridKelas->kelasTahun->kelas->nama_kelas }}</td>
+                            <td>{{ $MuridOrang_tua->muridKelas->Murid->nis }}</td>
+                            <td>{{ $MuridOrang_tua->muridKelas->Murid->nisn }}</td>
                             <td>{{ $MuridOrang_tua->orangTua->profile->name }}</td>
-                            <td>{{ $MuridOrang_tua->Murid->asal_sekolah }}</td>
+                            <td>{{ $MuridOrang_tua->muridKelas->Murid->asal_sekolah }}</td>
 
                             <td>
                                 <div class="OptionManajemenTabel">
-                                    <a href="{{ route('admin.user.edit', ['id' => $MuridOrang_tua->Murid->murid_id, 'role' => 'murid']) }}" class="btn btn-sm btn-warning">
+                                    <a href="{{ route('admin.user.edit', ['id' => $MuridOrang_tua->MuridKelas->murid_kelas_id, 'role' => 'murid']) }}" class="btn btn-sm btn-warning">
                                         <i class='bx bx-edit-alt IconForButton'></i>Edit‎ ‎ ‎ ‎ ‎ </a>
-                                    <form method="POST" action="{{ route('admin.user.delete', ['id' => $MuridOrang_tua->Murid->murid_id, 'role' => 'murid']) }}" style="display:inline-block;">
+                                    <form method="POST" action="{{ route('admin.user.delete', ['id' => $MuridOrang_tua->Muridkelas->murid_kelas_id, 'role' => 'murid']) }}" style="display:inline-block;">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus user ini?')">

@@ -16,47 +16,52 @@
 
             <input type="hidden" name="role" value="{{ $role }}">
 
-            <div class="form-group">
-                <label for="name">Nama</label>
-                <input type="text" id="name" name="name" value="{{ $user->profile->name }}" required>
-            </div>
+            @php
+                $profile = $role === 'murid' ? $user->murid->profile : $user->profile;
+            @endphp
 
             <div class="form-group">
+                <label for="name">Nama</label>
+                <input type="text" id="name" name="name" value="{{old('name', $profile->name ?? '') }}" required>
+            </div>
+
+{{-- itu berguna buat edit jadi, usernya gak perlu ngetik ulang dari awal --}}
+            <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="{{ $user->profile->email }}" required>
+                <input type="email" id="email" name="email" value="{{ old('email', $profile->email ?? '') }}" required>
             </div>
 
             <div class="form-group">
                 <label for="alamat">Alamat</label>
-                <input type="text" id="alamat" name="alamat" value="{{ $user->profile->alamat }}" required>
+                <input type="text" id="alamat" name="alamat" value="{{ old('alamat', $profile->alamat ?? '') }}" required>
             </div>
 
             <div class="form-group">
                 <label for="jenis_kelamin">Jenis Kelamin</label>
                 <select id="jenis_kelamin" name="jenis_kelamin" required>
-                    <option value="Laki-laki" {{ $user->profile->jenis_kelamin == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                    <option value="Perempuan" {{ $user->profile->jenis_kelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                    <option value="Laki-laki" {{ old('jenis_kelamin', $profile->jenis_kelamin ?? '') }}>Laki-laki</option>
+                    <option value="Perempuan" {{ old('jenis_kelamin', $profile->jenis_kelamin ?? '') }}>Perempuan</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for="tanggal_lahir">Tanggal Lahir</label>
-                <input type="date" id="tanggal_lahir" name="tanggal_lahir" value="{{ $user->profile->tanggal_lahir }}" required>
+                <input type="date" id="tanggal_lahir" name="tanggal_lahir" value="{{ old('tanggal_lahir', $profile->tanggal_lahir ?? '') }}" required>
             </div>
 
             <div class="form-group">
                 <label for="tempat_lahir">Tempat Lahir</label>
-                <input type="text" id="tempat_lahir" name="tempat_lahir" value="{{ $user->profile->tempat_lahir }}" required>
+                <input type="text" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir', $profile->tempat_lahir ?? '') }}" required>
             </div>
 
             <div class="form-group">
-                <label for="pendidikan">Pendidikan</label>
-                <input type="text" id="pendidikan" name="pendidikan" value="{{ $user->profile->pendidikan }}" required>
+                <label for="pendidikan">Pendidikan terakhir</label>
+                <input type="text" id="pendidikan" name="pendidikan" value="{{ old('pendidikan', $profile->pendidikan ?? '') }}" required>
             </div>
 
             <div class="form-group">
                 <label for="no_telp">No Telepon</label>
-                <input type="text" id="no_telp" name="no_telp" value="{{ $user->profile->no_telp }}" required>
+                <input type="text" id="no_telp" name="no_telp" value="{{ old('no_telp', $profile->no_telp ?? '') }}" required>
             </div>
 
             <div class="form-group">
@@ -68,24 +73,24 @@
             @if ($role === 'murid')
                 <div class="form-group">
                     <label for="asal_sekolah">Asal Sekolah</label>
-                    <input type="text" id="asal_sekolah" name="asal_sekolah" value="{{ $user->asal_sekolah }}" required>
+                    <input type="text" id="asal_sekolah" name="asal_sekolah" value="{{  old('asal_sekolah', $user->murid->asal_sekolah ?? '') }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="nis">NIS</label>
-                    <input type="text" id="nis" name="nis" value="{{ $user->nis }}" required>
+                    <input type="text" id="nis" name="nis" value="{{  old('nis', $user->murid->nis ?? '') }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="nisn">NISN</label>
-                    <input type="text" id="nisn" name="nisn" value="{{ $user->nisn }}" required>
+                    <input type="text" id="nisn" name="nisn" value="{{  old('nisn', $user->murid->nisn ?? '') }}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="kelas_id">Kelas</label>
                     <select id="kelas_id" name="kelas_id" required>
-                        @foreach ($kelasList as $kelas)
-                            <option value="{{ $kelas->kelas_id }}" {{ $user->kelas_id == $kelas->kelas_id ? 'selected' : '' }}>
+                        @foreach ($kelasList as $kelastahun)
+                            <option value="{{ $kelastahun->kelas->kelas_id }}" {{ $user->kelas_id == $kelas->kelas_id ? 'selected' : '' }}>
                                 {{ $kelas->nama_kelas }}
                             </option>
                         @endforeach

@@ -13,17 +13,17 @@ class MuridOrangTua extends Model
     protected $primaryKey = 'murid_orang_tua_id';
 
     protected $fillable = [
-        'murid_id',
+        'murid_kelas_id',
         'orang_tua_id',
     ];
 
-    public function murid()
-    {
-        return $this->belongsTo(Murid::class, 'murid_id');
-    }
-
-    public function orangTua()
+    public function orangtua()
     {
         return $this->belongsTo(OrangTua::class, 'orang_tua_id');
+    }
+
+    public function muridkelas()
+    {
+        return $this->belongsTo(MuridKelas::class, 'murid_kelas_id');
     }
 }

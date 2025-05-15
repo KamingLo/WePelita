@@ -28,12 +28,12 @@
 
                 <div class="FormFor">
                     <label for="kelas_id">Kelas</label>
-                    <select name="kelas_id" id="kelas_id" class="form-control" required>
+                    <select name="kelas_tahun_id" id="kelas_id" class="form-control" required>
                         <option value="" disabled selected>-- Pilih Kelas --</option>
                         @foreach($kelas as $item)
-                            <option value="{{ $item->kelas_id }}"
-                                {{ old('kelas_id', $jadwal->kelas_id) == $item->kelas_id ? 'selected' : '' }}>
-                                {{ $item->nama_kelas }}
+                            <option value="{{ $item->kelas_tahun_id }}"
+                                {{ old('kelas_tahun_id', $jadwal->kelasTahun->kelas_tahun_id) == $item->kelas_tahun_id ? 'selected' : '' }}>
+                                {{ $item->kelas->nama_kelas }}
                             </option>
                         @endforeach
                     </select>
@@ -97,7 +97,7 @@
                     <tbody>
                         <tr>
                             <td>{{ $jadwal->pelajaran->namaPelajaran }}</td>
-                            <td>{{ $jadwal->kelas->nama_kelas }}</td>
+                            <td>{{ $jadwal->kelasTahun->kelas->nama_kelas }}</td>
                             <td>{{ $jadwal->hari }}</td>
                             <td>{{ $jadwal->waktu_mulai }}</td>
                             <td>{{ $jadwal->waktu_selesai }}</td>
