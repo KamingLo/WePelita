@@ -293,7 +293,10 @@ class AdminController extends Controller
             ->whereHas('tahunajar', function($query) {
                 $query->where('status', 'Aktif');
             })->get();
-            
+
+        // Ambil semua kelas untuk dropdown tujuan
+        $semuaKelas = Kelas::all();
+        
         return view('admin.kenaikanKelas', compact('kelasSekarang', 'semuaKelas', 'admin'));
     }
 
