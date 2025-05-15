@@ -442,9 +442,19 @@ class AdminController extends Controller
 
         // Simpan lampiran jika ada
         $lampiranPath = null;
-        if ($request->hasFile('lampiran')) {
-            $lampiranPath = $validated['lampiran']->store('lampiran', 'public');
-        }
+            if ($request->hasFile('lampiran')) {
+                $file = $request->file('lampiran');
+
+                // Pastikan nama file unik
+                $filename = time() . '_' . $file->getClientOriginalName();
+
+                // Simpan manual ke folder public/storage/lampiran
+                $file->move(public_path('storage/lampiran'), $filename);
+
+                // Simpan path relatif ke database
+                $lampiranPath = 'lampiran/' . $filename;
+            }
+
 
         $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
 
@@ -599,14 +609,15 @@ class AdminController extends Controller
     $role = request('role');
     $admin = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
 
+    $kelasList = [];
     if ($role === 'murid') {
         // Ambil data berdasarkan tabel pivot murid_kelas
         $muridKelas = MuridKelas::with(['murid.profile', 'kelastahun'])->findOrFail($id);
         $user = $muridKelas; // supaya tetap konsisten dengan view
-        $kelasList = KelasTahun::with(['kelas', 'tahunAjar'])
-            ->whereHas('tahunAjar', function ($query) {
-                $query->where('status', 'aktif'); // Atau sesuai nilainya
-            })->get();
+        $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
+            $query->where('status', 'Aktif');
+        })->get();
+
 
         return view('admin.ManajemenUserEdit', compact('user', 'role', 'admin', 'kelasList'))->with('id', $id);
     }
@@ -620,38 +631,60 @@ class AdminController extends Controller
 
 
     public function updateUser(Request $request, $id)
-    {
-        $role = $request->input('role');
-        $model = $this->getModelByRole($role);
-        $user = $model::with('profile')->findOrFail($id);
+{
+    $role = $request->input('role');
+    $model = $this->getModelByRole($role);
+    $user = $model::with('murid.profile')->findOrFail($id);
 
-        // Update data profil umum
-        $user->profile->name = $request->name;
-        $user->profile->email = $request->email;
-        $user->profile->alamat = $request->alamat;
-        $user->profile->jenis_kelamin = $request->jenis_kelamin;
-        $user->profile->tanggal_lahir = $request->tanggal_lahir;
-        $user->profile->tempat_lahir = $request->tempat_lahir;
-        $user->profile->pendidikan = $request->pendidikan;
-        $user->profile->foto = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $user->profile->foto;
-        $user->profile->no_telp = $request->no_telp;
+    if ($role == 'murid') {
+        $profile = $user->murid->profile;
 
-        // Update password jika diisi
+        // Update profile data
+        $profile->name = $request->name;
+        $profile->email = $request->email;
+        $profile->alamat = $request->alamat;
+        $profile->jenis_kelamin = $request->jenis_kelamin;
+        $profile->tanggal_lahir = $request->tanggal_lahir;
+        $profile->tempat_lahir = $request->tempat_lahir;
+        $profile->pendidikan = $request->pendidikan;
+        $profile->foto = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $profile->foto;
+        $profile->no_telp = $request->no_telp;
+
         if ($request->filled('password')) {
-            $user->profile->password = Hash::make($request->password);
+            $profile->password = Hash::make($request->password);
         }
 
-        $user->profile->save();
+        $profile->save();
 
-        // Update data berdasarkan peran
+        // Update fields di murid
+        $user->murid->nis = $request->nis;
+        $user->murid->nisn = $request->nisn;
+        $user->murid->asal_sekolah = $request->asal_sekolah;
+        $user->murid->save();
+
+        // Update kelas_tahun di murid_kelas (yaitu $user)
+        $user->kelas_tahun_id = $request->kelas_tahun_id;
+    } else {
+        // kasus lain seperti guru, orang_tua, admin tetap seperti sebelumnya
+        // update profile langsung di $user->profile
+        $profile = $user->profile;
+        $profile->name = $request->name;
+        $profile->email = $request->email;
+        $profile->alamat = $request->alamat;
+        $profile->jenis_kelamin = $request->jenis_kelamin;
+        $profile->tanggal_lahir = $request->tanggal_lahir;
+        $profile->tempat_lahir = $request->tempat_lahir;
+        $profile->pendidikan = $request->pendidikan;
+        $profile->foto = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $profile->foto;
+        $profile->no_telp = $request->no_telp;
+
+        if ($request->filled('password')) {
+            $profile->password = Hash::make($request->password);
+        }
+
+        $profile->save();
+
         switch ($role) {
-            case 'murid':
-                $user->nis = $request->nis;
-                $user->nisn = $request->nisn;
-                $user->asal_sekolah = $request->asal_sekolah;
-                $user->kelas_tahun_id = $request->kelas_tahun_id;
-                break;
-
             case 'guru':
                 $user->gelar = $request->gelar;
                 $user->statusMenikah = $request->statusMenikah;
@@ -663,19 +696,17 @@ class AdminController extends Controller
                 $user->profesi = $request->profesi;
                 break;
 
-            // Admin hanya update profile, tidak ada field tambahan
             case 'admin':
-                // Tidak ada field tambahan di tabel admin
+                // tidak ada field tambahan
                 break;
-
-            default:
-                return redirect()->back()->with('error', 'Peran tidak dikenali.');
         }
-
-        $user->save();
-
-        return redirect()->route('admin.ManajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
     }
+
+    $user->save();
+
+    return redirect()->route('admin.ManajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
+}
+
 
 
     public function destroyUser($id, Request $request)

@@ -22,7 +22,7 @@ class Kelas extends Model
     }
 
     public function tahun(){
-        return $this->belongsToMany(TahunAjar::class, 'kelas_tahun', 'kelas_id', 'tahun_ajar_id');
+        return $this->belongsToMany(TahunAjar::class, 'kelas_tahun', 'kelas_id', 'tahun_ajaran_id');
     }    
 
     public function jadwalPelajaran()

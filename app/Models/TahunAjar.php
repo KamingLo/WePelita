@@ -13,6 +13,6 @@ class TahunAjar extends Model
 
     public function kelas()
     {
-        return $this->belongsToMany(Kelas::class, 'kelas_tahun', 'tahun_ajar_id', 'kelas_id');
+        return $this->belongsToMany(Kelas::class, 'kelas_tahun', 'tahun_ajaran_id', 'kelas_id');
     }
 }

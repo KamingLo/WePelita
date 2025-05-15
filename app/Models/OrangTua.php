@@ -25,7 +25,7 @@ class OrangTua extends Model
             Murid::class,
             'murid_orang_tua',
             'orang_tua_id',
-            'murid_id'
+            'murid_kelas_id'
         );
     }
 }

@@ -57,7 +57,7 @@
                 
                 <div class="FormFor">
                     <label for="tanggal_lahir">Tanggal lahir:</label>
-                    <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control"  placeholder="Masukkan nomor telepon">
+                    <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control"  placeholder="Masukkan tanggal lahir">
                     @error('tanggal_lahir')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -65,7 +65,7 @@
 
                 <div class="FormFor">
                     <label for="tempat_lahir">Tempat Lahir:</label>
-                    <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" placeholder="Masukkan nomor telepon">
+                    <input type="text" name="tempat_lahir" id="tempat_lahir" class="form-control" placeholder="Masukkan tempat lahir">
                     @error('tempat_lahir')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -73,7 +73,7 @@
 
                 <div class="FormFor">
                     <label for="pendidikan">Pendidikan :</label>
-                    <input type="text" name="pendidikan" id="pendidikan" class="form-control" placeholder="Masukkan nomor telepon">
+                    <input type="text" name="pendidikan" id="pendidikan" class="form-control" placeholder="Masukkan pendidikan terakhir">
                     @error('pendidikan')
                       <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -152,7 +152,7 @@
                     <div class="parent-data-container">
                       <div class="FormFor">
                         <label for="ortu_name">Nama Wali Murid:</label>
-                        <input type="text" name="ortu_name" id="ortu_name" class="form-control" placeholder="Nama Orang Tua">
+                        <input type="text" name="ortu_name" id="ortu_name" class="form-control" placeholder="Nama wali murid">
                         @error('ortu_name')
                           <span class="error-message">{{ $message }}</span>
                         @enderror
@@ -160,7 +160,7 @@
                       
                       <div class="FormFor">
                         <label for="ortu_email">Email Wali Murid:</label>
-                        <input type="email" name="ortu_email" id="ortu_email" class="form-control" placeholder="Email Orang Tua">
+                        <input type="email" name="ortu_email" id="ortu_email" class="form-control" placeholder="Email wali murid">
                         @error('ortu_email')
                           <span class="error-message">{{ $message }}</span>
                         @enderror
@@ -168,7 +168,7 @@
 
                       <div class="FormFor">
                         <label for="ortu_alamat">Alamat Wali Murid:</label>
-                        <input type="text" name="ortu_alamat" id="ortu_alamat" class="form-control" placeholder="Nama Orang Tua">
+                        <input type="text" name="ortu_alamat" id="ortu_alamat" class="form-control" placeholder="Alamat wali murid">
                         @error('ortu_alamat')
                           <span class="error-message">{{ $message }}</span>
                         @enderror
@@ -188,7 +188,7 @@
                       
                       <div class="FormFor">
                         <label for="ortu_tempat_lahir">Tempat Lahir Wali Murid:</label>
-                        <input type="text" name="ortu_tempat_lahir" id="ortu_tempat_lahir" class="form-control" placeholder="Nama Orang Tua">
+                        <input type="text" name="ortu_tempat_lahir" id="ortu_tempat_lahir" class="form-control" placeholder="Tempat lahir wali murid">
                         @error('ortu_tempat_lahir')
                           <span class="error-message">{{ $message }}</span>
                         @enderror
@@ -196,7 +196,7 @@
                       
                       <div class="FormFor">
                           <label for="ortu_tanggal_lahir">Tanggal lahir:</label>
-                          <input type="date" name="ortu_tanggal_lahir" id="ortu_tanggal_lahir" class="form-control" placeholder="Masukkan nomor telepon">
+                          <input type="date" name="ortu_tanggal_lahir" id="ortu_tanggal_lahir" class="form-control" placeholder="Tanggal lahir wali murid">
                           @error('ortu_tanggal_lahir')
                             <span class="error-message">{{ $message }}</span>
                           @enderror
@@ -204,7 +204,7 @@
 
                       <div class="FormFor">
                         <label for="ortu_profesi">Profesi Wali Murid:</label>
-                        <input type="text" name="ortu_profesi" id="ortu_profesi" class="form-control" placeholder="Profesi Orang Tua">
+                        <input type="text" name="ortu_profesi" id="ortu_profesi" class="form-control" placeholder="Profesi wali murid">
                         @error('ortu_profesi')
                           <span class="error-message">{{ $message }}</span>
                         @enderror  
@@ -212,7 +212,7 @@
                       
                       <div class="FormFor">
                         <label for="ortu_pendidikan">Pendidikan terakhir Wali Murid:</label>
-                        <input type="text" name="ortu_pendidikan" id="ortu_pendidikan" class="form-control" placeholder="Profesi Orang Tua">
+                        <input type="text" name="ortu_pendidikan" id="ortu_pendidikan" class="form-control" placeholder="Pendidikan terakhir wali murid">
                         @error('ortu_pendidikan')
                           <span class="error-message">{{ $message }}</span>
                         @enderror  
@@ -220,7 +220,7 @@
 
                       <div class="FormFor">
                         <label for="ortu_no_telp">No Telp Wali Murid:</label>
-                        <input type="text" name="ortu_no_telp" id="ortu_no_telp" class="form-control" placeholder="No Telp Orang Tua">
+                        <input type="text" name="ortu_no_telp" id="ortu_no_telp" class="form-control" placeholder="No Telp wali murid">
                         @error('ortu_no_telp')
                             <span class="error-message">{{ $message }}</span>
                         @enderror 
@@ -228,7 +228,7 @@
                       
                       <div class="FormFor">
                         <label for="ortu_password">Password Wali Murid:</label>
-                        <input type="password" name="ortu_password" id="ortu_password" class="form-control" placeholder="Password Orang Tua">
+                        <input type="password" name="ortu_password" id="ortu_password" class="form-control" placeholder="Password wali murid">
                         @error('ortu_password')
                           <span class="error-message">{{ $message }}</span>
                         @enderror

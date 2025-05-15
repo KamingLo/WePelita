@@ -12,7 +12,7 @@ class KelasTahun extends Model
 
     protected $fillable = [
         'kelas_id',
-        'tahun_ajar_id',
+        'tahun_ajaran_id',
     ];
 
     public function kelas()
@@ -21,6 +21,6 @@ class KelasTahun extends Model
 }
 
     public function tahunajar(){
-        return $this->belongsTo(TahunAjar::class, 'tahun_ajar_id');
+        return $this->belongsTo(TahunAjar::class, 'tahun_ajaran_id');
     }
 }

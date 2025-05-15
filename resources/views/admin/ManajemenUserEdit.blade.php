@@ -87,12 +87,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="kelas_id">Kelas</label>
-                    <select id="kelas_id" name="kelas_id" required>
+                    <label for="kelas_tahun_id">Kelas</label>
+                    <select id="kelas_tahun_id" name="kelas_tahun_id" required>
                         @foreach ($kelasList as $kelastahun)
-                            <option value="{{ $kelastahun->kelas->kelas_id }}" {{ $user->kelas_id == $kelas->kelas_id ? 'selected' : '' }}>
-                                {{ $kelas->nama_kelas }}
+                            <option value="{{old('kelas_tahun_id', $kelastahun->kelas_tahun_id) }}">
+                                {{ $kelastahun->kelas->nama_kelas }}
                             </option>
+
                         @endforeach
                     </select>
                 </div>
