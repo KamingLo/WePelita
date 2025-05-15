@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Middleware\RoleMiddleware;
@@ -53,6 +52,10 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::put('admin/manajemenKelas/edit/{id}', [AdminController::class, 'updateKelas'])->name('kelas.update');
     Route::delete('admin/manajemenKelas/destroy/{id}', [AdminController::class, 'hapusKelas'])->name('kelas.destroy');
     
+    // Rute untuk kenaikan kelas
+    Route::get('admin/kenaikanKelas', [AdminController::class, 'tampilkanFormKenaikanKelas'])->name('admin.kenaikanKelas');
+    Route::post('admin/kenaikanKelas', [AdminController::class, 'prosesKenaikanKelas'])->name('admin.prosesKenaikanKelas');
+
     Route::get('admin/manajemenPost', [AdminController::class, 'tampilkanManajemenPost'])->name('admin.manajemenPost');
     Route::get('admin/manajemenPost/pengumuman/update/{id}', [AdminController::class, 'tampilkanPengumuman'])->name('pengumuman.update');
     Route::post('admin/manajemenPost/pengumuman/update/{id}', [AdminController::class, 'updatePengumuman'])->name('edit.pengumuman');
