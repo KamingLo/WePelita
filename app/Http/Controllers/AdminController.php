@@ -188,43 +188,98 @@ class AdminController extends Controller
 
     public function tampilkanManajemenKelas(){
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.ManajemenKelas', compact('admin'));
+        $kelastahuns = KelasTahun::all();
+        return view('admin.ManajemenKelas', compact('admin', 'kelastahuns'));
     }
 
     public function tambahKelas(Request $request)
+    {
+        $request->validate([
+            'nama_kelas' => 'required|string',
+            'tahun_ajar' => 'required|string',
+            'semester' => 'required|string',
+        ]);
+
+        $status = 'Aktif';
+
+        // Cek apakah tahun ajaran + semester sudah ada
+        $tahunAjar = TahunAjar::where('tahun_ajaran', $request->tahun_ajar)
+            ->where('semester', $request->semester)
+            ->first();
+
+        if (!$tahunAjar) {
+            $tahunAjar = TahunAjar::create([
+                'tahun_ajaran' => $request->tahun_ajar,
+                'semester' => $request->semester,
+                'status' => $status,
+            ]);
+        }
+
+        $kelas = Kelas::create([
+            'nama_kelas' => $request->nama_kelas
+        ]);
+
+        // PERHATIKAN: pakai tahun_ajaran_id, sesuai primaryKey
+        $kelas->tahun()->attach($tahunAjar->tahun_ajaran_id);
+
+        return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas baru berhasil dibuat');
+    }
+
+    public function tampilkanUpdateKelas($id){
+        $kelastahun = KelasTahun::findOrFail($id);
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+        return view('admin.editKelas', compact('kelastahun', 'admin'));
+    }
+
+    public function updateKelas(Request $request, $id)
 {
+    $kelastahun = KelasTahun::findOrFail($id);
+
     $request->validate([
         'nama_kelas' => 'required|string',
-        'tahun_ajar' => 'required|string',
+        'tahun_ajaran' => 'required|string',
         'semester' => 'required|string',
+        'status' => 'required|in:Aktif,Tidak Aktif',
     ]);
 
-    $status = 'Aktif';
-
-    // Cek apakah tahun ajaran + semester sudah ada
-    $tahunAjar = TahunAjar::where('tahun_ajaran', $request->tahun_ajar)
+    // Cari TahunAjaran jika ada
+    $tahunAjar = TahunAjar::where('tahun_ajaran', $request->tahun_ajaran)
         ->where('semester', $request->semester)
         ->first();
 
-    if (!$tahunAjar) {
+    if ($tahunAjar) {
+        // Update status jika sudah ada
+        $tahunAjar->status = $request->status;
+        $tahunAjar->save();
+    } else {
+        // Jika belum ada, buat baru
         $tahunAjar = TahunAjar::create([
-            'tahun_ajaran' => $request->tahun_ajar,
+            'tahun_ajaran' => $request->tahun_ajaran,
             'semester' => $request->semester,
-            'status' => $status,
+            'status' => $request->status,
         ]);
     }
 
-    $kelas = Kelas::create([
-        'nama_kelas' => $request->nama_kelas
-    ]);
+    // Update nama kelas
+    $kelas = $kelastahun->kelas;
+    $kelas->nama_kelas = $request->nama_kelas;
+    $kelas->save();
 
-    // PERHATIKAN: pakai tahun_ajaran_id, sesuai primaryKey
-    $kelas->tahun()->attach($tahunAjar->tahun_ajaran_id);
+    // Update relasi kelas_tahun
+    $kelastahun->tahun_ajaran_id = $tahunAjar->tahun_ajaran_id;
+    $kelastahun->save();
 
-    return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas baru berhasil dibuat');
+    return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas berhasil diperbarui');
 }
 
 
+    public function hapusKelas($id)
+    {
+        $kelastahun = KelasTahun::findOrFail($id);
+        $kelastahun->delete();
+
+        return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas berhasil dihapus');
+    }
 
     public function tampilkanJadwal(){
         $pelajaran = Pelajaran::all();

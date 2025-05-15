@@ -49,6 +49,9 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     
     Route::get('admin/manajemenKelas', [AdminController::class, 'tampilkanManajemenKelas'])->name('admin.manajemenKelas');
     Route::post('admin/manajemenKelas', [AdminController::class, 'tambahKelas'])->name('admin.tambahKelas');
+    Route::get('admin/manajemenKelas/edit/{id}', [AdminController::class, 'tampilkanUpdateKelas'])->name('kelas.update');
+    Route::put('admin/manajemenKelas/edit/{id}', [AdminController::class, 'updateKelas'])->name('kelas.update');
+    Route::delete('admin/manajemenKelas/destroy/{id}', [AdminController::class, 'hapusKelas'])->name('kelas.destroy');
     
     Route::get('admin/manajemenPost', [AdminController::class, 'tampilkanManajemenPost'])->name('admin.manajemenPost');
     Route::get('admin/manajemenPost/pengumuman/update/{id}', [AdminController::class, 'tampilkanPengumuman'])->name('pengumuman.update');

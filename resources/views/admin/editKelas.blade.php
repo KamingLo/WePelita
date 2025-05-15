@@ -9,28 +9,40 @@
 
         <div class="LayoutJadwalForm">
             <h2>Tambah Kelas</h2>
-            <form action="{{ route('admin.tambahKelas') }}" method="POST">
+            <form action="{{ route('kelas.update', $kelastahun->kelas_tahun_id) }}" method="POST">
                 @csrf
-
+                @method('PUT')
                 <div class="FormFor">
                     <label for="nama_kelas">Nama Kelas</label>
-                    <input type="text" name="nama_kelas" id="nama_kelas">
+                    <input type="text" name="nama_kelas" id="nama_kelas" value="{{ $kelastahun->kelas->nama_kelas }}">
                 </div>
+                    @error('nama_kelas')
+                        <span class="error-message">{{ $message }}</span>
+                      @enderror
 
                 <div class="FormFor">
                     <label for="tahunAjar">Tahun ajar</label>
-                    <select name="tahun_ajar" id="tahunAjar">
-                        <option value="{{ (now()->year) }}/{{ (now()->year)+1}}">{{ (now()->year) }}/{{ (now()->year)+1}}</option>
-                        <option value="{{ (now()->year)-1 }}/{{ (now()->year)}}">{{ (now()->year)-1 }}/{{ (now()->year)}}</option>
-                        <option value="{{ (now()->year)-2 }}/{{ (now()->year)}}">{{ (now()->year)-2 }}/{{ (now()->year)-1}}</option>
+                    <select name="tahun_ajaran" id="tahunAjar">
+                        <option value="{{ (now()->year) }}/{{ (now()->year)+1}}" {{ $kelastahun->tahunajar->tahun_ajaran == (now()->year) . '/' . (now()->year)+1 ? 'selected' : '' }}>{{ (now()->year) }}/{{ (now()->year)+1}}</option>
+                        <option value="{{ (now()->year)-1 }}/{{ (now()->year)}}" {{ $kelastahun->tahunajar->tahun_ajaran == (now()->year)-1 . '/' . (now()->year) ? 'selected' : '' }}>{{ (now()->year)-1 }}/{{ (now()->year)}}</option>
+                        <option value="{{ (now()->year)-2 }}/{{ (now()->year)}}" {{ $kelastahun->tahunajar->tahun_ajaran == (now()->year)-2 . '/' . (now()->year) ? 'selected' : '' }}>{{ (now()->year)-2 }}/{{ (now()->year)-1}}</option>
                     </select>
                 </div>
+
 
                 <div class="FormFor">
                     <label for="semester">Semester</label>
                     <select name="semester" id="semester">
-                        <option value="Ganjil">Ganjil</option>
-                        <option value="Genap">Genap</option>
+                        <option value="Ganjil" {{ $kelastahun->tahunajar->semester == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
+                        <option value="Genap" {{ $kelastahun->tahunajar->semester == 'Genap' ? 'selected' : '' }}>Genap</option>
+                    </select>
+                </div>
+
+                <div class="FormFor">
+                    <label for="status">status</label>
+                    <select name="status" id="status">
+                        <option value="Aktif" {{ $kelastahun->status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="Tidak Aktif" {{ $kelastahun->status == 'Tidak Aktif' ? 'selected' : '' }}>Tidak aktif</option>
                     </select>
                 </div>
 
@@ -45,9 +57,9 @@
               </div>
             @endif
 
-            @if ($errors->has('jadwal'))
+            @if ($errors->has('kelas'))
                 <div class="alertD alert-danger">
-                    {{ $errors->first('jadwal') }}
+                    {{ $errors->first('kelas') }}
                 </div>
             @endif
 
@@ -63,35 +75,15 @@
                             <th>Tahun ajaran</th>
                             <th>Semester</th>
                             <th>Status</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($kelastahuns as $kelastahun)
                             <tr>
                                 <td>{{ $kelastahun->kelas->nama_kelas}}</td>
                                 <td>{{ $kelastahun->tahunajar->tahun_ajaran }}</td>
                                 <td>{{ $kelastahun->tahunajar->semester}}</td>
                                 <td>{{ $kelastahun->tahunajar->status}}</td>
-                                <td>
-                                    <div class="OptionJadwalTabel">
-                                        <form action="{{ route('kelas.update', $kelastahun->kelas_tahun_id) }}" method="GET">
-                                            <a href="manajemenKelas/edit/{{ $kelastahun->kelas_tahun_id }}" class="TombolOJT Tedit">
-                                                <i class='bx bx-edit-alt IconOJT'></i>Edit‎ ‎ ‎ ‎ ‎ 
-                                            </a>
-                                        </form>
-
-                                        <form action="{{ route('kelas.destroy', $kelastahun->kelas_tahun_id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="TombolOJT TombolDelete">
-                                                <i class='bx bx-trash IconOJT'></i>Hapus
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
                             </tr>
-                        @endforeach
                     </tbody>
                 </table>
             </div>
