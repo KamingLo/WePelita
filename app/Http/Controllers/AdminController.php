@@ -756,9 +756,9 @@ class AdminController extends Controller
 {
     $role = $request->input('role');
     $model = $this->getModelByRole($role);
-    $user = $model::with('murid.profile')->findOrFail($id);
 
-    if ($role == 'murid') {
+    if ($role === 'murid') {
+        $user = $model::with('murid.profile')->findOrFail($id);
         $profile = $user->murid->profile;
 
         // Update profile data
@@ -787,9 +787,10 @@ class AdminController extends Controller
         // Update kelas_tahun di murid_kelas (yaitu $user)
         $user->kelas_tahun_id = $request->kelas_tahun_id;
     } else {
-        // kasus lain seperti guru, orang_tua, admin tetap seperti sebelumnya
-        // update profile langsung di $user->profile
+        $user = $model::with('profile')->findOrFail($id);
         $profile = $user->profile;
+
+        // Update profile data
         $profile->name = $request->name;
         $profile->email = $request->email;
         $profile->alamat = $request->alamat;
@@ -829,9 +830,7 @@ class AdminController extends Controller
     return redirect()->route('admin.ManajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
 }
 
-
-
-    public function destroyUser($id, Request $request)
+public function destroyUser($id, Request $request)
     {
         $role = $request->query('role');
         $model = $this->getModelByRole($role);
