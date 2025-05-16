@@ -54,7 +54,7 @@
         </div>
 
         <div class="LayoutJadwalTable">
-            <h2>Jadwal Pembelajaran</h2>
+            <h2>Semua kelas</h2>
             <div class="DisplayDataTable">
                 <table class="table">
                     <thead>

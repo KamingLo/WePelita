@@ -276,7 +276,9 @@ class AdminController extends Controller
     public function hapusKelas($id)
     {
         $kelastahun = KelasTahun::findOrFail($id);
-        $kelastahun->delete();
+        $kelas = $kelastahun->kelas->kelas_id;
+        $kelas = Kelas::findOrFail($kelas);
+        $kelas->delete();
 
         return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas berhasil dihapus');
     }
@@ -285,8 +287,6 @@ class AdminController extends Controller
     public function tampilkanFormKenaikanKelas()
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        // Ambil tahun ajaran aktif
-        $tahunAjarAktif = TahunAjar::where('status', 'Aktif')->first();
         
         // Ambil semua kelas tahun untuk tahun ajaran aktif
         $kelasSekarang = KelasTahun::with(['kelas', 'tahunajar'])
@@ -296,52 +296,57 @@ class AdminController extends Controller
 
         // Ambil semua kelas untuk dropdown tujuan
         $semuaKelas = Kelas::all();
-        
+
         return view('admin.kenaikanKelas', compact('kelasSekarang', 'semuaKelas', 'admin'));
     }
 
     // Fungsi untuk memproses kenaikan kelas
     public function prosesKenaikanKelas(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'kelas_asal' => 'required|exists:kelas_tahun,kelas_tahun_id',
-            'kelas_tujuan' => 'required|exists:kelas,kelas_id',
-            'tahun_ajaran' => 'required',
-            'semester' => 'required|in:Ganjil,Genap'
+{
+    // Validasi input
+    $request->validate([
+        'kelas_asal' => 'required|exists:kelas_tahun,kelas_tahun_id',
+        'kelas_tujuan' => 'required|exists:kelas,kelas_id',
+        'tahun_ajaran' => 'required',
+        'semester' => 'required|in:Ganjil,Genap'
+    ]);
+
+    // 1. Cari atau buat tahun ajaran baru
+    $tahunAjarBaru = TahunAjar::updateOrCreate(
+        [
+            'tahun_ajaran' => $request->tahun_ajaran,
+            'semester' => $request->semester
+        ],
+        [
+            'status' => 'Aktif'
+        ]
+    );
+
+    // 2. Cari atau buat kelas_tahun untuk kelas tujuan
+    $kelasTahunBaru = KelasTahun::updateOrCreate([
+        'kelas_id' => $request->kelas_tujuan,
+        'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id
+    ]);
+
+    // 3. Ambil semua murid dari kelas asal
+    $muridKelas = MuridKelas::where('kelas_tahun_id', $request->kelas_asal)->get();
+
+    // 4. Buat record baru untuk setiap murid di kelas baru
+    foreach ($muridKelas as $mk) {
+        MuridKelas::create([
+            'murid_id' => $mk->murid_id,
+            'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id
         ]);
-
-        // 1. Cari atau buat tahun ajaran baru
-        $tahunAjarBaru = TahunAjar::firstOrCreate(
-            [
-                'tahun_ajaran' => $request->tahun_ajaran,
-                'semester' => $request->semester
-            ],
-            [
-                'status' => 'Aktif'
-            ]
-        );
-
-        // 2. Cari atau buat kelas_tahun untuk kelas tujuan
-        $kelasTahunBaru = KelasTahun::firstOrCreate([
-            'kelas_id' => $request->kelas_tujuan,
-            'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id
-        ]);
-
-        // 3. Ambil semua murid dari kelas asal
-        $muridKelas = MuridKelas::where('kelas_tahun_id', $request->kelas_asal)->get();
-
-        // 4. Buat record baru untuk setiap murid di kelas baru
-        foreach($muridKelas as $mk) {
-            // Buat record baru di murid_kelas untuk tahun ajaran baru
-            MuridKelas::create([
-                'murid_id' => $mk->murid_id,
-                'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Kenaikan kelas berhasil diproses');
     }
+
+    // 5. Set kelas_tahun asal menjadi Tidak Aktif
+    $kelasAsal = KelasTahun::findOrFail($request->kelas_asal);
+    $kelasAsal->tahunajar->status = 'Tidak Aktif';
+    $kelasAsal->save();
+
+    return redirect()->back()->with('success', 'Kenaikan kelas berhasil diproses');
+}
+
 
     public function tampilkanJadwal(){
         $pelajaran = Pelajaran::all();

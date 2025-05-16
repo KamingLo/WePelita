@@ -29,7 +29,9 @@
                     <select name="kelas_tujuan" id="kelas_tujuan" class="form-control" required>
                         <option value="" disabled selected>-- Pilih Kelas Tujuan --</option>
                         @foreach($semuaKelas as $kelas)
-                            <option value="{{ $kelas->kelas_id }}">{{ $kelas->nama_kelas }}</option>
+                            <option value="{{ $kelas->kelas_id }}">
+                                {{ $kelas->nama_kelas }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
