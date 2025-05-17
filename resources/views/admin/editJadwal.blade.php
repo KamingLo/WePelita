@@ -13,9 +13,9 @@
                 @csrf
                 @method('PUT')
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="pelajaran_id">Pelajaran</label>
-                    <select name="pelajaran_id" id="pelajaran_id" class="form-control" required>
+                    <select name="pelajaran_id" id="pelajaran_id" class="TampilanIsiData" required>
                         <option value="" disabled selected>-- Pilih Pelajaran --</option>
                         @foreach($pelajaran as $item)
                             <option value="{{ $item->pelajaran_id }}"
@@ -26,9 +26,9 @@
                     </select>
                 </div>
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="kelas_id">Kelas</label>
-                    <select name="kelas_tahun_id" id="kelas_id" class="form-control" required>
+                    <select name="kelas_tahun_id" id="kelas_id" class="TampilanIsiData" required>
                         <option value="" disabled selected>-- Pilih Kelas --</option>
                         @foreach($kelas as $item)
                             <option value="{{ $item->kelas_tahun_id }}"
@@ -39,9 +39,9 @@
                     </select>
                 </div>
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="hari">Hari</label>
-                    <select name="hari" id="hari" class="form-control" required>
+                    <select name="hari" id="hari" class="TampilanIsiData" required>
                         <option value="" disabled selected>-- Pilih Hari --</option>
                         @foreach(['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'] as $day)
                             <option value="{{ $day }}"
@@ -52,28 +52,28 @@
                     </select>
                 </div>
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="waktu_mulai">Waktu Mulai</label>
-                    <input type="time" name="waktu_mulai" id="waktu_mulai" class="form-control" value="{{ old('waktu_mulai', $jadwal->waktu_mulai) }}" required>
+                    <input type="time" name="waktu_mulai" id="waktu_mulai" class="TampilanIsiData" value="{{ old('waktu_mulai', $jadwal->waktu_mulai) }}" required>
                 </div>
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="waktu_selesai">Waktu Selesai</label>
-                    <input type="time" name="waktu_selesai" id="waktu_selesai" class="form-control" value="{{ old('waktu_selesai', $jadwal->waktu_selesai) }}" required>
+                    <input type="time" name="waktu_selesai" id="waktu_selesai" class="TampilanIsiData" value="{{ old('waktu_selesai', $jadwal->waktu_selesai) }}" required>
                 </div>
 
                 <div class="OptionPelajaranTabelEdit">
                     <button type="submit" class="TombolOJTEdit TambahJadwalEdit">
-                        <i class='bx bx-layer-plus IconOJT'></i>Simpan Jadwal
+                        Simpan Jadwal
                     </button>
 
-                    <a href="{{ route('admin.pelajaran') }}" class="TombolOJTEdit btn-danger">Batal</a>
+                    <a href="{{ route('admin.jadwal') }}" class="TombolOJTEdit TombolJadwalBatal">Batal</a>
                 </div>
 
             </form>
 
             @if ($errors->has('jadwal'))
-                <div class="alert alert-danger">
+                <div class="UiPsnDis PsnError">
                     {{ $errors->first('jadwal') }}
                 </div>
             @endif

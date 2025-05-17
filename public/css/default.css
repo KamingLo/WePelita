@@ -215,3 +215,26 @@ footer {
   font-size: 12px;
   padding-top: 10px;
 }
+
+/* ----------------------------------------------- */
+/* -------------- Tombol Clear Form  ------------- */
+/* ----------------------------------------------- */
+
+.HapusBar {
+    position: absolute; 
+    right: 10px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    display: none;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    transition: transform 0.2s;
+}
+
+.HapusBar:hover {
+    transform: translateY(-50%) scale(1.2);
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+    border-radius: 20%;
+}

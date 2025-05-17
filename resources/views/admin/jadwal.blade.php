@@ -12,9 +12,9 @@
             <form action="{{ route('jadwal.store') }}" method="POST">
                 @csrf
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="pelajaran_id">Pelajaran</label>
-                    <select name="pelajaran_id" id="pelajaran_id" class="form-control" required>
+                    <select name="pelajaran_id" id="pelajaran_id" class="TampilanIsiData" required>
                         <option value="" disabled selected>-- Pilih Pelajaran --</option>
                         @foreach($pelajaran as $item)
                             <option value="{{ $item->pelajaran_id }}">{{ $item->namaPelajaran }} ({{ $item ->guru->profile->name }})</option>
@@ -22,22 +22,22 @@
                     </select>
                 </div>
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="kelas_tahun_id">Kelas</label>
-                    <select name="kelas_tahun_id" id="kelas_tahun_id" class="form-control" required>
+                    <select name="kelas_tahun_id" id="kelas_tahun_id" class="TampilanIsiData" required>
                         <option value="" disabled selected>-- Pilih Kelas --</option>
                         @foreach($kelasTahun as $item)
                             <option value="{{ $item->kelas_tahun_id }}">{{ $item->kelas->nama_kelas }} ({{ $item->TahunAjar->tahun_ajaran }})</option>
                         @endforeach
                     </select>
                     @error('namaPelajaran')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="UiPsnDis alert-danger">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="hari">Hari</label>
-                    <select name="hari" id="hari" class="form-control" required>
+                    <select name="hari" id="hari" class="TampilanIsiData" required>
                         <option value="" disabled selected>-- Pilih Hari --</option>
                         <option value="Senin">Senin</option>
                         <option value="Selasa">Selasa</option>
@@ -47,14 +47,14 @@
                     </select>
                 </div>
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="waktu_mulai">Waktu Mulai</label>
-                    <input type="time" name="waktu_mulai" id="waktu_mulai" class="form-control" required>
+                    <input type="time" name="waktu_mulai" id="waktu_mulai" class="TampilanIsiData" required>
                 </div>
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="waktu_selesai">Waktu Selesai</label>
-                    <input type="time" name="waktu_selesai" id="waktu_selesai" class="form-control" required>
+                    <input type="time" name="waktu_selesai" id="waktu_selesai" class="TampilanIsiData" required>
                 </div>
 
                 <button type="submit" class="TombolOJT TambahJadwal">
@@ -63,13 +63,13 @@
             </form>
 
             @if(session('success'))
-              <div class="alert alert-success">
+              <div class="UiPsnDis PsnBerhasil">
                   {{ session('success') }}
               </div>
             @endif
 
             @if ($errors->has('jadwal'))
-                <div class="alertD alert-danger">
+                <div class="UiPsnDisD PsnError">
                     {{ $errors->first('jadwal') }}
                 </div>
             @endif

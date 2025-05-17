@@ -19,8 +19,9 @@ body {
     overflow: hidden;
 }
 
-/* ------------- */
-/* Bagian Header */
+/* ----------------------------------------------- */
+/* ----------------- Bagian Header --------------- */
+/* ----------------------------------------------- */
 
 .ContainerJadwal {
     margin-left: 280px;
@@ -52,6 +53,7 @@ h1:after {
 
 /* ----------------------------------------------- */
 /* ----------------- Bagian Form ----------------- */
+/* ----------------------------------------------- */
 
 .LayoutJadwalForm {
     flex: 1;
@@ -84,7 +86,7 @@ h1:after {
     background-color: var(--primary-color);
 }
 
-.FormFor {
+.IsiData {
     margin-bottom: 15px;
 }
 
@@ -96,7 +98,7 @@ label {
     font-size: 14px;
 }
 
-.form-control {
+.TampilanIsiData {
     width: 100%;
     padding: 10px 15px;
     border: 1px solid #ddd;
@@ -105,13 +107,13 @@ label {
     transition: var(--transition);
 }
 
-.form-control:focus {
+.TampilanIsiData:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
 }
 
-select.form-control {
+select.TampilanIsiData {
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M8 9.5a.5.5 0 01-.354-.146l-4-4a.5.5 0 01.708-.708L8 8.293l3.646-3.647a.5.5 0 01.708.708l-4 4A.5.5 0 018 9.5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -121,6 +123,7 @@ select.form-control {
 
 /* ----------------------------------------------- */
 /* ----------------- Bagian Table ---------------- */
+/* ----------------------------------------------- */
 
 .LayoutJadwalTable {
     flex: 2;
@@ -204,6 +207,7 @@ select.form-control {
 
 /* ----------------------------------------------- */
 /* ---------------- Bagian Tombol ---------------- */
+/* ----------------------------------------------- */
 
 .TombolOJT {
     display: inline-block;
@@ -221,6 +225,32 @@ select.form-control {
     cursor: pointer;
 }
 
+
+.TombolOJTEdit {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 8px 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 6px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.OptionPelajaranTabelEdit {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
 .TambahJadwal {
     color: white;
     background-color: var(--primary-color);
@@ -231,13 +261,20 @@ select.form-control {
     margin-top: 1rem;
 }
 
+.TambahJadwal:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
+    transform: translate(-50%) scale(1.05);
+    box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+}
+
 .TambahJadwalEdit {
-  color: white;
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-  position: static;
-  transform: none;
-  margin-top: 0;
+    color: white;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    position: static;
+    transform: none;
+    margin-top: 0;
 }
 
 .TambahJadwalEdit:hover {
@@ -278,19 +315,35 @@ select.form-control {
 }
 
 .IconOJT {
-  font-size: 15px;
-  letter-spacing: 10px;
-  transform: translate(-0.10rem, 0.10rem);
+    font-size: 15px;
+    letter-spacing: 10px;
+    transform: translate(-0.10rem, 0.10rem);
 }
 
 .OptionJadwalTabel {
-  gap: 0.5rem;
-  width: 4rem;
-  display: grid;
-  justify-content: center;
+    gap: 0.5rem;
+    width: 4rem;
+    display: grid;
+    justify-content: center;
 }
 
-.alert-danger {
+.TombolJadwalBatal {
+    color: white;
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    text-decoration: none;
+}
+
+.TombolJadwalBatal:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Pesan Error ----------------- */
+/* ----------------------------------------------- */
+
+.PsnError {
     color: #721c24;
     background-color: #f8d7da;
     border-color: #f5c6cb;
@@ -300,81 +353,45 @@ select.form-control {
     border-radius: 4px;
 }
 
-.alertD {
+.UiPsnDisD {
     padding: 12px 15px;
     border-radius: var(--border-radius);
     grid-column: 1 / -1;
     transform: translateY(5rem);
 }
 
-.alert {
+.UiPsnDis {
     padding: 12px 15px;
     border-radius: var(--border-radius);
     grid-column: 1 / -1;
     transform: translateY(5.5rem);
 }
 
-.alert-success {
+.PsnBerhasil {
     color: #155724;
     background-color: #d4edda;
     border-color: #c3e6cb;
 }
 
-.TombolOJTEdit {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: 8px 15px;
-  font-size: 14px;
-  line-height: 1.5;
-  border-radius: 6px;
-  transition: var(--transition);
-  cursor: pointer;
-}
-
-.OptionPelajaranTabelEdit {
-  display: flex;
-  justify-content: flex-start;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  width: 100%;
-}
-
-.btn-danger {
-    color: white;
-    background-color: var(--danger-color);
-    border-color: var(--danger-color);
-    text-decoration: none;
-}
-
-.btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-}
-
 /* ----------------------------------------------- */
 /* ---------------- Bagian View ------------------ */
+/* ----------------------------------------------- */
 
 @media (max-width: 1200px) {
-  body {
-    overflow: visible;
-  }
+    body {
+        overflow: visible;
+    }
 
-  .LayoutJadwalForm,
-  .LayoutJadwalTable {
-    max-width: 100%;
-  }
+    .LayoutJadwalForm,
+    .LayoutJadwalTable {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 768px) {
-  body {
-    overflow: visible;
-  }
+    body {
+        overflow: visible;
+    }
 }
 
 /* ---------------------- End ---------------------- */

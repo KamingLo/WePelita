@@ -9,13 +9,13 @@
     <div class="LayoutNewPost">
         <h2>Buat Postingan</h2>
 
-        <div class="form-container">
-            <div class="form-left">
+        <div class="ContainerDalam">
+            <div class="FormKiri">
                 <form action="{{ route('admin.posting') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="mb-3">
-                        <label class="form-label">Tipe Postingan</label><br>
+                    <div class="IsiData">
+                        <label class="NamaLabelBar">Tipe Postingan</label><br>
                         <input type="radio" id="announcement" name="tipe" value="pengumuman" checked>
                         <label for="announcement">Pengumuman</label>
 
@@ -23,32 +23,39 @@
                         <label for="event">Kegiatan</label>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="judul" class="form-label">Judul</label>
-                        <input class="form-control" type="text" id="judul" name="judul" required></input>
+                    <div class="IsiData">
+                        <label for="judul" class="NamaLabelBar">Judul</label>
+                        <input class="TampilanIsiData" type="text" id="judul" name="judul" required>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="isi" class="form-label">Isi</label>
-                        <textarea class="form-control" id="isi" name="isi" rows="6" required></textarea>
+                    <div class="IsiData">
+                        <label for="isi" class="NamaLabelBar">Isi</label>
+                        <textarea class="TampilanIsiData" id="isi" name="isi" rows="6" required></textarea>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="lampiran" class="form-label">Foto Kegiatan</label>
-                        <input type="file" class="form-control" id="lampiran" name="lampiran" accept="image/*">
+                    <div class="IsiData">
+                        <label for="lampiran" class="NamaLabelBar">Foto Kegiatan</label>
+                        <div class="UploadFoto">
+                            <input type="file" class="TampilanIsiData" id="lampiran" name="lampiran" accept="image/*">
+                            <div class="TombolUploadFoto">
+                                <span class="DeskripsiBarUpload" id="FileNamaFoto">Pilih file</span>
+                                <button type="button" class="BrowseFoto">Browse</button>
+                            </div>
+                        </div>
+                        <div class="FileNamaFoto"></div>
                     </div>
 
                     <div class="InfoSubmit">
-                        <button type="submit" class="btn btn-primary">Posting</button>
+                        <button type="submit" class="TombolOJT TombolPosting">Posting</button>
 
-                                @if(session('success'))
-                            <div class="alert alert-success">
+                        @if(session('success'))
+                            <div class="UiPsnDis PsnBerhasil">
                                 {{ session('success') }}
                             </div>
                         @endif
                         
                         @if ($errors->has('lampiran'))
-                            <div class="alert alert-danger mt-3">
+                            <div class="UiPsnDis PsnError mt-3">
                                 {{ $errors->first('lampiran') }}
                             </div>
                         @endif
@@ -56,15 +63,17 @@
                 </form>
             </div>
             
-            <div class="form-right">
-                <div class="preview-header">
-                    <div class="preview-title">Preview Foto</div>
-                    <div class="preview-subtitle">Pratinjau foto yang akan diunggah</div>
-                    <button id="close-preview" class="btn btn-sm btn-light" style="position: absolute; top: 0; right: 0; padding: 2px 8px; font-size: 12px;">&times;</button>
+            <div class="FormKanan">
+                <div class="PreviewFotoHeader">
+                    <div class="PreviewJudulFoto">Preview Foto</div>
+                    <div class="PreviewDeskripsiFoto">Pratinjau foto yang akan diunggah</div>
+                    <button id="MenutupPreview" class="TombolOJT ClosePreview">
+                        <i class='bx bx-x' ></i>
+                    </button>
                 </div>
-                <div id="foto-preview-container" class="foto-preview-container">
-                    <img id="foto-preview" class="foto-preview" src="" alt="Preview foto" style="display: none;">
-                    <p id="file-name" style="display: none; margin-top: 10px; font-size: 14px; color: #666; text-align: center;"></p>
+                <div id="PreviewLayoutFoto" class="PreviewLayoutFoto">
+                    <img id="PreviewFoto" class="PreviewFoto" src="" alt="Preview foto">
+                    <p id="NamaFileFoto" class="NamaFileFoto"></p>
                 </div>
             </div>
         </div>

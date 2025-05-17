@@ -1,5 +1,6 @@
 @include('admin.partials.header', ['NamaPage' => 'Halaman Utama'])
 @include('admin.partials.sidebar')
+
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/pelajaran.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
@@ -12,26 +13,31 @@
             <form action="{{ route('admin.pelajaran') }}" method="POST">
                 @csrf
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="guru_id">Guru</label>
-                    <select name="guru_id" id="guru_id" class="form-control" required>
+                    <select name="guru_id" id="guru_id" class="TampilanIsiData" required>
                         <option value="" disabled selected>-- Pilih Guru --</option>
                         @foreach($gurus as $guru)
                             <option value="{{ $guru->guru_id }}">
-                                {{$guru->profile->name }}
+                                {{ $guru->profile->name }}
                             </option>
                         @endforeach
                     </select>
                     @error('guru_id')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="UiPsnDis PsnError">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <div class="FormFor">
+                <div class="IsiData">
                     <label for="namaPelajaran">Nama Pelajaran</label>
-                    <input type="text" name="namaPelajaran" id="namaPelajaran" class="form-control" required>
+                    <div style="position: relative;">
+                        <input type="text" name="namaPelajaran" id="namaPelajaran" class="TampilanIsiData" placeholder="Masukkan nama pelajaran" required>
+                        <button type="button" id="clearNamaPelajaran" class="HapusBar">
+                            <i class="bx bx-x"></i>
+                        </button>
+                    </div>
                     @error('namaPelajaran')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="UiPsnDis PsnError">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -39,11 +45,11 @@
                     Tambah Pelajaran
                 </button>
 
-                            @if(session('success'))
-              <div class="alert alert-success">
-                  {{ session('success') }}
-              </div>
-            @endif
+                @if(session('success'))
+                    <div class="UiPsnDis PsnBerhasil">
+                        {{ session('success') }}
+                    </div>
+                @endif
             </form>
         </div>
 
@@ -88,3 +94,5 @@
         </div>
     </div>
 </body>
+
+<script src="{{ asset('js/CssAdmin.js') }}"></script>

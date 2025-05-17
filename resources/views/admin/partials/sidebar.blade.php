@@ -9,12 +9,10 @@
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
         </div>
 
-        <h6 class="UseridName">no reason</h6>
+        <h6 class="UseridName">{{ $admin->profile->name }}</h6>
     </div>
 
     <ul class="ListSideBar">
-
-        <span>‎</span> {{-- ‎ ni buat teks kosong --}}
 
       <li>
         <a href="/admin/dashboard" class="{{ request()->is('admin/dashboard*') ? 'active-link' : '' }}">
@@ -37,16 +35,6 @@
         </a>
       </li>
       <li>
-        <a href="/admin/manajemenKelas" class="{{ request()->is('admin/pelajaran*') ? 'active-link' : '' }}">
-          <i class='bx bx-list-plus IconSideBar'></i>Manajemen Kelas
-        </a>
-      </li>
-      <li>
-        <a href="/admin/kenaikanKelas" class="{{ request()->is('admin/kenaikanKelas*') ? 'active-link' : '' }}">
-          <i class='bx bx-up-arrow-alt IconSideBar'></i>Kenaikan Kelas
-        </a>
-      </li>
-      <li>
         <a href="/admin/jadwal" class="{{ request()->is('admin/jadwal*') ? 'active-link' : '' }}">
           <i class='bx bx-layer-plus IconSideBar'></i>Tambahkan Jadwal
         </a>
@@ -54,6 +42,16 @@
       <li>
         <a href="/admin/post" class="{{ request()->is('admin/post*') ? 'active-link' : '' }}">
           <i class='bx bx-message-square-add IconSideBar'></i>Tambah posting
+        </a>
+      </li>
+        <li>
+        <a href="/admin/kenaikanKelas" class="{{ request()->is('admin/kenaikanKelas*') ? 'active-link' : '' }}">
+          <i class='bx bx-chevrons-up IconSideBar'></i>Kenaikan Kelas
+        </a>
+      </li>
+        <li>
+        <a href="/admin/manajemenKelas" class="{{ request()->is('admin/manajemenKelas*') ? 'active-link' : '' }}">
+          <i class='bx bx-category-alt IconSideBar'></i>Manajemen Kelas
         </a>
       </li>
       <li>

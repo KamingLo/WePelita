@@ -16,13 +16,19 @@
                 <div class="footer-column">
                     <h3>Contact</h3>
                     <ul class="footer-links">
-                        <li><a href="/post">Testt</a></li>
+                        <li><a href="/post">0216314072</a></li>
+                    </ul>
+                    <h3>Email</h3>
+                    <ul class="footer-links">
+                        <li><a href="/about">pelitaschool4@gmail.com</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h3>Email</h3>
+                    <h3>Tags</h3>
                     <ul class="footer-links">
-                        <li><a href="/about">Testt</a></li>
+                        <li><a href="/about">SMK PELITA IV - SMK Bisa SMK Hebat</a></li>
+                        <li><a href="/about">#smkpelitaiv</a></li>
+
                     </ul>
                 </div>
             </div>

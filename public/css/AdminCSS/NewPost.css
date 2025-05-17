@@ -2,16 +2,6 @@
 /* ----------------- posting.css ------------------ */
 /* ----------------------------------------------- */
 
-.text:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    width: 100%;
-    background-color: var(--primary-color);
-}
-
 :root {
     --primary-color: #4a6cf7;
     --success-color: #28a745;
@@ -29,6 +19,10 @@ body {
     padding: 0;
     overflow: hidden;
 }
+
+/* ----------------------------------------------- */
+/* ----------------- Bagian Header --------------- */
+/* ----------------------------------------------- */
 
 .ContainerNewPost {
     margin-left: 280px;
@@ -58,8 +52,9 @@ h1:after {
     background-color: var(--primary-color);
 }
 
-/* ------------- */
-/* Bagian Container */
+/* ----------------------------------------------- */
+/* ----------- Bagian ContainerDalam ------------- */
+/* ----------------------------------------------- */
 
 .LayoutNewPost {
     padding: 30px;
@@ -97,60 +92,38 @@ h2:after {
     background-color: var(--primary-color);
 }
 
-.form-container {
+.ContainerDalam {
     display: flex;
     position: relative;
     gap: 2rem;
     overflow: hidden;
 }
 
-.form-left {
+/* ----------------------------------------------- */
+/* --------------- Bagian Form Kiri -------------- */
+/* ----------------------------------------------- */
+
+.FormKiri {
     flex: 1;
     transform: translateX(-0.2rem);
     transition: width 0.4s ease-in-out;
 }
 
-.form-left.preview-active {
+.FormKiri.preview-active {
     width: 50%;
 }
-
-/* ------------- */
-/* Bagian Alert */
-
-.alert {
-    padding: 15px;
-    border: 1px solid transparent;
-    border-radius: var(--border-radius);
-    display: flex;
-    align-items: center;
-}
-
-.alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-}
-
-.alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-}
-
-/* ------------- */
-/* Bagian Form */
 
 form {
     margin-top: 20px;
 }
 
-.mb-3 {
+.IsiData {
     margin-bottom: 20px;
     width: 40.5rem;
     transform: translateX(0.38rem);
 }
 
-.form-label {
+.NamaLabelBar {
     display: block;
     margin-bottom: 5px;
     font-weight: 500;
@@ -158,7 +131,7 @@ form {
     font-size: 14px;
 }
 
-.form-control {
+.TampilanIsiData {
     width: 100%;
     padding: 10px 15px;
     border: 1px solid #ddd;
@@ -168,13 +141,13 @@ form {
     box-sizing: border-box;
 }
 
-.form-control:focus {
+.TampilanIsiData:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
 }
 
-input.form-control {
+input.TampilanIsiData {
     width: 100%;
     padding: 10px 15px;
     border: 1px solid #ddd;
@@ -185,7 +158,7 @@ input.form-control {
     box-sizing: border-box;
 }
 
-input.form-control:focus {
+input.TampilanIsiData:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
@@ -202,15 +175,156 @@ input[type="radio"] + label {
     font-size: 14px;
 }
 
-textarea.form-control {
+textarea.TampilanIsiData {
     min-height: 120px;
     resize: none;
 }
 
-/* ------------- */
-/* Bagian Button */
+/* ----------------------------------------------- */
+/* -------------- Bagian Form Kanan -------------- */
+/* ----------------------------------------------- */
 
-.btn {
+.FormKanan {
+    width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: width 0.4s ease-in-out, opacity 0.3s ease-in-out;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.FormKanan.preview-active {
+    width: 50%;
+    opacity: 1;
+}
+
+.PreviewFotoHeader {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.PreviewJudulFoto {
+    font-size: 18px;
+    color: var(--dark-color);
+    margin: 0;
+    font-weight: 500;
+}
+
+.PreviewDeskripsiFoto {
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
+}
+
+.PreviewLayoutFoto {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border: 2px dashed #ddd;
+    height: 400px;
+    display: flex;
+    margin-top: 1rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.PreviewLayoutFotoo.has-preview {
+    border-style: solid;
+    border-color: var(--primary-color);
+    background-color: white;
+}
+
+.PreviewFoto {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    object-fit: contain;
+}
+
+.NamaFileFoto {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ----------------------------------------------- */
+/* ---------------- Bagian Tombol ---------------- */
+/* ----------------------------------------------- */
+
+.UploadFoto {
+    position: relative;
+    width: 100%;
+}
+
+.UploadFoto input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.TombolUploadFoto {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+    color: #666;
+    transition: var(--transition);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.DeskripsiBarUpload {
+    display: inline-block;
+}
+
+.FileNamaFoto {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #666;
+}
+
+.UploadFoto input[type="file"]:hover + .TombolUploadFoto {
+    border-color: var(--primary-color);
+}
+
+.UploadFoto input[type="file"]:focus + .TombolUploadFoto {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+.BrowseFoto {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.BrowseFoto:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
+}
+
+.TombolOJT {
     display: inline-block;
     font-weight: 500;
     text-align: center;
@@ -226,15 +340,32 @@ textarea.form-control {
     cursor: pointer;
 }
 
-.btn-primary {
+.TombolPosting {
     color: white;
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
 
-.btn-primary:hover {
+.TombolPosting:hover {
     background-color: #3959d9;
     border-color: #3959d9;
+}
+
+.ClosePreview {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 8px 8px;
+    font-size: 20px;
+    transition: var(--transition);
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.ClosePreview:hover {
+    transform: scale(1.2);
+    background-color: #c82333;
+    border-color: #bd2130;
 }
 
 .InfoSubmit {
@@ -243,83 +374,29 @@ textarea.form-control {
     max-height: 3rem;
     transform: translateX(0.35rem);
 }
-/* ------------- */
-/* Bagian Preview Foto */
 
-.form-right {
-    width: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: width 0.4s ease-in-out, opacity 0.3s ease-in-out;
-    padding: 0;
-    box-sizing: border-box;
-    position: relative;
+/* ----------------------------------------------- */
+/* ----------------- Pesan Error ----------------- */
+/* ----------------------------------------------- */
 
-}
-
-.form-right.preview-active {
-    width: 50%;
-    opacity: 1;
-
-}
-
-.preview-header {
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.preview-title {
-    font-size: 18px;
-    color: var(--dark-color);
-    margin: 0;
-    font-weight: 500;
-}
-
-.preview-subtitle {
-    font-size: 14px;
-    color: #777;
-    margin-top: 5px;
-}
-
-.foto-preview-container {
-    background-color: #f8f9fa;
-    padding: 20px;
+.UiPsnDis {
+    padding: 15px;
+    border: 1px solid transparent;
     border-radius: var(--border-radius);
-    border: 2px dashed #ddd;
-    height: 350px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    transition: var(--transition);
 }
 
-.foto-preview-container.has-preview {
-    border-style: solid;
-    border-color: var(--primary-color);
-    background-color: white;
+.PsnBerhasil {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
 }
 
-.foto-preview {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    object-fit: contain;
-}
-
-.preview-title {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.no-preview-message {
-    color: #999;
-    font-size: 14px;
-    text-align: center;
+.PsnError {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
 }
 
 /* ---------------------- End ---------------------- */

@@ -22,8 +22,9 @@ body {
     overflow-x: hidden;
 }
 
-/* ------------- */
-/* Bagian Header */
+/* ----------------------------------------------- */
+/* ----------------- Bagian Header --------------- */
+/* ----------------------------------------------- */
 
 .ContainerRegister {
     margin-left: 280px;
@@ -55,6 +56,7 @@ h1:after {
 
 /* ----------------------------------------------- */
 /* ----------------- Bagian Form ----------------- */
+/* ----------------------------------------------- */
 
 .LayoutRegisterForm {
     background-color: white;
@@ -87,7 +89,7 @@ h1:after {
     background-color: var(--primary-color);
 }
 
-.FormFor {
+.IsiData {
     margin-bottom: 15px;
 }
 
@@ -99,7 +101,7 @@ label {
     font-size: 14px;
 }
 
-.form-control {
+.TampilanIsiData {
     width: 100%;
     padding: 10px 15px;
     border: 1px solid #ddd;
@@ -109,13 +111,13 @@ label {
     box-sizing: border-box;
 }
 
-.form-control:focus {
+.TampilanIsiData:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
 }
 
-input.form-control {
+input.TampilanIsiData {
     width: 100%;
     padding: 10px 15px;
     border: 1px solid #ddd;
@@ -126,13 +128,13 @@ input.form-control {
     box-sizing: border-box;
 }
 
-input.form-control:focus {
+input.TampilanIsiData:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
 }
 
-select.form-control {
+select.TampilanIsiData {
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M8 9.5a.5.5 0 01-.354-.146l-4-4a.5.5 0 01.708-.708L8 8.293l3.646-3.647a.5.5 0 01.708.708l-4 4A.5.5 0 018 9.5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -140,22 +142,22 @@ select.form-control {
     padding-right: 35px;
 }
 
-.error-message {
-    color: var(--danger-color);
-    font-size: 12px;
-    display: block;
-    margin-top: 5px;
-}
-
-/* Layout form */
 .LayoutRegisterForm form {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
 }
 
-/* ----------------------------------------------- */
-/* ----------------- Bagian Murid ---------------------- */
+.FormUntukOrtu {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+}
+
+/* ----------------------------------------------------- */
+/* --------------- Extend Form For Role ---------------- */
+/* ----------------------------------------------------- */
 
 .DisplayDataTable {
     grid-column: 1 / -1;
@@ -212,14 +214,6 @@ select.form-control {
     background-color: var(--primary-color);
 }
 
-/* New style for parent data section */
-.parent-data-container {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-}
-
 .DisplayDataTable::-webkit-scrollbar {
     width: 8px;
 }
@@ -240,6 +234,7 @@ select.form-control {
 
 /* ----------------------------------------------- */
 /* ---------------- Bagian Tombol ---------------- */
+/* ----------------------------------------------- */
 
 .TombolOJT {
     display: inline-block;
@@ -267,17 +262,22 @@ select.form-control {
     font-size: 14px;
     width: 200px;
     margin-top: 20px;
+    transform: translateY(-15px);
+    transition: var(--transition);
 }
 
 .TambahRegister:hover {
     background-color: #3959d9;
     border-color: #3959d9;
-    transform: translateY(-2px);
+    transform: translateY(-15px) scale(1.05);
     box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
 }
 
-/* Alert */
-.alert {
+/* ----------------------------------------------- */
+/* ----------------- Pesan Error ----------------- */
+/* ----------------------------------------------- */
+
+.UiPsnDis {
     padding: 12px 15px;
     margin-bottom: 20px;
     border: 1px solid transparent;
@@ -285,14 +285,23 @@ select.form-control {
     grid-column: 1 / -1;
 }
 
-.alert-success {
+.PsnBerhasil {
     color: #155724;
     background-color: #d4edda;
     border-color: #c3e6cb;
 }
 
+
+.error-message {
+    color: var(--danger-color);
+    font-size: 12px;
+    display: block;
+    margin-top: 5px;
+}
+
 /* ----------------------------------------------- */
 /* ---------------- Bagian View ------------------ */
+/* ----------------------------------------------- */
 
 @media (max-width: 1200px) {
     body {
