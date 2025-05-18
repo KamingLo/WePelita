@@ -3,7 +3,7 @@
   <aside class="ContainerSideBar">
     <div class="ProfileSiUser">
         <div class="HeaderUser">
-            <a href="/admin/dashboard">
+            <a href="/guru/dashboard">
                 <img src="/image/logo_pelita.png"/>
             </a>
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
@@ -17,47 +17,42 @@
         <span>‎</span> {{-- ‎ ni buat teks kosong --}}
 
       <li>
-        <a href="/admin/dashboard" class="{{ request()->is('admin/dashboard*') ? 'active-link' : '' }}">
+        <a href="guru/dashboard" class="{{ request()->is('guru/dashboard*') ? 'active-link' : '' }}">
           <i class='bx bx-home-alt IconSidebar'></i>Halaman Utama
         </a>
       </li>
 
-      {{-- <h4>
-        <span>Admin Tools</span>
+      <h4>
+        <span>Guru Tools</span>
       </h4>
 
-      <li>
-        <a href="/admin/register" class="{{ request()->is('admin/register*') ? 'active-link' : '' }}">
-          <i class='bx bx-user-plus IconSidebar'></i>Daftar User Baru
+
+      {{-- <li>
+        <a href="guru/jadwalpelajaran">
+          <i class='bx bx-home-alt IconSidebar'>Liat Jadwal Pelajaran</i>
         </a>
       </li>
+      
       <li>
-        <a href="/admin/pelajaran" class="{{ request()->is('admin/pelajaran*') ? 'active-link' : '' }}">
-          <i class='bx bx-list-plus IconSideBar'></i>Tambah Pelajaran
-        </a>
-      </li>
-      <li>
-        <a href="/admin/jadwal" class="{{ request()->is('admin/jadwal*') ? 'active-link' : '' }}">
-          <i class='bx bx-layer-plus IconSideBar'></i>Tambahkan Jadwal
-        </a>
-      </li>
-      <li>
-        <a href="/admin/post" class="{{ request()->is('admin/post*') ? 'active-link' : '' }}">
-          <i class='bx bx-message-square-add IconSideBar'></i>Tambah posting
-        </a>
-      </li>
-      <li>
-        <a href="/admin/manajemenUser" class="{{ request()->is(['admin/manajemenUser*', 'admin/user*']) ? 'active-link' : '' }}">
-          <i class='bx bx-user IconSideBar' ></i>Manajemen User
-        </a>
-      </li>
-      <li>
-        <a href="/admin/manajemenPost" class="{{ request()->is('admin/manajemenPost*') ? 'active-link' : '' }}">
-          <i class='bx bx-message-square-edit IconSideBar'></i>Manajemen postingan
+        <a href="guru/jadwalajar">
+          <i class='bx bx-home-alt IconSidebar'>Liat Jadwal Ajar</i>
         </a>
       </li>
 
-    </ul>
+      <li>
+        <a href="guru/isinilai">
+          <i class='bx bx-home-alt IconSidebar'>Isi Nilai Murid</i>
+        </a>
+      </li>
+
+      <li>
+        <a href="guru/manajemennilai">
+          <i class="bx bx-home-alt IconSidebar"></i>
+        </a>
+      </li>
+    </ul> --}}
+
+    
     <div class="logout-container">
         <form action="{{ route('logout') }}" method="POST">
             @csrf
@@ -68,6 +63,5 @@
         </form>
     </div>
   </aside>
-</body> --}}
 
 <script src="{{ asset('js/dashboard.js') }}"></script>
