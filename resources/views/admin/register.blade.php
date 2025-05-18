@@ -102,12 +102,17 @@
                 </div>
 
                 <div class="IsiData">
-                    <label for="pendidikan">Pendidikan :</label>
+                    <label for="pendidikan">Pendidikan terakhir :</label>
                     <div style="position: relative;">
-                        <input type="text" name="pendidikan" id="pendidikan" class="TampilanIsiData" placeholder="Masukkan pendidikan terakhir" style="padding-right: 40px;">
-                        <button type="button" id="clearPendidikan" class="HapusBar">
-                            <i class='bx bx-x'></i>
-                        </button>
+                        <select name="Pendidikan" id="pendidikan" class="TampilanIsiData" required style="padding-right: 40px;">
+                            <option value="" disabled selected>-- Pilih Pendidikan Terakhir --</option>
+                            <option value="SD atau Setaranya">SD atau setaranya</option>
+                            <option value="SMP atau Setaranya">SMP atau Setaranya</option>
+                            <option value="SMA atau Setaranya">SMA atau Setaranya</option>
+                            <option value="S1 atau Setaranya">S1 atau Setaranya</option>
+                            <option value="S2 atau Setaranya">S2 atau Setaranya</option>
+                            <option value="S3 atau Setaranya">S3 atau Setaranya</option>
+                        </select>
                     </div>
                     @error('pendidikan')
                       <span class="error-message">{{ $message }}</span>
@@ -145,9 +150,9 @@
                     <div style="position: relative;">
                         <select name="role" id="UserUntuk" class="TampilanIsiData" required style="padding-right: 40px;">
                             <option value="" disabled selected>-- Pilih Role --</option>
-                            <option value="admin">Admin</option>
-                            <option value="guru"{{ old('role') == 'guru' ? 'selected' : '' }}>Guru</option>
                             <option value="murid"{{ old('role') == 'murid' ? 'selected' : '' }}>Murid</option>
+                            <option value="guru"{{ old('role') == 'guru' ? 'selected' : '' }}>Guru</option>
+                            <option value="admin">Admin</option>
                         </select>
                         <button type="button" id="clearRole" class="HapusBar">
                             <i class='bx bx-x'></i>
