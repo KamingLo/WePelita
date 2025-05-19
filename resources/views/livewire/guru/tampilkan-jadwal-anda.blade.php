@@ -7,7 +7,7 @@
         <div class="LayoutTabelTerintegrasi">
             <div class="HeaderTabel">
                 <div class="FilterDalamTabel">
-                    <h2>{{ $hari }}</h2>
+                    <h2>Jadwal ajar anda hari ini</h2>
                     <div class="FilterControls">
                         <div class="FilterGroup">
                             <label for="hari">Pilih Hari:</label>
