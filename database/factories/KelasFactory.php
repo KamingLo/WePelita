@@ -2,19 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Kelas;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class KelasFactory extends Factory
 {
-    protected $model = Kelas::class;
-
     public function definition(): array
     {
+        // Contoh nama kelas: 10A, 10B, 11A, 11B, 12A, 12B
+        $grade = $this->faker->randomElement(['10', '11', '12']);
+        $section = $this->faker->randomElement(['A', 'B', 'C']);
         return [
-            'nama_kelas' => $this->faker->randomElement(['X-A', 'XI-B', 'XII-C']),
-            'tahun_ajaran' => $this->faker->year . '/' . ($this->faker->year + 1),
+            'nama_kelas' => $grade . $section,
         ];
     }
 }
-

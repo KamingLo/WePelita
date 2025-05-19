@@ -9,7 +9,7 @@ use App\Models\Admin;
 use App\Models\OrangTua;
 use App\Models\Murid;
 use App\Models\Kelas;
-use App\Models\TahunAjar;
+use App\Models\TahunAjaran;
 use App\Models\Pelajaran;
 use App\Models\JadwalPelajaran;
 use App\Models\Pengumuman;
