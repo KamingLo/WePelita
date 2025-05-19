@@ -30,4 +30,9 @@ class GuruController extends Controller
         $guru =Guru::where('profile_id', auth()->id())->firstOrFail();
         return view('guru.jadwalpelajaran', compact('guru'));
     }
+    
+    public function tampilkanJadwalAnda(){
+        $guru =Guru::where('profile_id', auth()->id())->firstOrFail();
+        return view('guru.jadwalajaranda', compact('guru'));
+    }
 }
