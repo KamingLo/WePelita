@@ -12,7 +12,7 @@
                         <div class="FilterGroup">
                             <label for="hari">Pilih Hari:</label>
                             <select wire:model.live="hari" id="hari" class="FilterSelect">
-                                <option value="" disabled selected>-- Pilih Hari --</option>
+                                <option value="">Semuanya</option>
                                 <option value="Senin">Senin</option>
                                 <option value="Selasa">Selasa</option>
                                 <option value="Rabu">Rabu</option>

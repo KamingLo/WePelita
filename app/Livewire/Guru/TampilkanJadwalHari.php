@@ -9,21 +9,18 @@ class TampilkanJadwalHari extends Component
 {
     public $hari = '';
 
-
-    public function updatedHari($value)
-    {
-        \Log::info('Properti hari berubah jadi: ' . $value);
-    }
-
     public function render()
     {
-        \Log::info('Hari terpilih: ' . $this->hari);
-
-        $jadwals = JadwalPelajaran::with(['pelajaran.guru', 'kelasTahun.kelas'])
+        if($this->hari != ''){
+            $jadwals = JadwalPelajaran::with(['pelajaran.guru', 'kelasTahun.kelas'])
             ->where('hari', $this->hari) // langsung hardcode
             ->orderBy('waktu_mulai')
             ->get();
-
+        }else{
+            $jadwals = JadwalPelajaran::with(['pelajaran.guru', 'kelasTahun.kelas'])
+            ->orderBy('waktu_mulai')
+            ->get();
+        }
         return view('livewire.guru.tampilkan-jadwal-hari', [
             'jadwals' => $jadwals,
             'hari' => $this->hari,
