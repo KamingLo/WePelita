@@ -27,7 +27,7 @@
                     <select name="kelas_tahun_id" id="kelas_tahun_id" class="TampilanIsiData" required>
                         <option value="" disabled selected>-- Pilih Kelas --</option>
                         @foreach($kelasTahun as $item)
-                            <option value="{{ $item->kelas_tahun_id }}">{{ $item->kelas->nama_kelas }} ({{ $item->TahunAjar->tahun_ajaran }})</option>
+                            <option value="{{ $item->kelas_tahun_id }}">{{ $item->kelas->nama_kelas }} ({{ $item->TahunAjar->tahun_ajaran }}) {{ $item->TahunAjar->status }}</option>
                         @endforeach
                     </select>
                     @error('namaPelajaran')

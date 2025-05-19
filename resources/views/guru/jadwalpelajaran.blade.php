@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Jadwal Pelajaran</title>
-    @livewireStyles
-</head>
-<body>
+<div class="container">
+    <h1>Jadwal Pelajaran Semua Guru</h1>
 
-    <h1>Jadwal Pelajaran</h1>
-
-    @livewire('jadwal-pelajaran')
-
+    
     @livewireScripts
-</body>
-</html>
+    @livewire('guru.tampilkan-jadwal-hari')
+
+    @livewireStyles
+
+</div>

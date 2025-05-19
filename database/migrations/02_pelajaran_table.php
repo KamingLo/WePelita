@@ -24,13 +24,6 @@ return new class extends Migration
             $table->string('waktu_mulai');
             $table->string('waktu_selesai');
         });
-        
-        Schema::create('kehadiran',function(Blueprint $table){
-            $table->id('kehadiran_id');
-            $table->foreignId('absensi_id')->constrained('absensi', 'absensi_id')->onDelete('cascade');
-            $table->string('status_kehadiran');
-            $table->date('tanggal')->default(DB::raw('CURRENT_DATE'));
-        });
 
         Schema::create('nilai', function (Blueprint $table){
             $table->id('nilai_id');

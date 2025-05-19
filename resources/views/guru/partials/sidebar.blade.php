@@ -27,13 +27,13 @@
       </h4>
 
 
-      {{-- <li>
-        <a href="guru/jadwalpelajaran">
+      <li>
+        <a href="jadwal">
           <i class='bx bx-home-alt IconSidebar'>Liat Jadwal Pelajaran</i>
         </a>
       </li>
       
-      <li>
+      {{-- <li>
         <a href="guru/jadwalajar">
           <i class='bx bx-home-alt IconSidebar'>Liat Jadwal Ajar</i>
         </a>
