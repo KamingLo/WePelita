@@ -74,8 +74,10 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
 });
 
 Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
-    Route::get('/guru/dashboard', function() {
+    Route::get('guru/dashboard', function() {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
         return view('guru.dashboard', compact('guru'));
     })->name('guru.dashboard');
+
+    Route::get('guru/jadwal', [GuruController::class, 'tampilkanJadwalPelajaran'])->name('guru.jadwal');
 });

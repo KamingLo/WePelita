@@ -30,8 +30,8 @@
                             <span>‎ </span>
                         </div>
                         <div class="post-preview-buttons">
-                            @if($pengumuman && $pengumuman->pengumuman_id)
-                                <a href="{{ route('pengumuman.update', ['id' => $pengumuman->pengumuman_id]) }}" class="btn btn-primary">Edit</a>
+                            @if($pengumuman && $pengumuman->id)
+                                <a href="{{ route('pengumuman.update', ['id' => $pengumuman->id]) }}" class="btn btn-primary">Edit</a>
                                 <button wire:click="delete({{ $pengumuman->id }})" 
                                         class="btn btn-danger" 
                                         onclick="return confirm('Yakin ingin menghapus pengumuman ini?')">Hapus</button>

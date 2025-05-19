@@ -1,23 +1,22 @@
 <?php
-
 namespace Database\Factories;
 
-use App\Models\Profile;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 class ProfileFactory extends Factory
 {
-    protected $model = Profile::class;
-
     public function definition(): array
     {
         return [
             'name' => $this->faker->name(),
+            'jenis_kelamin' => $this->faker->randomElement(['Laki-laki', 'Perempuan']),
+            'alamat' => $this->faker->address(),
             'email' => $this->faker->unique()->safeEmail(),
-            'nik' => $this->faker->numerify('############'), // 12 angka
-            'password' => bcrypt('password'), // bisa diganti dengan hash yang lebih aman
+            'pendidikan' => $this->faker->randomElement(['SMA', 'D3', 'S1', 'S2']),
+            'password' => bcrypt('password'), // Password default
             'no_telp' => $this->faker->phoneNumber(),
+            'tanggal_lahir' => $this->faker->date('Y-m-d', '-10 years'),
+            'tempat_lahir' => $this->faker->city(),
         ];
     }
 }

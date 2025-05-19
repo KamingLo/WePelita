@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
             'tanggal_lahir' => '1990-01-01', // Sesuaikan dengan tanggal lahir
             'tempat_lahir' => 'Jakarta', // Sesuaikan dengan tempat lahir
             'pendidikan' => 'S1', // Sesuaikan dengan pendidikan
-            'password' => Hash::make('admin1'), // Password admin
+            'password' => Hash::make('admin123'), // Password admin
             'no_telp' => '08123456789', // Sesuaikan dengan nomor telepon
         ]);
 

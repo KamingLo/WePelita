@@ -15,22 +15,15 @@ return new class extends Migration
             $table->foreignId('guru_id')->constrained('guru', 'guru_id')->onDelete('cascade');
             $table->string('namaPelajaran');
         });
-        
-        Schema::create('absensi', function (Blueprint $table) {
-            $table->id('absensi_id');
-            $table->foreignId('murid_kelas_id')->constrained('murid_kelas', 'murid_kelas_id')->onDelete('cascade');
+
+        Schema::create('jadwal_pelajaran', function (Blueprint $table){
+            $table->id('jadwal_id');
             $table->foreignId('pelajaran_id')->constrained('pelajaran', 'pelajaran_id')->onDelete('cascade');
-            $table->integer('jumlah_kehadiran');
-            $table->timestamps();
+            $table->foreignId('kelas_tahun_id')->constrained('kelas_tahun', 'kelas_tahun_id')->onDelete('cascade');
+            $table->string('hari');
+            $table->string('waktu_mulai');
+            $table->string('waktu_selesai');
         });
-
-        Schema::create('kehadiran',function(Blueprint $table){
-            $table->id('kehadiran_id');
-            $table->foreignId('absensi_id')->constrained('absensi', 'absensi_id')->onDelete('cascade');
-            $table->string('status_kehadiran');
-            $table->date('tanggal')->default(DB::raw('CURRENT_DATE'));
-        });
-
 
         Schema::create('nilai', function (Blueprint $table){
             $table->id('nilai_id');
@@ -40,13 +33,5 @@ return new class extends Migration
             $table->string('nilai_uas');
         });
                 
-        Schema::create('jadwal_pelajaran', function (Blueprint $table){
-            $table->id('jadwal_id');
-            $table->foreignId('pelajaran_id')->constrained('pelajaran', 'pelajaran_id')->onDelete('cascade');
-            $table->foreignId('kelas_tahun_id')->constrained('kelas_tahun', 'kelas_tahun_id')->onDelete('cascade');
-            $table->string('hari');
-            $table->string('waktu_mulai');
-            $table->string('waktu_selesai');
-        });
     }
 };

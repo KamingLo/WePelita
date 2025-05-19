@@ -9,7 +9,9 @@
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
         </div>
 
-        <h6 class="UseridName">{{ $guru->profile->name }}</h6>
+        {{-- <h6 class="UseridName">{{ $guru->profile->name }}</h6> --}}
+        <h6 class="UseridName">No Reason</h6>
+
     </div>
 
     <ul class="ListSideBar">
@@ -26,14 +28,13 @@
         <span>Guru Tools</span>
       </h4>
 
-
-      {{-- <li>
-        <a href="guru/jadwalpelajaran">
-          <i class='bx bx-home-alt IconSidebar'>Liat Jadwal Pelajaran</i>
+      <li>
+        <a href="jadwal" class="{{ request()->is('livewire/guru/tampilkan-jadwal-hari*') ? 'active-link' : '' }}">
+          <i class='bx bx-table IconSidebar'></i>Liat Jadwal Pelajaran
         </a>
       </li>
       
-      <li>
+      {{-- <li>
         <a href="guru/jadwalajar">
           <i class='bx bx-home-alt IconSidebar'>Liat Jadwal Ajar</i>
         </a>
