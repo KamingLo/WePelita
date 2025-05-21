@@ -10,9 +10,9 @@ class Kegiatan extends Model
     use HasFactory;
 
     public $timestamps = false; 
-    protected $table = 'kegiatan';
-    protected $primaryKey = 'kegiatan_id';
-    protected $fillable = ['admin_id', 'judul_kegiatan', 'isi_kegiatan', 'lampiran'];
+    protected $table = 'blog';
+    protected $primaryKey = 'blog_id';
+    protected $fillable = ['admin_id', 'judul_blog', 'isi_blog', 'lampiran'];
 
     public function admin()
     {

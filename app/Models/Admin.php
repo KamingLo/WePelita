@@ -19,8 +19,13 @@ class Admin extends Model
         return $this->belongsTo(Profile::class, 'profile_id');
     }
 
-    public function comments()
+    public function pengumuman()
     {
         return $this->hasMany(Pengumuman::class, 'admin_id');
+    }
+
+    public function blog()
+    {
+        return $this->hasMany(Blog::class, 'admin_id');
     }
 }

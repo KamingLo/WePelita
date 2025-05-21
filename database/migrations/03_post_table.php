@@ -19,12 +19,12 @@ return new class extends Migration
             $table -> timestamp('created_at')->useCurrent();
         });
 
-        Schema::create('kegiatan', function (Blueprint $table) {
-            $table -> id('kegiatan_id');
+        Schema::create('blog', function (Blueprint $table) {
+            $table -> id('blog_id');
             $table -> foreignId('admin_id')->constrained('admin', 'admin_id')->onDelete('cascade');
-            $table -> string('judul_kegiatan');
-            $table -> text('isi_kegiatan');
-            $table -> string('lampiran');
+            $table -> string('judul_blog');
+            $table -> text('judul_blog');
+            $table -> string('isi_blog');
             $table -> timestamp('created_at')->useCurrent();
         });
     }
