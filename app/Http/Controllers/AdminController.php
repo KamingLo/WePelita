@@ -13,7 +13,7 @@ use App\Models\TahunAjaran;
 use App\Models\Pelajaran;
 use App\Models\JadwalPelajaran;
 use App\Models\Pengumuman;
-use App\Models\Kegiatan;
+use App\Models\Blog;
 use App\Models\KelasTahun;
 use App\Models\MuridKelas;
 use App\Models\MuridOrangTua;
@@ -547,9 +547,9 @@ class AdminController extends Controller
     public function tampilkanPost()
     {
         $pengumumans = Pengumuman::all();
-        $kegiatans = Kegiatan::all();
+        $blogs = Blog::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.post', compact('pengumumans', 'kegiatans', 'admin'));
+        return view('admin.post', compact('pengumumans', 'blogs', 'admin'));
     }
 
     public function tambahPostingan(Request $request)
@@ -589,10 +589,10 @@ class AdminController extends Controller
                 'created_at' => now(),
             ]);
         } else {
-            Kegiatan::create([
+            Blog::create([
                 'admin_id' => $adminId,
-                'judul_kegiatan' => $validated['judul'],
-                'isi_kegiatan' => $validated['isi'],
+                'judul_blog' => $validated['judul'],
+                'isi_blog' => $validated['isi'],
                 'lampiran' => $lampiranPath,
                 'created_at' => now(),
             ]);
@@ -604,9 +604,9 @@ class AdminController extends Controller
     public function tampilkanManajemenPost()
     {
         $pengumumans = Pengumuman::all();
-        $kegiatans = Kegiatan::all();
+        $blogs = Blog::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.manajemenPost', compact('pengumumans', 'kegiatans', 'admin'));
+        return view('admin.manajemenPost', compact('pengumumans', 'blogs', 'admin'));
     }
 
     public function tampilkanPengumuman($id)
@@ -618,9 +618,9 @@ class AdminController extends Controller
 
     public function tampilkanKegiatan($id)
     {
-        $kegiatan = Kegiatan::findOrFail($id);
+        $blog = Blog::findOrFail($id);
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.ManajemenPostKegiatanEdit', compact('kegiatan', 'admin'));
+        return view('admin.ManajemenPostKegiatanEdit', compact('blog', 'admin'));
     }
 
 
@@ -669,7 +669,7 @@ class AdminController extends Controller
             'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
         ]);
 
-        $kegiatan = Kegiatan::findOrFail($id);
+        $blog = Blog::findOrFail($id);
 
         // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
         $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
@@ -678,22 +678,22 @@ class AdminController extends Controller
         if ($request->hasFile('lampiran')) {
             // Hapus lampiran lama jika ada
             if ($kegiatan->lampiran) {
-                Storage::disk('public')->delete($kegiatan->lampiran);
+                Storage::disk('public')->delete($blog->lampiran);
             }
 
             // Simpan lampiran baru
             $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
-            $kegiatan->lampiran = $lampiranPath;
+            $blog->lampiran = $lampiranPath;
         }
 
         // Update data lainnya
         $kegiatan->update([
             'admin_id' => $adminId,
-            'judul_kegiatan' => $validated['judul'],
-            'isi_kegiatan' => $validated['isi'],
+            'judul_blog' => $validated['judul'],
+            'isi_blog' => $validated['isi'],
         ]);
 
-        return redirect()->route('admin.manajemenPost')->with('success', 'kegiatan berhasil disimpan!');
+        return redirect()->route('admin.manajemenPost')->with('success', 'blog berhasil disimpan!');
     }
 
 
@@ -708,11 +708,11 @@ class AdminController extends Controller
     }
 
     public function hapusKegiatan($id){
-        $kegiatan = Kegiatan::findOrFail($id);
+        $blog = Blog::findOrFail($id);
         if ($kegiatan->lampiran) {
-            Storage::disk('public')->delete($kegiatan->lampiran);
+            Storage::disk('public')->delete($blog->lampiran);
         }
-        $kegiatan->delete();
+        $blog->delete();
 
         return redirect()->route('admin.manajemenPost')->with('success', 'Kegiatan berhasil dihapus');
     }
