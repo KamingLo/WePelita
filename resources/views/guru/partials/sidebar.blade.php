@@ -45,13 +45,13 @@
         </a>
       </li>
       
-      {{-- 
+      
       <li>
-        <a href="guru/manajemennilai">
-          <i class="bx bx-home-alt IconSidebar"></i>
+        <a href="menu-nilai">
+          <i class="bx bx-home-alt IconSidebar">Menu nilai</i>
         </a>
       </li>
-    </ul> --}}
+    </ul>
 
     
     <div class="logout-container">

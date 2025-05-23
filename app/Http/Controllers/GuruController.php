@@ -65,6 +65,6 @@ class GuruController extends Controller
     }
 
     public function tampilkanMenuNilai(){
-        return view('guru.nilai');
+        return view('guru.isinilai');
     }
 }

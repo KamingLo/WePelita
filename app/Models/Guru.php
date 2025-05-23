@@ -18,4 +18,9 @@ class Guru extends Model
     {
         return $this->belongsTo(Profile::class, 'profile_id');
     }
+
+    public function pelajaran()
+    {
+        return $this->hasMany(Pelajaran::class, 'guru_id');
+    }
 }
