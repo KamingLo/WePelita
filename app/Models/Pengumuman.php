@@ -10,12 +10,17 @@ class Pengumuman extends Model
     use HasFactory;
 
     public $timestamps = false; 
-    protected $table = 'pengumuman';
-    protected $primaryKey = 'pengumuman_id';
-    protected $fillable = ['admin_id', 'judul_pengumuman', 'isi_pengumuman', 'lampiran', 'created_at'];
+    protected $table = 'komentar';
+    protected $primaryKey = 'komentar_id';
+    protected $fillable = ['postingan_id', 'profile_id', 'isi_komentar', 'created_at'];
 
-    public function admin()
+    public function profile()
     {
-        return $this->belongsTo(Admin::class, 'admin_id');
+        return $this->belongsTo(Profile::class, 'profile_id');
+    }
+
+    public function postingan()
+    {
+        return $this->belongsTo(Postingan::class, 'postingan_id');
     }
 }

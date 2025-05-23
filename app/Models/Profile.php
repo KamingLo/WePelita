@@ -34,5 +34,15 @@ class Profile extends Authenticatable
     {
         return $this->hasOne(Murid::class, 'profile_id');
     }
+
+    public function postingan()
+    {
+        return $this->hasMany(Postingan::class, 'profile_id');
+    }
+
+    public function komentar()
+    {
+        return $this->hasMany(Komentar::class, 'profile_id');
+    }
 }
 ?>

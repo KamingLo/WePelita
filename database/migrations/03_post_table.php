@@ -10,21 +10,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('pengumuman', function (Blueprint $table){
-            $table -> id('pengumuman_id');
-            $table -> foreignId('admin_id')->constrained('admin', 'admin_id')->onDelete('cascade');
-            $table -> string('judul_pengumuman');
-            $table -> text('isi_pengumuman');
-            $table -> string('lampiran');
+        Schema::create('postingan', function (Blueprint $table){
+            $table -> id('postingan_id');
+            $table -> foreignId('profile_id')->constrained('profile', 'profile_id')->onDelete('cascade');
+            $table -> string('path_postingan');
+            $table -> string('judul_postingan');
             $table -> timestamp('created_at')->useCurrent();
         });
 
-        Schema::create('blog', function (Blueprint $table) {
-            $table -> id('blog_id');
-            $table -> foreignId('admin_id')->constrained('admin', 'admin_id')->onDelete('cascade');
-            $table -> string('judul_blog');
-            $table -> text('judul_blog');
-            $table -> string('isi_blog');
+        Schema::create('komentar', function (Blueprint $table) {
+            $table -> id('komentar_id');
+            $table -> foreignId('postingan_id')->constrained('admin', 'admin_id')->onDelete('cascade');
+            $table -> foreignId('profile_id')->constrained('profile', 'profile_id')->onDelete('cascade');
+            $table -> string('isi_komentar');
             $table -> timestamp('created_at')->useCurrent();
         });
     }
