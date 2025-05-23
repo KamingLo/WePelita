@@ -12,7 +12,7 @@ class Kegiatan extends Model
     public $timestamps = false; 
     protected $table = 'postingan';
     protected $primaryKey = 'postingan_id';
-    protected $fillable = ['profile_id', 'path_postingan', 'judul_postingan', 'created_at'];
+    protected $fillable = ['profile_id', 'tujuan_postingan','path_postingan', 'judul_postingan', 'created_at'];
 
     public function profile()
     {

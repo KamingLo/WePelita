@@ -13,6 +13,7 @@ return new class extends Migration
         Schema::create('postingan', function (Blueprint $table){
             $table -> id('postingan_id');
             $table -> foreignId('profile_id')->constrained('profile', 'profile_id')->onDelete('cascade');
+            $table -> string('tujuan_postingan');
             $table -> string('path_postingan');
             $table -> string('judul_postingan');
             $table -> timestamp('created_at')->useCurrent();
