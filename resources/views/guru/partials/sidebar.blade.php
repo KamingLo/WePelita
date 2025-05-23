@@ -39,13 +39,13 @@
           <i class='bx bx-table IconSidebar'>Liat Jadwal Ajar Anda</i>
         </a>
       </li>
-
-      {{-- <li>
-        <a href="guru/isinilai">
-          <i class='bx bx-home-alt IconSidebar'>Isi Nilai Murid</i>
+      <li>
+        <a href="buatpengumuman">
+          <i class='bx bx-home-alt IconSidebar'>Buat Pengumuman kelas</i>
         </a>
       </li>
-
+      
+      {{-- 
       <li>
         <a href="guru/manajemennilai">
           <i class="bx bx-home-alt IconSidebar"></i>

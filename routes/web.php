@@ -81,4 +81,5 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
 
     Route::get('guru/jadwal', [GuruController::class, 'tampilkanJadwalPelajaran'])->name('guru.jadwal');
     Route::get('guru/jadwalanda', [GuruController::class, 'tampilkanJadwalAnda'])->name('guru.jadwalanda');
+    Route::get('guru/buatpengumuman', [GuruController::class, 'tampilkanPengumuman'])->name('guru.pengumuman');
 });
