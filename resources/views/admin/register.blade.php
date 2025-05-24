@@ -104,7 +104,7 @@
                 <div class="IsiData">
                     <label for="pendidikan">Pendidikan terakhir :</label>
                     <div style="position: relative;">
-                        <select name="Pendidikan" id="pendidikan" class="TampilanIsiData" required style="padding-right: 40px;">
+                        <select name="pendidikan" id="pendidikan" class="TampilanIsiData" required style="padding-right: 40px;">
                             <option value="" disabled selected>-- Pilih Pendidikan Terakhir --</option>
                             <option value="SD atau Setaranya">SD atau setaranya</option>
                             <option value="SMP atau Setaranya">SMP atau Setaranya</option>

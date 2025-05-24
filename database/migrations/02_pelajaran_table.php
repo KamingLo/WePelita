@@ -29,9 +29,9 @@ return new class extends Migration
             $table->id('nilai_id');
             $table->foreignId('murid_kelas_id')->constrained('murid_kelas', 'murid_kelas_id')->onDelete('cascade');
             $table->foreignId('pelajaran_id')->constrained('pelajaran', 'pelajaran_id')->onDelete('cascade');
-            $table->string('nilai_uts');
-            $table->string('nilai_uas');
+            $table->string('nilai_tugas')->nullable();
+            $table->string('nilai_uts')->nullable();
+            $table->string('nilai_uas')->nullable();
         });
-                
     }
 };

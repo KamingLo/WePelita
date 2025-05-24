@@ -1,13 +1,15 @@
 /* ----------------------------------------------- */
-/* -------------- manajemenUser.css -------------- */
+/* ---------- Combined ManajemenUser & Register CSS ---------- */
 /* ----------------------------------------------- */
 
 :root {
     --primary-color: #4a6cf7;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
     --danger-color: #dc3545;
     --warning-color: #ffc107;
-    --dark-color: #343a40;
     --light-color: #f8f9fa;
+    --dark-color: #343a40;
     --border-radius: 10px;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
@@ -18,26 +20,101 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
-.container {
+.NotifikasiMUFormRegUser {
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+}
+
+.search-filter-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.search-box-enhanced {
+    flex: 1;
+    position: relative;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.search-box-enhanced:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+.search-input-enhanced {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+    border-radius: var(--border-radius);
+    color: #333;
+}
+
+/* Filter Button Styling */
+.filter-box-enhanced {
+    display: flex;
+    align-items: center;
+}
+
+.filter-button-enhanced {
+    padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.filter-button-enhanced:hover {
+    background-color: #3959d9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(74, 108, 247, 0.25);
+}
+
+
+/* ----------------------------------------------- */
+/* ------------- REGISTER PAGE STYLES ------------- */
+/* ----------------------------------------------- */
+
+/* Container untuk halaman register */
+
+
+.ContainerUtamaManajemenUser {
+    /* border: 2px solid black; */
     margin-left: 280px;
     padding: 30px;
+    margin-top: -10rem;
+
 }
 
-/* ------------- */
-/* Bagian Header */
-.container h1 {
+/* Header styling */
+.ContainerUtamaManajemenUser h1 {
     width: 100%;
     color: var(--dark-color);
     margin-bottom: 20px;
     font-size: 26px;
     position: relative;
     padding-bottom: 10px;
-    transform: translateY(-10rem);
+    text-align: left;
 }
 
-.container h1:after {
+.ContainerUtamaManajemenUser h1:after {
     content: "";
     position: absolute;
     left: 0;
@@ -47,44 +124,273 @@ body {
     background-color: var(--primary-color);
 }
 
-.container h3 {
-    color: var(--dark-color);
-    font-size: 20px;
-    margin: 25px 0 15px;
-    position: relative;
-    padding-bottom: 8px;
-    display: inline-block;
-    transform: translateY(-1.5rem);
+
+/* Form Layout */
+.LayoutRegisterForm {
+    padding: 10px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    /* border: 2px solid black; */
 }
 
-.container h3:after {
+.LayoutRegisterForm h2 {
+    color: var(--dark-color);
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.LayoutRegisterForm h2:after {
     content: "";
     position: absolute;
     left: 0;
     bottom: 0;
     height: 2px;
-    width: 100%;
+    width: 60px;
     background-color: var(--primary-color);
 }
 
-/* ------------- */
-/* Bagian Filter */
-.filter-container {
+/* Form Grid Layout */
+.LayoutRegisterForm form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 25px;
+    align-items: start;
+}
+
+/* Form Input Styling */
+.IsiData {
+    margin-bottom: 20px;
+}
+
+.IsiData label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-color);
+    font-size: 14px;
+}
+
+.TampilanIsiData {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: var(--transition);
+    box-sizing: border-box;
     background-color: white;
-    padding: 20px;
+}
+
+.TampilanIsiData:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+
+input.TampilanIsiData {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    color: black;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: var(--transition);
+    box-sizing: border-box;
+}
+
+input.TampilanIsiData:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+/* Select styling */
+select.TampilanIsiData {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M8 9.5a.5.5 0 01-.354-.146l-4-4a.5.5 0 01.708-.708L8 8.293l3.646-3.647a.5.5 0 01.708.708l-4 4A.5.5 0 018 9.5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+}
+
+/* Parent Form Container */
+.FormUntukOrtu {
+    grid-column: 1 / -1;
+    margin-top: 20px;
+    padding: 25px;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius);
+    border: 1px solid #e0e0e0;
+}
+
+.FormUntukOrtu .IsiData {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 25px;
+    align-items: start;
+}
+
+/* Extended Data Display */
+.DisplayDataTable {
+    grid-column: 1 / -1;
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-color);
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.DisplayDataTable h2,
+.DisplayDataTable h5 {
+    color: var(--dark-color);
+    font-size: 18px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.DisplayDataTable h2:after,
+.DisplayDataTable h5:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 50px;
+    background-color: var(--primary-color);
+}
+
+.DisplayDataTable .IsiData {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    align-items: start;
+}
+
+/* Submit Button */
+.TombolOJT,
+.TambahRegister {
+    grid-column: 1 / -1;
+    justify-self: center;
+    padding: 12px 30px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    min-width: 200px;
+}
+
+.TombolOJT:hover,
+.TambahRegister:hover {
+    background-color: #3959d9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(74, 108, 247, 0.3);
+}
+
+/* Success/Error Messages */
+.UiPsnDis {
+    grid-column: 1 / -1;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.PsnBerhasil {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    width: 80%;
+    margin-left: 10px;
+}
+
+.error-message {
+    color: var(--danger-color);
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* ----------------------------------------------- */
+/* ----------- MANAGEMENT PAGE STYLES ------------- */
+/* ----------------------------------------------- */
+
+/* Split Container Layout for Management */
+.container-split {
+    display: flex;
+    height: 100vh;
+    gap: 20px;
+    box-sizing: border-box;;
+}
+
+/* Form Container (Left Side) */
+.form-container {
+    flex: 0 0 45%;
+    background-color: white;
+    border-radius: var(--border-radius);
+    height: 48rem;
+    box-shadow: var(--shadow);
+    overflow-y: auto;
+    max-height: calc(100vh - 40px);
+}
+
+.form-container .ContainerRegister {
+    margin-left: 0;
+    padding: 25px;
+}
+
+.form-container .ContainerRegister h1 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+/* Management Container (Right Side) */
+.management-container {
+    flex: 1;
+    background-color: white;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    margin-bottom: 25px;
-    width: 27.2rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 40px);
+    display: flex;
+    height: 48rem  ;
+    flex-direction: column;
 }
 
-.filter-container,
-.table-container {
-    transform: translateY(-8.5rem);
+/* Filter Container */
+.filter-container {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    display: flex;
 }
 
-select {
-    padding: 10px 15px;
+.filter-container label {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: 500;
+    color: var(--dark-color);
+}
+
+.filter-container select {
+    padding: 10px 35px 10px 15px;
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 14px;
@@ -93,60 +399,41 @@ select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M8 9.5a.5.5 0 01-.354-.146l-4-4a.5.5 0 01.708-.708L8 8.293l3.646-3.647a.5.5 0 01.708.708l-4 4A.5.5 0 018 9.5z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 15px center;
-    padding-right: 35px;
-    width: 200px;
+    min-width: 200px;
 }
 
-select:focus {
+.filter-container select:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
 }
 
-label {
-    display: inline-block;
-    margin-right: 10px;
-    font-weight: 500;
-    color: var(--dark-color);
-}
-
-/* ------------- */
-/* Bagian Tabel */
+/* Table Container */
 .table-container {
-    background-color: white;
+    flex: 1;
     padding: 25px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
     overflow: auto;
-    margin-bottom: 30px;
 }
 
+.table-container h3 {
+    color: var(--dark-color);
+    font-size: 20px;
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* Table Styling */
 .table {
     width: 100%;
     margin-bottom: 0;
     color: #212529;
     border-collapse: collapse;
-    transform: translateY(-1rem);
 }
 
 .table th {
     padding: 12px 15px;
     vertical-align: middle;
-    border-top: 1px solid #dee2e6;
-    font-size: 14px;
-}
-
-.table td {
-    padding: 12px 15px;
-    vertical-align: middle;
-    border-top: 1px solid #dee2e6;
-    font-size: 14px;
-    justify-items: center;
-    text-align: center;
-}
-
-.table thead th {
-    vertical-align: bottom;
     border-bottom: 2px solid #dee2e6;
     background-color: var(--light-color);
     color: var(--dark-color);
@@ -154,18 +441,21 @@ label {
     text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 0.5px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    text-align: left;
+}
+
+.table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 14px;
 }
 
 .table tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(74, 108, 247, 0.05);
 }
 
-/* ------------- */
-/* Bagian Button */
+/* Button Styles */
 .btn {
     display: inline-block;
     font-weight: 400;
@@ -180,7 +470,7 @@ label {
     border-radius: 6px;
     transition: var(--transition);
     cursor: pointer;
-    justify-content: center;
+    text-decoration: none;
 }
 
 .btn-sm {
@@ -190,21 +480,14 @@ label {
 
 .btn-warning {
     color: white;
-    background-color: #4a6cf7;
-    border-color: #4a6cf7;
-    padding: 6px 12px;
-    font-size: 13px;
-    text-decoration: none;
-    width: 100%;
-}
-
-.btn-warning i {
-    transform: translate(-0.1rem, 0.1rem);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
 .btn-warning:hover {
     background-color: #3959d9;
     border-color: #3959d9;
+    transform: translateY(-1px);
 }
 
 .btn-danger {
@@ -216,44 +499,168 @@ label {
 .btn-danger:hover {
     background-color: #c82333;
     border-color: #bd2130;
+    transform: translateY(-1px);
 }
 
 .OptionManajemenTabel {
-    gap: 0.5rem;
-    width: 4rem;
-    display: grid;
+    display: flex;
+    gap: 8px;
     justify-content: center;
-}
-
-.OptionManajemenTabel a {
-text-decoration: none;
+    flex-wrap: wrap;
 }
 
 .IconForButton {
-  font-size: 15px;
-  letter-spacing: 10px;
-  transform: translate(-0.10rem, 0.10rem);
-  color: white;
+    font-size: 14px;
+    margin-right: 5px;
 }
 
-/* ------------- */
-/* Responsif */
-@media (max-width: 1200px) {
-    .container {
+/* Input dengan tombol hapus */
+.HapusBar {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.HapusBar:hover {
+    color: var(--danger-color);
+}
+
+/* ----------------------------------------------- */
+/* --------------- RESPONSIVE STYLES -------------- */
+/* ----------------------------------------------- */
+
+/* Large screens */
+@media (max-width: 1400px) {
+    .container-split {
         margin-left: 0;
+    }
+    
+    .form-container {
+        flex: 0 0 50%;
     }
 }
 
+/* Medium screens */
+@media (max-width: 1200px) {
+    /* Register page adjustments */
+    .ContainerRegister {
+        margin-left: 0;
+        padding: 20px;
+    }
+    
+    .LayoutRegisterForm {
+        padding: 25px;
+    }
+    
+    .LayoutRegisterForm form {
+        grid-template-columns: 1fr;
+        grid-gap: 20px;
+    }
+    
+    .FormUntukOrtu .IsiData {
+        grid-template-columns: 1fr;
+        grid-gap: 15px;
+    }
+    
+    .DisplayDataTable .IsiData {
+        grid-template-columns: 1fr;
+        grid-gap: 15px;
+    }
+    
+    /* Management page adjustments */
+    .container-split {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .form-container,
+    .management-container {
+        flex: none;
+        max-height: none;
+    }
+    
+    .form-container {
+        margin-bottom: 20px;
+    }
+}
+
+/* Small screens */
 @media (max-width: 768px) {
+    .ContainerRegister {
+        margin-left: 0;
+        padding: 15px;
+    }
+    
+    .LayoutRegisterForm {
+        padding: 20px;
+    }
+    
+    .container-split {
+        padding: 10px;
+        gap: 10px;
+    }
+    
     .table-container {
+        padding: 15px;
         overflow-x: auto;
     }
     
-    select {
+    .filter-container select {
         width: 100%;
-        margin-top: 5px;
+        min-width: auto;
+    }
+    
+    .OptionManajemenTabel {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .btn {
+        font-size: 12px;
+        padding: 5px 10px;
     }
 }
 
-/* --------------------------------------- */
+/* ----------------------------------------------- */
+/* ---------------- UTILITY STYLES --------------- */
+/* ----------------------------------------------- */
 
+/* Hide forms initially */
+#FormUntukMurid,
+#FormUntukGuru {
+    display: none;
+}
+
+/* Custom scrollbar */
+.form-container::-webkit-scrollbar,
+.management-container::-webkit-scrollbar,
+.DisplayDataTable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-container::-webkit-scrollbar-track,
+.management-container::-webkit-scrollbar-track,
+.DisplayDataTable::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.form-container::-webkit-scrollbar-thumb,
+.management-container::-webkit-scrollbar-thumb,
+.DisplayDataTable::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+.form-container::-webkit-scrollbar-thumb:hover,
+.management-container::-webkit-scrollbar-thumb:hover,
+.DisplayDataTable::-webkit-scrollbar-thumb:hover {
+    background: #3959d9;
+}

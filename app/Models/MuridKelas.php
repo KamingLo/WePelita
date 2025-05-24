@@ -28,4 +28,9 @@ class MuridKelas extends Model
     public function muridOrangTua(){
         return $this->hasMany(MuridOrangTua::class, 'murid_kelas_id');
     }
+
+    public function nilai()
+    {
+        return $this->hasMany(Nilai::class, 'murid_kelas_id');
+    }
 }

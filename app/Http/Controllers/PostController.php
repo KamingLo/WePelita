@@ -112,4 +112,27 @@ class PostController extends Controller
         return redirect()->route('admin.manajemenPost', ['TipePost' => 'kegiatan'])
             ->with('success', 'Kegiatan berhasil dihapus!');
     }
+
+    public function store(Request $request)
+    {
+        $content = $request->input('content');
+        
+        // Generate random filename
+        $filename = Str::random(40) . '.html';
+        
+        // Simpan file HTML ke storage
+        Storage::disk('public')->put('postingan/' . $filename, $content);
+        
+        // Simpan ke database sesuai schema
+        Postingan::create([
+            'profile_id' => auth()->user()->profile->profile_id,
+            'tipe_postingan' => $request->tipe_postingan,
+            'tujuan_postingan' => $request->tujuan_postingan,
+            'path_postingan' => 'postingan/' . $filename,
+            'judul_postingan' => $request->judul_postingan,
+            'lampiran' => null // karena kita menonaktifkan upload file
+        ]);
+        
+        return redirect()->back()->with('success', 'Postingan berhasil disimpan');
+    }
 }

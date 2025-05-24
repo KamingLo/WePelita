@@ -3,7 +3,7 @@
   <aside class="ContainerSideBar">
     <div class="ProfileSiUser">
         <div class="HeaderUser">
-            <a href="/guru/dashboard">
+            <a href="dashboard">
                 <img src="/image/logo_pelita.png"/>
             </a>
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
@@ -34,24 +34,24 @@
         </a>
       </li>
       
-      {{-- <li>
-        <a href="guru/jadwalajar">
-          <i class='bx bx-home-alt IconSidebar'>Liat Jadwal Ajar</i>
-        </a>
-      </li>
-
       <li>
-        <a href="guru/isinilai">
-          <i class='bx bx-home-alt IconSidebar'>Isi Nilai Murid</i>
+        <a href="jadwalanda" class="{{ request()->is('livewire/guru/tampilkan-jadwal-anda*') ? 'active-link' : '' }}">
+          <i class='bx bx-table IconSidebar'>Liat Jadwal Ajar Anda</i>
         </a>
       </li>
-
       <li>
-        <a href="guru/manajemennilai">
-          <i class="bx bx-home-alt IconSidebar"></i>
+        <a href="buatpengumuman">
+          <i class='bx bx-home-alt IconSidebar'>Buat Pengumuman kelas</i>
         </a>
       </li>
-    </ul> --}}
+      
+      
+      <li>
+        <a href="menu-nilai">
+          <i class="bx bx-home-alt IconSidebar">Menu nilai</i>
+        </a>
+      </li>
+    </ul>
 
     
     <div class="logout-container">

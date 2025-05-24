@@ -8,10 +8,40 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\PublicController;
 use App\Models\Admin;
 use App\Models\Guru;
+use Illuminate\Support\Str;
+use App\Http\Controllers\TrixController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/editor', function () {
+    return view('editor'); // Pastikan nama view sesuai
+})->name('editor');
+
+Route::post('/editor', function (Illuminate\Http\Request $request) {
+    $request->validate([
+        'content' => 'required'
+    ]);
+    
+    // Simpan konten HTML ke file di storage/app/public
+    $fileName = 'editor-content/' . Str::random(20) . '.html';
+    $request->content->storeAs('public', $fileName);
+    
+    // Jika ingin menyimpan path ke database
+    // $contentPath = $fileName;
+    // Post::create(['content_path' => $contentPath]);
+    
+    return back()->with([
+        'success' => 'Content saved successfully!',
+        'file_path' => $fileName // Optional: untuk menampilkan path file
+    ]);
+})->name('editor.store');
+
+use App\Http\Controllers\EditorController;
+
+Route::get('/editor', [EditorController::class, 'show'])->name('editor');
+Route::post('/editor', [EditorController::class, 'store'])->name('editor.store');
 
 Route::get('post', [PublicController::class, 'tampilkanPostingan'])->name('postingan');
 Route::get('post/{id}', [PublicController::class, 'tampilkanPostinganByIndex'])->name('postingan.index');
@@ -71,6 +101,7 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::put('/admin/user/update/{id}', [AdminController::class, 'updateUser'])->name('admin.user.update');
     Route::delete('/admin/user/delete/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.delete');
 
+
 });
 
 Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
@@ -80,4 +111,12 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     })->name('guru.dashboard');
 
     Route::get('guru/jadwal', [GuruController::class, 'tampilkanJadwalPelajaran'])->name('guru.jadwal');
+    Route::get('guru/jadwalanda', [GuruController::class, 'tampilkanJadwalAnda'])->name('guru.jadwalanda');
+    Route::get('guru/buatpengumuman', [GuruController::class, 'tampilkanPengumuman'])->name('guru.pengumuman');
+    Route::get('guru/menu-nilai', [GuruController::class, 'tampilkanMenuNilai'])->name('guru.isinilai');
+    
+    Route::get('guru/post', function() {
+        return view('guru.post');
+    })->name('guru.post');
 });
+

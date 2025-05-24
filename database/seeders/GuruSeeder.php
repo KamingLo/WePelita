@@ -15,7 +15,7 @@ class GuruSeeder extends Seeder
         $faker = FakerFactory::create();  // Buat instance faker
 
         // Buat 15 guru beserta profile baru otomatis per guru
-        Guru::factory()->count(15)->create();
+        Guru::factory()->count(6)->create();
 
         $profile = Profile::create([
             'name' => 'Sherry Wenn',
@@ -32,8 +32,8 @@ class GuruSeeder extends Seeder
         Guru::create([
             'nuptk' => $faker->unique()->numerify('##########'), // 10 digit number
             'profile_id' => $profile->profile_id,
-            'statusMenikah' => $faker->randomElement(['Menikah', 'Belum Menikah']),
-            'statusKerja' => $faker->randomElement(['Aktif', 'Tidak Aktif']),
+            'statusMenikah' => 'Belum Menikah',
+            'statusKerja' => $faker->randomElement(['Full Time', 'Honorer']),
             'gelar' => $faker->randomElement(['S.Pd', 'S.Pd.I', 'M.Pd', 'M.Pd.I']),
         ]);
     }

@@ -10,7 +10,7 @@ class KelasFactory extends Factory
     {
         // Contoh nama kelas: 10A, 10B, 11A, 11B, 12A, 12B
         $grade = $this->faker->randomElement(['10', '11', '12']);
-        $section = $this->faker->randomElement(['A', 'B', 'C']);
+        $section = $this->faker->randomElement(['MP', 'AK', 'DKV 1', 'DKV 2']);
         return [
             'nama_kelas' => $grade . $section,
         ];

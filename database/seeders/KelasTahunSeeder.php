@@ -21,5 +21,12 @@ class KelasTahunSeeder extends Seeder
 
             $kelas->tahun()->syncWithoutDetaching($randomTahun);
         }
+        $Public = Kelas::create([
+            'kelas_id' => 10,
+            'nama_kelas' => 'Public',
+        ]);
+
+        $tahunPublic = TahunAjar::create(['tahun_ajaran_id' => 10, 'tahun_ajaran' => 'Selamanya', 'semester' => 'Selamanya', 'status' => 'Tidak Aktif']);
+        $Public->tahun()->attach($tahunPublic->tahun_ajaran_id);
     }
 }

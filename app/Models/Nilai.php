@@ -8,11 +8,11 @@ class Nilai extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['murid_id', 'pelajaran_id', 'semester', 'tahun_ajaran', 'nilai_uts', 'nilai_uas'];
+    protected $fillable = ['murid_kelas_id', 'pelajaran_id','nilai_tugas', 'nilai_uts', 'nilai_uas'];
 
-    public function murid()
+    public function muridkelas()
     {
-        return $this->belongsTo(Murid::class, 'murid_id');
+        return $this->belongsTo(MuridKelas::class, 'murid_kelas_id');
     }
 
     public function pelajaran()

@@ -5,22 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Guru extends Model
+class Komentar extends Model
 {
     use HasFactory;
 
     public $timestamps = false; 
-    protected $table = 'guru';
-    protected $primaryKey = 'guru_id';
-    protected $fillable = ['profile_id','gelar', 'statusMenikah', 'statusKerja', 'nuptk'];
+    protected $table = 'komentar';
+    protected $primaryKey = 'komentar_id';
+    protected $fillable = ['postingan_id', 'profile_id', 'isi_komentar', 'created_at'];
 
     public function profile()
     {
         return $this->belongsTo(Profile::class, 'profile_id');
     }
 
-    public function pelajaran()
+    public function postingan()
     {
-        return $this->hasMany(Pelajaran::class, 'guru_id');
+        return $this->belongsTo(Postingan::class, 'postingan_id');
     }
 }

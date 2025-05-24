@@ -2,12 +2,12 @@
     <link rel="stylesheet" href="{{ asset('css/JadwalGuru.css') }}" />
     
     <div class="ContainerTampilkanJadwal">
-        <h1>Jadwal Pembelajaran per Hari</h1>
+        <h1>Jadwal Ajar anda</h1>
 
         <div class="LayoutTabelTerintegrasi">
             <div class="HeaderTabel">
                 <div class="FilterDalamTabel">
-                    <h2>Jadwal Pembelajaran</h2>
+                    <h2>Jadwal ajar anda hari ini</h2>
                     <div class="FilterControls">
                         <div class="FilterGroup">
                             <label for="hari">Pilih Hari:</label>
@@ -32,7 +32,6 @@
                     <thead>
                         <tr>
                             <th>Pelajaran</th>
-                            <th>Guru</th>
                             <th>Kelas</th>
                             <th>Waktu</th>
                         </tr>
@@ -41,7 +40,6 @@
                         @forelse ($jadwals as $jadwal)
                             <tr>
                                 <td>{{ $jadwal->pelajaran->namaPelajaran }}</td>
-                                <td>{{ $jadwal->pelajaran->guru->profile->name }}</td>
                                 <td>{{ $jadwal->kelasTahun->kelas->nama_kelas }}</td>
                                 <td>
                                     <span class="WaktuBadge">

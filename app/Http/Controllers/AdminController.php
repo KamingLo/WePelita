@@ -9,11 +9,11 @@ use App\Models\Admin;
 use App\Models\OrangTua;
 use App\Models\Murid;
 use App\Models\Kelas;
-use App\Models\TahunAjaran;
+use App\Models\TahunAjar;
 use App\Models\Pelajaran;
 use App\Models\JadwalPelajaran;
-use App\Models\Pengumuman;
-use App\Models\Kegiatan;
+use App\Models\Komentar;
+use App\Models\Postingan;
 use App\Models\KelasTahun;
 use App\Models\MuridKelas;
 use App\Models\MuridOrangTua;
@@ -183,7 +183,7 @@ class AdminController extends Controller
                 break;
         }
 
-        return redirect()->route('admin.register')->with('success', 'User baru berhasil ditambahkan');
+        return redirect()->route('admin.ManajemenUser')->with('success', 'User baru berhasil ditambahkan');
     }
 
     public function tampilkanManajemenKelas(){
@@ -435,7 +435,7 @@ class AdminController extends Controller
         ]);
 
         $jadwal = JadwalPelajaran::findOrFail($id);
-
+        //perbaiki querernya agar kelas bisa hanya menampilkna atau mengecek bentrok dengan kelas yang statusnya aktif
         $bentrokKelas = JadwalPelajaran::where('jadwal_id', '!=', $id)
             ->where('kelas_tahun_id', $validated['kelas_tahun_id'])
             ->where('hari', $validated['hari'])
@@ -544,186 +544,188 @@ class AdminController extends Controller
         return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil dihapus');
     }
 
-    public function tampilkanPost()
-    {
-        $pengumumans = Pengumuman::all();
-        $kegiatans = Kegiatan::all();
-        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.post', compact('pengumumans', 'kegiatans', 'admin'));
-    }
+    // public function tampilkanPost()
+    // {
+    //     $pengumumans = Pengumuman::all();
+    //     $blogs = Blog::all();
+    //     $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+    //     return view('admin.post', compact('pengumumans', 'blogs', 'admin'));
+    // }
 
-    public function tambahPostingan(Request $request)
-    {
-        // Validasi input
-        $validated = $request->validate([
-            'tipe' => 'required|in:pengumuman,kegiatan',
-            'judul' => 'required|string|max:255',
-            'isi' => 'required|string',
-            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
-        ]);
+    // public function tambahPostingan(Request $request)
+    // {
+    //     // Validasi input
+    //     $validated = $request->validate([
+    //         'tipe' => 'required|in:pengumuman,kegiatan',
+    //         'judul' => 'required|string|max:255',
+    //         'isi' => 'required|string',
+    //         'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
+    //     ]);
 
-        // Simpan lampiran jika ada
-        $lampiranPath = null;
-            if ($request->hasFile('lampiran')) {
-                $file = $request->file('lampiran');
+    //     // Simpan lampiran jika ada
+    //     $lampiranPath = null;
+    //         if ($request->hasFile('lampiran')) {
+    //             $file = $request->file('lampiran');
 
-                // Pastikan nama file unik
-                $filename = time() . '_' . $file->getClientOriginalName();
+    //             // Pastikan nama file unik
+    //             $filename = time() . '_' . $file->getClientOriginalName();
 
-                // Simpan manual ke folder public/storage/lampiran
-                $file->move(public_path('storage/lampiran'), $filename);
+    //             // Simpan manual ke folder public/storage/lampiran
+    //             $file->move(public_path('storage/lampiran'), $filename);
 
-                // Simpan path relatif ke database
-                $lampiranPath = 'lampiran/' . $filename;
-            }
-
-
-        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
-
-        if ($validated['tipe'] === 'pengumuman') {
-            Pengumuman::create([
-                'admin_id' => $adminId,
-                'judul_pengumuman' => $validated['judul'],
-                'isi_pengumuman' => $validated['isi'],
-                'lampiran' => $lampiranPath,
-                'created_at' => now(),
-            ]);
-        } else {
-            Kegiatan::create([
-                'admin_id' => $adminId,
-                'judul_kegiatan' => $validated['judul'],
-                'isi_kegiatan' => $validated['isi'],
-                'lampiran' => $lampiranPath,
-                'created_at' => now(),
-            ]);
-        }
-
-        return redirect()->route('admin.post')->with('success', 'Postingan berhasil dibuat!');
-    }
-
-    public function tampilkanManajemenPost()
-    {
-        $pengumumans = Pengumuman::all();
-        $kegiatans = Kegiatan::all();
-        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.manajemenPost', compact('pengumumans', 'kegiatans', 'admin'));
-    }
-
-    public function tampilkanPengumuman($id)
-    {
-        $pengumuman = Pengumuman::findOrFail($id);
-        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.ManajemenPostPengumumanEdit', compact('pengumuman', 'admin'));
-    }
-
-    public function tampilkanKegiatan($id)
-    {
-        $kegiatan = Kegiatan::findOrFail($id);
-        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.ManajemenPostKegiatanEdit', compact('kegiatan', 'admin'));
-    }
+    //             // Simpan path relatif ke database
+    //             $lampiranPath = 'lampiran/' . $filename;
+    //         }
 
 
-    public function updatePengumuman(Request $request, $id)
-    {
-        // Validasi input
-        $validated = $request->validate([
-            'judul' => 'required|string|max:255',
-            'isi' => 'required|string',
-            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
-        ]);
+    //     $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
 
-        $pengumuman = Pengumuman::findOrFail($id);
+    //     if ($validated['tipe'] === 'pengumuman') {
+    //         Pengumuman::create([
+    //             'admin_id' => $adminId,
+    //             'judul_pengumuman' => $validated['judul'],
+    //             'isi_pengumuman' => $validated['isi'],
+    //             'lampiran' => $lampiranPath,
+    //             'created_at' => now(),
+    //         ]);
+    //     } else {
+    //         Blog::create([
+    //             'admin_id' => $adminId,
+    //             'judul_blog' => $validated['judul'],
+    //             'isi_blog' => $validated['isi'],
+    //             'lampiran' => $lampiranPath,
+    //             'created_at' => now(),
+    //         ]);
+    //     }
 
-        // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
-        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
+    //     return redirect()->route('admin.post')->with('success', 'Postingan berhasil dibuat!');
+    // }
 
-        // Jika user upload file baru
-        if ($request->hasFile('lampiran')) {
-            // Hapus lampiran lama jika ada
-            if ($pengumuman->lampiran) {
-                Storage::disk('public')->delete($pengumuman->lampiran);
-            }
+    // public function tampilkanManajemenPost()
+    // {
+    //     $pengumumans = Pengumuman::all();
+    //     $blogs = Blog::all();
+    //     $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+    //     return view('admin.manajemenPost', compact('pengumumans', 'blogs', 'admin'));
+    // }
 
-            // Simpan lampiran baru
-            $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
-            $pengumuman->lampiran = $lampiranPath;
-        }
+    // public function tampilkanPengumuman($id)
+    // {
+    //     $pengumuman = Pengumuman::findOrFail($id);
+    //     $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+    //     return view('admin.ManajemenPostPengumumanEdit', compact('pengumuman', 'admin'));
+    // }
 
-        // Update data lainnya
-        $pengumuman->update([
-            'judul_pengumuman' => $validated['judul'],
-            'isi_pengumuman' => $validated['isi'],
-            'admin_id' => $adminId,
-        ]);
+    // public function tampilkanKegiatan($id)
+    // {
+    //     $blog = Blog::findOrFail($id);
+    //     $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+    //     return view('admin.ManajemenPostKegiatanEdit', compact('blog', 'admin'));
+    // }
 
-        return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil disimpan!');
-    }
+
+    // public function updatePengumuman(Request $request, $id)
+    // {
+    //     // Validasi input
+    //     $validated = $request->validate([
+    //         'judul' => 'required|string|max:255',
+    //         'isi' => 'required|string',
+    //         'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
+    //     ]);
+
+    //     $pengumuman = Pengumuman::findOrFail($id);
+
+    //     // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
+    //     $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
+
+    //     // Jika user upload file baru
+    //     if ($request->hasFile('lampiran')) {
+    //         // Hapus lampiran lama jika ada
+    //         if ($pengumuman->lampiran) {
+    //             Storage::disk('public')->delete($pengumuman->lampiran);
+    //         }
+
+    //         // Simpan lampiran baru
+    //         $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
+    //         $pengumuman->lampiran = $lampiranPath;
+    //     }
+
+    //     // Update data lainnya
+    //     $pengumuman->update([
+    //         'judul_pengumuman' => $validated['judul'],
+    //         'isi_pengumuman' => $validated['isi'],
+    //         'admin_id' => $adminId,
+    //     ]);
+
+    //     return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil disimpan!');
+    // }
     
-    public function updateKegiatan(Request $request, $id)
-    {
-        // Validasi input
-        $validated = $request->validate([
-            'judul' => 'required|string|max:255',
-            'isi' => 'required|string',
-            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
-        ]);
+    // public function updateKegiatan(Request $request, $id)
+    // {
+    //     // Validasi input
+    //     $validated = $request->validate([
+    //         'judul' => 'required|string|max:255',
+    //         'isi' => 'required|string',
+    //         'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
+    //     ]);
 
-        $kegiatan = Kegiatan::findOrFail($id);
+    //     $blog = Blog::findOrFail($id);
 
-        // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
-        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
+    //     // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
+    //     $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
 
-        // Jika user upload file baru
-        if ($request->hasFile('lampiran')) {
-            // Hapus lampiran lama jika ada
-            if ($kegiatan->lampiran) {
-                Storage::disk('public')->delete($kegiatan->lampiran);
-            }
+    //     // Jika user upload file baru
+    //     if ($request->hasFile('lampiran')) {
+    //         // Hapus lampiran lama jika ada
+    //         if ($kegiatan->lampiran) {
+    //             Storage::disk('public')->delete($blog->lampiran);
+    //         }
 
-            // Simpan lampiran baru
-            $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
-            $kegiatan->lampiran = $lampiranPath;
-        }
+    //         // Simpan lampiran baru
+    //         $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
+    //         $blog->lampiran = $lampiranPath;
+    //     }
 
-        // Update data lainnya
-        $kegiatan->update([
-            'admin_id' => $adminId,
-            'judul_kegiatan' => $validated['judul'],
-            'isi_kegiatan' => $validated['isi'],
-        ]);
+    //     // Update data lainnya
+    //     $kegiatan->update([
+    //         'admin_id' => $adminId,
+    //         'judul_blog' => $validated['judul'],
+    //         'isi_blog' => $validated['isi'],
+    //     ]);
 
-        return redirect()->route('admin.manajemenPost')->with('success', 'kegiatan berhasil disimpan!');
-    }
+    //     return redirect()->route('admin.manajemenPost')->with('success', 'blog berhasil disimpan!');
+    // }
 
 
-    public function hapusPengumuman($id){
-        $pengumuman = Pengumuman::findOrFail($id);
-        if ($pengumuman->lampiran) {
-            Storage::disk('public')->delete($pengumuman->lampiran);
-        }
-        $pengumuman->delete();
+    // public function hapusPengumuman($id){
+    //     $pengumuman = Pengumuman::findOrFail($id);
+    //     if ($pengumuman->lampiran) {
+    //         Storage::disk('public')->delete($pengumuman->lampiran);
+    //     }
+    //     $pengumuman->delete();
 
-        return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil dihapus');
-    }
+    //     return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil dihapus');
+    // }
 
-    public function hapusKegiatan($id){
-        $kegiatan = Kegiatan::findOrFail($id);
-        if ($kegiatan->lampiran) {
-            Storage::disk('public')->delete($kegiatan->lampiran);
-        }
-        $kegiatan->delete();
+    // public function hapusKegiatan($id){
+    //     $blog = Blog::findOrFail($id);
+    //     if ($kegiatan->lampiran) {
+    //         Storage::disk('public')->delete($blog->lampiran);
+    //     }
+    //     $blog->delete();
 
-        return redirect()->route('admin.manajemenPost')->with('success', 'Kegiatan berhasil dihapus');
-    }
+    //     return redirect()->route('admin.manajemenPost')->with('success', 'Kegiatan berhasil dihapus');
+    // }
 
     public function tampilkanManajemenUser(){
-        
         $Gurus = Guru::all();
         $Admins = Admin::all();
         $MuridOrangTuas = MuridOrangTua::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.ManajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin'));
+        $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
+            $query->where('status', 'Aktif');
+        })->get();
+        return view('admin.ManajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin', 'kelasList'));
     }
 
     public function editUser($id, Request $request)

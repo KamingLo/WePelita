@@ -24,11 +24,11 @@
         <span>Admin Tools</span>
       </h4>
 
-      <li>
+      {{-- <li>
         <a href="/admin/register" class="{{ request()->is('admin/register*') ? 'active-link' : '' }}">
           <i class='bx bx-user-plus IconSidebar'></i>Daftar User Baru
         </a>
-      </li>
+      </li> --}}
       <li>
         <a href="/admin/pelajaran" class="{{ request()->is('admin/pelajaran*') ? 'active-link' : '' }}">
           <i class='bx bx-list-plus IconSideBar'></i>Tambah Pelajaran
@@ -44,11 +44,11 @@
           <i class='bx bx-message-square-add IconSideBar'></i>Tambah posting
         </a>
       </li>
-        <li>
+        {{-- <li>
         <a href="/admin/kenaikanKelas" class="{{ request()->is('admin/kenaikanKelas*') ? 'active-link' : '' }}">
           <i class='bx bx-chevrons-up IconSideBar'></i>Kenaikan Kelas
         </a>
-      </li>
+      </li> --}}
         <li>
         <a href="/admin/manajemenKelas" class="{{ request()->is('admin/manajemenKelas*') ? 'active-link' : '' }}">
           <i class='bx bx-category-alt IconSideBar'></i>Manajemen Kelas

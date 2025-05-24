@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const TanggalLahir = document.getElementById("tanggal_lahir");
     const TanggalLahirOrtu = document.getElementById("ortu_tanggal_lahir");
 
-    // Validasi Tanggal Lahir: Tahun gak boleh lebih dari 4 digit
     function validateYear(input) {
         input.addEventListener("change", function () {
             const dateValue = this.value;
@@ -74,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (TanggalLahir) validateYear(TanggalLahir);
     if (TanggalLahirOrtu) validateYear(TanggalLahirOrtu);
 
-    // Toggling form berdasarkan role
     function toggleFields() {
         const selectedRole = roleSelect.value;
         muridFields.style.display = selectedRole === 'murid' ? 'block' : 'none';
@@ -89,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function () {
         input.addEventListener("input", function () {
             let value = this.value;
 
-            // Boleh diawali +, sisanya harus angka
             if (value.startsWith("+")) {
                 value = "+" + value.substring(1).replace(/[^0-9]/g, "");
             } else {
@@ -175,11 +172,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-
-// File: public/js/post-management.js
+function switchTab(tabName) { 
+    // Hide all tab contents
+    const tabContents = document.querySelectorAll('.TabContent');
+    tabContents.forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    const oldTabButtons = document.querySelectorAll('.TabButton');
+    const newTabButtons = document.querySelectorAll('.HeaderTabButton');
+    
+    oldTabButtons.forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    newTabButtons.forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    if (tabName === 'manajemen') {
+        document.getElementById('manajemenTab')?.classList.add('active');
+        document.getElementById('tabManajemen')?.classList.add('active');
+    } else if (tabName === 'kenaikan') {
+        document.getElementById('kenaikanTab')?.classList.add('active');
+        document.getElementById('tabKenaikan')?.classList.add('active');
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle file input for post form
     const handleFileInputs = () => {
         const inputFile = document.getElementById('lampiran');
         if (!inputFile) return;
@@ -194,7 +214,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Update file name display when file is selected
         inputFile.addEventListener('change', function() {
             if (this.files && this.files[0]) {
                 const fileName = this.files[0].name;
@@ -202,17 +221,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     fileNameDisplay.textContent = fileName;
                 }
                 
-                // The preview functionality is handled by Livewire in post-form.blade.php
             }
         });
     };
     
-    // Handle success messages
     const handleSuccessMessages = () => {
         const successMessages = document.querySelectorAll('.alert-success, .PsnBerhasil');
         
         successMessages.forEach(message => {
-            // Auto-hide success messages after 3 seconds
             setTimeout(() => {
                 message.style.opacity = '0';
                 message.style.transition = 'opacity 0.5s ease-out';
@@ -224,7 +240,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    // Handle post preview hover effects
     const handlePostPreviews = () => {
         const postPreviews = document.querySelectorAll('.mini-post-preview');
         
@@ -241,7 +256,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    // Handle delete confirmation with improved UI
     const handleDeleteConfirmations = () => {
         const deleteButtons = document.querySelectorAll('.btn-danger[onclick*="confirm"]');
         
@@ -262,7 +276,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
     
-    // Initialize all handlers
     handleFileInputs();
     handleSuccessMessages();
     handlePostPreviews();
@@ -277,4 +290,35 @@ document.addEventListener('DOMContentLoaded', function() {
             handleDeleteConfirmations();
         });
     });
+
+    const sessionTabElement = document.getElementById('sessionTab');
+    const tabToActivate = sessionTabElement?.dataset.tab || 'manajemen';
+    switchTab(tabToActivate);
+    
+    const tabManajemenBtn = document.getElementById('tabManajemen');
+    const tabKenaikanBtn = document.getElementById('tabKenaikan');
+    
+    if (tabManajemenBtn) {
+        tabManajemenBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            switchTab('manajemen');
+        });
+    }
+    
+    if (tabKenaikanBtn) {
+        tabKenaikanBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            switchTab('kenaikan');
+        });
+    }
+    
+    const clearNamaKelasBtn = document.getElementById('clearNamaKelas');
+    const namaKelasInput = document.getElementById('nama_kelas');
+    
+    if (clearNamaKelasBtn && namaKelasInput) {
+        clearNamaKelasBtn.addEventListener('click', function() {
+            namaKelasInput.value = '';
+            namaKelasInput.focus();
+        });
+    }
 });
