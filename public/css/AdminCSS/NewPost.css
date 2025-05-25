@@ -1,131 +1,28 @@
-/* ----------------------------------------------- */
-/* ----------------- posting.css ------------------ */
-/* ----------------------------------------------- */
 
-:root {
-    --primary-color: #4a6cf7;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --dark-color: #343a40;
-    --border-radius: 10px;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --transition: all 0.3s ease;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-}
-
-/* ----------------------------------------------- */
-/* ----------------- Bagian Header --------------- */
-/* ----------------------------------------------- */
 
 .ContainerNewPost {
-    margin-left: 280px;
-    padding: 30px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-}
-
-h1 {
-    width: 100%;
-    color: var(--dark-color);
-    margin-bottom: 20px;
-    font-size: 26px;
-    position: relative;
-    padding-bottom: 10px;
-    transform: translateY(-10rem);
-}
-
-h1:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    width: 100%;
-    background-color: var(--primary-color);
-}
-
-/* ----------------------------------------------- */
-/* ----------- Bagian ContainerDalam ------------- */
-/* ----------------------------------------------- */
-
-.LayoutNewPost {
-    padding: 30px;
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    height: 39rem;
-    width: 45rem;
-    transform: translateY(-10.8rem);
-    min-height: 60vh;
-    transition: width 0.4s ease-in-out;
-}
-
-.LayoutNewPost.preview-active {
-    width: 100rem;
-}
-
-h2 {
-    color: var(--dark-color);
-    margin-top: 0;
-    font-size: 26px;
-    margin-bottom: 25px;
-    position: relative;
-    padding-bottom: 10px;
-    width: 100%;
-}
-
-h2:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 3px;
-    width: 100px;
-    background-color: var(--primary-color);
+    margin-bottom: 30px;
 }
 
 .ContainerDalam {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.FormKiri, .FormKanan {
     display: flex;
-    position: relative;
-    gap: 2rem;
-    overflow: hidden;
-}
-
-/* ----------------------------------------------- */
-/* --------------- Bagian Form Kiri -------------- */
-/* ----------------------------------------------- */
-
-.FormKiri {
-    flex: 1;
-    transform: translateX(-0.2rem);
-    transition: width 0.4s ease-in-out;
-}
-
-.FormKiri.preview-active {
-    width: 50%;
-}
-
-form {
-    margin-top: 20px;
+    flex-direction: column;
+    margin-top: -1rem;
 }
 
 .IsiData {
     margin-bottom: 20px;
-    width: 40.5rem;
-    transform: translateX(0.38rem);
 }
 
 .NamaLabelBar {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     font-weight: 500;
     color: var(--dark-color);
     font-size: 14px;
@@ -133,7 +30,7 @@ form {
 
 .TampilanIsiData {
     width: 100%;
-    padding: 10px 15px;
+    padding: 12px 15px;
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 14px;
@@ -165,7 +62,7 @@ input.TampilanIsiData:focus {
 }
 
 input[type="radio"] {
-    margin-right: 5px;
+    margin-right: 8px;
     cursor: pointer;
 }
 
@@ -175,88 +72,7 @@ input[type="radio"] + label {
     font-size: 14px;
 }
 
-textarea.TampilanIsiData {
-    min-height: 120px;
-    resize: none;
-}
-
-/* ----------------------------------------------- */
-/* -------------- Bagian Form Kanan -------------- */
-/* ----------------------------------------------- */
-
-.FormKanan {
-    width: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: width 0.4s ease-in-out, opacity 0.3s ease-in-out;
-    padding: 0;
-    box-sizing: border-box;
-    position: relative;
-}
-
-.FormKanan.preview-active {
-    width: 50%;
-    opacity: 1;
-}
-
-.PreviewFotoHeader {
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.PreviewJudulFoto {
-    font-size: 18px;
-    color: var(--dark-color);
-    margin: 0;
-    font-weight: 500;
-}
-
-.PreviewDeskripsiFoto {
-    font-size: 14px;
-    color: #777;
-    margin-top: 5px;
-}
-
-.PreviewLayoutFoto {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: var(--border-radius);
-    border: 2px dashed #ddd;
-    height: 400px;
-    display: flex;
-    margin-top: 1rem;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.PreviewLayoutFotoo.has-preview {
-    border-style: solid;
-    border-color: var(--primary-color);
-    background-color: white;
-}
-
-.PreviewFoto {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    object-fit: contain;
-}
-
-.NamaFileFoto {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-/* ----------------------------------------------- */
-/* ---------------- Bagian Tombol ---------------- */
-/* ----------------------------------------------- */
-
+/* Upload Photo Styles */
 .UploadFoto {
     position: relative;
     width: 100%;
@@ -275,7 +91,7 @@ textarea.TampilanIsiData {
 
 .TombolUploadFoto {
     width: 100%;
-    padding: 10px 15px;
+    padding: 12px 15px;
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 14px;
@@ -288,31 +104,11 @@ textarea.TampilanIsiData {
     justify-content: space-between;
 }
 
-.DeskripsiBarUpload {
-    display: inline-block;
-}
-
-.FileNamaFoto {
-    margin-top: 8px;
-    font-size: 13px;
-    color: #666;
-}
-
-.UploadFoto input[type="file"]:hover + .TombolUploadFoto {
-    border-color: var(--primary-color);
-}
-
-.UploadFoto input[type="file"]:focus + .TombolUploadFoto {
-    border-color: var(--primary-color);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
-}
-
 .BrowseFoto {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 5px 15px;
+    padding: 6px 15px;
     border-radius: 4px;
     font-size: 13px;
     cursor: pointer;
@@ -321,9 +117,72 @@ textarea.TampilanIsiData {
 
 .BrowseFoto:hover {
     background-color: #3959d9;
-    border-color: #3959d9;
 }
 
+/* Preview Photo Styles */
+.PreviewContainer {
+    margin-top: 15px;
+    border: 2px dashed #ddd;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    text-align: center;
+    background-color: #f8f9fa;
+    transition: var(--transition);
+}
+
+.PreviewContainer.has-image {
+    border-style: solid;
+    border-color: var(--primary-color);
+    background-color: white;
+}
+
+.PreviewImage {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    object-fit: contain;
+    display: none;
+}
+
+.PreviewText {
+    color: #666;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.RemoveImage {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: none;
+}
+
+.RemoveImage:hover {
+    background-color: #c82333;
+}
+
+trix-editor {
+    min-height: 200px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+trix-editor:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+/* Button Styles */
 .TombolOJT {
     display: inline-block;
     font-weight: 500;
@@ -332,7 +191,7 @@ textarea.TampilanIsiData {
     vertical-align: middle;
     user-select: none;
     border: 1px solid transparent;
-    padding: 10px 20px;
+    padding: 12px 24px;
     font-size: 14px;
     line-height: 1.5;
     border-radius: 6px;
@@ -351,33 +210,23 @@ textarea.TampilanIsiData {
     border-color: #3959d9;
 }
 
-.ClosePreview {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 8px 8px;
-    font-size: 20px;
-    transition: var(--transition);
-    margin-top: 10px;
-    margin-right: 10px;
-}
-
-.ClosePreview:hover {
-    transform: scale(1.2);
-    background-color: #c82333;
-    border-color: #bd2130;
-}
-
 .InfoSubmit {
-    display: flex;
-    gap: 1rem;
-    max-height: 3rem;
-    transform: translateX(0.35rem);
+    transform: translateY(31.5rem);
+    position: fixed;
 }
 
-/* ----------------------------------------------- */
-/* ----------------- Pesan Error ----------------- */
-/* ----------------------------------------------- */
+.alert {
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
 
 .UiPsnDis {
     padding: 15px;
@@ -399,4 +248,87 @@ textarea.TampilanIsiData {
     border-color: #f5c6cb;
 }
 
-/* ---------------------- End ---------------------- */
+.switch-container {
+    margin-bottom: 20px;
+}
+
+.switch-container input[type="radio"] {
+    display: none;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 244px;
+    height: 55px;
+    background-color: #f1f3f4;
+    border: 1px solid #e0e0e0;
+    border-radius: 22px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.switch-left, .switch-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    z-index: 2;
+    pointer-events: none;
+    width: 122px;
+    text-align: center;
+}
+
+.switch-left {
+    left: 0;
+    color: #4a6cf7;
+    font-weight: 600;
+}
+
+.switch-right {
+    right: 0;
+    color: #9aa0a6;
+    font-weight: normal;
+}
+
+.switch-button {
+    position: absolute;
+    width: 130px;
+    transform: translateX(-0.5rem);
+    height: 55px;
+    background: #ffffff;
+    border-radius: 25px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+}
+
+#event:checked ~ .switch .switch-left {
+    color: #9aa0a6;
+    font-weight: normal;
+}
+
+#event:checked ~ .switch .switch-right {
+    color: #4a6cf7;
+    font-weight: 600;
+}
+
+#event:checked ~ .switch .switch-button {
+    left: 125px;
+}
+
+#announcement:checked ~ .switch .switch-button {
+    left: 2px;
+}
+
+.switch:hover {
+    background-color: #e8eaed;
+    border-color: #dadce0;
+}
+
+.switch:hover .switch-button {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}

@@ -69,7 +69,7 @@
         </div>
         <div class="kepala-sekolah-container">
             <div class="kepala-sekolah-image" data-aos="fade-right">
-                <img src="/image/kepala-sekolah.jpg" alt="Kepala Sekolah SMK Pelita IV">
+                <img src="/image/KepalaSekolah1.png" alt="Kepala Sekolah SMK Pelita IV">
             </div>
             <div class="kepala-sekolah-content" data-aos="fade-left">
                 <h3>Sigit.</h3>
@@ -111,10 +111,12 @@
                     </div>
                 </div>
             </div>
-            <div class="profile-image" data-aos="fade-left">
-                <img src="/image/school-activity.jpg" alt="Aktivitas SMK Pelita IV">
+            <div class="video-container">
+                <video id="introVideo" autoplay muted controls>
+                    <source src="{{ asset('image/logo_pelita2.mp4') }}" type="video/mp4">
+                    Browser Anda tidak mendukung tag video.
+                </video>
             </div>
-        </div>
     </section>
 
     <section class="program-keahlian-section">

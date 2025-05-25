@@ -1,4 +1,112 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
+    // ==================== Post Management Functionality ====================
+    const postFileInput = document.getElementById('lampiran');
+    const postFileNameDisplay = document.getElementById('FileNamaFoto');
+    const postPreviewContainer = document.getElementById('previewContainer');
+    const postPreviewImage = document.getElementById('previewImage');
+    const postPreviewText = document.getElementById('previewText');
+    const postRemoveImageBtn = document.getElementById('removeImage');
+    const postBrowseBtn = document.querySelector('.BrowseFoto');
+    const filterSelect = document.getElementById('TipePost');
+    const tambahPost = document.getElementById('tambahPost');
+    const pengumumanList = document.getElementById('pengumumanList');
+    const kegiatanList = document.getElementById('kegiatanList');
+    const postForm = document.getElementById('postForm');
+    const successAlert = document.getElementById('successAlert');
+
+    // Post file input handling
+    if (postBrowseBtn && postFileInput) {
+        postBrowseBtn.addEventListener('click', function() {
+            postFileInput.click();
+        });
+    }
+
+    if (postFileInput) {
+        postFileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    postPreviewImage.src = e.target.result;
+                    postPreviewImage.style.display = 'block';
+                    postPreviewText.style.display = 'none';
+                    postRemoveImageBtn.style.display = 'inline-block';
+                    postPreviewContainer.classList.add('has-image');
+                    if (postFileNameDisplay) {
+                        postFileNameDisplay.textContent = 'File dipilih: ' + file.name;
+                    }
+                };
+                reader.readAsDataURL(file);
+            } else {
+                resetPostPreview();
+            }
+        });
+    }
+
+    if (postRemoveImageBtn) {
+        postRemoveImageBtn.addEventListener('click', function() {
+            if (postFileInput) postFileInput.value = '';
+            resetPostPreview();
+        });
+    }
+
+    function resetPostPreview() {
+        if (postPreviewImage) postPreviewImage.src = '';
+        if (postPreviewImage) postPreviewImage.style.display = 'none';
+        if (postPreviewText) postPreviewText.style.display = 'block';
+        if (postRemoveImageBtn) postRemoveImageBtn.style.display = 'none';
+        if (postPreviewContainer) postPreviewContainer.classList.remove('has-image');
+        if (postFileNameDisplay) postFileNameDisplay.textContent = 'Pilih file';
+    }
+
+    // Filter change handler for post management
+    if (filterSelect) {
+        filterSelect.addEventListener('change', function() {
+            const selectedValue = this.value;
+            
+            // Hide all sections
+            if (tambahPost) tambahPost.style.display = 'none';
+            if (pengumumanList) pengumumanList.style.display = 'none';
+            if (kegiatanList) kegiatanList.style.display = 'none';
+
+            // Show appropriate section
+            switch(selectedValue) {
+                case 'pengumuman':
+                    if (pengumumanList) pengumumanList.style.display = 'block';
+                    break;
+                case 'kegiatan':
+                    if (kegiatanList) kegiatanList.style.display = 'block';
+                    break;
+                default:
+                    if (tambahPost) tambahPost.style.display = 'block';
+                    break;
+            }
+        });
+    }
+
+    // Form submit handler for post management
+    if (postForm) {
+        postForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulate form submission
+            if (successAlert) successAlert.style.display = 'block';
+            
+            // Reset form
+            this.reset();
+            resetPostPreview();
+            
+            // Hide success message after 3 seconds
+            setTimeout(() => {
+                if (successAlert) successAlert.style.display = 'none';
+            }, 3000);
+        });
+    }
+
+    // Initialize - show tambah post by default
+    if (tambahPost) tambahPost.style.display = 'block';
+
+    // ==================== Original CssAdmin.js Functionality ====================
     const fileInput = document.getElementById('lampiran');
     const fileNameDisplay = document.getElementById('FileNamaFoto');
     const preview = {
@@ -14,26 +122,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('MenutupPreview');
 
     const togglePreview = (show, file) => {
-        preview.image.style.display = show ? 'block' : 'none';
-        preview.name.style.display = show ? 'block' : 'none';
-        preview.container.classList.toggle('has-preview', show);
+        if (preview.image) preview.image.style.display = show ? 'block' : 'none';
+        if (preview.name) preview.name.style.display = show ? 'block' : 'none';
+        if (preview.container) preview.container.classList.toggle('has-preview', show);
         
-        [forms.left, forms.right, forms.layout].forEach(el => 
-            el.classList.toggle('preview-active', show));
+        [forms.left, forms.right, forms.layout].forEach(el => {
+            if (el) el.classList.toggle('preview-active', show);
+        });
         
         if (show) {
             const reader = new FileReader();
-            reader.onload = e => preview.image.src = e.target.result;
+            reader.onload = e => {
+                if (preview.image) preview.image.src = e.target.result;
+            };
             reader.readAsDataURL(file);
-            preview.name.textContent = file.name;
+            if (preview.name) preview.name.textContent = file.name;
             
             if (fileNameDisplay) {
                 fileNameDisplay.textContent = 'File dipilih: ' + file.name;
             }
         } else {
-            preview.image.src = '';
-            preview.name.textContent = '';
-            fileInput.value = '';
+            if (preview.image) preview.image.src = '';
+            if (preview.name) preview.name.textContent = '';
+            if (fileInput) fileInput.value = '';
             
             if (fileNameDisplay) {
                 fileNameDisplay.textContent = 'Pilih file';
@@ -41,18 +152,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    fileInput.addEventListener('change', () => 
-        fileInput.files[0] 
-            ? togglePreview(true, fileInput.files[0]) 
-            : togglePreview(false));
+    if (fileInput) {
+        fileInput.addEventListener('change', () => 
+            fileInput.files[0] 
+                ? togglePreview(true, fileInput.files[0]) 
+                : togglePreview(false));
+    }
     
-    closeBtn?.addEventListener('click', e => {
-        e.preventDefault();
-        togglePreview(false);
-    });
-});
+    if (closeBtn) {
+        closeBtn.addEventListener('click', e => {
+            e.preventDefault();
+            togglePreview(false);
+        });
+    }
 
-document.addEventListener('DOMContentLoaded', function () {
     const roleSelect = document.getElementById('UserUntuk');
     const muridFields = document.getElementById('FormUntukMurid');
     const guruFields = document.getElementById('FormUntukGuru');
@@ -60,27 +173,33 @@ document.addEventListener('DOMContentLoaded', function () {
     const TanggalLahirOrtu = document.getElementById("ortu_tanggal_lahir");
 
     function validateYear(input) {
-        input.addEventListener("change", function () {
-            const dateValue = this.value;
-            const year = dateValue.split("-")[0];
-            if (year.length > 4) {
-                alert("Tahun tidak boleh lebih dari 4 digit, bre!");
-                this.value = "";
-            }
-        });
+        if (input) {
+            input.addEventListener("change", function () {
+                const dateValue = this.value;
+                const year = dateValue.split("-")[0];
+                if (year.length > 4) {
+                    alert("Tahun tidak boleh lebih dari 4 digit, bre!");
+                    this.value = "";
+                }
+            });
+        }
     }
 
-    if (TanggalLahir) validateYear(TanggalLahir);
-    if (TanggalLahirOrtu) validateYear(TanggalLahirOrtu);
+    validateYear(TanggalLahir);
+    validateYear(TanggalLahirOrtu);
 
     function toggleFields() {
-        const selectedRole = roleSelect.value;
-        muridFields.style.display = selectedRole === 'murid' ? 'block' : 'none';
-        guruFields.style.display = selectedRole === 'guru' ? 'block' : 'none';
+        if (roleSelect && muridFields && guruFields) {
+            const selectedRole = roleSelect.value;
+            muridFields.style.display = selectedRole === 'murid' ? 'block' : 'none';
+            guruFields.style.display = selectedRole === 'guru' ? 'block' : 'none';
+        }
     }
 
-    toggleFields();
-    roleSelect.addEventListener('change', toggleFields);
+    if (roleSelect) {
+        toggleFields();
+        roleSelect.addEventListener('change', toggleFields);
+    }
 
     // Biar input nomor cuma boleh angka dan diawali optional +
     document.querySelectorAll(".NomorOnly").forEach(function (input) {
@@ -96,9 +215,6 @@ document.addEventListener('DOMContentLoaded', function () {
             this.value = value;
         });
     });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
 
     function setupClearButton(inputId, buttonId) {
         const input = document.getElementById(inputId);
@@ -127,7 +243,6 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleClearButton();
     }
 
-        
     // Main user fields
     setupClearButton("name", "clearName");
     setupClearButton("email", "clearEmail");
@@ -170,36 +285,33 @@ document.addEventListener('DOMContentLoaded', function () {
     // Manajemen Kelas
     setupClearButton("nama_kelas", "clearNamaKelas");
 
-});
-
-function switchTab(tabName) { 
-    // Hide all tab contents
-    const tabContents = document.querySelectorAll('.TabContent');
-    tabContents.forEach(content => {
-        content.classList.remove('active');
-    });
-    
-    const oldTabButtons = document.querySelectorAll('.TabButton');
-    const newTabButtons = document.querySelectorAll('.HeaderTabButton');
-    
-    oldTabButtons.forEach(button => {
-        button.classList.remove('active');
-    });
-    
-    newTabButtons.forEach(button => {
-        button.classList.remove('active');
-    });
-    
-    if (tabName === 'manajemen') {
-        document.getElementById('manajemenTab')?.classList.add('active');
-        document.getElementById('tabManajemen')?.classList.add('active');
-    } else if (tabName === 'kenaikan') {
-        document.getElementById('kenaikanTab')?.classList.add('active');
-        document.getElementById('tabKenaikan')?.classList.add('active');
+    function switchTab(tabName) { 
+        // Hide all tab contents
+        const tabContents = document.querySelectorAll('.TabContent');
+        tabContents.forEach(content => {
+            content.classList.remove('active');
+        });
+        
+        const oldTabButtons = document.querySelectorAll('.TabButton');
+        const newTabButtons = document.querySelectorAll('.HeaderTabButton');
+        
+        oldTabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        
+        newTabButtons.forEach(button => {
+            button.classList.remove('active');
+        });
+        
+        if (tabName === 'manajemen') {
+            document.getElementById('manajemenTab')?.classList.add('active');
+            document.getElementById('tabManajemen')?.classList.add('active');
+        } else if (tabName === 'kenaikan') {
+            document.getElementById('kenaikanTab')?.classList.add('active');
+            document.getElementById('tabKenaikan')?.classList.add('active');
+        }
     }
-}
 
-document.addEventListener('DOMContentLoaded', function() {
     const handleFileInputs = () => {
         const inputFile = document.getElementById('lampiran');
         if (!inputFile) return;
@@ -220,7 +332,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (fileNameDisplay) {
                     fileNameDisplay.textContent = fileName;
                 }
-                
             }
         });
     };
@@ -319,6 +430,54 @@ document.addEventListener('DOMContentLoaded', function() {
         clearNamaKelasBtn.addEventListener('click', function() {
             namaKelasInput.value = '';
             namaKelasInput.focus();
+        });
+    }
+});
+
+// Replace the switch animation section in your CssAdmin.js with this
+document.addEventListener('DOMContentLoaded', function() {
+    // ==================== Post Type Switch Animation ====================
+    const announcementRadio = document.getElementById('announcement');
+    const eventRadio = document.getElementById('event');
+    const switchElement = document.querySelector('.switch');
+
+    if (announcementRadio && eventRadio && switchElement) {
+        // Add click handler for the switch container
+        switchElement.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Toggle between the two states
+            if (announcementRadio.checked) {
+                eventRadio.checked = true;
+                // Trigger change event to ensure form handling works
+                eventRadio.dispatchEvent(new Event('change'));
+            } else {
+                announcementRadio.checked = true;
+                // Trigger change event to ensure form handling works
+                announcementRadio.dispatchEvent(new Event('change'));
+            }
+        });
+
+        // Optional: Add keyboard support
+        switchElement.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
+        });
+
+        // Make switch focusable for accessibility
+        switchElement.setAttribute('tabindex', '0');
+        switchElement.setAttribute('role', 'switch');
+        switchElement.setAttribute('aria-checked', announcementRadio.checked ? 'true' : 'false');
+
+        // Update aria-checked when radio buttons change
+        announcementRadio.addEventListener('change', function() {
+            switchElement.setAttribute('aria-checked', 'true');
+        });
+
+        eventRadio.addEventListener('change', function() {
+            switchElement.setAttribute('aria-checked', 'true');
         });
     }
 });

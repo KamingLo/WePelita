@@ -32,7 +32,6 @@ class AdminController extends Controller
     
     public function tambahkanUser(Request $request)
     {
-        // Validasi umum untuk profile utama
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:profiles,email',
@@ -67,8 +66,6 @@ class AdminController extends Controller
                 'foto' => $avatarPath,
             ]);
         }
-
-        
 
         switch ($request->role) {
             case 'guru':
@@ -113,7 +110,6 @@ class AdminController extends Controller
                 break;
 
             case 'murid':
-                // Validasi tambahan untuk murid dan orang tua
                 $request->validate([
                     'asal_sekolah' => 'required|string',
                     'nis' => 'required|string',
@@ -150,7 +146,6 @@ class AdminController extends Controller
                     'password' => Hash::make($request->password),
                 ]);
 
-                // Buat profil orang tua
                 $ortuProfile = Profile::create([
                     'name' => $request->ortu_name,
                     'email' => $request->ortu_email,
@@ -163,13 +158,11 @@ class AdminController extends Controller
                     'password' => Hash::make($request->ortu_password),
                 ]);
                 
-                // Simpan ke tabel orang_tua
                 $orangTua = OrangTua::create([
                     'profesi' => $request->ortu_profesi,
                     'profile_id' => $ortuProfile->profile_id,
                 ]);
 
-                // Simpan data murid
                 $murid = Murid::create([
                     'profile_id' => $profile->profile_id,
                     'asal_sekolah' => $request->asal_sekolah,
@@ -177,13 +170,12 @@ class AdminController extends Controller
                     'nisn' => $request->nisn,
                 ]);
 
-                // Tambahkan relasi many-to-many
                 $murid->muridKelas()->attach($request->kelas_tahun_id);
                 $murid->orangTua()->attach($orangTua->orang_tua_id);
                 break;
         }
 
-        return redirect()->route('admin.ManajemenUser')->with('success', 'User baru berhasil ditambahkan');
+        return redirect()->route('admin.ManajemenUser')->with('success', 'User baru berhasil ditambahkan.');
     }
 
     public function tampilkanManajemenKelas(){
@@ -202,7 +194,6 @@ class AdminController extends Controller
 
         $status = 'Aktif';
 
-        // Cek apakah tahun ajaran + semester sudah ada
         $tahunAjar = TahunAjar::where('tahun_ajaran', $request->tahun_ajar)
             ->where('semester', $request->semester)
             ->first();
@@ -219,10 +210,9 @@ class AdminController extends Controller
             'nama_kelas' => $request->nama_kelas
         ]);
 
-        // PERHATIKAN: pakai tahun_ajaran_id, sesuai primaryKey
         $kelas->tahun()->attach($tahunAjar->tahun_ajaran_id);
 
-        return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas baru berhasil dibuat');
+        return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas baru berhasil dibuat.');
     }
 
     public function tampilkanUpdateKelas($id){
@@ -232,46 +222,41 @@ class AdminController extends Controller
     }
 
     public function updateKelas(Request $request, $id)
-{
-    $kelastahun = KelasTahun::findOrFail($id);
+    {
+        $kelastahun = KelasTahun::findOrFail($id);
 
-    $request->validate([
-        'nama_kelas' => 'required|string',
-        'tahun_ajaran' => 'required|string',
-        'semester' => 'required|string',
-        'status' => 'required|in:Aktif,Tidak Aktif',
-    ]);
-
-    // Cari TahunAjaran jika ada
-    $tahunAjar = TahunAjar::where('tahun_ajaran', $request->tahun_ajaran)
-        ->where('semester', $request->semester)
-        ->first();
-
-    if ($tahunAjar) {
-        // Update status jika sudah ada
-        $tahunAjar->status = $request->status;
-        $tahunAjar->save();
-    } else {
-        // Jika belum ada, buat baru
-        $tahunAjar = TahunAjar::create([
-            'tahun_ajaran' => $request->tahun_ajaran,
-            'semester' => $request->semester,
-            'status' => $request->status,
+        $request->validate([
+            'nama_kelas' => 'required|string',
+            'tahun_ajaran' => 'required|string',
+            'semester' => 'required|string',
+            'status' => 'required|in:Aktif,Tidak Aktif',
         ]);
+
+        $tahunAjar = TahunAjar::where('tahun_ajaran', $request->tahun_ajaran)
+            ->where('semester', $request->semester)
+            ->first();
+
+        if ($tahunAjar) {
+            $tahunAjar->status = $request->status;
+            $tahunAjar->save();
+        } else {
+            $tahunAjar = TahunAjar::create([
+                'tahun_ajaran' => $request->tahun_ajaran,
+                'semester' => $request->semester,
+                'status' => $request->status,
+            ]);
+        }
+
+        $kelas = $kelastahun->kelas;
+        $kelas->nama_kelas = $request->nama_kelas;
+        $kelas->save();
+
+        // Update relasi kelas_tahun
+        $kelastahun->tahun_ajaran_id = $tahunAjar->tahun_ajaran_id;
+        $kelastahun->save();
+
+        return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas berhasil diperbarui.');
     }
-
-    // Update nama kelas
-    $kelas = $kelastahun->kelas;
-    $kelas->nama_kelas = $request->nama_kelas;
-    $kelas->save();
-
-    // Update relasi kelas_tahun
-    $kelastahun->tahun_ajaran_id = $tahunAjar->tahun_ajaran_id;
-    $kelastahun->save();
-
-    return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas berhasil diperbarui');
-}
-
 
     public function hapusKelas($id)
     {
@@ -280,10 +265,9 @@ class AdminController extends Controller
         $kelas = Kelas::findOrFail($kelas);
         $kelas->delete();
 
-        return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas berhasil dihapus');
+        return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas berhasil dihapus.');
     }
 
-    // Fungsi untuk menampilkan form kenaikan kelas
     public function tampilkanFormKenaikanKelas()
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -294,59 +278,50 @@ class AdminController extends Controller
                 $query->where('status', 'Aktif');
             })->get();
 
-        // Ambil semua kelas untuk dropdown tujuan
         $semuaKelas = Kelas::all();
 
         return view('admin.kenaikanKelas', compact('kelasSekarang', 'semuaKelas', 'admin'));
     }
 
-    // Fungsi untuk memproses kenaikan kelas
     public function prosesKenaikanKelas(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'kelas_asal' => 'required|exists:kelas_tahun,kelas_tahun_id',
-        'kelas_tujuan' => 'required|exists:kelas,kelas_id',
-        'tahun_ajaran' => 'required',
-        'semester' => 'required|in:Ganjil,Genap'
-    ]);
-
-    // 1. Cari atau buat tahun ajaran baru
-    $tahunAjarBaru = TahunAjar::updateOrCreate(
-        [
-            'tahun_ajaran' => $request->tahun_ajaran,
-            'semester' => $request->semester
-        ],
-        [
-            'status' => 'Aktif'
-        ]
-    );
-
-    // 2. Cari atau buat kelas_tahun untuk kelas tujuan
-    $kelasTahunBaru = KelasTahun::updateOrCreate([
-        'kelas_id' => $request->kelas_tujuan,
-        'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id
-    ]);
-
-    // 3. Ambil semua murid dari kelas asal
-    $muridKelas = MuridKelas::where('kelas_tahun_id', $request->kelas_asal)->get();
-
-    // 4. Buat record baru untuk setiap murid di kelas baru
-    foreach ($muridKelas as $mk) {
-        MuridKelas::create([
-            'murid_id' => $mk->murid_id,
-            'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id
+    {
+        $request->validate([
+            'kelas_asal' => 'required|exists:kelas_tahun,kelas_tahun_id',
+            'kelas_tujuan' => 'required|exists:kelas,kelas_id',
+            'tahun_ajaran' => 'required',
+            'semester' => 'required|in:Ganjil,Genap'
         ]);
+
+        $tahunAjarBaru = TahunAjar::updateOrCreate(
+            [
+                'tahun_ajaran' => $request->tahun_ajaran,
+                'semester' => $request->semester
+            ],
+            [
+                'status' => 'Aktif'
+            ]
+        );
+
+        $kelasTahunBaru = KelasTahun::updateOrCreate([
+            'kelas_id' => $request->kelas_tujuan,
+            'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id
+        ]);
+
+        $muridKelas = MuridKelas::where('kelas_tahun_id', $request->kelas_asal)->get();
+
+        foreach ($muridKelas as $mk) {
+            MuridKelas::create([
+                'murid_id' => $mk->murid_id,
+                'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id
+            ]);
+        }
+
+        $kelasAsal = KelasTahun::findOrFail($request->kelas_asal);
+        $kelasAsal->tahunajar->status = 'Tidak Aktif';
+        $kelasAsal->save();
+
+        return redirect()->back()->with('success', 'Kenaikan kelas berhasil diproses.');
     }
-
-    // 5. Set kelas_tahun asal menjadi Tidak Aktif
-    $kelasAsal = KelasTahun::findOrFail($request->kelas_asal);
-    $kelasAsal->tahunajar->status = 'Tidak Aktif';
-    $kelasAsal->save();
-
-    return redirect()->back()->with('success', 'Kenaikan kelas berhasil diproses');
-}
-
 
     public function tampilkanJadwal(){
         $pelajaran = Pelajaran::all();
@@ -377,7 +352,6 @@ class AdminController extends Controller
             'waktu_selesai' => 'required',
         ]);
 
-        // 1. Cek apakah jadwal sudah ada untuk kelas ini pada jam yang sama
         $bentrokKelas = JadwalPelajaran::where('kelas_tahun_id', $request->kelas_tahun_id)
             ->where('hari', $request->hari)
             ->where(function ($query) use ($request) {
@@ -396,7 +370,6 @@ class AdminController extends Controller
                 ->withErrors(['jadwal' => 'Sudah ada jadwal lain untuk kelas ini pada waktu tersebut.']);
         }
 
-        // 2. Cek apakah pelajaran ini sedang diajarkan di kelas lain pada waktu yang sama
         $bentrokPelajaran = JadwalPelajaran::where('pelajaran_id', $request->pelajaran_id)
             ->where('kelas_tahun_id', '!=', $request->kelas_tahun_id)
             ->where('hari', $request->hari)
@@ -416,13 +389,10 @@ class AdminController extends Controller
                 ->withErrors(['jadwal' => 'Pelajaran ini sudah dijadwalkan di kelas lain pada waktu tersebut.']);
         }
 
-        // Simpan jadwal jika tidak ada bentrok
         JadwalPelajaran::create($request->all());
 
-        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil ditambahkan');
+        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil ditambahkan.');
     }
-
-
 
     public function updateJadwal(Request $request, $id)
     {
@@ -435,10 +405,13 @@ class AdminController extends Controller
         ]);
 
         $jadwal = JadwalPelajaran::findOrFail($id);
-        //perbaiki querernya agar kelas bisa hanya menampilkna atau mengecek bentrok dengan kelas yang statusnya aktif
+        // Perbaiki query untuk hanya mengecek bentrok dengan kelas yang statusnya aktif
         $bentrokKelas = JadwalPelajaran::where('jadwal_id', '!=', $id)
             ->where('kelas_tahun_id', $validated['kelas_tahun_id'])
             ->where('hari', $validated['hari'])
+            ->whereHas('kelastahun.tahunajar', function ($query) {
+                $query->where('status', 'Aktif');
+            })
             ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
                 $validated['waktu_mulai'],
                 $validated['waktu_selesai'],
@@ -450,7 +423,6 @@ class AdminController extends Controller
                 'jadwal' => 'Sudah ada jadwal lain untuk kelas ini pada waktu tersebut.',
             ]);
         }
-
 
         $bentrokPelajaran = JadwalPelajaran::where('jadwal_id', '!=', $id)
             ->where('pelajaran_id', $validated['pelajaran_id'])
@@ -470,7 +442,7 @@ class AdminController extends Controller
 
         $jadwal->update($validated);
 
-        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil diperbarui');
+        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
     public function hapusJadwal($id)
@@ -478,35 +450,30 @@ class AdminController extends Controller
         $jadwal = JadwalPelajaran::findOrFail($id);
         $jadwal->delete();
 
-        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil dihapus');
+        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil dihapus.');
     }
 
     public function tampilkanPelajaran()
     {
-        // Mengambil data guru untuk dropdown
         $gurus = Guru::all();
         $pelajarans = Pelajaran::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.pelajaran', compact('gurus', 'pelajarans', 'admin'));
     }
 
-    // Menyimpan pelajaran baru
     public function simpanPelajaran(Request $request)
     {
-        // Validasi input
         $validated = $request->validate([
             'guru_id' => 'required|exists:guru,guru_id',
             'namaPelajaran' => 'required|string|max:255',
         ]);
 
-        // Menyimpan data pelajaran
         Pelajaran::create([
             'guru_id' => $validated['guru_id'],
             'namaPelajaran' => $validated['namaPelajaran'],
         ]);
 
-        // Redirect ke halaman pelajaran dengan pesan sukses
-        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil ditambahkan');
+        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil ditambahkan.');
     }
 
     public function tampilkanUpdatePelajaran($id){
@@ -519,203 +486,161 @@ class AdminController extends Controller
 
     public function updatePelajaran(Request $request, $id)
     {
-        // Validasi input
         $validated = $request->validate([
             'guru_id' => 'required|exists:guru,guru_id',
             'namaPelajaran' => 'required|string|max:255',
         ]);
 
-        // Temukan pelajaran berdasarkan ID
         $pelajaran = Pelajaran::findOrFail($id);
 
-        // Perbarui data pelajaran
         $pelajaran->update([
             'guru_id' => $validated['guru_id'],
             'namaPelajaran' => $validated['namaPelajaran'],
         ]);
 
-        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil diperbarui');
+        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil diperbarui.');
     }
 
     public function hapusPelajaran($id){
         $pelajaran = Pelajaran::findOrFail($id);
         $pelajaran->delete();
 
-        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil dihapus');
+        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil dihapus.');
     }
 
-    // public function tampilkanPost()
-    // {
-    //     $pengumumans = Pengumuman::all();
-    //     $blogs = Blog::all();
-    //     $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-    //     return view('admin.post', compact('pengumumans', 'blogs', 'admin'));
-    // }
+    public function tampilkanManajemenPost()
+    {
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+        $this->authorize('manage-posts', $admin); // Authorization check
+        $postingan = Postingan::with('admin.profile')->orderBy('created_at', 'desc')->get();
+        return view('admin.manajemenPost', compact('postingan', 'admin'));
+    }
 
-    // public function tambahPostingan(Request $request)
-    // {
-    //     // Validasi input
-    //     $validated = $request->validate([
-    //         'tipe' => 'required|in:pengumuman,kegiatan',
-    //         'judul' => 'required|string|max:255',
-    //         'isi' => 'required|string',
-    //         'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
-    //     ]);
+    public function tambahPostingan(Request $request)
+    {
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+        $this->authorize('create-posts', $admin); // Authorization check
 
-    //     // Simpan lampiran jika ada
-    //     $lampiranPath = null;
-    //         if ($request->hasFile('lampiran')) {
-    //             $file = $request->file('lampiran');
+        $validated = $request->validate([
+            'tipe' => 'required|in:pengumuman,blog',
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string|min:10',
+            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'tipe.required' => 'Tipe postingan harus dipilih.',
+            'judul.required' => 'Judul postingan wajib diisi.',
+            'judul.max' => 'Judul tidak boleh lebih dari 255 karakter.',
+            'isi.required' => 'Isi postingan wajib diisi.',
+            'isi.min' => 'Isi postingan minimal 10 karakter.',
+            'lampiran.image' => 'Lampiran harus berupa gambar.',
+            'lampiran.mimes' => 'Lampiran harus berformat jpeg, png, jpg, gif, atau svg.',
+            'lampiran.max' => 'Ukuran lampiran maksimal 2MB.',
+        ]);
 
-    //             // Pastikan nama file unik
-    //             $filename = time() . '_' . $file->getClientOriginalName();
+        DB::beginTransaction();
+        try {
+            $lampiranPath = null;
+            if ($request->hasFile('lampiran')) {
+                $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
+            }
 
-    //             // Simpan manual ke folder public/storage/lampiran
-    //             $file->move(public_path('storage/lampiran'), $filename);
+            Postingan::create([
+                'tipe' => $validated['tipe'],
+                'judul' => $validated['judul'],
+                'isi' => $validated['isi'],
+                'lampiran' => $lampiranPath,
+                'admin_id' => $admin->admin_id,
+            ]);
 
-    //             // Simpan path relatif ke database
-    //             $lampiranPath = 'lampiran/' . $filename;
-    //         }
+            DB::commit();
+            return redirect()->route('admin.post')->with('success', 'Postingan berhasil dibuat.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if ($lampiranPath) {
+                Storage::disk('public')->delete($lampiranPath);
+            }
+            return back()->withInput()->withErrors(['error' => 'Gagal membuat postingan: ' . $e->getMessage()]);
+        }
+    }
 
+    public function editPostingan($id)
+    {
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+        $this->authorize('edit-posts', $admin); // Authorization check
+        $postingan = Postingan::findOrFail($id);
+        return view('admin.editPostingan', compact('postingan', 'admin'));
+    }
 
-    //     $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
+    public function updatePostingan(Request $request, $id)
+    {
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+        $this->authorize('update-posts', $admin); // Authorization check
+        $postingan = Postingan::findOrFail($id);
 
-    //     if ($validated['tipe'] === 'pengumuman') {
-    //         Pengumuman::create([
-    //             'admin_id' => $adminId,
-    //             'judul_pengumuman' => $validated['judul'],
-    //             'isi_pengumuman' => $validated['isi'],
-    //             'lampiran' => $lampiranPath,
-    //             'created_at' => now(),
-    //         ]);
-    //     } else {
-    //         Blog::create([
-    //             'admin_id' => $adminId,
-    //             'judul_blog' => $validated['judul'],
-    //             'isi_blog' => $validated['isi'],
-    //             'lampiran' => $lampiranPath,
-    //             'created_at' => now(),
-    //         ]);
-    //     }
+        $validated = $request->validate([
+            'tipe' => 'required|in:pengumuman,blog',
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string|min:10',
+            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'tipe.required' => 'Tipe postingan harus dipilih.',
+            'judul.required' => 'Judul postingan wajib diisi.',
+            'judul.max' => 'Judul tidak boleh lebih dari 255 karakter.',
+            'isi.required' => 'Isi postingan wajib diisi.',
+            'isi.min' => 'Isi postingan minimal 10 karakter.',
+            'lampiran.image' => 'Lampiran harus berupa gambar.',
+            'lampiran.mimes' => 'Lampiran harus berformat jpeg, png, jpg, gif, atau svg.',
+            'lampiran.max' => 'Ukuran lampiran maksimal 2MB.',
+        ]);
 
-    //     return redirect()->route('admin.post')->with('success', 'Postingan berhasil dibuat!');
-    // }
+        DB::beginTransaction();
+        try {
+            $lampiranPath = $postingan->lampiran;
+            if ($request->hasFile('lampiran')) {
+                if ($lampiranPath) {
+                    Storage::disk('public')->delete($lampiranPath);
+                }
+                $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
+            }
 
-    // public function tampilkanManajemenPost()
-    // {
-    //     $pengumumans = Pengumuman::all();
-    //     $blogs = Blog::all();
-    //     $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-    //     return view('admin.manajemenPost', compact('pengumumans', 'blogs', 'admin'));
-    // }
+            $postingan->update([
+                'tipe' => $validated['tipe'],
+                'judul' => $validated['judul'],
+                'isi' => $validated['isi'],
+                'lampiran' => $lampiranPath,
+                'admin_id' => $admin->admin_id,
+            ]);
 
-    // public function tampilkanPengumuman($id)
-    // {
-    //     $pengumuman = Pengumuman::findOrFail($id);
-    //     $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-    //     return view('admin.ManajemenPostPengumumanEdit', compact('pengumuman', 'admin'));
-    // }
+            DB::commit();
+            return redirect()->route('admin.post')->with('success', 'Postingan berhasil diperbarui.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            if ($request->hasFile('lampiran') && $lampiranPath && $lampiranPath !== $postingan->lampiran) {
+                Storage::disk('public')->delete($lampiranPath);
+            }
+            return back()->withInput()->withErrors(['error' => 'Gagal memperbarui postingan: ' . $e->getMessage()]);
+        }
+    }
 
-    // public function tampilkanKegiatan($id)
-    // {
-    //     $blog = Blog::findOrFail($id);
-    //     $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-    //     return view('admin.ManajemenPostKegiatanEdit', compact('blog', 'admin'));
-    // }
+    public function hapusPostingan($id)
+    {
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+        $this->authorize('delete-posts', $admin); // Authorization check
+        $postingan = Postingan::findOrFail($id);
 
-
-    // public function updatePengumuman(Request $request, $id)
-    // {
-    //     // Validasi input
-    //     $validated = $request->validate([
-    //         'judul' => 'required|string|max:255',
-    //         'isi' => 'required|string',
-    //         'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
-    //     ]);
-
-    //     $pengumuman = Pengumuman::findOrFail($id);
-
-    //     // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
-    //     $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
-
-    //     // Jika user upload file baru
-    //     if ($request->hasFile('lampiran')) {
-    //         // Hapus lampiran lama jika ada
-    //         if ($pengumuman->lampiran) {
-    //             Storage::disk('public')->delete($pengumuman->lampiran);
-    //         }
-
-    //         // Simpan lampiran baru
-    //         $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
-    //         $pengumuman->lampiran = $lampiranPath;
-    //     }
-
-    //     // Update data lainnya
-    //     $pengumuman->update([
-    //         'judul_pengumuman' => $validated['judul'],
-    //         'isi_pengumuman' => $validated['isi'],
-    //         'admin_id' => $adminId,
-    //     ]);
-
-    //     return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil disimpan!');
-    // }
-    
-    // public function updateKegiatan(Request $request, $id)
-    // {
-    //     // Validasi input
-    //     $validated = $request->validate([
-    //         'judul' => 'required|string|max:255',
-    //         'isi' => 'required|string',
-    //         'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
-    //     ]);
-
-    //     $blog = Blog::findOrFail($id);
-
-    //     // Simulasi ambil ID admin yang sedang login (gunakan auth jika tersedia)
-    //     $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
-
-    //     // Jika user upload file baru
-    //     if ($request->hasFile('lampiran')) {
-    //         // Hapus lampiran lama jika ada
-    //         if ($kegiatan->lampiran) {
-    //             Storage::disk('public')->delete($blog->lampiran);
-    //         }
-
-    //         // Simpan lampiran baru
-    //         $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
-    //         $blog->lampiran = $lampiranPath;
-    //     }
-
-    //     // Update data lainnya
-    //     $kegiatan->update([
-    //         'admin_id' => $adminId,
-    //         'judul_blog' => $validated['judul'],
-    //         'isi_blog' => $validated['isi'],
-    //     ]);
-
-    //     return redirect()->route('admin.manajemenPost')->with('success', 'blog berhasil disimpan!');
-    // }
-
-
-    // public function hapusPengumuman($id){
-    //     $pengumuman = Pengumuman::findOrFail($id);
-    //     if ($pengumuman->lampiran) {
-    //         Storage::disk('public')->delete($pengumuman->lampiran);
-    //     }
-    //     $pengumuman->delete();
-
-    //     return redirect()->route('admin.manajemenPost')->with('success', 'Pengumuman berhasil dihapus');
-    // }
-
-    // public function hapusKegiatan($id){
-    //     $blog = Blog::findOrFail($id);
-    //     if ($kegiatan->lampiran) {
-    //         Storage::disk('public')->delete($blog->lampiran);
-    //     }
-    //     $blog->delete();
-
-    //     return redirect()->route('admin.manajemenPost')->with('success', 'Kegiatan berhasil dihapus');
-    // }
+        DB::beginTransaction();
+        try {
+            if ($postingan->lampiran) {
+                Storage::disk('public')->delete($postingan->lampiran);
+            }
+            $postingan->delete();
+            DB::commit();
+            return redirect()->route('admin.post')->with('success', 'Postingan berhasil dihapus.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Gagal menghapus postingan: ' . $e->getMessage()]);
+        }
+    }
 
     public function tampilkanManajemenUser(){
         $Gurus = Guru::all();
@@ -729,110 +654,101 @@ class AdminController extends Controller
     }
 
     public function editUser($id, Request $request)
-{
-    $role = request('role');
-    $admin = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
+    {
+        $role = request('role');
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
 
-    $kelasList = [];
-    if ($role === 'murid') {
-        // Ambil data berdasarkan tabel pivot murid_kelas
-        $muridKelas = MuridKelas::with(['murid.profile', 'kelastahun'])->findOrFail($id);
-        $user = $muridKelas; // supaya tetap konsisten dengan view
-        $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
-            $query->where('status', 'Aktif');
-        })->get();
+        $kelasList = [];
+        if ($role === 'murid') {
+            $muridKelas = MuridKelas::with(['murid.profile', 'kelastahun'])->findOrFail($id);
+            $user = $muridKelas;
+            $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
+                $query->where('status', 'Aktif');
+            })->get();
 
+            return view('admin.ManajemenUserEdit', compact('user', 'role', 'admin', 'kelasList'))->with('id', $id);
+        }
 
-        return view('admin.ManajemenUserEdit', compact('user', 'role', 'admin', 'kelasList'))->with('id', $id);
+        $model = $this->getModelByRole($role);
+        $user = $model::with(['profile'])->findOrFail($id);
+
+        return view('admin.ManajemenUserEdit', compact('user', 'role', 'kelasList', 'admin'))->with('id', $id);
     }
-
-    // Untuk role lain, tetap pakai cara lama
-    $model = $this->getModelByRole($role);
-    $user = $model::with(['profile'])->findOrFail($id);
-
-    return view('admin.ManajemenUserEdit', compact('user', 'role', 'kelasList', 'admin'))->with('id', $id);
-}
-
 
     public function updateUser(Request $request, $id)
-{
-    $role = $request->input('role');
-    $model = $this->getModelByRole($role);
+    {
+        $role = $request->input('role');
+        $model = $this->getModelByRole($role);
 
-    if ($role === 'murid') {
-        $user = $model::with('murid.profile')->findOrFail($id);
-        $profile = $user->murid->profile;
+        if ($role === 'murid') {
+            $user = $model::with('murid.profile')->findOrFail($id);
+            $profile = $user->murid->profile;
 
-        // Update profile data
-        $profile->name = $request->name;
-        $profile->email = $request->email;
-        $profile->alamat = $request->alamat;
-        $profile->jenis_kelamin = $request->jenis_kelamin;
-        $profile->tanggal_lahir = $request->tanggal_lahir;
-        $profile->tempat_lahir = $request->tempat_lahir;
-        $profile->pendidikan = $request->pendidikan;
-        $profile->foto = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $profile->foto;
-        $profile->no_telp = $request->no_telp;
+            $profile->name = $request->name;
+            $profile->email = $request->email;
+            $profile->alamat = $request->alamat;
+            $profile->jenis_kelamin = $request->jenis_kelamin;
+            $profile->tanggal_lahir = $request->tanggal_lahir;
+            $profile->tempat_lahir = $request->tempat_lahir;
+            $profile->pendidikan = $request->pendidikan;
+            $profile->foto = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $profile->foto;
+            $profile->no_telp = $request->no_telp;
 
-        if ($request->filled('password')) {
-            $profile->password = Hash::make($request->password);
+            if ($request->filled('password')) {
+                $profile->password = Hash::make($request->password);
+            }
+
+            $profile->save();
+
+            $user->murid->nis = $request->nis;
+            $user->murid->nisn = $request->nisn;
+            $user->murid->asal_sekolah = $request->asal_sekolah;
+            $user->murid->save();
+
+            $user->kelas_tahun_id = $request->kelas_tahun_id;
+        } else {
+            $user = $model::with('profile')->findOrFail($id);
+            $profile = $user->profile;
+
+            $profile->name = $request->name;
+            $profile->email = $request->email;
+            $profile->alamat = $request->alamat;
+            $profile->jenis_kelamin = $request->jenis_kelamin;
+            $profile->tanggal_lahir = $request->tanggal_lahir;
+            $profile->tempat_lahir = $request->tempat_lahir;
+            $profile->pendidikan = $request->pendidikan;
+            $profile->foto = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $profile->foto;
+            $profile->no_telp = $request->no_telp;
+
+            if ($request->filled('password')) {
+                $profile->password = Hash::make($request->password);
+            }
+
+            $profile->save();
+
+            switch ($role) {
+                case 'guru':
+                    $user->gelar = $request->gelar;
+                    $user->statusMenikah = $request->statusMenikah;
+                    $user->statusKerja = $request->statusKerja;
+                    $user->nuptk = $request->nuptk;
+                    break;
+
+                case 'orang_tua':
+                    $user->profesi = $request->profesi;
+                    break;
+
+                case 'admin':
+                    break;
+            }
         }
 
-        $profile->save();
+        $user->save();
 
-        // Update fields di murid
-        $user->murid->nis = $request->nis;
-        $user->murid->nisn = $request->nisn;
-        $user->murid->asal_sekolah = $request->asal_sekolah;
-        $user->murid->save();
-
-        // Update kelas_tahun di murid_kelas (yaitu $user)
-        $user->kelas_tahun_id = $request->kelas_tahun_id;
-    } else {
-        $user = $model::with('profile')->findOrFail($id);
-        $profile = $user->profile;
-
-        // Update profile data
-        $profile->name = $request->name;
-        $profile->email = $request->email;
-        $profile->alamat = $request->alamat;
-        $profile->jenis_kelamin = $request->jenis_kelamin;
-        $profile->tanggal_lahir = $request->tanggal_lahir;
-        $profile->tempat_lahir = $request->tempat_lahir;
-        $profile->pendidikan = $request->pendidikan;
-        $profile->foto = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $profile->foto;
-        $profile->no_telp = $request->no_telp;
-
-        if ($request->filled('password')) {
-            $profile->password = Hash::make($request->password);
-        }
-
-        $profile->save();
-
-        switch ($role) {
-            case 'guru':
-                $user->gelar = $request->gelar;
-                $user->statusMenikah = $request->statusMenikah;
-                $user->statusKerja = $request->statusKerja;
-                $user->nuptk = $request->nuptk;
-                break;
-
-            case 'orang_tua':
-                $user->profesi = $request->profesi;
-                break;
-
-            case 'admin':
-                // tidak ada field tambahan
-                break;
-        }
+        return redirect()->route('admin.ManajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
     }
 
-    $user->save();
-
-    return redirect()->route('admin.ManajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
-}
-
-public function destroyUser($id, Request $request)
+    public function destroyUser($id, Request $request)
     {
         $role = $request->query('role');
         $model = $this->getModelByRole($role);
@@ -840,7 +756,7 @@ public function destroyUser($id, Request $request)
         $user->profile()->delete();
         $user->delete();
 
-        return back()->with('success', 'User berhasil dihapus');
+        return back()->with('success', 'User berhasil dihapus.');
     }
 
     private function getModelByRole($role)

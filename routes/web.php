@@ -15,28 +15,28 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/editor', function () {
-    return view('editor'); // Pastikan nama view sesuai
-})->name('editor');
+// Route::get('/editor', function () {
+//     return view('editor'); // Pastikan nama view sesuai
+// })->name('editor');
 
-Route::post('/editor', function (Illuminate\Http\Request $request) {
-    $request->validate([
-        'content' => 'required'
-    ]);
+// Route::post('/editor', function (Illuminate\Http\Request $request) {
+//     $request->validate([
+//         'content' => 'required'
+//     ]);
     
-    // Simpan konten HTML ke file di storage/app/public
-    $fileName = 'editor-content/' . Str::random(20) . '.html';
-    $request->content->storeAs('public', $fileName);
+//     // Simpan konten HTML ke file di storage/app/public
+//     $fileName = 'editor-content/' . Str::random(20) . '.html';
+//     $request->content->storeAs('public', $fileName);
     
-    // Jika ingin menyimpan path ke database
-    // $contentPath = $fileName;
-    // Post::create(['content_path' => $contentPath]);
+//     // Jika ingin menyimpan path ke database
+//     // $contentPath = $fileName;
+//     // Post::create(['content_path' => $contentPath]);
     
-    return back()->with([
-        'success' => 'Content saved successfully!',
-        'file_path' => $fileName // Optional: untuk menampilkan path file
-    ]);
-})->name('editor.store');
+//     return back()->with([
+//         'success' => 'Content saved successfully!',
+//         'file_path' => $fileName // Optional: untuk menampilkan path file
+//     ]);
+// })->name('editor.store');
 
 use App\Http\Controllers\EditorController;
 
@@ -73,9 +73,6 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::put('admin/jadwal/edit/{id}', [AdminController::class, 'updateJadwal'])->name('jadwal.update');
     Route::delete('admin/jadwal/destroy/{id}', [AdminController::class, 'hapusJadwal'])->name('jadwal.destroy');
     
-    Route::get('admin/post', [AdminController::class, 'tampilkanPost'])->name('admin.post');
-    Route::post('admin/post', [AdminController::class, 'tambahPostingan'])->name('admin.posting');
-    
     Route::get('admin/manajemenKelas', [AdminController::class, 'tampilkanManajemenKelas'])->name('admin.manajemenKelas');
     Route::post('admin/manajemenKelas', [AdminController::class, 'tambahKelas'])->name('admin.tambahKelas');
     Route::get('admin/manajemenKelas/edit/{id}', [AdminController::class, 'tampilkanUpdateKelas'])->name('kelas.update');
@@ -87,13 +84,10 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::post('admin/kenaikanKelas', [AdminController::class, 'prosesKenaikanKelas'])->name('admin.prosesKenaikanKelas');
 
     Route::get('admin/manajemenPost', [AdminController::class, 'tampilkanManajemenPost'])->name('admin.manajemenPost');
-    Route::get('admin/manajemenPost/pengumuman/update/{id}', [AdminController::class, 'tampilkanPengumuman'])->name('pengumuman.update');
-    Route::post('admin/manajemenPost/pengumuman/update/{id}', [AdminController::class, 'updatePengumuman'])->name('edit.pengumuman');
-    Route::delete('admin/manajemenPost/pengumuman/destroy/{id}', [AdminController::class, 'hapusPengumuman'])->name('pengumuman.destroy');
-
-    Route::get('admin/manajemenPost/kegiatan/update/{id}', [AdminController::class, 'tampilkanKegiatan'])->name('kegiatan.update');
-    Route::post('admin/manajemenPost/kegiatan/update/{id}', [AdminController::class, 'updateKegiatan'])->name('edit.kegiatan');
-    Route::delete('admin/manajemenPost/kegiatan/destroy/{id}', [AdminController::class, 'hapusKegiatan'])->name('kegiatan.destroy');
+    Route::get('admin/manajemenPost/postingan/update/{id}', [AdminController::class, 'tampilkanPostingan'])->name('postingan.update');
+    Route::post('admin/manajemenPost/postingan/update/{id}', [AdminController::class, 'updatePostingan'])->name('edit.postingan');
+    Route::delete('admin/manajemenPost/postingan/destroy/{id}', [AdminController::class, 'hapusPostingan'])->name('postingan.destroy');
+    Route::post('admin/manajemenPost/posting', [AdminController::class, 'store'])->name('admin.posting');
 
     route::get('admin/manajemenUser', [AdminController::class, 'tampilkanManajemenUser'])->name('admin.ManajemenUser');
 

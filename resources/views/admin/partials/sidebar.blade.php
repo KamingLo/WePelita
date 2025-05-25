@@ -39,11 +39,11 @@
           <i class='bx bx-layer-plus IconSideBar'></i>Tambahkan Jadwal
         </a>
       </li>
-      <li>
+      {{-- <li>
         <a href="/admin/post" class="{{ request()->is('admin/post*') ? 'active-link' : '' }}">
           <i class='bx bx-message-square-add IconSideBar'></i>Tambah posting
         </a>
-      </li>
+      </li> --}}
         {{-- <li>
         <a href="/admin/kenaikanKelas" class="{{ request()->is('admin/kenaikanKelas*') ? 'active-link' : '' }}">
           <i class='bx bx-chevrons-up IconSideBar'></i>Kenaikan Kelas

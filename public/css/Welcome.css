@@ -282,6 +282,7 @@
 .kepala-sekolah-image {
     flex: 1;
     min-width: 300px;
+    
 }
 
 .kepala-sekolah-image img {
@@ -289,7 +290,7 @@
     max-width: 400px;
     height: auto;
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transform: translateX(2rem);
 }
 
 .kepala-sekolah-content {
@@ -934,3 +935,4 @@
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
+
