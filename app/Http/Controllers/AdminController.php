@@ -544,59 +544,41 @@ class AdminController extends Controller
         return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil dihapus');
     }
 
-    // public function tampilkanPost()
-    // {
-    //     $pengumumans = Pengumuman::all();
-    //     $blogs = Blog::all();
-    //     $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-    //     return view('admin.post', compact('pengumumans', 'blogs', 'admin'));
-    // }
+    public function tampilkanManajemenPost()
+    {
+        $postingan = Postingan::all();
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+        return view('admin.manajemenPost', compact('postingan', 'admin'));
+    }
 
-    // public function tambahPostingan(Request $request)
-    // {
-    //     // Validasi input
-    //     $validated = $request->validate([
-    //         'tipe' => 'required|in:pengumuman,kegiatan',
-    //         'judul' => 'required|string|max:255',
-    //         'isi' => 'required|string',
-    //         'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
-    //     ]);
+    public function tambahPostingan(Request $request)
+    {
+        // Validasi input
+        $validated = $request->validate([
+            'tipe' => 'required|in:pengumuman,kegiatan',
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string',
+            'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
+        ]);
 
-    //     // Simpan lampiran jika ada
-    //     $lampiranPath = null;
-    //         if ($request->hasFile('lampiran')) {
-    //             $file = $request->file('lampiran');
+        // Simpan lampiran jika ada
+        $lampiranPath = null;
+            if ($request->hasFile('lampiran')) {
+                $file = $request->file('lampiran');
 
-    //             // Pastikan nama file unik
-    //             $filename = time() . '_' . $file->getClientOriginalName();
+                // Pastikan nama file unik
+                $filename = time() . '_' . $file->getClientOriginalName();
 
-    //             // Simpan manual ke folder public/storage/lampiran
-    //             $file->move(public_path('storage/lampiran'), $filename);
+                // Simpan manual ke folder public/storage/lampiran
+                $file->move(public_path('storage/lampiran'), $filename);
 
-    //             // Simpan path relatif ke database
-    //             $lampiranPath = 'lampiran/' . $filename;
-    //         }
+                // Simpan path relatif ke database
+                $lampiranPath = 'lampiran/' . $filename;
+            }
 
 
-    //     $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
-
-    //     if ($validated['tipe'] === 'pengumuman') {
-    //         Pengumuman::create([
-    //             'admin_id' => $adminId,
-    //             'judul_pengumuman' => $validated['judul'],
-    //             'isi_pengumuman' => $validated['isi'],
-    //             'lampiran' => $lampiranPath,
-    //             'created_at' => now(),
-    //         ]);
-    //     } else {
-    //         Blog::create([
-    //             'admin_id' => $adminId,
-    //             'judul_blog' => $validated['judul'],
-    //             'isi_blog' => $validated['isi'],
-    //             'lampiran' => $lampiranPath,
-    //             'created_at' => now(),
-    //         ]);
-    //     }
+        $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
+        }
 
     //     return redirect()->route('admin.post')->with('success', 'Postingan berhasil dibuat!');
     // }
