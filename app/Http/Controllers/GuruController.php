@@ -37,13 +37,18 @@ class GuruController extends Controller
         return view('guru.jadwalajaranda', compact('guru'));
     }
 
-
     public function tampilkanPengumuman()
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
         $pengumuman = Postingan::where('profile_id', $guru->profile_id)->get();
         return view('guru.pengumuman', compact('guru', 'pengumuman'));
     }
+
+    public function index()
+    {
+        return view('ManajemenPostGuru');
+    }
+
 
     public function buatPengumuman(Request $request)
     {

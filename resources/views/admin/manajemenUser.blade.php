@@ -9,7 +9,6 @@
     <div class="ContainerUtamaManajemenUser">
         <h1>Registrasi Pengguna Baru</h1>
         <div class="container-split">
-            <!-- Left Side - Registration Form -->
             <div class="form-container">
                 <div class="ContainerRegister">
                     <div class="LayoutRegisterForm">
@@ -438,7 +437,6 @@
                 </div>
             </div>
 
-            <!-- Right Side - User Management -->
             <div class="management-container">
                 
                 <div class="filter-container">
@@ -459,7 +457,7 @@
                     
                     <div class="search-box-enhanced">
                         <input type="text" placeholder="Cari user..." class="search-input-enhanced">
-                        <i class='bx bx-search'></i></input>
+                        <i class='bx bx-search'></i>
                     </div>
                 </div>
 

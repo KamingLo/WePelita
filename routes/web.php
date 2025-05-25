@@ -108,8 +108,12 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     Route::get('guru/jadwalanda', [GuruController::class, 'tampilkanJadwalAnda'])->name('guru.jadwalanda');
     Route::get('guru/buatpengumuman', [GuruController::class, 'tampilkanPengumuman'])->name('guru.pengumuman');
     Route::get('guru/menu-nilai', [GuruController::class, 'tampilkanMenuNilai'])->name('guru.isinilai');
-    
-    Route::get('guru/post', function() {
+
+    Route::get('guru/ManajemenPostGuru', function () {
+        return view('guru.ManajemenPostGuru'); // atau 'guru.ManajemenPostGuru' jika dalam subfolder
+    });    
+
+    Route::get('guru/', function() {
         return view('guru.post');
     })->name('guru.post');
 });

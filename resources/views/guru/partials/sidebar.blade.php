@@ -45,11 +45,14 @@
           <i class='bx bx-home-alt IconSidebar'></i>Buat Pengumuman kelas
         </a>
       </li>
-      
-      
       <li>
         <a href="menu-nilai">
           <i class="bx bx-home-alt IconSidebar"></i>Menu nilai
+        </a>
+      </li>
+      <li>
+        <a href="/guru/ManajemenPostGuru" class="{{ request()->is('guru/ManajemenPostGuru*') ? 'active-link' : '' }}">
+          <i class='bx bx-message-square-edit IconSideBar'></i>Manajemen postingan
         </a>
       </li>
     </ul>

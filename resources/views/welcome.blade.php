@@ -7,7 +7,7 @@
 <section class="hero-section">
     <div class="hero-container">
         <div class="hero-image-container">
-            <img src="/image/school-building.jpg" alt="SMK Pelita IV Building" class="hero-image">
+            <img src="/image/imageSekolah.png" alt="SMK Pelita IV Building" class="hero-image">
             <div class="hero-overlay"></div>
         </div>
         <div class="hero-content">
@@ -112,7 +112,7 @@
                 </div>
             </div>
             <div class="video-container">
-                <video id="introVideo" autoplay muted controls>
+                <video id="introVideo" autoplay muted style="pointer-events: none;">
                     <source src="{{ asset('image/logo_pelita2.mp4') }}" type="video/mp4">
                     Browser Anda tidak mendukung tag video.
                 </video>
@@ -268,7 +268,7 @@
         </div>
     </section>
 
-        <section class="video-section">
+        {{-- <section class="video-section">
             <div class="video-content">
                 <h2 data-aos="fade-up">SMK Pelita IV Jakarta</h2>
                 <p data-aos="fade-up" data-aos-delay="100">SMK Bisa, SMK Hebat, illustrasi seperti ini</p>
@@ -279,7 +279,7 @@
                     </video>
                 </div>
             </div>
-        </section>
+        </section> --}}
 
 </div>
 

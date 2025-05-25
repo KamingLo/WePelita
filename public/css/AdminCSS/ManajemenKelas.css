@@ -485,7 +485,6 @@ select.TampilanIsiData {
 
 /* ---------------------- End ---------------------- */
 
-/* Tab Navigation Styles */
 .TabNavigation {
     width: 100%;
     margin-bottom: 30px;
@@ -529,10 +528,9 @@ select.TampilanIsiData {
     border-radius: 2px 2px 0 0;
 }
 
-/* Tab Content Styles */
 .TabContent {
     display: none;
-    animation: fadeIn 0.3s ease-in-out;
+    /* animation: fadeIn 0.3s ease-in-out; */
 }
 
 .TabContent.active {
@@ -550,7 +548,6 @@ select.TampilanIsiData {
     }
 }
 
-/* Clear Button Styles */
 .HapusBar {
     position: absolute;
     right: 10px;
@@ -575,7 +572,6 @@ select.TampilanIsiData {
     font-size: 16px;
 }
 
-/* Form Kenaikan Kelas Styles */
 .LayoutKenaikanKelasForm {
     flex: 1;
     min-width: 300px;
@@ -628,7 +624,6 @@ select.TampilanIsiData {
     box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .TabButton {
         padding: 12px 20px;
@@ -658,7 +653,6 @@ select.TampilanIsiData {
     }
 }
 
-/* Tambahkan ini di bagian HeaderManajemenKelas */
 .HeaderManajemenKelas {
     display: flex;
     justify-content: space-between;

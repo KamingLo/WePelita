@@ -9,7 +9,8 @@
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
         </div>
 
-        <h6 class="UseridName">{{ $admin->profile->name }}</h6>
+        <h6 class="UseridName">no reaon</h6>
+        {{-- {{ $admin->profile->name }} --}}
     </div>
 
     <ul class="ListSideBar">

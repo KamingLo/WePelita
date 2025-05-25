@@ -20,6 +20,7 @@ use App\Models\MuridOrangTua;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 
 class AdminController extends Controller
 {
@@ -511,15 +512,12 @@ class AdminController extends Controller
     public function tampilkanManajemenPost()
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $this->authorize('manage-posts', $admin); // Authorization check
         $postingan = Postingan::with('admin.profile')->orderBy('created_at', 'desc')->get();
         return view('admin.manajemenPost', compact('postingan', 'admin'));
     }
 
     public function tambahPostingan(Request $request)
     {
-        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $this->authorize('create-posts', $admin); // Authorization check
 
         $validated = $request->validate([
             'tipe' => 'required|in:pengumuman,blog',
@@ -566,7 +564,7 @@ class AdminController extends Controller
     public function editPostingan($id)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $this->authorize('edit-posts', $admin); // Authorization check
+        $this->authorize('edit-posts', $admin);
         $postingan = Postingan::findOrFail($id);
         return view('admin.editPostingan', compact('postingan', 'admin'));
     }
@@ -574,7 +572,7 @@ class AdminController extends Controller
     public function updatePostingan(Request $request, $id)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $this->authorize('update-posts', $admin); // Authorization check
+        $this->authorize('update-posts', $admin);
         $postingan = Postingan::findOrFail($id);
 
         $validated = $request->validate([

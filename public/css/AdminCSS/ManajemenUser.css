@@ -1,5 +1,5 @@
 /* ----------------------------------------------- */
-/* ---------- Combined ManajemenUser & Register CSS ---------- */
+/* ------------------ css ManajemenUser ---------- */
 /* ----------------------------------------------- */
 
 :root {
@@ -54,6 +54,7 @@ body {
 .search-input-enhanced {
     width: 100%;
     padding: 12px 16px;
+    padding-left: 30px;
     border: none;
     outline: none;
     font-size: 14px;
@@ -62,7 +63,14 @@ body {
     color: #333;
 }
 
-/* Filter Button Styling */
+.search-box-enhanced i {
+    position: absolute;
+    transform: translate(13.5rem, -0.4rem) !important;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .filter-box-enhanced {
     display: flex;
     align-items: center;
@@ -92,9 +100,6 @@ body {
 /* ------------- REGISTER PAGE STYLES ------------- */
 /* ----------------------------------------------- */
 
-/* Container untuk halaman register */
-
-
 .ContainerUtamaManajemenUser {
     /* border: 2px solid black; */
     margin-left: 280px;
@@ -103,7 +108,6 @@ body {
 
 }
 
-/* Header styling */
 .ContainerUtamaManajemenUser h1 {
     width: 100%;
     color: var(--dark-color);
@@ -124,8 +128,6 @@ body {
     background-color: var(--primary-color);
 }
 
-
-/* Form Layout */
 .LayoutRegisterForm {
     padding: 10px;
     width: 100%;
@@ -154,7 +156,6 @@ body {
     background-color: var(--primary-color);
 }
 
-/* Form Grid Layout */
 .LayoutRegisterForm form {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -162,7 +163,6 @@ body {
     align-items: start;
 }
 
-/* Form Input Styling */
 .IsiData {
     margin-bottom: 20px;
 }
@@ -210,7 +210,6 @@ input.TampilanIsiData:focus {
     box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
 }
 
-/* Select styling */
 select.TampilanIsiData {
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M8 9.5a.5.5 0 01-.354-.146l-4-4a.5.5 0 01.708-.708L8 8.293l3.646-3.647a.5.5 0 01.708.708l-4 4A.5.5 0 018 9.5z'/%3E%3C/svg%3E");
@@ -219,7 +218,6 @@ select.TampilanIsiData {
     padding-right: 40px;
 }
 
-/* Parent Form Container */
 .FormUntukOrtu {
     grid-column: 1 / -1;
     margin-top: 20px;
@@ -236,7 +234,6 @@ select.TampilanIsiData {
     align-items: start;
 }
 
-/* Extended Data Display */
 .DisplayDataTable {
     grid-column: 1 / -1;
     background-color: #f8f9fa;
@@ -274,7 +271,6 @@ select.TampilanIsiData {
     align-items: start;
 }
 
-/* Submit Button */
 .TombolOJT,
 .TambahRegister {
     grid-column: 1 / -1;
@@ -298,7 +294,6 @@ select.TampilanIsiData {
     box-shadow: 0 6px 15px rgba(74, 108, 247, 0.3);
 }
 
-/* Success/Error Messages */
 .UiPsnDis {
     grid-column: 1 / -1;
     padding: 15px;
@@ -324,10 +319,8 @@ select.TampilanIsiData {
 }
 
 /* ----------------------------------------------- */
-/* ----------- MANAGEMENT PAGE STYLES ------------- */
 /* ----------------------------------------------- */
 
-/* Split Container Layout for Management */
 .container-split {
     display: flex;
     height: 100vh;
@@ -335,7 +328,6 @@ select.TampilanIsiData {
     box-sizing: border-box;;
 }
 
-/* Form Container (Left Side) */
 .form-container {
     flex: 0 0 45%;
     background-color: white;
@@ -360,7 +352,6 @@ select.TampilanIsiData {
     padding-bottom: 10px;
 }
 
-/* Management Container (Right Side) */
 .management-container {
     flex: 1;
     background-color: white;
@@ -373,7 +364,6 @@ select.TampilanIsiData {
     flex-direction: column;
 }
 
-/* Filter Container */
 .filter-container {
     padding: 20px;
     border-bottom: 1px solid #e0e0e0;
@@ -408,7 +398,6 @@ select.TampilanIsiData {
     box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
 }
 
-/* Table Container */
 .table-container {
     flex: 1;
     padding: 25px;
@@ -423,7 +412,6 @@ select.TampilanIsiData {
     border-bottom: 2px solid var(--primary-color);
 }
 
-/* Table Styling */
 .table {
     width: 100%;
     margin-bottom: 0;
@@ -455,7 +443,6 @@ select.TampilanIsiData {
     background-color: rgba(74, 108, 247, 0.05);
 }
 
-/* Button Styles */
 .btn {
     display: inline-block;
     font-weight: 400;
@@ -514,7 +501,6 @@ select.TampilanIsiData {
     margin-right: 5px;
 }
 
-/* Input dengan tombol hapus */
 .HapusBar {
     position: absolute;
     right: 10px;
@@ -533,10 +519,8 @@ select.TampilanIsiData {
 }
 
 /* ----------------------------------------------- */
-/* --------------- RESPONSIVE STYLES -------------- */
 /* ----------------------------------------------- */
 
-/* Large screens */
 @media (max-width: 1400px) {
     .container-split {
         margin-left: 0;
@@ -547,9 +531,7 @@ select.TampilanIsiData {
     }
 }
 
-/* Medium screens */
 @media (max-width: 1200px) {
-    /* Register page adjustments */
     .ContainerRegister {
         margin-left: 0;
         padding: 20px;
@@ -574,7 +556,6 @@ select.TampilanIsiData {
         grid-gap: 15px;
     }
     
-    /* Management page adjustments */
     .container-split {
         flex-direction: column;
         height: auto;
@@ -591,7 +572,6 @@ select.TampilanIsiData {
     }
 }
 
-/* Small screens */
 @media (max-width: 768px) {
     .ContainerRegister {
         margin-left: 0;
@@ -629,16 +609,13 @@ select.TampilanIsiData {
 }
 
 /* ----------------------------------------------- */
-/* ---------------- UTILITY STYLES --------------- */
 /* ----------------------------------------------- */
 
-/* Hide forms initially */
 #FormUntukMurid,
 #FormUntukGuru {
     display: none;
 }
 
-/* Custom scrollbar */
 .form-container::-webkit-scrollbar,
 .management-container::-webkit-scrollbar,
 .DisplayDataTable::-webkit-scrollbar {
