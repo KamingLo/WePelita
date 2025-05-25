@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ asset('css/default/SidebarAdmin.css') }}" />
+
 <body>
   <aside class="ContainerSideBar">
     <div class="ProfileSiUser">
@@ -19,7 +20,7 @@
         <span>‎</span> {{-- ‎ ni buat teks kosong --}}
 
       <li>
-        <a href="guru/dashboard" class="{{ request()->is('guru/dashboard*') ? 'active-link' : '' }}">
+        <a href="dashboard" class="{{ request()->is('guru/dashboard*') ? 'active-link' : '' }}">
           <i class='bx bx-home-alt IconSidebar'></i>Halaman Utama
         </a>
       </li>
@@ -29,26 +30,26 @@
       </h4>
 
       <li>
-        <a href="jadwal" class="{{ request()->is('livewire/guru/tampilkan-jadwal-hari*') ? 'active-link' : '' }}">
+        <a href="jadwal" class="{{ request()->is('jadwal*') ? 'active-link' : '' }}">
           <i class='bx bx-table IconSidebar'></i>Liat Jadwal Pelajaran
         </a>
       </li>
       
       <li>
         <a href="jadwalanda" class="{{ request()->is('livewire/guru/tampilkan-jadwal-anda*') ? 'active-link' : '' }}">
-          <i class='bx bx-table IconSidebar'>Liat Jadwal Ajar Anda</i>
+          <i class='bx bx-table IconSidebar'></i>Liat Jadwal Ajar Anda
         </a>
       </li>
       <li>
         <a href="buatpengumuman">
-          <i class='bx bx-home-alt IconSidebar'>Buat Pengumuman kelas</i>
+          <i class='bx bx-home-alt IconSidebar'></i>Buat Pengumuman kelas
         </a>
       </li>
       
       
       <li>
         <a href="menu-nilai">
-          <i class="bx bx-home-alt IconSidebar">Menu nilai</i>
+          <i class="bx bx-home-alt IconSidebar"></i>Menu nilai
         </a>
       </li>
     </ul>

@@ -1,20 +1,21 @@
 <div>
-    <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-6">Input Nilai Murid</h1>
+    <link rel="stylesheet" href="{{ asset('css/GuruCSS/NilaiMurid.css') }}" />
+    <div class="KontainerNilai">
+        <h1 class="JudulHalaman">Input Nilai Murid</h1>
 
         @if (session()->has('message'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            <div class="PesanSukses">
                 {{ session('message') }}
             </div>
         @endif
 
-        <div class="bg-white rounded-lg shadow p-6">
-            <!-- Step 1: Pilih Pelajaran -->
-            <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-bold mb-2">
+        <div class="KontainerFormNilai">
+            <!-- Langkah 1: Pilih Pelajaran -->
+            <div class="GrupInput">
+                <label class="LabelInput">
                     Pilih Pelajaran
                 </label>
-                <select wire:model.live="pilihanPelajaran" class="w-full border rounded px-3 py-2">
+                <select wire:model.live="pilihanPelajaran" class="DropdownPilihan">
                     <option value="">-- Pilih Pelajaran --</option>
                     @foreach($pelajaranList as $pelajaran)
                         <option value="{{ $pelajaran->pelajaran_id }}">{{ $pelajaran->namaPelajaran }}</option>
@@ -22,13 +23,13 @@
                 </select>
             </div>
 
-            <!-- Step 2: Pilih Kelas -->
+            <!-- Langkah 2: Pilih Kelas -->
             @if($pilihanPelajaran)
-            <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-bold mb-2">
+            <div class="GrupInput">
+                <label class="LabelInput">
                     Pilih Kelas
                 </label>
-                <select wire:model.live="pilihanKelasTahun" class="w-full border rounded px-3 py-2">
+                <select wire:model.live="pilihanKelasTahun" class="DropdownPilihan">
                     <option value="">-- Pilih Kelas --</option>
                     @foreach($kelasTahunList as $kelasTahun)
                         <option value="{{ $kelasTahun->kelas_tahun_id }}">
@@ -39,36 +40,37 @@
             </div>
             @endif
 
-            <!-- Step 3: Input Nilai -->
+            <!-- Langkah 3: Input Nilai -->
             @if($pilihanKelasTahun)
             <form wire:submit.prevent="submitNilai">
-                <div class="mb-6">
-                    <h3 class="text-lg font-semibold mb-4">Daftar Murid</h3>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white">
+                <div class="GrupInput">
+                    <h3 class="JudulSeksi">Daftar Murid</h3>
+                    <div class="KontainerTabel">
+                        <table class="TabelNilai">
                             <thead>
                                 <tr>
-                                    <th class="px-4 py-2">Nama Murid</th>
-                                    <th class="px-4 py-2">Nilai</th>
+                                    <th>Nama Murid</th>
+                                    <th>Nilai</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($muridList as $muridKelas)
                                     <tr>
-                                        <td class="border px-4 py-2">
+                                        <td>
                                             {{ $muridKelas->murid->profile->name }}
                                         </td>
-                                        <td class="border px-4 py-2">
+                                        <td>
                                             <input type="number" 
                                                 wire:model="nilai.{{ $muridKelas->murid_kelas_id }}"
-                                                class="w-20 border rounded px-2 py-1"
+                                                class="InputNilai"
                                                 min="0"
-                                                max="100">
+                                                max="100"
+                                                placeholder="0-100">
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="2" class="border px-4 py-2 text-center">
+                                        <td colspan="2" class="PesanKosong">
                                             Tidak ada murid dalam kelas ini
                                         </td>
                                     </tr>
@@ -78,9 +80,8 @@
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <button type="submit" 
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <div class="KontainerTombol">
+                    <button type="submit" class="TombolSimpan">
                         Simpan Nilai
                     </button>
                 </div>
