@@ -555,7 +555,7 @@ class AdminController extends Controller
     {
         // Validasi input
         $validated = $request->validate([
-            'tipe' => 'required|in:pengumuman,kegiatan',
+            'tipe' => 'required|in:pengumuman, blog',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
             'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg|max:2048|image',
@@ -578,10 +578,9 @@ class AdminController extends Controller
 
 
         $adminId = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
-        }
-
-    //     return redirect()->route('admin.post')->with('success', 'Postingan berhasil dibuat!');
-    // }
+        
+        return redirect()->route('admin.post')->with('success', 'Postingan berhasil dibuat!');
+    }
 
     // public function tampilkanManajemenPost()
     // {
