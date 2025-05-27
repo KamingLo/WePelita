@@ -8,6 +8,11 @@
 <script src="{{ asset('js/CssAdmin.js') }}"></script>
 
 <body>
+    <style>
+        body {
+            overflow: visible;
+        }
+    </style>
     <div class="ContainerPostManagement">
         <h1>Manajemen Post</h1>
 
@@ -60,7 +65,7 @@
                                         <div class="switch-container">
                                             <label class="NamaLabelBar">Tipe Postingan</label>
                                             <input type="radio" id="announcement" name="tipe" value="pengumuman" checked>
-                                            <input type="radio" id="event" name="tipe" value="kegiatan">
+                                            <input type="radio" id="event" name="tipe" value="blog">
                                             <label class="switch" for="announcement">
                                                 <span class="switch-left">Pengumuman</span>
                                                 <span class="switch-right">Kegiatan</span>
@@ -139,7 +144,7 @@
                     @endforeach
                 </div>
                 
-            @elseif ($TipePost === 'kegiatan')
+            @elseif ($TipePost === 'blog')
                 <h2>Daftar Kegiatan</h2>
                 
                 <div class="post-preview-container">

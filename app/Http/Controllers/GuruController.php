@@ -44,6 +44,11 @@ class GuruController extends Controller
         return view('guru.pengumuman', compact('guru', 'pengumuman'));
     }
 
+    public function tampilkanManajemenPost(){
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
+        return view('guru.ManajemenPostGuru', compact('guru')); // atau 'guru.ManajemenPostGuru' jika dalam subfolder
+    }
+
     public function index()
     {
         return view('ManajemenPostGuru');
@@ -70,6 +75,7 @@ class GuruController extends Controller
     }
 
     public function tampilkanMenuNilai(){
-        return view('guru.isinilai');
+        $guru = Guru::where('profile_id', auth()->id())->firstorFail();
+        return view('guru.isinilai', compact('guru'));
     }
 }

@@ -10,8 +10,8 @@
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
         </div>
 
-        {{-- <h6 class="UseridName">{{ $guru->profile->name }}</h6> --}}
-        <h6 class="UseridName">No Reason</h6>
+        <h6 class="UseridName">{{ $guru->profile->name }}</h6>
+        {{-- <h6 class="UseridName">No Reason</h6> --}}
 
     </div>
 

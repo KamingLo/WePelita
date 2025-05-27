@@ -9,7 +9,7 @@ use function Laravel\Prompts\table;
 return new class extends Migration
 {
     public function up(): void
-    {
+    {//
         Schema::create('postingan', function (Blueprint $table){
             $table -> id('postingan_id');
             $table -> foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');

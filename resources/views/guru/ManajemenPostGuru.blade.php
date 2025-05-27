@@ -1,5 +1,5 @@
-@include('admin.partials.header', ['NamaPage' => 'Halaman Utama'])
-@include('admin.partials.sidebar')
+@include('guru.partials.header', ['NamaPage' => 'Halaman Utama'])
+@include('guru.partials.sidebar')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"></script>

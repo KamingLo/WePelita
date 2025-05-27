@@ -513,7 +513,9 @@ class AdminController extends Controller
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         $postingan = Postingan::with('admin.profile')->orderBy('created_at', 'desc')->get();
-        return view('admin.manajemenPost', compact('postingan', 'admin'));
+        $pengumumans = Postingan::where('tipe_postingan', 'pengumuman')->orderBy('created_at', 'desc')->get();
+        $blogs = Postingan::where('tipe_postingan', 'blog')->orderBy('created_at', 'desc')->get();
+        return view('admin.manajemenPost', compact('postingan', 'admin', 'pengumumans', 'blogs'));
     }
 
     public function tambahPostingan(Request $request)

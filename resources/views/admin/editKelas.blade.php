@@ -65,7 +65,7 @@
                         Simpan Perubahan
                     </button>
 
-                    <a href="{{ route('admin.jadwal') }}" class="TombolOJTEdit TombolManKelBatal">Batal</a>
+                    <a href="{{ route('admin.manajemenKelas') }}" class="TombolOJTEdit TombolManKelBatal">Batal</a>
                 </div>
                 
                 @if(session('success'))
