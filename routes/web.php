@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\TrixController;
 use App\Http\Controllers\EditorController;
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,7 +21,10 @@ Route::get('/blog', function () {
     return view('blog');
 })->name('blog');
 
+Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/blog', [PublicController::class, 'tampilkanBlog'])->name('blog');
+Route::get('/blog-full/{id}', [PublicController::class, 'tampilkanBlogDetail'])->name('blog.full');
+Route::get('/blog/{postingan}', [PublicController::class, 'tampilkanBlogDetail'])->name('blog.show');
 
 Route::get('/editor', [EditorController::class, 'show'])->name('editor');
 Route::post('/editor', [EditorController::class, 'store'])->name('editor.store');

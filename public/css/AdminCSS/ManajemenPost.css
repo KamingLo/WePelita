@@ -20,7 +20,6 @@ body {
     overflow: hidden;
 }
 
-
 label {
     display: inline-block;
     margin-right: 10px;
@@ -61,12 +60,13 @@ h1:after {
 
 h2 {
     color: var(--dark-color);
-    font-size: 20px;
-    margin: 25px 0 15px;
+    font-size: 24px;
+    margin: 25px 0 25px;
     position: relative;
     padding-bottom: 8px;
     display: inline-block;
     transform: translateY(-1.5rem);
+    font-weight: 600;
 }
 
 h2:after {
@@ -74,8 +74,8 @@ h2:after {
     position: absolute;
     left: 0;
     bottom: 0;
-    height: 2px;
-    width: 30%;
+    height: 3px;
+    width: 60px;
     background-color: var(--primary-color);
 }
 
@@ -344,6 +344,179 @@ textarea.form-control {
     padding: 30px 0;
 }
 
+/* ------------- */
+/* Post Preview Container - Styling untuk Card Layout */
+
+.post-preview-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 kolom */
+    gap: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-bottom: 10px;
+}
+
+/* Individual Post Card */
+.mini-post-preview {
+    background: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Jarak antar elemen dalam postingan */
+}
+
+.mini-post-preview:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+/* Post Header dengan Avatar dan Nama */
+.mini-post-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.mini-post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #f0f0f0;
+}
+
+.mini-post-user {
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+    flex-grow: 1; /* Mengisi ruang yang tersedia */
+}
+
+/* Post Content/Body */
+.mini-post-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mini-post-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1c1e21;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.mini-post-body {
+    color: #65676b;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Hanya tampilkan 2 baris */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mini-post-body:empty::after {
+    content: "..."; /* Tambahkan ... jika konten panjang */
+}
+
+/* Post Image */
+.mini-post-image {
+    width: 100%;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #e1e8ed;
+}
+
+/* Post Actions Container */
+.mini-post-actions {
+    display: flex;
+    justify-content: flex-end; /* Tombol di sebelah kanan */
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid #e4e6ea;
+    gap: 10px;
+}
+
+/* Edit and Delete Buttons */
+.post-preview-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.post-preview-buttons .btn {
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+    margin: 0;
+}
+
+.post-preview-buttons .btn-primary {
+    background-color: #1877f2;
+    border-color: #1877f2;
+}
+
+.post-preview-buttons .btn-primary:hover {
+    background-color: #166fe5;
+    border-color: #166fe5;
+}
+
+.post-preview-buttons .btn-danger {
+    background-color: #e41e3f;
+    border-color: #e41e3f;
+}
+
+.post-preview-buttons .btn-danger:hover {
+    background-color: #d91e40;
+    border-color: #d91e40;
+}
+
+/* No Image Style */
+.mini-post-preview.no-image .mini-post-title {
+    margin-bottom: 15px;
+}
+
+/* Scrollbar Styling */
+.post-preview-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.post-preview-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.post-preview-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+.post-preview-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Empty State */
+.post-preview-container p {
+    text-align: center;
+    color: #65676b;
+    font-size: 16px;
+    padding: 40px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #dee2e6;
+}
+
 /* Media Queries */
 @media (max-width: 1200px) {
     .form-container {
@@ -359,14 +532,43 @@ textarea.form-control {
     .ContainerPostManagement {
         margin-left: 0;
     }
+    
+    .post-preview-container {
+        grid-template-columns: 1fr; /* 1 kolom saat layar kecil */
+    }
+    
+    .mini-post-preview {
+        padding: 15px;
+    }
+    
+    .mini-post-avatar {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .mini-post-title {
+        font-size: 16px;
+    }
+    
+    .mini-post-image {
+        max-height: 200px; /* Kembali ke tinggi normal saat vertikal */
+    }
+    
+    .post-preview-buttons {
+        flex-direction: row;
+        gap: 5px;
+    }
+    
+    .post-preview-buttons .btn {
+        font-size: 12px;
+        padding: 5px 10px;
+    }
 }
 
 .JuduldanOpsi {
     display: flex;
     gap: 30px;
 }
-
-/* Tambahkan CSS ini ke ManajemenPost.css */
 
 /* Styling untuk Trix Editor agar bisa scroll */
 trix-editor {

@@ -155,6 +155,26 @@
             margin-top: auto;
         }
 
+        .read-more-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            align-self: flex-start;
+        }
+
+        .read-more-btn:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
         .author-avatar {
             width: 30px;
             height: 30px;
@@ -246,6 +266,7 @@
                     <div class="blog-content">
                         <h2 class="blog-title">{{ $blog->judul }}</h2>
                         <p class="blog-excerpt">{{ Str::limit(strip_tags($blog->isi), 150) }}</p>
+                        <a href="{{ route('blog.show', $blog->postingan_id) }}" class="read-more-btn">Baca Selengkapnya</a>
                         <div class="blog-meta">
                             <div class="author-avatar">
                                 {{ strtoupper(substr($blog->admin->profile->name, 0, 2)) }}

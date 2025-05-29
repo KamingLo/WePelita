@@ -83,7 +83,6 @@
                                             <label class="NamaLabelBar">Tipe Postingan</label>
                                             <input type="radio" id="pengumuman" name="tipe" value="pengumuman" {{ old('tipe', 'pengumuman') == 'pengumuman' ? 'checked' : '' }}>
                                             <input type="radio" id="blog" name="tipe" value="blog" {{ old('tipe') == 'blog' ? 'checked' : '' }}>
-                                            {{-- Remove the 'for="pengumuman"' attribute from the label below --}}
                                             <label class="switch" for="pengumuman">
                                                 <span class="switch-left">Pengumuman</span>
                                                 <span class="switch-right">Blog</span>
