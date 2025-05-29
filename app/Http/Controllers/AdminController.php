@@ -327,18 +327,30 @@ class AdminController extends Controller
     public function tampilkanJadwal(){
         $pelajaran = Pelajaran::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $kelasTahun = KelasTahun::all();
-        $jadwals = JadwalPelajaran::orderBy('kelas_tahun_id', 'asc')
-                                  ->orderBy('hari', 'desc')
-                                  ->orderBy('waktu_mulai', 'asc')
-                                  ->get();
+        
+        // Get only active classes
+        $kelasTahun = KelasTahun::whereHas('tahunajar', function($query) {
+            $query->where('status', 'Aktif');
+        })->get();
+
+        // Get schedules only for active classes
+        $jadwals = JadwalPelajaran::whereHas('kelastahun.tahunajar', function($query) {
+            $query->where('status', 'Aktif');
+        })
+        ->orderBy('kelas_tahun_id', 'asc')
+        ->orderBy('hari', 'desc')
+        ->orderBy('waktu_mulai', 'asc')
+        ->get();
+
         return view('admin.jadwal', compact('pelajaran', 'kelasTahun', 'jadwals', 'admin'));
     }
 
     public function tampilkanUpdateJadwal($id){
         $pelajaran = Pelajaran::all();
         $kelas = KelasTahun::all();
-        $jadwal = JadwalPelajaran::findOrFail($id);
+        $jadwal = JadwalPelajaran::whereHas('kelastahun.tahunajar', function($query) {
+            $query->where('status', 'Aktif');
+        })->findOrFail($id);
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.editJadwal', compact('pelajaran', 'kelas', 'jadwal', 'admin'));
     }
@@ -350,11 +362,14 @@ class AdminController extends Controller
             'kelas_tahun_id' => 'required|exists:kelas_tahun,kelas_tahun_id',
             'hari' => 'required',
             'waktu_mulai' => 'required',
-            'waktu_selesai' => 'required',
+            'waktu_selesai' => 'required|after:waktu_mulai',
         ]);
 
         $bentrokKelas = JadwalPelajaran::where('kelas_tahun_id', $request->kelas_tahun_id)
             ->where('hari', $request->hari)
+            ->whereHas('kelastahun.tahunajar', function ($query) {
+                $query->where('status', 'Aktif');
+            })
             ->where(function ($query) use ($request) {
                 $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
                     ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
@@ -374,6 +389,9 @@ class AdminController extends Controller
         $bentrokPelajaran = JadwalPelajaran::where('pelajaran_id', $request->pelajaran_id)
             ->where('kelas_tahun_id', '!=', $request->kelas_tahun_id)
             ->where('hari', $request->hari)
+            ->whereHas('kelastahun.tahunajar', function ($query) {
+                $query->where('status', 'Aktif');
+            })
             ->where(function ($query) use ($request) {
                 $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
                     ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
@@ -389,10 +407,6 @@ class AdminController extends Controller
                 ->withInput()
                 ->withErrors(['jadwal' => 'Pelajaran ini sudah dijadwalkan di kelas lain pada waktu tersebut.']);
         }
-
-        JadwalPelajaran::create($request->all());
-
-        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil ditambahkan.');
     }
 
     public function updateJadwal(Request $request, $id)
@@ -406,17 +420,21 @@ class AdminController extends Controller
         ]);
 
         $jadwal = JadwalPelajaran::findOrFail($id);
-        // Perbaiki query untuk hanya mengecek bentrok dengan kelas yang statusnya aktif
+
         $bentrokKelas = JadwalPelajaran::where('jadwal_id', '!=', $id)
             ->where('kelas_tahun_id', $validated['kelas_tahun_id'])
             ->where('hari', $validated['hari'])
             ->whereHas('kelastahun.tahunajar', function ($query) {
                 $query->where('status', 'Aktif');
             })
-            ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
-                $validated['waktu_mulai'],
-                $validated['waktu_selesai'],
-            ])
+            ->where(function ($query) use ($validated) {
+                $query->whereBetween('waktu_mulai', [$validated['waktu_mulai'], $validated['waktu_selesai']])
+                    ->orWhereBetween('waktu_selesai', [$validated['waktu_mulai'], $validated['waktu_selesai']])
+                    ->orWhere(function ($q) use ($validated) {
+                        $q->where('waktu_mulai', '<=', $validated['waktu_mulai'])
+                        ->where('waktu_selesai', '>=', $validated['waktu_selesai']);
+                    });
+            })
             ->exists();
 
         if ($bentrokKelas) {
@@ -429,10 +447,17 @@ class AdminController extends Controller
             ->where('pelajaran_id', $validated['pelajaran_id'])
             ->where('kelas_tahun_id', '!=', $validated['kelas_tahun_id'])
             ->where('hari', $validated['hari'])
-            ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
-                $validated['waktu_mulai'],
-                $validated['waktu_selesai'],
-            ])
+            ->whereHas('kelastahun.tahunajar', function ($query) {
+                $query->where('status', 'Aktif');
+            })
+            ->where(function ($query) use ($validated) {
+                $query->whereBetween('waktu_mulai', [$validated['waktu_mulai'], $validated['waktu_selesai']])
+                    ->orWhereBetween('waktu_selesai', [$validated['waktu_mulai'], $validated['waktu_selesai']])
+                    ->orWhere(function ($q) use ($validated) {
+                        $q->where('waktu_mulai', '<=', $validated['waktu_mulai'])
+                        ->where('waktu_selesai', '>=', $validated['waktu_selesai']);
+                    });
+            })
             ->exists();
 
         if ($bentrokPelajaran) {

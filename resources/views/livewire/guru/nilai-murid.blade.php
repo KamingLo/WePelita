@@ -33,7 +33,7 @@
                         <option value="">-- Pilih Kelas --</option>
                         @foreach($kelasTahunList as $kelasTahun)
                             <option value="{{ $kelasTahun->kelas_tahun_id }}">
-                                {{ $kelasTahun->kelas->nama_kelas }} - {{ $kelasTahun->tahun_ajaran }}
+                                {{ $kelasTahun->kelas->nama_kelas }} - {{ $kelasTahun->TahunAjar->tahun_ajaran }}
                             </option>
                         @endforeach
                     </select>
