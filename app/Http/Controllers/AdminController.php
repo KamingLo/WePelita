@@ -570,40 +570,39 @@ public function tambahPostingan(Request $request)
         'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
     ]);
 
+    $lampiranPath = null;
+    if ($request->hasFile('lampiran')) {
+        $file = $request->file('lampiran');
+
+        // Pastikan nama file unik
+        $filename = time() . '_' . $file->getClientOriginalName();
+
+        // Simpan manual ke folder public/storage/lampiran 
+        $file->move(public_path('storage/lampiran'), $filename);
+
+        // Simpan path relatif ke database
+        $lampiranPath = 'lampiran/' . $filename;
+    }
+
     try {
-        $postingan = Postingan::create([
+        Postingan::create([
             'admin_id' => $admin->admin_id,
             'tipe' => $validated['tipe'],
             'judul' => $validated['judul'],
             'isi' => $validated['isi'],
-            'lampiran' => null // Initialize as null
+            'lampiran' => $lampiranPath
         ]);
 
-        // Handle file upload after creating the post
-        if ($request->hasFile('lampiran')) {
-            $file = $request->file('lampiran');
-            if ($file->isValid()) {
-                $path = $file->store('lampiran', 'public');
-                if ($path) {
-                    $postingan->lampiran = $path;
-                    $postingan->save();
-                    Log::info('File lampiran tersimpan di: ' . $path);
-                }
-            }
-        }
-
-        Log::info('Postingan berhasil dibuat dengan ID: ' . $postingan->postingan_id);
         return redirect()
             ->route('admin.manajemenPost')
             ->with('success', 'Postingan berhasil dibuat.');
 
     } catch (\Exception $e) {
-        // If file was uploaded but save failed, delete the file
-        if (isset($path)) {
-            Storage::disk('public')->delete($path);
+        // Delete file if save failed
+        if ($lampiranPath) {
+            unlink(public_path('storage/' . $lampiranPath));
         }
 
-        Log::error('Gagal membuat postingan: ' . $e->getMessage());
         return back()
             ->withInput()
             ->withErrors(['error' => 'Gagal membuat postingan: ' . $e->getMessage()]);
