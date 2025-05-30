@@ -9,36 +9,21 @@ use App\Http\Controllers\PublicController;
 use App\Models\Admin;
 use App\Models\Guru;
 use Illuminate\Support\Str;
-use App\Http\Controllers\TrixController;
+use App\Http\Controllers\EditorController;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/editor', function () {
-//     return view('editor'); // Pastikan nama view sesuai
-// })->name('editor');
+Route::get('/blog', function () {
+    return view('blog');
+})->name('blog');
 
-// Route::post('/editor', function (Illuminate\Http\Request $request) {
-//     $request->validate([
-//         'content' => 'required'
-//     ]);
-    
-//     // Simpan konten HTML ke file di storage/app/public
-//     $fileName = 'editor-content/' . Str::random(20) . '.html';
-//     $request->content->storeAs('public', $fileName);
-    
-//     // Jika ingin menyimpan path ke database
-//     // $contentPath = $fileName;
-//     // Post::create(['content_path' => $contentPath]);
-    
-//     return back()->with([
-//         'success' => 'Content saved successfully!',
-//         'file_path' => $fileName // Optional: untuk menampilkan path file
-//     ]);
-// })->name('editor.store');
-
-use App\Http\Controllers\EditorController;
+Route::get('/', [PublicController::class, 'index'])->name('home');
+Route::get('/blog', [PublicController::class, 'tampilkanBlog'])->name('blog');
+Route::get('/blog-full/{id}', [PublicController::class, 'tampilkanBlogDetail'])->name('blog.full');
+Route::get('/blog/{postingan}', [PublicController::class, 'tampilkanBlogDetail'])->name('blog.show');
 
 Route::get('/editor', [EditorController::class, 'show'])->name('editor');
 Route::post('/editor', [EditorController::class, 'store'])->name('editor.store');
@@ -59,15 +44,15 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::get('/admin/register', [AdminController::class, 'formUser']);
     Route::post('/admin/register', [AdminController::class, 'tambahkanUser'])->name('admin.register');
 
-    Route::get('admin/pelajaran', [AdminController::class, 'tampilkanPelajaran'])->name('admin.pelajaran');
-    Route::post('admin/pelajaran', [AdminController::class, 'simpanPelajaran'])->name('admin.pelajaran');
+    Route::get('admin/TambahPelajaran', [AdminController::class, 'tampilkanPelajaran'])->name('admin.TambahPelajaran');
+    Route::post('admin/TambahPelajaran', [AdminController::class, 'simpanPelajaran'])->name('admin.TambahPelajaran');
     
     Route::get('admin/pelajaran/edit/{id}', [AdminController::class, 'tampilkanUpdatePelajaran'])->name('pelajaran.update');
     Route::put('admin/pelajaran/edit/{id}', [AdminController::class, 'updatePelajaran'])->name('pelajaran.update');
     Route::delete('admin/pelajaran/destroy/{id}', [AdminController::class, 'hapusPelajaran'])->name('pelajaran.destroy');
 
-    Route::get('admin/jadwal', [AdminController::class, 'tampilkanJadwal'])->name('admin.jadwal');
-    Route::post('admin/jadwal/store', [AdminController::class, 'simpanJadwal'])->name('jadwal.store');
+    Route::get('admin/TambahJadwal', [AdminController::class, 'tampilkanJadwal'])->name('admin.TambahJadwal');
+    Route::post('admin/TambahJadwal/store', [AdminController::class, 'simpanJadwal'])->name('TambahJadwal.store');
     
     Route::get('admin/jadwal/edit/{id}', [AdminController::class, 'tampilkanUpdateJadwal'])->name('jadwal.update');
     Route::put('admin/jadwal/edit/{id}', [AdminController::class, 'updateJadwal'])->name('jadwal.update');
@@ -79,23 +64,19 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::put('admin/manajemenKelas/edit/{id}', [AdminController::class, 'updateKelas'])->name('kelas.update');
     Route::delete('admin/manajemenKelas/destroy/{id}', [AdminController::class, 'hapusKelas'])->name('kelas.destroy');
     
-    // Rute untuk kenaikan kelas
     Route::get('admin/kenaikanKelas', [AdminController::class, 'tampilkanFormKenaikanKelas'])->name('admin.kenaikanKelas');
     Route::post('admin/kenaikanKelas', [AdminController::class, 'prosesKenaikanKelas'])->name('admin.prosesKenaikanKelas');
 
     Route::get('admin/manajemenPost', [AdminController::class, 'tampilkanManajemenPost'])->name('admin.manajemenPost');
-    Route::get('admin/manajemenPost/postingan/update/{id}', [AdminController::class, 'tampilkanPostingan'])->name('postingan.update');
-    Route::post('admin/manajemenPost/postingan/update/{id}', [AdminController::class, 'updatePostingan'])->name('edit.postingan');
-    Route::delete('admin/manajemenPost/postingan/destroy/{id}', [AdminController::class, 'hapusPostingan'])->name('postingan.destroy');
-    Route::post('admin/manajemenPost/posting', [AdminController::class, 'store'])->name('admin.posting');
+    Route::post('admin/manajemenPost', [AdminController::class, 'tambahPostingan'])->name('admin.post.tambah');
+    Route::get('admin/manajemenPost/edit/{id}', [AdminController::class, 'editPostingan'])->name('admin.post.edit');
+    Route::put('admin/manajemenPost/edit/{id}', [AdminController::class, 'updatePostingan'])->name('admin.post.update');
+    Route::delete('admin/manajemenPost/destroy/{id}', [AdminController::class, 'hapusPostingan'])->name('admin.post.hapus');
 
-    route::get('admin/manajemenUser', [AdminController::class, 'tampilkanManajemenUser'])->name('admin.ManajemenUser');
-
+    Route::get('admin/ManajemenUser', [AdminController::class, 'tampilkanManajemenUser'])->name('admin.ManajemenUser');
     Route::get('/admin/user/edit/{id}', [AdminController::class, 'editUser'])->name('admin.user.edit');
     Route::put('/admin/user/update/{id}', [AdminController::class, 'updateUser'])->name('admin.user.update');
     Route::delete('/admin/user/delete/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.delete');
-
-
 });
 
 Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
@@ -107,7 +88,9 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     Route::get('guru/jadwal', [GuruController::class, 'tampilkanJadwalPelajaran'])->name('guru.jadwal');
     Route::get('guru/jadwalanda', [GuruController::class, 'tampilkanJadwalAnda'])->name('guru.jadwalanda');
     Route::get('guru/buatpengumuman', [GuruController::class, 'tampilkanPengumuman'])->name('guru.pengumuman');
+
     Route::get('guru/menu-nilai', [GuruController::class, 'tampilkanMenuNilai'])->name('guru.isinilai');
+    Route::post('guru/menu-nilai', [GuruController::class, 'simpanNilai'])->name('guru.isinilai');
 
     Route::get('guru/ManajemenPostGuru', [GuruController::class, 'tampilkanManajemenPost'])->name('guru.manajemenPost');    
 
@@ -115,4 +98,3 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
         return view('guru.post');
     })->name('guru.post');
 });
-

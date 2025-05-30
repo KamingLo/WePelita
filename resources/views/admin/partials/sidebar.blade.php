@@ -8,9 +8,7 @@
             </a>
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
         </div>
-
-        <h6 class="UseridName">{{ $admin->profile->name }}</h6>
-         
+        <h6 class="UseridName">{{ auth()->user()->profile->name ?? 'Admin' }}</h6>
     </div>
 
     <ul class="ListSideBar">
@@ -25,38 +23,23 @@
         <span>Admin Tools</span>
       </h4>
 
-      {{-- <li>
-        <a href="/admin/register" class="{{ request()->is('admin/register*') ? 'active-link' : '' }}">
-          <i class='bx bx-user-plus IconSidebar'></i>Daftar User Baru
-        </a>
-      </li> --}}
       <li>
-        <a href="/admin/pelajaran" class="{{ request()->is('admin/pelajaran*') ? 'active-link' : '' }}">
+        <a href="/admin/TambahPelajaran" class="{{ request()->is('admin/TambahPelajaran*') ? 'active-link' : '' }}">
           <i class='bx bx-list-plus IconSideBar'></i>Tambah Pelajaran
         </a>
       </li>
       <li>
-        <a href="/admin/jadwal" class="{{ request()->is('admin/jadwal*') ? 'active-link' : '' }}">
-          <i class='bx bx-layer-plus IconSideBar'></i>Tambahkan Jadwal
+        <a href="/admin/TambahJadwal" class="{{ request()->is('admin/TambahJadwal*') || request()->is('admin/jadwal/edit/*') ? 'active-link' : '' }}">
+            <i class='bx bx-layer-plus IconSideBar'></i>Tambahkan Jadwal
         </a>
       </li>
-      {{-- <li>
-        <a href="/admin/post" class="{{ request()->is('admin/post*') ? 'active-link' : '' }}">
-          <i class='bx bx-message-square-add IconSideBar'></i>Tambah posting
-        </a>
-      </li> --}}
-        {{-- <li>
-        <a href="/admin/kenaikanKelas" class="{{ request()->is('admin/kenaikanKelas*') ? 'active-link' : '' }}">
-          <i class='bx bx-chevrons-up IconSideBar'></i>Kenaikan Kelas
-        </a>
-      </li> --}}
         <li>
         <a href="/admin/manajemenKelas" class="{{ request()->is('admin/manajemenKelas*') ? 'active-link' : '' }}">
           <i class='bx bx-category-alt IconSideBar'></i>Manajemen Kelas
         </a>
       </li>
       <li>
-        <a href="/admin/manajemenUser" class="{{ request()->is(['admin/manajemenUser*', 'admin/user*']) ? 'active-link' : '' }}">
+        <a href="/admin/ManajemenUser" class="{{ request()->is(['admin/ManajemenUser*', 'admin/user*']) ? 'active-link' : '' }}">
           <i class='bx bx-user IconSideBar' ></i>Manajemen User
         </a>
       </li>

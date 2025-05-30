@@ -9,13 +9,17 @@ class Postingan extends Model
 {
     use HasFactory;
 
-    public $timestamps = false; 
     protected $table = 'postingan';
     protected $primaryKey = 'postingan_id';
-    protected $fillable = ['profile_id', 'tujuan_postingan','path_postingan', 'judul_postingan', 'created_at'];
+    protected $fillable = ['admin_id', 'tipe', 'judul', 'isi', 'lampiran'];
 
-    public function profile()
+    public function admin()
     {
-        return $this->belongsTo(Profile::class, 'profile_id');
+        return $this->belongsTo(Admin::class, 'admin_id');
+    }
+
+    public function komentar()
+    {
+        return $this->hasMany(Komentar::class, 'postingan_id');
     }
 }

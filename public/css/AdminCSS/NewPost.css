@@ -332,3 +332,23 @@ trix-editor:focus {
 .switch:hover .switch-button {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
+/* Change #event:checked to #blog:checked */
+#blog:checked ~ .switch .switch-left {
+    color: #9aa0a6;
+    font-weight: normal;
+}
+
+#blog:checked ~ .switch .switch-right {
+    color: #4a6cf7;
+    font-weight: 600;
+}
+
+#blog:checked ~ .switch .switch-button {
+    left: 125px; /* This value needs to be adjusted based on the actual width of the switch and button to center it correctly */
+}
+
+/* Ensure the 'announcement' (pengumuman) radio button positions the switch-button correctly */
+#pengumuman:checked ~ .switch .switch-button {
+    left: 2px; /* Keep this as is if it correctly positions for 'pengumuman' */
+}

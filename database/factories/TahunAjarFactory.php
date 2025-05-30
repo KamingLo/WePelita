@@ -12,7 +12,7 @@ class TahunAjarFactory extends Factory
         $endYear = $startYear + 1;
         return [
             'tahun_ajaran' => $startYear . '/' . $endYear,
-            'semester' => $this->faker->randomElement(['Ganjil, Genap']),
+            'semester' => $this->faker->randomElement(['Ganjil', 'Genap']),
             'status' => 'Aktif',
         ];
     }

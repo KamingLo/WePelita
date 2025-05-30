@@ -1,6 +1,6 @@
-@include('admin.partials.header', ['NamaPage' => 'Halaman Utama'])
+@include('admin.partials.header')
 @include('admin.partials.sidebar')
-<link rel="stylesheet" href="{{ asset('css/AdminCSS/jadwal.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/AdminCSS/TambahJadwal.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
@@ -67,7 +67,7 @@
                         Simpan Jadwal
                     </button>
 
-                    <a href="{{ route('admin.jadwal') }}" class="TombolOJTEdit TombolJadwalBatal">Batal</a>
+                    <a href="{{ route('admin.TambahJadwal') }}" class="TombolOJTEdit TombolJadwalBatal">Batal</a>
                 </div>
 
             </form>

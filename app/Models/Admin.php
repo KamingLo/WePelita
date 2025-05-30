@@ -9,10 +9,10 @@ class Admin extends Model
 {
     use HasFactory;
 
-    public $timestamps = false; 
     protected $table = 'admin';
     protected $primaryKey = 'admin_id';
     protected $fillable = ['profile_id'];
+    public $timestamps = false;
 
     public function profile()
     {

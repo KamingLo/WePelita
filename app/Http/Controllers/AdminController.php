@@ -20,7 +20,8 @@ use App\Models\MuridOrangTua;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -179,10 +180,19 @@ class AdminController extends Controller
         return redirect()->route('admin.ManajemenUser')->with('success', 'User baru berhasil ditambahkan.');
     }
 
-    public function tampilkanManajemenKelas(){
+    public function tampilkanManajemenKelas()
+    {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         $kelastahuns = KelasTahun::all();
-        return view('admin.ManajemenKelas', compact('admin', 'kelastahuns'));
+    
+        $kelasSekarang = KelasTahun::with(['kelas', 'tahunajar'])
+            ->whereHas('tahunajar', function($query) {
+                $query->where('status', 'Aktif');
+            })->get();
+    
+        $semuaKelas = Kelas::all();
+    
+        return view('admin.ManajemenKelas', compact('admin', 'kelastahuns', 'kelasSekarang', 'semuaKelas'));
     }
 
     public function tambahKelas(Request $request)
@@ -192,13 +202,13 @@ class AdminController extends Controller
             'tahun_ajar' => 'required|string',
             'semester' => 'required|string',
         ]);
-
+    
         $status = 'Aktif';
-
+    
         $tahunAjar = TahunAjar::where('tahun_ajaran', $request->tahun_ajar)
             ->where('semester', $request->semester)
             ->first();
-
+    
         if (!$tahunAjar) {
             $tahunAjar = TahunAjar::create([
                 'tahun_ajaran' => $request->tahun_ajar,
@@ -206,20 +216,20 @@ class AdminController extends Controller
                 'status' => $status,
             ]);
         }
-
+    
         $kelas = Kelas::create([
             'nama_kelas' => $request->nama_kelas
         ]);
-
+    
         $kelas->tahun()->attach($tahunAjar->tahun_ajaran_id);
-
+    
         return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas baru berhasil dibuat.');
     }
 
     public function tampilkanUpdateKelas($id){
         $kelastahun = KelasTahun::findOrFail($id);
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.editKelas', compact('kelastahun', 'admin'));
+        return view('admin.ManajemenKelasEdit', compact('kelastahun', 'admin'));
     }
 
     public function updateKelas(Request $request, $id)
@@ -278,121 +288,183 @@ class AdminController extends Controller
             ->whereHas('tahunajar', function($query) {
                 $query->where('status', 'Aktif');
             })->get();
-
+    
         $semuaKelas = Kelas::all();
-
+    
         return view('admin.kenaikanKelas', compact('kelasSekarang', 'semuaKelas', 'admin'));
     }
 
     public function prosesKenaikanKelas(Request $request)
     {
-        $request->validate([
-            'kelas_asal' => 'required|exists:kelas_tahun,kelas_tahun_id',
-            'kelas_tujuan' => 'required|exists:kelas,kelas_id',
-            'tahun_ajaran' => 'required',
-            'semester' => 'required|in:Ganjil,Genap'
-        ]);
-
-        $tahunAjarBaru = TahunAjar::updateOrCreate(
-            [
-                'tahun_ajaran' => $request->tahun_ajaran,
-                'semester' => $request->semester
-            ],
-            [
-                'status' => 'Aktif'
-            ]
-        );
-
-        $kelasTahunBaru = KelasTahun::updateOrCreate([
-            'kelas_id' => $request->kelas_tujuan,
-            'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id
-        ]);
-
-        $muridKelas = MuridKelas::where('kelas_tahun_id', $request->kelas_asal)->get();
-
-        foreach ($muridKelas as $mk) {
-            MuridKelas::create([
-                'murid_id' => $mk->murid_id,
-                'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id
+        try {
+            // Validate the request
+            $validated = $request->validate([
+                'kelas_asal' => 'required|exists:kelas_tahun,kelas_tahun_id',
+                'kelas_tujuan' => 'required|exists:kelas,kelas_id',
+                'tahun_ajaran' => 'required',
+                'semester' => 'required|in:Ganjil,Genap'
             ]);
+    
+            // Check if the source and target classes are the same
+            $kelasAsal = KelasTahun::findOrFail($request->kelas_asal);
+            if ($kelasAsal->kelas_id == $request->kelas_tujuan) {
+                return redirect()->to('/admin/manajemenKelas?tab=kenaikan')->with('error', 'Kelas asal dan kelas tujuan tidak boleh sama.');
+            }
+    
+            // Create or update the new TahunAjar for the target class
+            $tahunAjarBaru = TahunAjar::updateOrCreate(
+                [
+                    'tahun_ajaran' => $request->tahun_ajaran,
+                    'semester' => $request->semester
+                ],
+                [
+                    'status' => 'Aktif'
+                ]
+            );
+    
+            // Create or update the new KelasTahun for the target class
+            $kelasTahunBaru = KelasTahun::updateOrCreate(
+                [
+                    'kelas_id' => $request->kelas_tujuan,
+                    'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id
+                ]
+            );
+    
+            // Get students from the source class
+            $muridKelas = MuridKelas::where('kelas_tahun_id', $request->kelas_asal)->get();
+    
+            // Check if there are students to move
+            if ($muridKelas->isEmpty()) {
+                return redirect()->to('/admin/manajemenKelas?tab=kenaikan')->with('error', 'Tidak ada siswa di kelas asal untuk dipindahkan.');
+            }
+    
+            // Move students to the new class
+            foreach ($muridKelas as $mk) {
+                MuridKelas::create([
+                    'murid_id' => $mk->murid_id,
+                    'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id
+                ]);
+            }
+    
+            // Deactivate the source class's TahunAjar
+            $kelasAsal->tahunajar->status = 'Tidak Aktif';
+            $kelasAsal->tahunajar->save();
+    
+            return redirect()->to('/admin/manajemenKelas?tab=kenaikan')->with('success', 'Kenaikan kelas berhasil diproses.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Validation failed in prosesKenaikanKelas: ' . json_encode($e->errors()));
+            throw $e; // Let Laravel handle the redirect with errors
+        } catch (\Exception $e) {
+            \Log::error('Error in prosesKenaikanKelas: ' . $e->getMessage());
+            return redirect()->to('/admin/manajemenKelas?tab=kenaikan')->with('error', 'Gagal memproses kenaikan kelas: ' . $e->getMessage());
         }
-
-        $kelasAsal = KelasTahun::findOrFail($request->kelas_asal);
-        $kelasAsal->tahunajar->status = 'Tidak Aktif';
-        $kelasAsal->save();
-
-        return redirect()->back()->with('success', 'Kenaikan kelas berhasil diproses.');
     }
+
+    /* --------------------------------------------------- */
+    /* ------------------ Bagian Jadwal ------------------ */
+    /* --------------------------------------------------- */
 
     public function tampilkanJadwal(){
         $pelajaran = Pelajaran::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $kelasTahun = KelasTahun::all();
-        $jadwals = JadwalPelajaran::orderBy('kelas_tahun_id', 'asc')
-                                  ->orderBy('hari', 'desc')
-                                  ->orderBy('waktu_mulai', 'asc')
-                                  ->get();
-        return view('admin.jadwal', compact('pelajaran', 'kelasTahun', 'jadwals', 'admin'));
+        
+        // Get only active classes
+        $kelasTahun = KelasTahun::whereHas('tahunajar', function($query) {
+            $query->where('status', 'Aktif');
+        })->get();
+
+        // Get schedules only for active classes
+        $jadwals = JadwalPelajaran::whereHas('kelastahun.tahunajar', function($query) {
+            $query->where('status', 'Aktif');
+        })
+        ->orderBy('kelas_tahun_id', 'asc')
+        ->orderBy('hari', 'desc')
+        ->orderBy('waktu_mulai', 'asc')
+        ->get();
+
+        return view('admin.TambahJadwal', compact('pelajaran', 'kelasTahun', 'jadwals', 'admin'));
     }
 
     public function tampilkanUpdateJadwal($id){
         $pelajaran = Pelajaran::all();
         $kelas = KelasTahun::all();
-        $jadwal = JadwalPelajaran::findOrFail($id);
+        $jadwal = JadwalPelajaran::whereHas('kelastahun.tahunajar', function($query) {
+            $query->where('status', 'Aktif');
+        })->findOrFail($id);
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.editJadwal', compact('pelajaran', 'kelas', 'jadwal', 'admin'));
+        return view('admin.TambahJadwalEdit', compact('pelajaran', 'kelas', 'jadwal', 'admin'));
     }
 
     public function simpanJadwal(Request $request)
     {
-        $request->validate([
-            'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
-            'kelas_tahun_id' => 'required|exists:kelas_tahun,kelas_tahun_id',
-            'hari' => 'required',
-            'waktu_mulai' => 'required',
-            'waktu_selesai' => 'required',
-        ]);
-
-        $bentrokKelas = JadwalPelajaran::where('kelas_tahun_id', $request->kelas_tahun_id)
-            ->where('hari', $request->hari)
-            ->where(function ($query) use ($request) {
-                $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
-                    ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
-                    ->orWhere(function ($q) use ($request) {
-                        $q->where('waktu_mulai', '<=', $request->waktu_mulai)
-                        ->where('waktu_selesai', '>=', $request->waktu_selesai);
-                    });
-            })
-            ->exists();
-
-        if ($bentrokKelas) {
+        try {
+            $request->validate([
+                'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
+                'kelas_tahun_id' => 'required|exists:kelas_tahun,kelas_tahun_id',
+                'hari' => 'required',
+                'waktu_mulai' => 'required',
+                'waktu_selesai' => 'required|after:waktu_mulai',
+            ]);
+    
+            $bentrokKelas = JadwalPelajaran::where('kelas_tahun_id', $request->kelas_tahun_id)
+                ->where('hari', $request->hari)
+                ->whereHas('kelastahun.tahunajar', function ($query) {
+                    $query->where('status', 'Aktif');
+                })
+                ->where(function ($query) use ($request) {
+                    $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
+                        ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
+                        ->orWhere(function ($q) use ($request) {
+                            $q->where('waktu_mulai', '<=', $request->waktu_mulai)
+                              ->where('waktu_selesai', '>=', $request->waktu_selesai);
+                        });
+                })
+                ->exists();
+    
+            if ($bentrokKelas) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['jadwal' => 'Sudah ada jadwal lain untuk kelas ini pada waktu tersebut.']);
+            }
+    
+            $bentrokPelajaran = JadwalPelajaran::where('pelajaran_id', $request->pelajaran_id)
+                ->where('kelas_tahun_id', '!=', $request->kelas_tahun_id)
+                ->where('hari', $request->hari)
+                ->whereHas('kelastahun.tahunajar', function ($query) {
+                    $query->where('status', 'Aktif');
+                })
+                ->where(function ($query) use ($request) {
+                    $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
+                        ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
+                        ->orWhere(function ($q) use ($request) {
+                            $q->where('waktu_mulai', '<=', $request->waktu_mulai)
+                              ->where('waktu_selesai', '>=', $request->waktu_selesai);
+                        });
+                })
+                ->exists();
+    
+            if ($bentrokPelajaran) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors(['jadwal' => 'Pelajaran ini sudah dijadwalkan di kelas lain pada waktu tersebut.']);
+            }
+    
+            JadwalPelajaran::create([
+                'pelajaran_id' => $request->pelajaran_id,
+                'kelas_tahun_id' => $request->kelas_tahun_id,
+                'hari' => $request->hari,
+                'waktu_mulai' => $request->waktu_mulai,
+                'waktu_selesai' => $request->waktu_selesai,
+            ]);
+    
+            return redirect()->route('admin.TambahJadwal')
+                ->with('success', 'Jadwal berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            \Log::error('Error creating schedule: ' . $e->getMessage());
             return redirect()->back()
                 ->withInput()
-                ->withErrors(['jadwal' => 'Sudah ada jadwal lain untuk kelas ini pada waktu tersebut.']);
+                ->withErrors(['jadwal' => 'Gagal menambahkan jadwal: ' . $e->getMessage()]);
         }
-
-        $bentrokPelajaran = JadwalPelajaran::where('pelajaran_id', $request->pelajaran_id)
-            ->where('kelas_tahun_id', '!=', $request->kelas_tahun_id)
-            ->where('hari', $request->hari)
-            ->where(function ($query) use ($request) {
-                $query->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_selesai])
-                    ->orWhereBetween('waktu_selesai', [$request->waktu_mulai, $request->waktu_selesai])
-                    ->orWhere(function ($q) use ($request) {
-                        $q->where('waktu_mulai', '<=', $request->waktu_mulai)
-                        ->where('waktu_selesai', '>=', $request->waktu_selesai);
-                    });
-            })
-            ->exists();
-
-        if ($bentrokPelajaran) {
-            return redirect()->back()
-                ->withInput()
-                ->withErrors(['jadwal' => 'Pelajaran ini sudah dijadwalkan di kelas lain pada waktu tersebut.']);
-        }
-
-        JadwalPelajaran::create($request->all());
-
-        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil ditambahkan.');
     }
 
     public function updateJadwal(Request $request, $id)
@@ -406,17 +478,21 @@ class AdminController extends Controller
         ]);
 
         $jadwal = JadwalPelajaran::findOrFail($id);
-        // Perbaiki query untuk hanya mengecek bentrok dengan kelas yang statusnya aktif
+
         $bentrokKelas = JadwalPelajaran::where('jadwal_id', '!=', $id)
             ->where('kelas_tahun_id', $validated['kelas_tahun_id'])
             ->where('hari', $validated['hari'])
             ->whereHas('kelastahun.tahunajar', function ($query) {
                 $query->where('status', 'Aktif');
             })
-            ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
-                $validated['waktu_mulai'],
-                $validated['waktu_selesai'],
-            ])
+            ->where(function ($query) use ($validated) {
+                $query->whereBetween('waktu_mulai', [$validated['waktu_mulai'], $validated['waktu_selesai']])
+                    ->orWhereBetween('waktu_selesai', [$validated['waktu_mulai'], $validated['waktu_selesai']])
+                    ->orWhere(function ($q) use ($validated) {
+                        $q->where('waktu_mulai', '<=', $validated['waktu_mulai'])
+                        ->where('waktu_selesai', '>=', $validated['waktu_selesai']);
+                    });
+            })
             ->exists();
 
         if ($bentrokKelas) {
@@ -429,10 +505,17 @@ class AdminController extends Controller
             ->where('pelajaran_id', $validated['pelajaran_id'])
             ->where('kelas_tahun_id', '!=', $validated['kelas_tahun_id'])
             ->where('hari', $validated['hari'])
-            ->whereRaw('? < waktu_selesai AND ? > waktu_mulai', [
-                $validated['waktu_mulai'],
-                $validated['waktu_selesai'],
-            ])
+            ->whereHas('kelastahun.tahunajar', function ($query) {
+                $query->where('status', 'Aktif');
+            })
+            ->where(function ($query) use ($validated) {
+                $query->whereBetween('waktu_mulai', [$validated['waktu_mulai'], $validated['waktu_selesai']])
+                    ->orWhereBetween('waktu_selesai', [$validated['waktu_mulai'], $validated['waktu_selesai']])
+                    ->orWhere(function ($q) use ($validated) {
+                        $q->where('waktu_mulai', '<=', $validated['waktu_mulai'])
+                        ->where('waktu_selesai', '>=', $validated['waktu_selesai']);
+                    });
+            })
             ->exists();
 
         if ($bentrokPelajaran) {
@@ -443,7 +526,7 @@ class AdminController extends Controller
 
         $jadwal->update($validated);
 
-        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil diperbarui.');
+        return redirect()->route('admin.TambahJadwal')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
     public function hapusJadwal($id)
@@ -451,15 +534,23 @@ class AdminController extends Controller
         $jadwal = JadwalPelajaran::findOrFail($id);
         $jadwal->delete();
 
-        return redirect()->route('admin.jadwal')->with('success', 'Jadwal berhasil dihapus.');
+        return redirect()->route('admin.TambahJadwal')->with('success', 'Jadwal berhasil dihapus.');
     }
+
+    /* --------------------------------------------------- */
+    /* ----------------------- End ------------------- --- */
+    /* --------------------------------------------------- */
+
+    /* --------------------------------------------------- */
+    /* ------------------ Bagian Pelajaran --------------- */
+    /* --------------------------------------------------- */
 
     public function tampilkanPelajaran()
     {
         $gurus = Guru::all();
         $pelajarans = Pelajaran::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        return view('admin.pelajaran', compact('gurus', 'pelajarans', 'admin'));
+        return view('admin.TambahPelajaran', compact('gurus', 'pelajarans', 'admin'));
     }
 
     public function simpanPelajaran(Request $request)
@@ -474,7 +565,7 @@ class AdminController extends Controller
             'namaPelajaran' => $validated['namaPelajaran'],
         ]);
 
-        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil ditambahkan.');
+        return redirect()->route('admin.TambahPelajaran')->with('success', 'Pelajaran berhasil ditambahkan.');
     }
 
     public function tampilkanUpdatePelajaran($id){
@@ -482,7 +573,7 @@ class AdminController extends Controller
         $gurus = Guru::all();
         $pelajaran = Pelajaran::findOrFail($id);
 
-        return view('admin.editPelajaran', compact('gurus', 'pelajaran', 'admin'));
+        return view('admin.TambahPelajaranEdit', compact('gurus', 'pelajaran', 'admin'));
     }
 
     public function updatePelajaran(Request $request, $id)
@@ -499,74 +590,87 @@ class AdminController extends Controller
             'namaPelajaran' => $validated['namaPelajaran'],
         ]);
 
-        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil diperbarui.');
+        return redirect()->route('admin.TambahPelajaran')->with('success', 'Pelajaran berhasil diperbarui.');
     }
 
     public function hapusPelajaran($id){
         $pelajaran = Pelajaran::findOrFail($id);
         $pelajaran->delete();
 
-        return redirect()->route('admin.pelajaran')->with('success', 'Pelajaran berhasil dihapus.');
+        return redirect()->route('admin.TambahPelajaran')->with('success', 'Pelajaran berhasil dihapus.');
+
     }
+    /* -------------------------------------------------------- */
+    /* -------------------------- End ------------------------- */
+    /* -------------------------------------------------------- */
 
     public function tampilkanManajemenPost()
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $postingan = Postingan::with('admin.profile')->orderBy('created_at', 'desc')->get();
-        $pengumumans = Postingan::where('tipe_postingan', 'pengumuman')->orderBy('created_at', 'desc')->get();
-        $blogs = Postingan::where('tipe_postingan', 'blog')->orderBy('created_at', 'desc')->get();
-        return view('admin.manajemenPost', compact('postingan', 'admin', 'pengumumans', 'blogs'));
+        $pengumumans = Postingan::with('admin.profile')
+            ->where('tipe', 'pengumuman')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $blogs = Postingan::with('admin.profile')
+            ->where('tipe', 'blog')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('admin.manajemenPost', compact('admin', 'pengumumans', 'blogs'));
     }
 
     public function tambahPostingan(Request $request)
     {
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
 
         $validated = $request->validate([
             'tipe' => 'required|in:pengumuman,blog',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string|min:10',
-            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ], [
-            'tipe.required' => 'Tipe postingan harus dipilih.',
-            'judul.required' => 'Judul postingan wajib diisi.',
-            'judul.max' => 'Judul tidak boleh lebih dari 255 karakter.',
-            'isi.required' => 'Isi postingan wajib diisi.',
-            'isi.min' => 'Isi postingan minimal 10 karakter.',
-            'lampiran.image' => 'Lampiran harus berupa gambar.',
-            'lampiran.mimes' => 'Lampiran harus berformat jpeg, png, jpg, gif, atau svg.',
-            'lampiran.max' => 'Ukuran lampiran maksimal 2MB.',
+            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
-        DB::beginTransaction();
-        try {
-            $lampiranPath = null;
-            if ($request->hasFile('lampiran')) {
-                $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
-            }
+        $lampiranPath = null;
+        if ($request->hasFile('lampiran')) {
+            $file = $request->file('lampiran');
 
+            // Pastikan nama file unik
+            $filename = time() . '_' . $file->getClientOriginalName();
+
+            // Simpan manual ke folder public/storage/lampiran 
+            $file->move(public_path('storage/lampiran'), $filename);
+
+            // Simpan path relatif ke database
+            $lampiranPath = 'lampiran/' . $filename;
+        }
+
+        try {
             Postingan::create([
+                'admin_id' => $admin->admin_id,
                 'tipe' => $validated['tipe'],
                 'judul' => $validated['judul'],
                 'isi' => $validated['isi'],
-                'lampiran' => $lampiranPath,
-                'admin_id' => $admin->admin_id,
+                'lampiran' => $lampiranPath
             ]);
 
-            DB::commit();
-            return redirect()->route('admin.post')->with('success', 'Postingan berhasil dibuat.');
+            return redirect()
+                ->route('admin.manajemenPost')
+                ->with('success', 'Postingan berhasil dibuat.');
+
         } catch (\Exception $e) {
-            DB::rollBack();
+            // Delete file if save failed
             if ($lampiranPath) {
-                Storage::disk('public')->delete($lampiranPath);
+                unlink(public_path('storage/' . $lampiranPath));
             }
-            return back()->withInput()->withErrors(['error' => 'Gagal membuat postingan: ' . $e->getMessage()]);
+
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Gagal membuat postingan: ' . $e->getMessage()]);
         }
     }
 
     public function editPostingan($id)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $this->authorize('edit-posts', $admin);
         $postingan = Postingan::findOrFail($id);
         return view('admin.editPostingan', compact('postingan', 'admin'));
     }
@@ -574,23 +678,13 @@ class AdminController extends Controller
     public function updatePostingan(Request $request, $id)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $this->authorize('update-posts', $admin);
         $postingan = Postingan::findOrFail($id);
 
         $validated = $request->validate([
             'tipe' => 'required|in:pengumuman,blog',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string|min:10',
-            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ], [
-            'tipe.required' => 'Tipe postingan harus dipilih.',
-            'judul.required' => 'Judul postingan wajib diisi.',
-            'judul.max' => 'Judul tidak boleh lebih dari 255 karakter.',
-            'isi.required' => 'Isi postingan wajib diisi.',
-            'isi.min' => 'Isi postingan minimal 10 karakter.',
-            'lampiran.image' => 'Lampiran harus berupa gambar.',
-            'lampiran.mimes' => 'Lampiran harus berformat jpeg, png, jpg, gif, atau svg.',
-            'lampiran.max' => 'Ukuran lampiran maksimal 2MB.',
+            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
         DB::beginTransaction();
@@ -608,16 +702,16 @@ class AdminController extends Controller
                 'judul' => $validated['judul'],
                 'isi' => $validated['isi'],
                 'lampiran' => $lampiranPath,
-                'admin_id' => $admin->admin_id,
             ]);
 
             DB::commit();
-            return redirect()->route('admin.post')->with('success', 'Postingan berhasil diperbarui.');
+            return redirect()->route('admin.manajemenPost')->with('success', 'Postingan berhasil diperbarui.');
         } catch (\Exception $e) {
             DB::rollBack();
             if ($request->hasFile('lampiran') && $lampiranPath && $lampiranPath !== $postingan->lampiran) {
                 Storage::disk('public')->delete($lampiranPath);
             }
+            Log::error('Gagal memperbarui postingan: ' . $e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Gagal memperbarui postingan: ' . $e->getMessage()]);
         }
     }
@@ -625,7 +719,6 @@ class AdminController extends Controller
     public function hapusPostingan($id)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $this->authorize('delete-posts', $admin); // Authorization check
         $postingan = Postingan::findOrFail($id);
 
         DB::beginTransaction();
@@ -635,22 +728,93 @@ class AdminController extends Controller
             }
             $postingan->delete();
             DB::commit();
-            return redirect()->route('admin.post')->with('success', 'Postingan berhasil dihapus.');
+            return redirect()->route('admin.manajemenPost')->with('success', 'Postingan berhasil dihapus.');
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Gagal menghapus postingan: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Gagal menghapus postingan: ' . $e->getMessage()]);
         }
     }
 
-    public function tampilkanManajemenUser(){
-        $Gurus = Guru::all();
-        $Admins = Admin::all();
-        $MuridOrangTuas = MuridOrangTua::all();
-        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
-            $query->where('status', 'Aktif');
-        })->get();
-        return view('admin.ManajemenUser', compact('Gurus', 'Admins', 'MuridOrangTuas', 'admin', 'kelasList'));
+    public function tampilkanManajemenUser(Request $request)
+    {
+        try {
+            $role = $request->input('role');
+            $search = $request->input('search');
+            $additionalFilter = $request->input('additional_filter');
+    
+            // Initialize collections to avoid undefined variable issues
+            $admins = collect();
+            $gurus = collect();
+            $muridOrangTuas = collect();
+    
+            // Fetch active classes
+            $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
+                $query->where('status', 'Aktif');
+            })->with(['kelas', 'tahunajar'])->get();
+    
+            // Fetch current admin
+            $admin = Admin::where('profile_id', auth()->id())->first();
+            if (!$admin) {
+                return redirect('/login')->withErrors(['error' => 'Admin tidak ditemukan. Silakan login kembali.']);
+            }
+    
+            if ($role === 'admin') {
+                $admins = Admin::with('profile')
+                    ->when($search, function ($query) use ($search) {
+                        return $query->whereHas('profile', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%')
+                              ->orWhere('email', 'like', '%' . $search . '%');
+                        });
+                    })
+                    ->get();
+            } elseif ($role === 'guru') {
+                $gurus = Guru::with('profile')
+                    ->when($additionalFilter, function ($query) use ($additionalFilter) {
+                        return $query->where('statusKerja', $additionalFilter);
+                    })
+                    ->when($search, function ($query) use ($search) {
+                        return $query->whereHas('profile', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%')
+                              ->orWhere('email', 'like', '%' . $search . '%');
+                        });
+                    })
+                    ->get();
+            } elseif ($role === 'murid') {
+                $muridOrangTuas = MuridOrangTua::with([
+                    'muridKelas.murid.profile',
+                    'muridKelas.kelasTahun.kelas',
+                    'muridKelas.kelasTahun.tahunajar',
+                    'orangTua.profile'
+                ])
+                    ->when($additionalFilter, function ($query) use ($additionalFilter) {
+                        return $query->whereHas('muridKelas', function ($q) use ($additionalFilter) {
+                            $q->where('kelas_tahun_id', $additionalFilter);
+                        });
+                    })
+                    ->when($search, function ($query) use ($search) {
+                        return $query->whereHas('muridKelas.murid.profile', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%')
+                              ->orWhere('email', 'like', '%' . $search . '%');
+                        });
+                    })
+                    ->get();
+            } elseif ($role === 'orang_tua') {
+                $muridOrangTuas = MuridOrangTua::with(['orangTua.profile'])
+                    ->when($search, function ($query) use ($search) {
+                        return $query->whereHas('orangTua.profile', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%')
+                              ->orWhere('email', 'like', '%' . $search . '%');
+                        });
+                    })
+                    ->get();
+            }
+    
+            return view('admin.ManajemenUser', compact('admin', 'admins', 'gurus', 'muridOrangTuas', 'kelasList'));
+        } catch (\Exception $e) {
+            \Log::error('Error in tampilkanManajemenUser: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'Gagal memuat data: ' . $e->getMessage()]);
+        }
     }
 
     public function editUser($id, Request $request)

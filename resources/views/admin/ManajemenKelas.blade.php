@@ -1,7 +1,6 @@
-@include('admin.partials.header', ['NamaPage' => 'Halaman Utama'])
+@include('admin.partials.header')
 @include('admin.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/ManajemenKelas.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/AdminCSS/KenaikanKelas.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
@@ -9,17 +8,17 @@
         <h1>Manajemen Kelas</h1>
         
         <div class="HeaderManajemenKelas">
-            <div class="HeaderTabs">
-                <button class="HeaderTabButton active" onclick="switchTab('manajemen')" id="tabManajemen">
+            <div class="SwitchKelas">
+                <button class="SwitchKelasTab" onclick="switchTab('manajemen')" id="tabManajemen">
                     Manajemen Kelas
                 </button>
-                <button class="HeaderTabButton" onclick="switchTab('kenaikan')" id="tabKenaikan">
+                <button class="SwitchKelasTab" onclick="switchTab('kenaikan')" id="tabKenaikan">
                     Kenaikan Kelas
                 </button>
             </div>
         </div>
 
-        <div id="manajemenTab" class="TabContent active">
+        <div id="manajemenTab" class="DisSwitchKelas">
             <div class="LayoutManKelForm">
                 <h2>Tambah Kelas</h2>
                 <form action="{{ route('admin.tambahKelas') }}" method="POST">
@@ -80,7 +79,7 @@
             </div>
         </div>
 
-        <div id="kenaikanTab" class="TabContent">
+        <div id="kenaikanTab" class="DisSwitchKelas">
             <div class="LayoutKenaikanKelasForm">
                 <h2>Form Kenaikan Kelas</h2>
                 <form action="{{ route('admin.prosesKenaikanKelas') }}" method="POST">
@@ -90,28 +89,38 @@
                         <label for="kelas_asal">Kelas Asal</label>
                         <select name="kelas_asal" id="kelas_asal" class="TampilanIsiData" required>
                             <option value="" disabled selected>-- Pilih Kelas Asal --</option>
-                            @if(isset($kelasSekarang))
+                            @if(isset($kelasSekarang) && $kelasSekarang->isNotEmpty())
                                 @foreach($kelasSekarang as $kelas)
                                     <option value="{{ $kelas->kelas_tahun_id }}">
                                         {{ $kelas->kelas->nama_kelas }} - {{ $kelas->tahunajar->tahun_ajaran }} {{ $kelas->tahunajar->semester }}
                                     </option>
                                 @endforeach
+                            @else
+                                <option value="" disabled>Tidak ada kelas aktif</option>
                             @endif
                         </select>
+                        @error('kelas_asal')
+                            <div class="UiPsnDis PsnError">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="IsiData">
                         <label for="kelas_tujuan">Kelas Tujuan</label>
                         <select name="kelas_tujuan" id="kelas_tujuan" class="TampilanIsiData" required>
                             <option value="" disabled selected>-- Pilih Kelas Tujuan --</option>
-                            @if(isset($semuaKelas))
+                            @if(isset($semuaKelas) && $semuaKelas->isNotEmpty())
                                 @foreach($semuaKelas as $kelas)
                                     <option value="{{ $kelas->kelas_id }}">
                                         {{ $kelas->nama_kelas }}
                                     </option>
                                 @endforeach
+                            @else
+                                <option value="" disabled>Tidak ada kelas tersedia</option>
                             @endif
                         </select>
+                        @error('kelas_tujuan')
+                            <div class="UiPsnDis PsnError">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="IsiData">
@@ -120,6 +129,9 @@
                             <option value="{{ (now()->year) }}/{{ (now()->year)+1}}">{{ (now()->year) }}/{{ (now()->year)+1}}</option>
                             <option value="{{ (now()->year)-1 }}/{{ (now()->year)}}">{{ (now()->year)-1 }}/{{ (now()->year)}}</option>
                         </select>
+                        @error('tahun_ajaran')
+                            <div class="UiPsnDis PsnError">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="IsiData">
@@ -128,6 +140,9 @@
                             <option value="Ganjil">Ganjil</option>
                             <option value="Genap">Genap</option>
                         </select>
+                        @error('semester')
+                            <div class="UiPsnDis PsnError">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="TombolKenaikanKelas">
@@ -137,21 +152,30 @@
                     </div>
                 </form>
 
-                @if(session('success_kenaikan'))
+                @if(session('success'))
                     <div class="UiPsnDis PsnBerhasil">
-                        {{ session('success_kenaikan') }}
+                        {{ session('success') }}
                     </div>
                 @endif
 
-                @if(session('error_kenaikan'))
+                @if(session('error'))
                     <div class="UiPsnDis PsnError">
-                        {{ session('error_kenaikan') }}
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="UiPsnDis PsnError">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
             </div>
         </div>
 
-        <!-- Tabel untuk Tab Manajemen Kelas -->
         <div id="tabelManajemen" class="LayoutManKelTable">
             <h2>Semua kelas</h2>
             <div class="DisplayDataTable">
@@ -169,10 +193,10 @@
                         @if(isset($kelastahuns))
                             @foreach($kelastahuns as $kelastahun)
                                 <tr>
-                                    <td>{{ $kelastahun->kelas->nama_kelas}}</td>
-                                    <td>{{ $kelastahun->tahunajar->tahun_ajaran }}</td>
-                                    <td>{{ $kelastahun->tahunajar->semester}}</td>
-                                    <td>{{ $kelastahun->tahunajar->status}}</td>
+                                    <td>{{ $kelastahun->kelas->nama_kelas ?? 'N/A' }}</td>
+                                    <td>{{ $kelastahun->tahunajar->tahun_ajaran ?? 'N/A' }}</td>
+                                    <td>{{ $kelastahun->tahunajar->semester ?? 'N/A' }}</td>
+                                    <td>{{ $kelastahun->tahunajar->status ?? 'N/A' }}</td>
                                     <td>
                                         <div class="OptionJadwalTabel">
                                             <form action="{{ route('kelas.update', $kelastahun->kelas_tahun_id) }}" method="GET">
@@ -192,13 +216,14 @@
                                     </td>
                                 </tr>
                             @endforeach
+                        @else
+                            <tr><td colspan="5">Tidak ada data kelas.</td></tr>
                         @endif
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Tabel untuk Tab Kenaikan Kelas -->
         <div id="tabelKenaikan" class="LayoutManKelTable" style="display: none;">
             <h2>Kelas Aktif</h2>
             <div class="DisplayDataTable">
@@ -213,16 +238,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(isset($kelasSekarang))
+                        @if(isset($kelasSekarang) && $kelasSekarang->isNotEmpty())
                             @foreach($kelasSekarang as $kelas)
                                 <tr>
-                                    <td>{{ $kelas->kelas->nama_kelas}}</td>
-                                    <td>{{ $kelas->tahunajar->tahun_ajaran }}</td>
-                                    <td>{{ $kelas->tahunajar->semester}}</td>
-                                    <td>{{ $kelas->tahunajar->status}}</td>
+                                    <td>{{ $kelas->kelas->nama_kelas ?? 'N/A' }}</td>
+                                    <td>{{ $kelas->tahunajar->tahun_ajaran ?? 'N/A' }}</td>
+                                    <td>{{ $kelas->tahunajar->semester ?? 'N/A' }}</td>
+                                    <td>{{ $kelas->tahunajar->status ?? 'N/A' }}</td>
                                     <td>{{ $kelas->siswa_count ?? 0 }}</td>
                                 </tr>
                             @endforeach
+                        @else
+                            <tr><td colspan="5">Tidak ada kelas aktif.</td></tr>
                         @endif
                     </tbody>
                 </table>

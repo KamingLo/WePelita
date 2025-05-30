@@ -31,6 +31,14 @@ body {
     gap: 30px;
 }
 
+.ContainerManajemenKelasEdit {
+    margin-left: 280px;
+    padding: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
 h1 {
     width: 100%;
     color: var(--dark-color);
@@ -38,7 +46,7 @@ h1 {
     font-size: 26px;
     position: relative;
     padding-bottom: 10px;
-    transform: translateY(0rem);
+    transform: translateY(-10rem);
 }
 
 h1:after {
@@ -49,6 +57,15 @@ h1:after {
     height: 3px;
     width: 100%;
     background-color: var(--primary-color);
+}
+
+.HeaderManajemenKelas {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    transform: translateY(-12rem);
 }
 
 .HeaderManajemenKelas h1 {
@@ -69,6 +86,26 @@ h1:after {
     height: 3px;
     width: 98%;
     background-color: var(--primary-color);
+}
+
+.SwitchKelas {
+    display: flex;
+    gap: 10px;
+}
+
+.SwitchKelasTab {
+    padding: 8px 16px;
+    border: none;
+    background: #f0f0f0;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.SwitchKelasTab.active {
+    background: var(--primary-color);
+    color: white;
 }
 
 /* ----------------------------------------------- */
@@ -101,9 +138,81 @@ h1:after {
     position: absolute;
     left: 0;
     bottom: 0;
+    height: 3px;
+    width: 40px;
+    background-color: var(--primary-color);
+}
+
+.LayoutManKelFormEdit {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    background-color: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transform: translateY(-8rem);
+    min-height: 80vh;
+}
+
+.LayoutManKelFormEdit h2 {
+    color: var(--dark-color);
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.LayoutManKelFormEdit h2:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
     height: 2px;
     width: 40px;
     background-color: var(--primary-color);
+}
+
+.LayoutKenaikanKelasForm {
+    flex: 1;
+    max-width: 300px;
+    background-color: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    transform: translateY(-10.5rem);
+    min-height: 80vh;
+}
+
+.LayoutKenaikanKelasForm h2 {
+    color: var(--dark-color);
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.LayoutKenaikanKelasForm h2:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 40px;
+    background-color: var(--primary-color);
+}
+
+.LayoutManKelForm,
+.LayoutKenaikanKelasForm,
+.LayoutManKelTable {
+    margin-top: -3.5rem;
+}
+
+.LayoutManKelFormEdit,
+.LayoutManKelTableEdit {
+    margin-top: -3.5rem;
 }
 
 .IsiData {
@@ -186,6 +295,39 @@ select.TampilanIsiData {
 }
 
 .LayoutManKelTable h2:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 40px;
+    background-color: var(--primary-color);
+}
+
+.LayoutManKelTableEdit {
+    flex: 2;
+    min-width: 600px;
+    background-color: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-8rem);
+    min-height: 80vh;
+}
+
+.LayoutManKelTableEdit h2 {
+    color: var(--dark-color);
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.LayoutManKelTableEdit h2:after {
     content: "";
     position: absolute;
     left: 0;
@@ -305,6 +447,28 @@ select.TampilanIsiData {
     box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
 }
 
+.TombolKenaikanKelas {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.ProsesKenaikanKelas {
+    color: white;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+    margin-top: 1rem;
+}
+
+.ProsesKenaikanKelas:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
+    transform: translate(-50%) scale(1.05);
+    box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+}
+
 .TambahJadwalEdit {
     color: white;
     background-color: var(--primary-color);
@@ -415,6 +579,14 @@ select.TampilanIsiData {
     border-color: #bd2130;
 }
 
+.DisSwitchKelas {
+    display: none;
+}
+
+.DisSwitchKelas.active {
+    display: block;
+}
+
 /* ----------------------------------------------- */
 /* ----------------- Pesan Error ----------------- */
 /* ----------------------------------------------- */
@@ -481,150 +653,7 @@ select.TampilanIsiData {
     body {
         overflow: visible;
     }
-}
 
-/* ---------------------- End ---------------------- */
-
-.TabNavigation {
-    width: 100%;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #e9ecef;
-    transform: translateY(-10rem);
-}
-
-.TabButton {
-    background: none;
-    border: none;
-    padding: 15px 25px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #6c757d;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s ease;
-    margin-right: 10px;
-    position: relative;
-}
-
-.TabButton:hover {
-    color: var(--primary-color);
-    background-color: rgba(74, 108, 247, 0.05);
-}
-
-.TabButton.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-    background-color: rgba(74, 108, 247, 0.1);
-}
-
-.TabButton.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background-color: var(--primary-color);
-    border-radius: 2px 2px 0 0;
-}
-
-.TabContent {
-    display: none;
-    /* animation: fadeIn 0.3s ease-in-out; */
-}
-
-.TabContent.active {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.HapusBar {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #6c757d;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    display: none;
-}
-
-.HapusBar:hover {
-    background-color: #f8f9fa;
-    color: var(--danger-color);
-}
-
-.HapusBar i {
-    font-size: 16px;
-}
-
-.LayoutKenaikanKelasForm {
-    flex: 1;
-    min-width: 300px;
-    max-width: 400px;
-    background-color: white;
-    padding: 25px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    transform: translateY(-10.5rem);
-    min-height: 80vh;
-}
-
-.LayoutKenaikanKelasForm h2 {
-    color: var(--dark-color);
-    margin-top: 0;
-    font-size: 20px;
-    margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.LayoutKenaikanKelasForm h2:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 2px;
-    width: 40px;
-    background-color: var(--primary-color);
-}
-
-.TombolKenaikanKelas {
-    text-align: center;
-    margin-top: 2rem;
-}
-
-.ProsesKenaikanKelas {
-    color: white;
-    background-color: #28a745;
-    border-color: #28a745;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.ProsesKenaikanKelas:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-}
-
-@media (max-width: 768px) {
     .TabButton {
         padding: 12px 20px;
         font-size: 14px;
@@ -653,40 +682,4 @@ select.TampilanIsiData {
     }
 }
 
-.HeaderManajemenKelas {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 20px;
-    transform: translateY(-12rem);
-}
-
-
-
-.HeaderTabs {
-    display: flex;
-    gap: 10px;
-}
-
-.HeaderTabButton {
-    padding: 8px 16px;
-    border: none;
-    background: #f0f0f0;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s ease;
-}
-
-.HeaderTabButton.active {
-    background: var(--primary-color);
-    color: white;
-}
-
-.LayoutManKelForm,
-.LayoutKenaikanKelasForm,
-.LayoutManKelTable {
-    margin-top: -3.5rem;
-    /* transform: translateY(-5rem); */
-}
+/* ---------------------- End ---------------------- */

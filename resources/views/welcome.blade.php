@@ -194,79 +194,51 @@
     </section>
 
     <section class="berita-section">
-        <div class="section-title" data-aos="fade-up">
-            <h2>Berita Terbaru</h2>
-            <p>Informasi dan Kegiatan Terkini</p>
-        </div>
-        <div class="berita-container">
+    <div class="section-title" data-aos="fade-up">
+        <h2>Berita Terbaru</h2>
+        <p>Informasi dan Kegiatan Terkini</p>
+    </div>
+    <div class="berita-container">
+        @forelse($blogs as $index => $blog)
+            <div class="berita-card" data-aos="zoom-in" data-aos-delay="{{ ($index % 2 + 1) * 100 }}">
+                <div class="berita-image">
+                    @if($blog->lampiran)
+                        <img src="{{ asset('storage/' . $blog->lampiran) }}" alt="{{ $blog->judul }}">
+                    @else
+                        <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="{{ $blog->judul }}">
+                    @endif
+                    <div class="berita-date">
+                        <span class="day">{{ $blog->created_at->format('d') }}</span>
+                        <span class="month">{{ $blog->created_at->format('M') }}</span>
+                    </div>
+                </div>
+                <div class="berita-content">
+                    <h3>{{ $blog->judul }}</h3>
+                    <p>{{ Str::limit(strip_tags($blog->isi), 120) }}</p>
+                    <a href="#" class="berita-btn">Baca Selengkapnya</a>
+                </div>
+            </div>
+        @empty
             <div class="berita-card" data-aos="zoom-in" data-aos-delay="100">
                 <div class="berita-image">
-                    <img src="/image/berita1.jpg" alt="Berita 1">
+                    <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tidak ada berita">
                     <div class="berita-date">
-                        <span class="day">15</span>
-                        <span class="month">Mei</span>
+                        <span class="day">--</span>
+                        <span class="month">---</span>
                     </div>
                 </div>
                 <div class="berita-content">
-                    <h3>Bulan bahasa 2025</h3>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <a href="#" class="berita-btn">Baca Selengkapnya</a>
+                    <h3>Belum Ada Berita</h3>
+                    <p>Saat ini belum ada berita terbaru yang dapat ditampilkan. Silakan kembali lagi nanti untuk melihat update terbaru dari SMK Pelita IV Jakarta.</p>
+                    <a href="/blog" class="berita-btn">Lihat Blog</a>
                 </div>
             </div>
-            
-            <div class="berita-card" data-aos="zoom-in" data-aos-delay="200">
-                <div class="berita-image">
-                    <img src="/image/berita2.jpg" alt="Berita 2">
-                    <div class="berita-date">
-                        <span class="day">10</span>
-                        <span class="month">Mei</span>
-                    </div>
-                </div>
-                <div class="berita-content">
-                    <h3>Test</h3>
-                    <p>  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <a href="#" class="berita-btn">Baca Selengkapnya</a>
-                </div>
-            </div>
-            
-            <div class="berita-card" data-aos="zoom-in" data-aos-delay="100">
-                <div class="berita-image">
-                    <img src="/image/berita3.jpg" alt="Berita 3">
-                    <div class="berita-date">
-                        <span class="day">5</span>
-                        <span class="month">Mei</span>
-                    </div>
-                </div>
-                <div class="berita-content">
-                    <h3>test</h3>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <a href="#" class="berita-btn">Baca Selengkapnya</a>
-                </div>
-            </div>
-            
-            <div class="berita-card" data-aos="zoom-in" data-aos-delay="200">
-                <div class="berita-image">
-                    <img src="/image/berita4.jpg" alt="Berita 4">
-                    <div class="berita-date">
-                        <span class="day">1</span>
-                        <span class="month">Mei</span>
-                    </div>
-                </div>
-                <div class="berita-content">
-                    <h3>Teesting</h3>
-                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <a href="#" class="berita-btn">Baca Selengkapnya</a>
-                </div>
-            </div>
-        </div>
-        <div class="berita-more" data-aos="fade-up">
-            <a href="/berita" class="more-btn">Lihat Semua Berita</a>
-        </div>
-    </section>
+        @endforelse
+    </div>
+    <div class="berita-more" data-aos="fade-up">
+        <a href="/blog" class="more-btn">Lihat Semua Berita</a>
+    </div>
+</section>
 
         {{-- <section class="video-section">
             <div class="video-content">

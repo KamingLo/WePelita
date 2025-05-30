@@ -1,4 +1,4 @@
-<?php
+<?php 
 namespace App\Livewire\Guru;
 
 use App\Models\Guru;
@@ -12,8 +12,7 @@ class NilaiMurid extends Component
 {
     public $pilihanPelajaran = '';
     public $pilihanKelasTahun = '';
-    public $selectedMurids = [];
-    public $nilai = [];
+    public $nilai = []; // nilai[ murid_kelas_id ] = ['nilai_tugas' => ..., 'nilai_uts' => ..., 'nilai_uas' => ...]
     public $guru;
 
     public function mount()
@@ -24,6 +23,42 @@ class NilaiMurid extends Component
         }
     }
 
+    public function updatedPilihanPelajaran()
+    {
+        // reset kelas & nilai jika pelajaran berubah
+        $this->pilihanKelasTahun = '';
+        $this->nilai = [];
+    }
+
+    public function updatedPilihanKelasTahun()
+    {
+        $this->loadNilaiExisting();
+    }
+
+    public function loadNilaiExisting()
+    {
+        if (!$this->pilihanPelajaran || !$this->pilihanKelasTahun) {
+            $this->nilai = [];
+            return;
+        }
+
+        $muridList = MuridKelas::where('kelas_tahun_id', $this->pilihanKelasTahun)->pluck('murid_kelas_id');
+
+        $nilaiExisting = Nilai::where('pelajaran_id', $this->pilihanPelajaran)
+            ->whereIn('murid_kelas_id', $muridList)
+            ->get();
+
+        $this->nilai = [];
+
+        foreach ($nilaiExisting as $nilai) {
+            $this->nilai[$nilai->murid_kelas_id] = [
+                'nilai_tugas' => $nilai->nilai_tugas,
+                'nilai_uts' => $nilai->nilai_uts,
+                'nilai_uas' => $nilai->nilai_uas,
+            ];
+        }
+    }
+
     public function render()
     {
         $pelajaranList = collect();
@@ -31,16 +66,13 @@ class NilaiMurid extends Component
         $muridList = collect();
 
         if ($this->guru) {
-            // Get pelajaran where guru_id matches
             $pelajaranList = Pelajaran::where('guru_id', $this->guru->guru_id)->get();
 
             if ($this->pilihanPelajaran) {
-                // Get kelas_tahun list
                 $kelasTahunList = KelasTahun::with('kelas')->get();
             }
 
             if ($this->pilihanKelasTahun) {
-                // Get active students in selected kelas_tahun
                 $muridList = MuridKelas::with(['murid.profile'])
                     ->where('kelas_tahun_id', $this->pilihanKelasTahun)
                     ->get();
@@ -50,26 +82,7 @@ class NilaiMurid extends Component
         return view('livewire.guru.nilai-murid', [
             'pelajaranList' => $pelajaranList,
             'kelasTahunList' => $kelasTahunList,
-            'muridList' => $muridList
+            'muridList' => $muridList,
         ]);
-    }
-
-    public function submitNilai()
-    {
-        $this->validate([
-            'nilai.*' => 'required|numeric|min:0|max:100'
-        ]);
-
-        foreach ($this->nilai as $muridKelasId => $nilai) {
-            Nilai::create([
-                'murid_kelas_id' => $muridKelasId,
-                'pelajaran_id' => $this->pilihanPelajaran,
-                'nilai' => $nilai,
-                'guru_id' => $this->guru->guru_id
-            ]);
-        }
-
-        session()->flash('message', 'Nilai berhasil disimpan!');
-        $this->reset(['nilai']);
     }
 }

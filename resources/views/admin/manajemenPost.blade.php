@@ -1,3 +1,4 @@
+```php
 @include('admin.partials.header', ['NamaPage' => 'Halaman Utama'])
 @include('admin.partials.sidebar')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
@@ -22,55 +23,75 @@
             </div>
         @endif
 
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="alert alert-success" style="display: none;" id="successAlert">
             Postingan berhasil dibuat!
         </div>
 
         <div class="filter-container">
-            <form method="GET" action="{{ route('admin.manajemenPost') }}">
-                <label for="TipePost">Filter berdasarkan peran:</label>
+            <form method="GET" action="{{ route('admin.manajemenPost') }}" id="filterForm">
+                <label for="TipePost">Filter berdasarkan tipe:</label>
                 <select name="TipePost" id="TipePost" class="filter-select" onchange="this.form.submit()">
                     <option value="" {{ request('TipePost') == '' ? 'selected' : '' }}>Postingan Baru</option>
                     <option value="pengumuman" {{ request('TipePost') == 'pengumuman' ? 'selected' : '' }}>Pengumuman</option>
-                    <option value="kegiatan" {{ request('TipePost') == 'kegiatan' ? 'selected' : '' }}>Kegiatan</option>
+                    <option value="blog" {{ request('TipePost') == 'blog' ? 'selected' : '' }}>Blog</option>
                 </select>
             </form>
         </div>
 
         <div class="table-container">
-            <div class="ContainerNewPost" id="tambahPost">
+            <!-- Postingan Baru Section -->
+            <div class="ContainerNewPost" id="tambahPost" style="{{ request('TipePost') == '' ? 'display: block;' : 'display: none;' }}">
                 <div class="LayoutNewPost">
                     <h2>Buat Postingan</h2>
                     
-                    <form id="postForm">
+                    <form id="postForm" action="{{ route('admin.post.tambah') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
                         <div class="ContainerDalam">
                             <div class="FormKiri">
                                 <div class="IsiData">
                                     <label for="judul" class="NamaLabelBar">Judul</label>
-                                    <input class="TampilanIsiData" type="text" id="judul" name="judul" required>
+                                    <input class="TampilanIsiData" type="text" id="judul" name="judul" value="{{ old('judul') }}" placeholder="Isi judul postingan" required>
+                                    @error('judul')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="IsiData">
                                     <div class="JuduldanOpsi">
                                         <div class="UploadFoto">
                                             <label for="lampiran" class="NamaLabelBar">Foto Thumbnail</label>
-                                            <input type="file" class="TampilanIsiData" id="lampiran" name="lampiran" accept="image/*">
+                                            <input type="file" class="TampilanIsiData" id="lampiran" name="lampiran">
                                             <div class="TombolUploadFoto">
                                                 <span class="DeskripsiBarUpload" id="FileNamaFoto">Pilih file</span>
                                                 <button type="button" class="BrowseFoto">Browse</button>
                                             </div>
+                                            @error('lampiran')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
 
-                                        <!-- Replace your switch-container div with this structure -->
                                         <div class="switch-container">
                                             <label class="NamaLabelBar">Tipe Postingan</label>
-                                            <input type="radio" id="announcement" name="tipe" value="pengumuman" checked>
-                                            <input type="radio" id="event" name="tipe" value="blog">
-                                            <label class="switch" for="announcement">
+                                            <input type="radio" id="pengumuman" name="tipe" value="pengumuman" {{ old('tipe', 'pengumuman') == 'pengumuman' ? 'checked' : '' }}>
+                                            <input type="radio" id="blog" name="tipe" value="blog" {{ old('tipe') == 'blog' ? 'checked' : '' }}>
+                                            <label class="switch" for="pengumuman">
                                                 <span class="switch-left">Pengumuman</span>
-                                                <span class="switch-right">Kegiatan</span>
+                                                <span class="switch-right">Blog</span>
                                                 <span class="switch-button"></span>
                                             </label>
+                                            @error('tipe')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                     
@@ -85,8 +106,11 @@
                             <div class="FormKanan">
                                 <div class="IsiData">
                                     <label for="isi" class="NamaLabelBar">Isi Konten</label>
-                                    <input id="isi" type="hidden" name="isi">
+                                    <input id="isi" type="hidden" name="isi" value="{{ old('isi') }}">
                                     <trix-editor input="isi" placeholder="Tulis konten postingan Anda di sini..."></trix-editor>
+                                    @error('isi')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -101,91 +125,100 @@
                 </div>
             </div>
 
-            @php $TipePost = request('TipePost'); @endphp
-            
-            @if ($TipePost === 'pengumuman')
+            <!-- Pengumuman Section -->
+            <div id="pengumumanList" style="{{ request('TipePost') == 'pengumuman' ? 'display: block;' : 'display: none;' }}">
                 <h2>Daftar Pengumuman</h2>
                 
                 <div class="post-preview-container">
-                    @foreach($pengumumans as $pengumuman)
-                        <div class="mini-post-preview {{ $pengumuman->lampiran ? '' : 'no-image' }}">
-                            @if($pengumuman->lampiran)
-                                <img src="{{ asset('storage/' . $pengumuman->lampiran) }}" alt="Post Image" class="mini-post-image">
-                            @endif
-                            <div class="mini-post-content">
-                                <div>
-                                    <div class="mini-post-header">
-                                        <img src="{{ $pengumuman->admin->profile->avatar ?? '/default-avatar.png' }}" 
-                                             alt="User Avatar" class="mini-post-avatar">
-                                        <div class="mini-post-user">{{ $pengumuman->admin->profile->name }}</div>
+                    @if(isset($pengumumans) && $pengumumans->isNotEmpty())
+                        @foreach($pengumumans as $pengumuman)
+                            <div class="mini-post-preview {{ $pengumuman->lampiran ? '' : 'no-image' }}">
+                                @if($pengumuman->lampiran)
+                                    <img src="{{ asset('storage/' . $pengumuman->lampiran) }}" alt="Post Image" class="mini-post-image">
+                                @endif
+                                <div class="mini-post-content">
+                                    <div>
+                                        <div class="mini-post-header">
+                                            <img src="{{ $pengumuman->admin->profile->avatar ?? '/default-avatar.png' }}" 
+                                                 alt="User Avatar" class="mini-post-avatar">
+                                            <div class="mini-post-user">{{ $pengumuman->admin->profile->name }}</div>
+                                        </div>
+                                        <div class="mini-post-title">{{ $pengumuman->judul }}</div>
+                                        <div class="mini-post-body">{!! $pengumuman->isi !!}</div>
                                     </div>
-                                    <div class="mini-post-title">{{ $pengumuman->judul_pengumuman }}</div>
-                                    <div class="mini-post-body">{{ $pengumuman->isi_pengumuman }}</div>
-                                </div>
-                                <div class="mini-post-actions">
-                                    <div class="post-action-icons">
-                                        <span>‎ </span>
-                                        <span>‎ </span>
-                                        <span>‎ </span>
-                                    </div>
-                                    <div class="post-preview-buttons">
-                                        <form action="{{ route('pengumuman.update', ['id' => $pengumuman->pengumuman_id]) }}" method="GET" style="display:inline;">
-                                            <button type="submit" class="btn btn-primary">Edit</button>
-                                        </form>
-                                        <form action="{{ route('pengumuman.destroy', $pengumuman->pengumuman_id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus pengumuman ini?')">Hapus</button>
-                                        </form>
+                                    <div class="mini-post-actions">
+                                        <div class="post-action-icons">
+                                            <span>‎ </span>
+                                            <span>‎ </span>
+                                            <span>‎ </span>
+                                        </div>
+                                        <div class="post-preview-buttons">
+                                            <form action="{{ route('admin.post.edit', ['id' => $pengumuman->postingan_id]) }}" method="GET" style="display:inline;">
+                                                <button type="submit" class="btn btn-primary">Edit</button>
+                                            </form>
+                                            <form action="{{ route('admin.post.hapus', ['id' => $pengumuman->postingan_id]) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    @else
+                        <p>Tidak ada pengumuman tersedia.</p>
+                    @endif
                 </div>
+            </div>
                 
-            @elseif ($TipePost === 'blog')
-                <h2>Daftar Kegiatan</h2>
+            <!-- Blog Section -->
+            <div id="blogList" style="{{ request('TipePost') == 'blog' ? 'display: block;' : 'display: none;' }}">
+                <h2>Daftar Blog</h2>
                 
                 <div class="post-preview-container">
-                    @foreach($kegiatans as $kegiatan)
-                        <div class="mini-post-preview {{ $kegiatan->lampiran ? '' : 'no-image' }}">
-                            @if($kegiatan->lampiran)
-                                <img src="{{ asset('storage/' . $kegiatan->lampiran) }}" alt="Post Image" class="mini-post-image">
-                            @endif
-                            <div class="mini-post-content">
-                                <div>
-                                    <div class="mini-post-header">
-                                        <img src="{{ $kegiatan->admin->profile->avatar ?? '/default-avatar.png' }}" 
-                                             alt="User Avatar" class="mini-post-avatar">
-                                        <div class="mini-post-user">{{ $kegiatan->admin->profile->name }}</div>
+                    @if(isset($blogs) && $blogs->isNotEmpty())
+                        @foreach($blogs as $blog)
+                            <div class="mini-post-preview {{ $blog->lampiran ? '' : 'no-image' }}">
+                                @if($blog->lampiran)
+                                    <img src="{{ asset('storage/' . $blog->lampiran) }}" alt="Post Image" class="mini-post-image">
+                                @endif
+                                <div class="mini-post-content">
+                                    <div>
+                                        <div class="mini-post-header">
+                                            <img src="{{ $blog->admin->profile->avatar ?? '/default-avatar.png' }}" 
+                                                 alt="User Avatar" class="mini-post-avatar">
+                                            <div class="mini-post-user">{{ $blog->admin->profile->name }}</div>
+                                        </div>
+                                        <div class="mini-post-title">{{ $blog->judul }}</div>
+                                        <div class="mini-post-body">{!! $blog->isi !!}</div>
                                     </div>
-                                    <div class="mini-post-title">{{ $kegiatan->judul_kegiatan }}</div>
-                                    <div class="mini-post-body">{{ $kegiatan->isi_kegiatan }}</div>
-                                </div>
-                                <div class="mini-post-actions">
-                                    <div class="post-action-icons">
-                                        <span>‎ </span>
-                                        <span>‎ </span>
-                                        <span>‎ </span>
-                                    </div>
-                                    <div class="post-preview-buttons">
-                                        <form action="{{ route('kegiatan.update', ['id' => $kegiatan->kegiatan_id]) }}" method="GET" style="display:inline;">
-                                            <button type="submit" class="btn btn-primary">Edit</button>
-                                        </form>
-                                        <form action="{{ route('kegiatan.destroy', $kegiatan->kegiatan_id) }}" method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus kegiatan ini?')">Hapus</button>
-                                        </form>
+                                    <div class="mini-post-actions">
+                                        <div class="post-action-icons">
+                                            <span>‎ </span>
+                                            <span>‎ </span>
+                                            <span>‎ </span>
+                                        </div>
+                                        <div class="post-preview-buttons">
+                                            <form action="{{ route('admin.post.edit', ['id' => $blog->postingan_id]) }}" method="GET" style="display:inline;">
+                                                <button type="submit" class="btn btn-primary">Edit</button>
+                                            </form>
+                                            <form action="{{ route('admin.post.hapus', ['id' => $blog->postingan_id]) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    @else
+                        <p>Tidak ada blog tersedia.</p>
+                    @endif
                 </div>
-                
-            @endif
+            </div>
         </div>
     </div>
 </body>
+```

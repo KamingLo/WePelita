@@ -16,9 +16,9 @@ class KelasTahun extends Model
     ];
 
     public function kelas()
-{
+    {
     return $this->belongsTo(Kelas::class, 'kelas_id', 'kelas_id');
-}
+    }
 
     public function tahunajar(){
         return $this->belongsTo(TahunAjar::class, 'tahun_ajaran_id');

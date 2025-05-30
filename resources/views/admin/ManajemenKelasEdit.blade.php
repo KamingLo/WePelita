@@ -1,13 +1,13 @@
-@include('admin.partials.header', ['NamaPage' => 'Halaman Utama'])
+@include('admin.partials.header')
 @include('admin.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/ManajemenKelas.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
-    <div class="ContainerManajemenKelas">
-        <h1>Edit Kelas</h1>
+    <div class="ContainerManajemenKelasEdit">
+        <h1>Manajemen Kelas</h1>
 
-        <div class="LayoutManKelForm">
+        <div class="LayoutManKelFormEdit">
             <h2>Edit Kelas</h2>
             <form action="{{ route('kelas.update', $kelastahun->kelas_tahun_id) }}" method="POST">
                 @csrf
@@ -82,7 +82,7 @@
             </form>
         </div>
 
-        <div class="LayoutManKelTable">
+        <div class="LayoutManKelTableEdit">
             <h2>Detail Kelas</h2>
             <div class="DisplayDataTable">
                 <table class="table">

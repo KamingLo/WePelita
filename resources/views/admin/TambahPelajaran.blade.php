@@ -1,7 +1,6 @@
-@include('admin.partials.header', ['NamaPage' => 'Halaman Utama'])
+@include('admin.partials.header')
 @include('admin.partials.sidebar')
-
-<link rel="stylesheet" href="{{ asset('css/AdminCSS/pelajaran.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/AdminCSS/TambahPelajaran.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
@@ -10,7 +9,7 @@
 
         <div class="LayoutPelajaranForm">
             <h2>Tambah Pelajaran</h2>
-            <form action="{{ route('admin.pelajaran') }}" method="POST">
+            <form action="{{ route('admin.TambahPelajaran') }}" method="POST">
                 @csrf
 
                 <div class="IsiData">
@@ -73,10 +72,10 @@
                                     <div class="OptionPelajaranTabel">
                                         <form action="{{ route('pelajaran.update', $pelajaran->pelajaran_id) }}" method="GET">
                                             <a href="pelajaran/edit/{{ $pelajaran->pelajaran_id }}" class="TombolOJT Tedit">
-                                                <i class='bx bx-edit-alt IconOJT'></i>Edit‎ ‎ ‎ ‎ ‎ {{-- jan diubah kocak --}}
+                                                <i class='bx bx-edit-alt IconOJT'></i>Edit ‎ ‎ ‎ ‎ ‎ {{-- jan diubah kocak --}}
                                             </a>
                                         </form>
-                                        
+
                                         <form action="{{ route('pelajaran.destroy', $pelajaran->pelajaran_id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')

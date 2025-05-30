@@ -1,6 +1,6 @@
-@include('admin.partials.header', ['NamaPage' => 'Halaman Utama'])
+@include('admin.partials.header')
 @include('admin.partials.sidebar')
-<link rel="stylesheet" href="{{ asset('css/AdminCSS/jadwal.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/AdminCSS/TambahJadwal.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
@@ -9,7 +9,7 @@
 
         <div class="LayoutJadwalForm">
             <h2>Tambah Jadwal</h2>
-            <form action="{{ route('jadwal.store') }}" method="POST">
+            <form action="{{ route('TambahJadwal.store') }}" method="POST">
                 @csrf
 
                 <div class="IsiData">
@@ -17,7 +17,9 @@
                     <select name="pelajaran_id" id="pelajaran_id" class="TampilanIsiData" required>
                         <option value="" disabled selected>-- Pilih Pelajaran --</option>
                         @foreach($pelajaran as $item)
-                            <option value="{{ $item->pelajaran_id }}">{{ $item->namaPelajaran }} ({{ $item ->guru->profile->name }})</option>
+                            <option value="{{ $item->pelajaran_id }}">
+                                {{ $item->namaPelajaran }} ({{ $item->guru->profile->name }})
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -27,7 +29,9 @@
                     <select name="kelas_tahun_id" id="kelas_tahun_id" class="TampilanIsiData" required>
                         <option value="" disabled selected>-- Pilih Kelas --</option>
                         @foreach($kelasTahun as $item)
-                            <option value="{{ $item->kelas_tahun_id }}">{{ $item->kelas->nama_kelas }} ({{ $item->TahunAjar->tahun_ajaran }}) {{ $item->TahunAjar->status }}</option>
+                            <option value="{{ $item->kelas_tahun_id }}">
+                                {{ $item->kelas->nama_kelas }} ({{ $item->TahunAjar->tahun_ajaran }}) {{ $item->TahunAjar->status }}
+                            </option>
                         @endforeach
                     </select>
                     @error('namaPelajaran')
@@ -57,23 +61,22 @@
                     <input type="time" name="waktu_selesai" id="waktu_selesai" class="TampilanIsiData" required>
                 </div>
 
-                <button type="submit" class="TombolOJT TambahJadwal">
-                    Tambah Jadwal
-                </button>
+                <button type="submit" class="TombolOJT TambahJadwal">Tambah Jadwal</button>
             </form>
 
             @if(session('success'))
-              <div class="UiPsnDis PsnBerhasil">
-                  {{ session('success') }}
-              </div>
-            @endif
-
-            @if ($errors->has('jadwal'))
-                <div class="UiPsnDisD PsnError">
-                    {{ $errors->first('jadwal') }}
+                <div class="UiPsnDis PsnBerhasil">
+                    {{ session('success') }}
                 </div>
             @endif
-
+            
+            @if ($errors->any())
+                <div class="UiPsnDisD PsnError">
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
         </div>
 
         <div class="LayoutJadwalTable">
