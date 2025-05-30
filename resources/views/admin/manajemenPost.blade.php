@@ -69,7 +69,7 @@
                                     <div class="JuduldanOpsi">
                                         <div class="UploadFoto">
                                             <label for="lampiran" class="NamaLabelBar">Foto Thumbnail</label>
-                                            <input type="file" class="TampilanIsiData" id="lampiran" name="lampiran" accept="image/*">
+                                            <input type="file" class="TampilanIsiData" id="lampiran" name="lampiran">
                                             <div class="TombolUploadFoto">
                                                 <span class="DeskripsiBarUpload" id="FileNamaFoto">Pilih file</span>
                                                 <button type="button" class="BrowseFoto">Browse</button>

@@ -12,6 +12,7 @@ class Admin extends Model
     protected $table = 'admin';
     protected $primaryKey = 'admin_id';
     protected $fillable = ['profile_id'];
+    public $timestamps = false;
 
     public function profile()
     {

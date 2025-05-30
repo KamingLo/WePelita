@@ -559,54 +559,56 @@ class AdminController extends Controller
         return view('admin.manajemenPost', compact('admin', 'pengumumans', 'blogs'));
     }
 
-    public function tambahPostingan(Request $request)
-    {
-        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+public function tambahPostingan(Request $request)
+{
+    $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
 
-        $validated = $request->validate([
-            'tipe' => 'required|in:pengumuman,blog',
-            'judul' => 'required|string|max:255',
-            'isi' => 'required|string|min:10',
-            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ], [
-            'tipe.required' => 'Tipe postingan harus dipilih.',
-            'judul.required' => 'Judul postingan wajib diisi.',
-            'judul.max' => 'Judul tidak boleh lebih dari 255 karakter.',
-            'isi.required' => 'Isi postingan wajib diisi.',
-            'isi.min' => 'Isi postingan minimal 10 karakter.',
-            'lampiran.image' => 'Lampiran harus berupa gambar.',
-            'lampiran.mimes' => 'Lampiran harus berformat jpeg, png, jpg, gif, atau svg.',
-            'lampiran.max' => 'Ukuran lampiran maksimal 2MB.',
+    $validated = $request->validate([
+        'tipe' => 'required|in:pengumuman,blog',
+        'judul' => 'required|string|max:255',
+        'isi' => 'required|string|min:10',
+        'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+    ]);
+
+    try {
+        $postingan = Postingan::create([
+            'admin_id' => $admin->admin_id,
+            'tipe' => $validated['tipe'],
+            'judul' => $validated['judul'],
+            'isi' => $validated['isi'],
+            'lampiran' => null // Initialize as null
         ]);
 
-        DB::beginTransaction();
-        try {
-            $lampiranPath = null;
-            if ($request->hasFile('lampiran')) {
-                $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
-                Log::info('File lampiran tersimpan di: ' . $lampiranPath);
+        // Handle file upload after creating the post
+        if ($request->hasFile('lampiran')) {
+            $file = $request->file('lampiran');
+            if ($file->isValid()) {
+                $path = $file->store('lampiran', 'public');
+                if ($path) {
+                    $postingan->lampiran = $path;
+                    $postingan->save();
+                    Log::info('File lampiran tersimpan di: ' . $path);
+                }
             }
-
-            $postingan = Postingan::create([
-                'admin_id' => $admin->admin_id,
-                'tipe' => $validated['tipe'],
-                'judul' => $validated['judul'],
-                'isi' => $validated['isi'],
-                'lampiran' => $lampiranPath,
-            ]);
-
-            DB::commit();
-            Log::info('Postingan berhasil dibuat dengan ID: ' . $postingan->postingan_id);
-            return redirect()->route('admin.manajemenPost')->with('success', 'Postingan berhasil dibuat.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            if ($lampiranPath) {
-                Storage::disk('public')->delete($lampiranPath);
-            }
-            Log::error('Gagal membuat postingan: ' . $e->getMessage());
-            return back()->withInput()->withErrors(['error' => 'Gagal membuat postingan: ' . $e->getMessage()]);
         }
+
+        Log::info('Postingan berhasil dibuat dengan ID: ' . $postingan->postingan_id);
+        return redirect()
+            ->route('admin.manajemenPost')
+            ->with('success', 'Postingan berhasil dibuat.');
+
+    } catch (\Exception $e) {
+        // If file was uploaded but save failed, delete the file
+        if (isset($path)) {
+            Storage::disk('public')->delete($path);
+        }
+
+        Log::error('Gagal membuat postingan: ' . $e->getMessage());
+        return back()
+            ->withInput()
+            ->withErrors(['error' => 'Gagal membuat postingan: ' . $e->getMessage()]);
     }
+}
 
     public function editPostingan($id)
     {
@@ -624,7 +626,7 @@ class AdminController extends Controller
             'tipe' => 'required|in:pengumuman,blog',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string|min:10',
-            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
         DB::beginTransaction();
