@@ -1,4 +1,3 @@
-```php
 @include('admin.partials.header', ['NamaPage' => 'Halaman Utama'])
 @include('admin.partials.sidebar')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
@@ -9,11 +8,6 @@
 <script src="{{ asset('js/CssAdmin.js') }}"></script>
 
 <body>
-    <style>
-        body {
-            overflow: visible;
-        }
-    </style>
     <div class="ContainerPostManagement">
         <h1>Manajemen Post</h1>
 
@@ -37,10 +31,10 @@
             Postingan berhasil dibuat!
         </div>
 
-        <div class="filter-container">
+        <div class="OpsiManajemenPost">
             <form method="GET" action="{{ route('admin.manajemenPost') }}" id="filterForm">
                 <label for="TipePost">Filter berdasarkan tipe:</label>
-                <select name="TipePost" id="TipePost" class="filter-select" onchange="this.form.submit()">
+                <select name="TipePost" id="TipePost" class="PilihOpsiMP" onchange="this.form.submit()">
                     <option value="" {{ request('TipePost') == '' ? 'selected' : '' }}>Postingan Baru</option>
                     <option value="pengumuman" {{ request('TipePost') == 'pengumuman' ? 'selected' : '' }}>Pengumuman</option>
                     <option value="blog" {{ request('TipePost') == 'blog' ? 'selected' : '' }}>Blog</option>
@@ -48,8 +42,7 @@
             </form>
         </div>
 
-        <div class="table-container">
-            <!-- Postingan Baru Section -->
+        <div class="KotakBGLayout">
             <div class="ContainerNewPost" id="tambahPost" style="{{ request('TipePost') == '' ? 'display: block;' : 'display: none;' }}">
                 <div class="LayoutNewPost">
                     <h2>Buat Postingan</h2>
@@ -125,32 +118,32 @@
                 </div>
             </div>
 
-            <!-- Pengumuman Section -->
             <div id="pengumumanList" style="{{ request('TipePost') == 'pengumuman' ? 'display: block;' : 'display: none;' }}">
                 <h2>Daftar Pengumuman</h2>
                 
                 <div class="post-preview-container">
                     @if(isset($pengumumans) && $pengumumans->isNotEmpty())
                         @foreach($pengumumans as $pengumuman)
-                            <div class="mini-post-preview {{ $pengumuman->lampiran ? '' : 'no-image' }}">
-                                @if($pengumuman->lampiran)
-                                    <img src="{{ asset('storage/' . $pengumuman->lampiran) }}" alt="Post Image" class="mini-post-image">
-                                @endif
-                                <div class="mini-post-content">
-                                    <div>
-                                        <div class="mini-post-header">
-                                            <img src="{{ $pengumuman->admin->profile->avatar ?? '/default-avatar.png' }}" 
-                                                 alt="User Avatar" class="mini-post-avatar">
-                                            <div class="mini-post-user">{{ $pengumuman->admin->profile->name }}</div>
-                                        </div>
-                                        <div class="mini-post-title">{{ $pengumuman->judul }}</div>
-                                        <div class="mini-post-body">{!! $pengumuman->isi !!}</div>
-                                    </div>
-                                    <div class="mini-post-actions">
-                                        <div class="post-action-icons">
-                                            <span>‎ </span>
-                                            <span>‎ </span>
-                                            <span>‎ </span>
+                            <div class="post-preview">
+                                <div class="post-image"
+                                     @if($pengumuman->lampiran)
+                                         style="background-image: url('{{ asset('storage/' . $pengumuman->lampiran) }}');"
+                                     @else
+                                         style="background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"
+                                     @endif>
+                                </div>
+                                <div class="post-content">
+                                    <h3 class="post-title">{{ $pengumuman->judul }}</h3>
+                                    <p class="post-body">{{ Str::limit(strip_tags($pengumuman->isi), 210) }}</p>
+                                    <div class="post-meta">
+                                        <div class="post-author">
+                                            <div class="post-avatar">
+                                                {{ strtoupper(substr($pengumuman->admin->profile->name, 0, 2)) }}
+                                            </div>
+                                            <div class="author-info">
+                                                <span class="author-name">{{ $pengumuman->admin->profile->name }}</span>
+                                                <span class="post-date">{{ $pengumuman->created_at->format('M d, Y') }}</span>
+                                            </div>
                                         </div>
                                         <div class="post-preview-buttons">
                                             <form action="{{ route('admin.post.edit', ['id' => $pengumuman->postingan_id]) }}" method="GET" style="display:inline;">
@@ -179,26 +172,28 @@
                 <div class="post-preview-container">
                     @if(isset($blogs) && $blogs->isNotEmpty())
                         @foreach($blogs as $blog)
-                            <div class="mini-post-preview {{ $blog->lampiran ? '' : 'no-image' }}">
-                                @if($blog->lampiran)
-                                    <img src="{{ asset('storage/' . $blog->lampiran) }}" alt="Post Image" class="mini-post-image">
-                                @endif
-                                <div class="mini-post-content">
-                                    <div>
-                                        <div class="mini-post-header">
-                                            <img src="{{ $blog->admin->profile->avatar ?? '/default-avatar.png' }}" 
-                                                 alt="User Avatar" class="mini-post-avatar">
-                                            <div class="mini-post-user">{{ $blog->admin->profile->name }}</div>
+                            <div class="post-preview">
+                                <div class="post-image"
+                                     @if($blog->lampiran)
+                                         style="background-image: url('{{ asset('storage/' . $blog->lampiran) }}');"
+                                     @else
+                                         style="background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"
+                                     @endif>
+                                </div>
+                                <div class="post-content">
+                                    <h3 class="post-title">{{ $blog->judul }}</h3>
+                                    <p class="post-body">{{ Str::limit(strip_tags($blog->isi), 210) }}</p>
+                                    <div class="post-meta">
+                                        <div class="post-author">
+                                            <div class="post-avatar">
+                                                {{ strtoupper(substr($blog->admin->profile->name, 0, 2)) }}
+                                            </div>
+                                            <div class="author-info">
+                                                <span class="author-name">{{ $blog->admin->profile->name }}</span>
+                                                <span class="post-date">{{ $blog->created_at->format('M d, Y') }}</span>
+                                            </div>
                                         </div>
-                                        <div class="mini-post-title">{{ $blog->judul }}</div>
-                                        <div class="mini-post-body">{!! $blog->isi !!}</div>
-                                    </div>
-                                    <div class="mini-post-actions">
-                                        <div class="post-action-icons">
-                                            <span>‎ </span>
-                                            <span>‎ </span>
-                                            <span>‎ </span>
-                                        </div>
+
                                         <div class="post-preview-buttons">
                                             <form action="{{ route('admin.post.edit', ['id' => $blog->postingan_id]) }}" method="GET" style="display:inline;">
                                                 <button type="submit" class="btn btn-primary">Edit</button>
@@ -221,4 +216,3 @@
         </div>
     </div>
 </body>
-```

@@ -1,5 +1,5 @@
 /* ----------------------------------------------- */
-/* ------------- postManagement.css -------------- */
+/* --------------- ManajemenPost.css ------------- */
 /* ----------------------------------------------- */
 
 :root {
@@ -17,18 +17,12 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow: hidden !important;
 }
 
-label {
-    display: inline-block;
-    margin-right: 10px;
-    font-weight: 500;
-    color: var(--dark-color);
-}
-
-/* ------------- */
-/* Bagian Header */
+/* ----------------------------------------------- */
+/* ----------------- Bagian Header --------------- */
+/* ----------------------------------------------- */
 
 .ContainerPostManagement {
     margin-left: 280px;
@@ -36,6 +30,7 @@ label {
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
+    min-height: 82vh;
 }
 
 h1 {
@@ -79,34 +74,25 @@ h2:after {
     background-color: var(--primary-color);
 }
 
-/* ------------- */
-/* Bagian Alert */
-
-.alert {
-    padding: 15px;
-    border: 1px solid transparent;
+.KotakBGLayout {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    padding: 25px;
     border-radius: var(--border-radius);
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    transform: translateY(-14.5rem);
+    margin-bottom: 30px;
 }
 
-.alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+label {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: 500;
+    color: var(--dark-color);
 }
 
-.alert-danger {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-}
-
-/* ------------- */
-/* Bagian Filter */
-
-.filter-container {
+.OpsiManajemenPost {
     width: 27.2rem;
     background-color: white;
     padding: 20px;
@@ -121,7 +107,7 @@ h2:after {
     display: flex;
 }
 
-.filter-select {
+.PilihOpsiMP {
     width: 12rem;
     padding: 10px 15px;
     border: 1px solid #ddd;
@@ -135,65 +121,337 @@ h2:after {
     padding-right: 35px;
 }
 
-.filter-select:focus {
+.PilihOpsiMP:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.2);
 }
 
-/* ------------- */
-/* Bagian Table */
+/* ----------------------------------------------- */
+/* ------------- Bagian TambahPostingan ---------- */
+/* ----------------------------------------------- */
 
-.table-container {
-    width: 100%;
-    height: 42rem;
-    background-color: white;
-    padding: 25px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    transform: translateY(-14.5rem);
+.ContainerNewPost {
     margin-bottom: 30px;
 }
 
-.table {
-    width: 100%;
-    border-collapse: collapse;
+.ContainerDalam {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
 }
 
-.table th,
-.table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
+.FormKiri, .FormKanan {
+    display: flex;
+    flex-direction: column;
+    margin-top: -1rem;
+}
+
+.IsiData {
+    margin-bottom: 20px;
+}
+
+.NamaLabelBar {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-color);
     font-size: 14px;
 }
 
-.table th {
+.TampilanIsiData {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: var(--transition);
+    box-sizing: border-box;
+}
+
+.TampilanIsiData:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+input.TampilanIsiData {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    color: black;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: var(--transition);
+    box-sizing: border-box;
+}
+
+input.TampilanIsiData:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+input[type="radio"] + label {
+    margin-right: 20px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.UploadFoto {
+    position: relative;
+    width: 100%;
+}
+
+.UploadFoto input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.TombolUploadFoto {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+    color: #666;
+    transition: var(--transition);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.BrowseFoto {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.BrowseFoto:hover {
+    background-color: #3959d9;
+}
+
+.PreviewContainer {
+    margin-top: 15px;
+    border: 2px dashed #ddd;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    text-align: center;
     background-color: #f8f9fa;
-    color: var(--dark-color);
-    font-weight: 600;
-    text-transform: uppercase;
+    transition: var(--transition);
+}
+
+.PreviewContainer.has-image {
+    border-style: solid;
+    border-color: var(--primary-color);
+    background-color: white;
+}
+
+.PreviewImage {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    object-fit: contain;
+    display: none;
+}
+
+.PreviewText {
+    color: #666;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.RemoveImage {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
     font-size: 12px;
-    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: none;
 }
 
-.table tr:last-child td {
-    border-bottom: none;
+.RemoveImage:hover {
+    background-color: #c82333;
 }
 
-.table tr:hover {
-    background-color: rgba(0, 0, 0, 0.02);
+trix-editor {
+    min-height: 200px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
 }
 
-.truncate {
-    max-width: 300px;
-    white-space: nowrap;
+trix-editor:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+/* ----------------------------------------------- */
+/* -------------- Bagian Pengumuman -------------- */
+/* ----------------------------------------------- */
+
+
+.preview-container {
+    flex: 1;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border: 2px dashed #ddd;
+}
+
+.preview-container.has-content {
+    border-style: solid;
+    border-color: var(--primary-color);
+    background-color: white;
+}
+
+.post-preview-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-bottom: 10px;
+}
+
+.post-preview {
+    background: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    min-height: 200px;
+}
+
+.post-preview:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.post-image {
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    border: 1px solid #e1e8ed;
+    flex-shrink: 0;
+}
+
+.post-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.post-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1c1e21;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.post-body {
+    color: #65676b;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* ------------- */
-/* Bagian Button */
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 2rem;
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+    border: 2px solid #e1e8ed;
+}
+
+.author-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.author-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+}
+
+.post-date {
+    color: #65676b;
+    font-size: 14px;
+}
+
+.post-preview-container p {
+    text-align: left;
+    color: #65676b;
+    font-size: 16px;
+    padding: 40px px;
+    border-radius: 8px;
+    min-height: 5rem;
+    transform: translateY(0rem);
+}
+
+/* ----------------------------------------------- */
+/* ---------------- Bagian Tombol ---------------- */
+/* ----------------------------------------------- */
 
 .btn {
     display: inline-block;
@@ -233,223 +491,6 @@ h2:after {
     border-color: #bd2130;
 }
 
-.action-buttons {
-    display: flex;
-    gap: 5px;
-}
-
-/* ------------- */
-/* Bagian Edit Form */
-
-.edit-container {
-    width: 100%;
-    max-width: 800px;
-    background-color: white;
-    padding: 30px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    transform: translateY(-10.5rem);
-}
-
-.form-container {
-    display: flex;
-    gap: 30px;
-}
-
-.form-col {
-    flex: 1;
-}
-
-.mb-3 {
-    margin-bottom: 20px;
-}
-
-.form-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
-    color: var(--dark-color);
-    font-size: 14px;
-}
-
-.form-control {
-    width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: var(--transition);
-    box-sizing: border-box;
-}
-
-.form-control:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
-}
-
-textarea.form-control {
-    min-height: 120px;
-    resize: none;
-}
-
-/* ------------- */
-/* Bagian Preview */
-
-.preview-container {
-    flex: 1;
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: var(--border-radius);
-    border: 2px dashed #ddd;
-}
-
-.preview-container.has-content {
-    border-style: solid;
-    border-color: var(--primary-color);
-    background-color: white;
-}
-
-.preview-header {
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-}
-
-.preview-title {
-    font-size: 18px;
-    color: var(--dark-color);
-    margin: 0;
-    font-weight: 500;
-}
-
-.preview-content {
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.preview-image {
-    max-width: 100%;
-    max-height: 300px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    margin-top: 15px;
-}
-
-.no-preview-message {
-    color: #999;
-    font-size: 14px;
-    text-align: center;
-    padding: 30px 0;
-}
-
-/* ------------- */
-/* Post Preview Container - Styling untuk Card Layout */
-
-.post-preview-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 kolom */
-    gap: 20px;
-    max-height: 500px;
-    overflow-y: auto;
-    padding-bottom: 10px;
-}
-
-/* Individual Post Card */
-.mini-post-preview {
-    background: #ffffff;
-    border: 1px solid #e1e8ed;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    transition: var(--transition);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Jarak antar elemen dalam postingan */
-}
-
-.mini-post-preview:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-    transform: translateY(-2px);
-}
-
-/* Post Header dengan Avatar dan Nama */
-.mini-post-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-}
-
-.mini-post-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #f0f0f0;
-}
-
-.mini-post-user {
-    font-weight: 600;
-    color: #333;
-    font-size: 15px;
-    flex-grow: 1; /* Mengisi ruang yang tersedia */
-}
-
-/* Post Content/Body */
-.mini-post-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.mini-post-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #1c1e21;
-    margin: 0;
-    line-height: 1.4;
-}
-
-.mini-post-body {
-    color: #65676b;
-    font-size: 14px;
-    line-height: 1.6;
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2; /* Hanya tampilkan 2 baris */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.mini-post-body:empty::after {
-    content: "..."; /* Tambahkan ... jika konten panjang */
-}
-
-/* Post Image */
-.mini-post-image {
-    width: 100%;
-    max-height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    border: 1px solid #e1e8ed;
-}
-
-/* Post Actions Container */
-.mini-post-actions {
-    display: flex;
-    justify-content: flex-end; /* Tombol di sebelah kanan */
-    align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid #e4e6ea;
-    gap: 10px;
-}
-
-/* Edit and Delete Buttons */
 .post-preview-buttons {
     display: flex;
     gap: 8px;
@@ -482,52 +523,84 @@ textarea.form-control {
     border-color: #d91e40;
 }
 
-/* No Image Style */
-.mini-post-preview.no-image .mini-post-title {
-    margin-bottom: 15px;
+.TombolOJT {
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 12px 24px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 6px;
+    transition: var(--transition);
+    cursor: pointer;
 }
 
-/* Scrollbar Styling */
-.post-preview-container::-webkit-scrollbar {
-    width: 8px;
+.TombolPosting {
+    color: white;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
-.post-preview-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
+.TombolPosting:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
 }
 
-.post-preview-container::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 10px;
+
+
+/* ----------------------------------------------- */
+/* ----------------- Pesan Error ----------------- */
+/* ----------------------------------------------- */
+
+.alert {
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-.post-preview-container::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.UiPsnDis {
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+}
+
+.PsnBerhasil {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.PsnError {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
 }
 
 /* Empty State */
-.post-preview-container p {
-    text-align: center;
-    color: #65676b;
-    font-size: 16px;
-    padding: 40px 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    border: 2px dashed #dee2e6;
-}
+
 
 /* Media Queries */
-@media (max-width: 1200px) {
-    .form-container {
-        flex-direction: column;
-    }
-    
-    .preview-container {
-        margin-top: 20px;
-    }
-}
-
 @media (max-width: 768px) {
     .ContainerPostManagement {
         margin-left: 0;
@@ -537,21 +610,26 @@ textarea.form-control {
         grid-template-columns: 1fr; /* 1 kolom saat layar kecil */
     }
     
-    .mini-post-preview {
+    .post-preview {
+        flex-direction: column;
+        align-items: flex-start;
+        min-height: auto;
         padding: 15px;
     }
     
-    .mini-post-avatar {
+    .post-image {
+        width: 100%;
+        height: 150px;
+    }
+    
+    .post-avatar {
         width: 35px;
         height: 35px;
+        font-size: 14px;
     }
     
-    .mini-post-title {
+    .post-title {
         font-size: 16px;
-    }
-    
-    .mini-post-image {
-        max-height: 200px; /* Kembali ke tinggi normal saat vertikal */
     }
     
     .post-preview-buttons {
@@ -572,16 +650,16 @@ textarea.form-control {
 
 /* Styling untuk Trix Editor agar bisa scroll */
 trix-editor {
-    height: 470px !important; /* Tetapkan tinggi fixed */
+    height: 470px !important;
     min-height: 300px !important;
     max-height: 470px !important;
-    overflow-y: auto !important; /* Enable vertical scrolling */
+    overflow-y: auto !important;
     border: 1px solid #ddd;
     border-radius: 6px;
     padding: 15px;
     font-size: 14px;
     line-height: 1.6;
-    resize: none; /* Mencegah resize manual */
+    resize: none;
     box-sizing: border-box;
 }
 
@@ -620,13 +698,13 @@ trix-editor::-webkit-scrollbar-thumb:hover {
 .FormKanan .IsiData {
     display: flex;
     flex-direction: column;
-    height: 100%; /* Menggunakan tinggi penuh yang tersedia */
+    height: 100%;
 }
 
 /* Styling untuk label agar tidak bergerak */
 .FormKanan .NamaLabelBar {
     margin-bottom: 8px;
-    flex-shrink: 0; /* Mencegah label menyusut */
+    flex-shrink: 0;
 }
 
 /* Container untuk editor wrapper */

@@ -9,7 +9,7 @@
         
         <div class="HeaderManajemenKelas">
             <div class="SwitchKelas">
-                <button class="SwitchKelasTab" onclick="switchTab('manajemen')" id="tabManajemen">
+                <button class="SwitchKelasTab active" onclick="switchTab('manajemen')" id="tabManajemen">
                     Manajemen Kelas
                 </button>
                 <button class="SwitchKelasTab" onclick="switchTab('kenaikan')" id="tabKenaikan">
@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div id="manajemenTab" class="DisSwitchKelas">
+        <div id="manajemenTab" class="DisSwitchKelas active">
             <div class="LayoutManKelForm">
                 <h2>Tambah Kelas</h2>
                 <form action="{{ route('admin.tambahKelas') }}" method="POST">
