@@ -3,7 +3,6 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"></script>
-<link rel="stylesheet" href="{{ asset('css/AdminCSS/NewPost.css') }}" />
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/ManajemenPost.css') }}" />
 <script src="{{ asset('js/CssAdmin.js') }}"></script>
 

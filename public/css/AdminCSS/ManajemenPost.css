@@ -296,6 +296,131 @@ input[type="radio"] + label {
     background-color: #c82333;
 }
 
+.switch-container {
+    margin-bottom: 20px;
+}
+
+.switch-container input[type="radio"] {
+    display: none;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 244px;
+    height: 55px;
+    background-color: #f1f3f4;
+    border: 1px solid #e0e0e0;
+    border-radius: 22px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.switch-left, .switch-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    z-index: 2;
+    pointer-events: none;
+    width: 122px;
+    text-align: center;
+}
+
+.switch-left {
+    left: 0;
+    color: #4a6cf7;
+    font-weight: 600;
+}
+
+.switch-right {
+    right: 0;
+    color: #9aa0a6;
+    font-weight: normal;
+}
+
+.switch-button {
+    position: absolute;
+    width: 130px;
+    transform: translateX(-0.5rem);
+    height: 55px;
+    background: #ffffff;
+    border-radius: 25px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+}
+
+#event:checked ~ .switch .switch-left {
+    color: #9aa0a6;
+    font-weight: normal;
+}
+
+#event:checked ~ .switch .switch-right {
+    color: #4a6cf7;
+    font-weight: 600;
+}
+
+#event:checked ~ .switch .switch-button {
+    left: 125px;
+}
+
+#announcement:checked ~ .switch .switch-button {
+    left: 2px;
+}
+
+.switch:hover {
+    background-color: #e8eaed;
+    border-color: #dadce0;
+}
+
+.switch:hover .switch-button {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+#blog:checked ~ .switch .switch-left {
+    color: #9aa0a6;
+    font-weight: normal;
+}
+
+#blog:checked ~ .switch .switch-right {
+    color: #4a6cf7;
+    font-weight: 600;
+}
+
+#blog:checked ~ .switch .switch-button {
+    left: 125px;
+}
+
+#pengumuman:checked ~ .switch .switch-button {
+    left: 2px;
+}
+
+
+.FormKanan {
+    display: flex;
+    flex-direction: column;
+}
+
+.FormKanan .IsiData {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.FormKanan .NamaLabelBar {
+    margin-bottom: 8px;
+    flex-shrink: 0;
+}
+
+.preview-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
 trix-editor {
     min-height: 200px;
     padding: 15px;
@@ -597,17 +722,22 @@ trix-editor:focus {
     border-color: #f5c6cb;
 }
 
-/* Empty State */
+.InfoSubmit {
+    transform: translateY(31.5rem);
+    position: fixed;
+}
 
+/* ----------------------------------------------- */
+/* ---------------- Bagian View ------------------ */
+/* ----------------------------------------------- */
 
-/* Media Queries */
 @media (max-width: 768px) {
     .ContainerPostManagement {
         margin-left: 0;
     }
     
     .post-preview-container {
-        grid-template-columns: 1fr; /* 1 kolom saat layar kecil */
+        grid-template-columns: 1fr;
     }
     
     .post-preview {
@@ -648,7 +778,10 @@ trix-editor:focus {
     gap: 30px;
 }
 
-/* Styling untuk Trix Editor agar bisa scroll */
+/* ----------------------------------------------- */
+/* ------------- Bagian TrixEditor --------------- */
+/* ----------------------------------------------- */
+
 trix-editor {
     height: 470px !important;
     min-height: 300px !important;
@@ -663,14 +796,12 @@ trix-editor {
     box-sizing: border-box;
 }
 
-/* Styling khusus untuk area konten dalam trix-editor */
 trix-editor:focus {
     border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
 }
 
-/* Styling untuk scrollbar di dalam trix-editor */
 trix-editor::-webkit-scrollbar {
     width: 8px;
 }
@@ -689,50 +820,7 @@ trix-editor::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
 }
 
-/* Pastikan container FormKanan memiliki tinggi yang sesuai */
-.FormKanan {
-    display: flex;
-    flex-direction: column;
-}
-
-.FormKanan .IsiData {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}
-
-/* Styling untuk label agar tidak bergerak */
-.FormKanan .NamaLabelBar {
-    margin-bottom: 8px;
-    flex-shrink: 0;
-}
-
-/* Container untuk editor wrapper */
 .trix-content {
     height: 100%;
     overflow-y: auto;
-}
-
-/* Untuk preview container juga bisa dibuat scrollable jika diperlukan */
-.preview-container {
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.preview-container::-webkit-scrollbar {
-    width: 6px;
-}
-
-.preview-container::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.preview-container::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 10px;
-}
-
-.preview-container::-webkit-scrollbar-thumb:hover {
-    background: #a8a8a8;
 }
