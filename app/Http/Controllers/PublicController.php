@@ -20,18 +20,6 @@ class PublicController extends Controller
         return view('welcome', compact('blogs'));
     }
 
-    public function tampilkanPostingan()
-    {
-        $kegiatans = Kegiatan::all();
-        return view('post', compact('kegiatans'));
-    }
-
-    public function tampilkanPostinganByIndex(Request $request, $id)
-    {
-        $kegiatans = Kegiatan::findOrFail($id);
-        return view('blog', compact('kegiatans'));
-    }
-
     public function tampilkanBlog(Request $request)
     {
         $query = Postingan::with(['profile'])

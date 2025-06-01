@@ -27,9 +27,6 @@ Route::get('/blog/{postingan}', [PublicController::class, 'tampilkanBlogDetail']
 Route::get('/editor', [EditorController::class, 'show'])->name('editor');
 Route::post('/editor', [EditorController::class, 'store'])->name('editor.store');
 
-Route::get('post', [PublicController::class, 'tampilkanPostingan'])->name('postingan');
-Route::get('post/{id}', [PublicController::class, 'tampilkanPostinganByIndex'])->name('postingan.index');
-
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
