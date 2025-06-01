@@ -78,13 +78,13 @@ class GuruController extends Controller
     public function tampilkanManajemenPost()
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
-        $pengumumans = Postingan::with('guru.profile')
-            ->where('guru_id', $guru->guru_id)
+        $pengumumans = Postingan::with('guru.profiles')
+            ->where('profile_id', $guru->profile->profile_id)
             ->where('tipe', 'pengumuman')
             ->orderBy('created_at', 'desc')
             ->get();
         $blogs = Postingan::with('guru.profile')
-            ->where('guru_id', $guru->guru_id)
+            ->where('profile_id', $guru->profile->profile_id)
             ->where('tipe', 'blog')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -136,14 +136,14 @@ class GuruController extends Controller
     public function editPostingan($id)
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
-        $postingan = Postingan::where('guru_id', $guru->guru_id)->findOrFail($id);
+        $postingan = Postingan::where('profile', $guru->profile->profile_id)->findOrFail($id);
         return view('guru.ManajemenPostEdit', compact('postingan', 'guru'));
     }
 
     public function updatePostingan(Request $request, $id)
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
-        $postingan = Postingan::where('guru_id', $guru->guru_id)->findOrFail($id);
+        $postingan = Postingan::where('profile', $guru->profile->profile_id)->findOrFail($id);
 
         $validated = $request->validate([
             'tipe' => 'required|in:pengumuman,blog',
@@ -152,7 +152,6 @@ class GuruController extends Controller
             'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
-        DB::beginTransaction();
         try {
             $lampiranPath = $postingan->lampiran;
 
@@ -166,23 +165,18 @@ class GuruController extends Controller
                 $lampiranPath = 'lampiran/' . $filename;
             }
 
-            $postingan->update([
-                'tipe' => $validated['tipe'],
-                'judul' => $validated['judul'],
-                'isi' => $validated['isi'],
-                'lampiran' => $lampiranPath,
-            ]);
+            $postingan->tipe = $validated['tipe'];
+            $postingan->judul = $validated['judul'];
+            $postingan->isi = $validated['isi'];
+            $postingan->lampiran = $lampiranPath;
+            $postingan->save();
 
-            DB::commit();
-            Log::info('Postingan updated successfully', ['postingan_id' => $postingan->postingan_id]);
             return redirect()->route('guru.ManajemenPost', ['TipePost' => $validated['tipe']])
                 ->with('success', 'Postingan berhasil diperbarui.');
         } catch (\Exception $e) {
-            DB::rollBack();
             if ($lampiranPath && $request->hasFile('lampiran') && Storage::disk('public')->exists($lampiranPath)) {
                 Storage::disk('public')->delete($lampiranPath);
             }
-            Log::error('Gagal memperbarui postingan: ' . $e->getMessage(), ['exception' => $e]);
             return back()->withInput()->withErrors(['error' => 'Gagal memperbarui postingan: ' . $e->getMessage()]);
         }
     }
@@ -192,20 +186,18 @@ class GuruController extends Controller
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
         $postingan = Postingan::where('guru_id', $guru->guru_id)->findOrFail($id);
 
-        DB::beginTransaction();
         try {
             $tipe = $request->input('TipePost', $postingan->tipe);
+            
             if ($postingan->lampiran) {
                 Storage::disk('public')->delete($postingan->lampiran);
             }
+            
             $postingan->delete();
-            DB::commit();
-            Log::info('Postingan deleted successfully', ['postingan_id' => $id]);
+            
             return redirect()->route('guru.ManajemenPost', ['TipePost' => $tipe])
                 ->with('success', 'Postingan berhasil dihapus.');
         } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Gagal menghapus postingan: ' . $e->getMessage(), ['exception' => $e]);
             return back()->withErrors(['error' => 'Gagal menghapus postingan: ' . $e->getMessage()]);
         }
     }

@@ -645,7 +645,7 @@ class AdminController extends Controller
 
         try {
             Postingan::create([
-                'admin_id' => $admin->admin_id,
+                'profile_id' => $admin->profile->profile_id,
                 'tipe' => $validated['tipe'],
                 'judul' => $validated['judul'],
                 'isi' => $validated['isi'],
