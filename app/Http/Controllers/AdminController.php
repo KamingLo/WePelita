@@ -672,70 +672,80 @@ class AdminController extends Controller
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         $postingan = Postingan::findOrFail($id);
-        return view('admin.editPostingan', compact('postingan', 'admin'));
+        return view('admin.ManajemenPostEdit', compact('postingan', 'admin'));
     }
 
     public function updatePostingan(Request $request, $id)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         $postingan = Postingan::findOrFail($id);
-
+    
         $validated = $request->validate([
             'tipe' => 'required|in:pengumuman,blog',
             'judul' => 'required|string|max:255',
             'isi' => 'required|string|min:10',
             'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
-
+    
         DB::beginTransaction();
         try {
             $lampiranPath = $postingan->lampiran;
+    
             if ($request->hasFile('lampiran')) {
-                if ($lampiranPath) {
+                if ($lampiranPath && Storage::disk('public')->exists($lampiranPath)) {
                     Storage::disk('public')->delete($lampiranPath);
                 }
-                $lampiranPath = $request->file('lampiran')->store('lampiran', 'public');
+    
+                $file = $request->file('lampiran');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('storage/lampiran'), $filename);
+                $lampiranPath = 'lampiran/' . $filename;
             }
-
+    
             $postingan->update([
                 'tipe' => $validated['tipe'],
                 'judul' => $validated['judul'],
                 'isi' => $validated['isi'],
                 'lampiran' => $lampiranPath,
             ]);
-
+    
             DB::commit();
-            return redirect()->route('admin.manajemenPost')->with('success', 'Postingan berhasil diperbarui.');
-        } catch (\Exception $e) {
+            Log::info('Postingan updated successfully', ['postingan_id' => $postingan->postingan_id]);
+            return redirect()->route('admin.manajemenPost', ['TipePost' => $validated['tipe']])
+                ->with('success', 'Postingan berhasil diperbarui.');        
+            } catch (\Exception $e) {
             DB::rollBack();
-            if ($request->hasFile('lampiran') && $lampiranPath && $lampiranPath !== $postingan->lampiran) {
+            if ($lampiranPath && $request->hasFile('lampiran') && Storage::disk('public')->exists($lampiranPath)) {
                 Storage::disk('public')->delete($lampiranPath);
             }
-            Log::error('Gagal memperbarui postingan: ' . $e->getMessage());
+            Log::error('Gagal memperbarui postingan: ' . $e->getMessage(), ['exception' => $e]);
             return back()->withInput()->withErrors(['error' => 'Gagal memperbarui postingan: ' . $e->getMessage()]);
         }
     }
 
-    public function hapusPostingan($id)
+    public function hapusPostingan($id, Request $request)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         $postingan = Postingan::findOrFail($id);
-
+    
         DB::beginTransaction();
         try {
+            $tipe = $request->input('TipePost', $postingan->tipe);
             if ($postingan->lampiran) {
                 Storage::disk('public')->delete($postingan->lampiran);
             }
             $postingan->delete();
             DB::commit();
-            return redirect()->route('admin.manajemenPost')->with('success', 'Postingan berhasil dihapus.');
+            Log::info('Postingan deleted successfully', ['postingan_id' => $id]);
+            return redirect()->route('admin.manajemenPost', ['TipePost' => $tipe])
+                ->with('success', 'Postingan berhasil dihapus.');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Gagal menghapus postingan: ' . $e->getMessage());
+            Log::error('Gagal menghapus postingan: ' . $e->getMessage(), ['exception' => $e]);
             return back()->withErrors(['error' => 'Gagal menghapus postingan: ' . $e->getMessage()]);
         }
     }
-
+    
     public function tampilkanManajemenUser(Request $request)
     {
         try {
@@ -820,8 +830,8 @@ class AdminController extends Controller
     public function editUser($id, Request $request)
     {
         $role = request('role');
-        $admin = Admin::where('profile_id', auth()->id())->firstOrFail()->admin_id;
-
+        $admin = Admin::with('profile')->where('profile_id', auth()->id())->firstOrFail(); // Ambil objek Admin dengan relasi profile
+    
         $kelasList = [];
         if ($role === 'murid') {
             $muridKelas = MuridKelas::with(['murid.profile', 'kelastahun'])->findOrFail($id);
@@ -829,13 +839,13 @@ class AdminController extends Controller
             $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
                 $query->where('status', 'Aktif');
             })->get();
-
+    
             return view('admin.ManajemenUserEdit', compact('user', 'role', 'admin', 'kelasList'))->with('id', $id);
         }
-
+    
         $model = $this->getModelByRole($role);
         $user = $model::with(['profile'])->findOrFail($id);
-
+    
         return view('admin.ManajemenUserEdit', compact('user', 'role', 'kelasList', 'admin'))->with('id', $id);
     }
 

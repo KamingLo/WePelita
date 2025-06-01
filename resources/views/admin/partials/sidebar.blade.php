@@ -8,7 +8,7 @@
             </a>
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
         </div>
-        <h6 class="UseridName">{{ auth()->user()->profile->name ?? 'Admin' }}</h6>
+        <h6 class="UseridName">{{ $admin->profile->name }}</h6>
     </div>
 
     <ul class="ListSideBar">

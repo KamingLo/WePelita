@@ -6,7 +6,7 @@
 <div class="dashboard-container">
     <h1>Hi, {{ $admin->profile->name }}</h1>
 
-    <div class="dashboard-actions">
+    {{-- <div class="dashboard-actions">
         <a href="{{ route('admin.ManajemenUser') }}" class="action-card" data-aos="fade-up" data-aos-delay="100">
             <div class="action-icon"><i class="fas fa-users"></i></div>
             <h3>Manage Users</h3>
@@ -32,7 +32,7 @@
             <h3>Manage Posts</h3>
             <p>Create and manage announcements and blogs</p>
         </a>
-    </div>
+    </div> --}}
 
     <div class="profile-section">
         <div class="profile-card">

@@ -11,7 +11,7 @@ class PublicController extends Controller
 {
     public function index()
     {
-        $blogs = Postingan::with('admin.profile')
+        $blogs = Postingan::with(['admin.profile', 'guru.profile'])
             ->where('tipe', 'blog')
             ->orderBy('created_at', 'desc')
             ->take(4)
@@ -34,7 +34,7 @@ class PublicController extends Controller
 
     public function tampilkanBlog(Request $request)
     {
-        $query = Postingan::with('admin.profile')
+        $query = Postingan::with(['admin.profile', 'guru.profile'])
             ->where('tipe', 'blog')
             ->orderBy('created_at', 'desc');
 
@@ -66,8 +66,7 @@ class PublicController extends Controller
 
     public function tampilkanBlogDetail($postingan_id)
     {
-        $blog = Postingan::with('admin.profile')->findOrFail($postingan_id);
+        $blog = Postingan::with(['admin.profile', 'guru.profile'])->findOrFail($postingan_id);
         return view('blogFull', compact('blog'));
     }
 }
-?>

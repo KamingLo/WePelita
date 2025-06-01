@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="{{ asset('css/default/SidebarAdmin.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/AdminCSS/SidebarAdmin.css') }}" />
 
 <body>
   <aside class="ContainerSideBar">
@@ -41,17 +41,12 @@
         </a>
       </li>
       <li>
-        <a href="buatpengumuman">
-          <i class='bx bx-home-alt IconSidebar'></i>Buat Pengumuman kelas
-        </a>
-      </li>
-      <li>
         <a href="menu-nilai">
           <i class="bx bx-home-alt IconSidebar"></i>Menu nilai
         </a>
       </li>
       <li>
-        <a href="/guru/ManajemenPostGuru" class="{{ request()->is('guru/ManajemenPostGuru*') ? 'active-link' : '' }}">
+        <a href="/guru/ManajemenPost" class="{{ request()->is('guru/ManajemenPost*') ? 'active-link' : '' }}">
           <i class='bx bx-message-square-edit IconSideBar'></i>Manajemen postingan
         </a>
       </li>

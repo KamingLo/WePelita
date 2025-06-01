@@ -156,7 +156,7 @@
                 </div>
                 <div class="program-content">
                     <h3>OTKP</h3>
-                    <p>Program keahlian yang mempelajari tentang desain grafis, animasi, video editing, dan web design.</p>
+                    <p>Comingsonn</p>
                     <a href="#" class="program-btn">Pelajari Lebih Lanjut</a>
                 </div>
             </div>

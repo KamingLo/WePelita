@@ -15,43 +15,37 @@ document.addEventListener('DOMContentLoaded', function() {
     const successAlert = document.getElementById('successAlert');
     const errorMessage = document.getElementById('errorMessage');
 
-    // Filter change handler
     if (filterSelect && filterForm) {
         filterSelect.addEventListener('change', function() {
-            console.log('Filter changed to:', this.value); // Debugging
+            console.log('Filter changed to:', this.value);
             const selectedValue = this.value;
 
-            // Update section visibility
             if (tambahPost) tambahPost.style.display = selectedValue === '' ? 'block' : 'none';
             if (pengumumanList) pengumumanList.style.display = selectedValue === 'pengumuman' ? 'block' : 'none';
             if (blogList) blogList.style.display = selectedValue === 'blog' ? 'block' : 'none';
 
-            // Submit the form
             try {
                 filterForm.submit();
-                console.log('Form submitted'); // Debugging
+                console.log('Form submitted');
             } catch (error) {
-                console.error('Form submission error:', error); // Debugging
+                console.error('Form submission error:', error);
             }
         });
     }
 
-    // Initialize display based on the filter value
     function initializeDisplay() {
         const selectedValue = filterSelect ? filterSelect.value : '';
-        console.log('Initializing display with value:', selectedValue); // Debugging
+        console.log('Initializing display with value:', selectedValue);
 
         if (tambahPost) tambahPost.style.display = selectedValue === '' ? 'block' : 'none';
         if (pengumumanList) pengumumanList.style.display = selectedValue === 'pengumuman' ? 'block' : 'none';
         if (blogList) blogList.style.display = selectedValue === 'blog' ? 'block' : 'none';
     }
 
-    // Call initializeDisplay on page load
     if (filterSelect) {
         initializeDisplay();
     }
 
-    // File input handling
     if (postBrowseBtn && postFileInput) {
         postBrowseBtn.addEventListener('click', function() {
             postFileInput.click();
@@ -96,7 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (postFileNameDisplay) postFileNameDisplay.textContent = 'Pilih file';
     }
 
-    // Post form submission
     if (postForm) {
         postForm.addEventListener('submit', function(e) {
             const judul = document.getElementById('judul').value;
@@ -122,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Switch logic for post type
     const pengumumanRadio = document.getElementById('pengumuman');
     const blogRadio = document.getElementById('blog');
     const switchElement = document.querySelector('.switch');
@@ -166,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function() {
         switchElement.setAttribute('role', 'switch');
     }
 
-    // Trix editor
     const trixEditor = document.querySelector('trix-editor[input="isi"]');
     if (trixEditor) {
         trixEditor.addEventListener('trix-change', function() {
@@ -174,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Success messages
     const successMessages = document.querySelectorAll('.alert-success, .PsnBerhasil');
     successMessages.forEach(message => {
         setTimeout(() => {
@@ -186,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     });
 
-    // Post previews
     const postPreviews = document.querySelectorAll('.mini-post-preview');
     postPreviews.forEach(preview => {
         preview.addEventListener('mouseenter', function() {
@@ -199,21 +188,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Delete buttons
-    const deleteButtons = document.querySelectorAll('.btn-danger');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const form = this.closest('form');
-            const postType = form.action.includes('pengumuman') ? 'pengumuman' : 'blog';
-            const postTitle = this.closest('.mini-post-preview').querySelector('.mini-post-title').textContent;
-            if (confirm(`Yakin ingin menghapus ${postType} "${postTitle}"?`)) {
-                form.submit();
-            }
-        });
-    });
-
-    // Additional functionality (simplified)
     const fileInput = document.getElementById('lampiran');
     const fileNameDisplay = document.getElementById('FileNamaFoto');
     const preview = {
@@ -273,7 +247,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Role selection
     const roleSelect = document.getElementById('UserUntuk');
     const muridFields = document.getElementById('FormUntukMurid');
     const guruFields = document.getElementById('FormUntukGuru');
@@ -309,7 +282,6 @@ document.addEventListener('DOMContentLoaded', function() {
         roleSelect.addEventListener('change', toggleFields);
     }
 
-    // Number-only inputs
     document.querySelectorAll(".NomorOnly").forEach(function (input) {
         input.addEventListener("input", function () {
             let value = this.value;
@@ -322,7 +294,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Clear buttons
     function setupClearButton(inputId, buttonId) {
         const input = document.getElementById(inputId);
         const clearBtn = document.getElementById(buttonId);
@@ -375,7 +346,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupClearButton("namaPelajaran", "clearNamaPelajaran");
     setupClearButton("nama_kelas", "clearNamaKelas");
 
-    // Tab switching
     function switchTab(tabName) { 
         const tabContents = document.querySelectorAll('.DisSwitchKelas');
         tabContents.forEach(content => content.classList.remove('active'));
@@ -408,7 +378,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Additional handlers
     const handleFileInputs = () => {
         const inputFile = document.getElementById('lampiran');
         if (!inputFile) return;
@@ -458,23 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     };
-    
-    const handleDeleteConfirmations = () => {
-        const deleteButtons = document.querySelectorAll('.btn-danger[onclick*="confirm"]');
-        deleteButtons.forEach(button => {
-            button.removeAttribute('onclick');
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const form = this.closest('form');
-                const postType = form.action.includes('pengumuman') ? 'pengumuman' : 'kegiatan';
-                const postTitle = this.closest('.mini-post-preview').querySelector('.mini-post-title').textContent;
-                if (confirm(`Yakin ingin menghapus ${postType} "${postTitle}"?`)) {
-                    form.submit();
-                }
-            });
-        });
-    };
-    
+
     handleFileInputs();
     handleSuccessMessages();
     handlePostPreviews();
@@ -482,13 +435,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.addEventListener('livewire:load', function() {
         Livewire.hook('message.processed', (message, component) => {
+            handleDeleteConfirmations();
             handleFileInputs();
             handleSuccessMessages();
             handlePostPreviews();
-            handleDeleteConfirmations();
-            initializeDisplay(); // Reinitialize display after Livewire updates
+            initializeDisplay();
         });
     });
+
+    function handleDeleteConfirmations() {
+        const deleteForms = document.querySelectorAll('.delete-post-form');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (confirm('Apakah Anda yakin ingin menghapus postingan ini?')) {
+                    form.submit();
+                }
+            });
+        });
+    }
 
     const clearNamaKelasBtn = document.getElementById('clearNamaKelas');
     const namaKelasInput = document.getElementById('nama_kelas');

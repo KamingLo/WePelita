@@ -1,5 +1,5 @@
-@include('admin.partials.header')
-@include('admin.partials.sidebar')
+@include('guru.partials.header')
+@include('guru.partials.sidebar')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"></script>
@@ -22,14 +22,14 @@
 
         <div class="DisFlexFungsi">
             <div class="OpsiManajemenPost">
-                    <form method="GET" action="{{ route('admin.manajemenPost') }}" id="filterForm">
-                        <label for="TipePost">Filter berdasarkan tipe:</label>
-                        <select name="TipePost" id="TipePost" class="PilihOpsiMP" onchange="this.form.submit()">
-                            <option value="" {{ request('TipePost') == '' ? 'selected' : '' }}>Postingan Baru</option>
-                            <option value="pengumuman" {{ request('TipePost') == 'pengumuman' ? 'selected' : '' }}>Pengumuman</option>
-                            <option value="blog" {{ request('TipePost') == 'blog' ? 'selected' : '' }}>Blog</option>
-                        </select>
-                    </form>
+                <form method="GET" action="{{ route('guru.ManajemenPost') }}" id="filterForm">
+                    <label for="TipePost">Filter berdasarkan tipe:</label>
+                    <select name="TipePost" id="TipePost" class="PilihOpsiMP" onchange="this.form.submit()">
+                        <option value="" {{ request('TipePost') == '' ? 'selected' : '' }}>Postingan Baru</option>
+                        <option value="pengumuman" {{ request('TipePost') == 'pengumuman' ? 'selected' : '' }}>Pengumuman</option>
+                        <option value="blog" {{ request('TipePost') == 'blog' ? 'selected' : '' }}>Blog</option>
+                    </select>
+                </form>
             </div>
 
             <div class="NotifPostingan">
@@ -45,7 +45,7 @@
             <div class="ContainerNewPost" id="tambahPost" style="{{ request('TipePost') == '' ? 'display: block;' : 'display: none;' }}">
                 <div class="LayoutNewPost">
                     <h2>Buat Postingan</h2>
-                    <form id="postForm" action="{{ route('admin.post.tambah') }}" method="POST" enctype="multipart/form-data">
+                    <form id="postForm" action="{{ route('guru.post.tambah') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="ContainerDalam">
                             <div class="FormKiri">
@@ -135,16 +135,16 @@
                                     <div class="FooterCardPost">
                                         <div class="InfoUserCardPost">
                                             <div class="FotoProfileCardPost">
-                                                {{ strtoupper(substr($pengumuman->admin->profile->name, 0, 2)) }}
+                                                {{ strtoupper(substr($pengumuman->creator()->name, 0, 2)) }}
                                             </div>
                                             <div class="UserProfileCardPost">
-                                                <span class="NamaPengunaCP">{{ $pengumuman->admin->profile->name }}</span>
+                                                <span class="NamaPengunaCP">{{ $pengumuman->creator()->name }}</span>
                                                 <span class="TanggalPublikasihCP">{{ $pengumuman->created_at->format('M d, Y') }}</span>
                                             </div>
                                         </div>
                                         <div class="OpsiTombolCp">
-                                            <a href="{{ route('admin.post.edit', ['id' => $pengumuman->postingan_id]) }}" class="TombolOJT TombolEdit">Edit</a>
-                                            <form action="{{ route('admin.post.hapus', ['id' => $pengumuman->postingan_id]) }}" method="POST" class="delete-post-form">
+                                            <a href="{{ route('guru.post.edit', ['id' => $pengumuman->postingan_id]) }}" class="TombolOJT TombolEdit">Edit</a>
+                                            <form action="{{ route('guru.post.hapus', ['id' => $pengumuman->postingan_id]) }}" method="POST" class="delete-post-form">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="TipePost" value="pengumuman">
@@ -180,20 +180,20 @@
                                     <div class="FooterCardPost">
                                         <div class="InfoUserCardPost">
                                             <div class="FotoProfileCardPost">
-                                                {{ strtoupper(substr($blog->admin->profile->name, 0, 2)) }}
+                                                {{ strtoupper(substr($blog->creator()->name, 0, 2)) }}
                                             </div>
                                             <div class="UserProfileCardPost">
-                                                <span class="NamaPengunaCP">{{ $blog->admin->profile->name }}</span>
+                                                <span class="NamaPengunaCP">{{ $blog->creator()->name }}</span>
                                                 <span class="TanggalPublikasihCP">{{ $blog->created_at->format('M d, Y') }}</span>
                                             </div>
                                         </div>
                                         <div class="OpsiTombolCp">
-                                            <a href="{{ route('admin.post.edit', ['id' => $blog->postingan_id]) }}" class="TombolOJT TombolEdit">Edit</a>
-                                            <form action="{{ route('admin.post.hapus', ['id' => $blog->postingan_id]) }}" method="POST" class="delete-post-form">
+                                            <a href="{{ route('guru.post.edit', ['id' => $blog->postingan_id]) }}" class="TombolOJT TombolEdit">Edit</a>
+                                            <form action="{{ route('guru.post.hapus', ['id' => $blog->postingan_id]) }}" method="POST" class="delete-post-form">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="TipePost" value="blog">
-                                                <button type="submit" class="TombolOJT TombolHapus" data-post-type="blog" data-post-id="{{ $blog->postingan_id }}">Hapus</button>
+                                                <button type="submit" class="TombolOJT TombolHapus">Hapus</button>
                                             </form>
                                         </div>
                                     </div>
@@ -205,3 +205,6 @@
                     @endif
                 </div>
             </div>
+        </div>
+    </div>
+</body>

@@ -11,7 +11,6 @@ use App\Models\Guru;
 use Illuminate\Support\Str;
 use App\Http\Controllers\EditorController;
 
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -87,12 +86,14 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
 
     Route::get('guru/jadwal', [GuruController::class, 'tampilkanJadwalPelajaran'])->name('guru.jadwal');
     Route::get('guru/jadwalanda', [GuruController::class, 'tampilkanJadwalAnda'])->name('guru.jadwalanda');
-    Route::get('guru/buatpengumuman', [GuruController::class, 'tampilkanPengumuman'])->name('guru.pengumuman');
-
     Route::get('guru/menu-nilai', [GuruController::class, 'tampilkanMenuNilai'])->name('guru.isinilai');
     Route::post('guru/menu-nilai', [GuruController::class, 'simpanNilai'])->name('guru.isinilai');
 
-    Route::get('guru/ManajemenPostGuru', [GuruController::class, 'tampilkanManajemenPost'])->name('guru.manajemenPost');    
+    Route::get('guru/ManajemenPost', [GuruController::class, 'tampilkanManajemenPost'])->name('guru.ManajemenPost');
+    Route::post('guru/ManajemenPost', [GuruController::class, 'tambahPostingan'])->name('guru.post.tambah');
+    Route::get('guru/manajemenPost/edit/{id}', [GuruController::class, 'editPostingan'])->name('guru.post.edit');
+    Route::put('guru/manajemenPost/edit/{id}', [GuruController::class, 'updatePostingan'])->name('guru.post.update');
+    Route::delete('guru/manajemenPost/destroy/{id}', [GuruController::class, 'hapusPostingan'])->name('guru.post.hapus');
 
     Route::get('guru/', function() {
         return view('guru.post');

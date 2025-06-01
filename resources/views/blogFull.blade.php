@@ -17,7 +17,7 @@
             <h1>{{ $blog->judul }}</h1>
             <div class="blog-meta">
                 <span class="author">
-                    <i class='bx bx-user'></i> {{ $blog->admin->profile->name }}
+                    <i class='bx bx-user'></i> {{ $blog->creator()->name }}
                 </span>
                 <span class="date">
                     <i class='bx bx-calendar'></i> {{ $blog->created_at->format('M d, Y') }}
