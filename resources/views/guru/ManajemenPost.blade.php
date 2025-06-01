@@ -91,6 +91,13 @@
                                         <div class="PreviewText" id="previewText">Preview foto akan muncul di sini</div>
                                         <button type="button" class="RemoveImage" id="removeImage">Hapus Foto</button>
                                     </div>
+
+                                    <div class="InfoSubmit">
+                                        <button type="submit" class="TombolOJT TombolPosting">Posting</button>
+                                        <div class="UiPsnDis PsnError" style="display: none;" id="errorMessage">
+                                            Postingan Bermasalah
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -102,13 +109,6 @@
                                     @error('isi')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                </div>
-                            </div>
-
-                            <div class="InfoSubmit">
-                                <button type="submit" class="TombolOJT TombolPosting">Posting</button>
-                                <div class="UiPsnDis PsnError" style="display: none;" id="errorMessage">
-                                    Postingan Bermasalah
                                 </div>
                             </div>
                         </div>

@@ -44,7 +44,7 @@
                                             <input type="file" class="TampilanIsiData" id="lampiran" name="lampiran">
                                             <div class="TombolUploadFoto">
                                                 <span class="DeskripsiBarUpload" id="FileNamaFoto">
-                                                    {{ $postingan->original_filename ?? ($postingan->lampiran ? basename($postingan->lampiran) : 'Pilih file') }}
+                                                    {{ $postingan->lampiran ? basename($postingan->lampiran) : 'Pilih file' }}
                                                 </span>
                                                 <button type="button" class="BrowseFoto">Browse</button>
                                             </div>
@@ -55,8 +55,8 @@
 
                                         <div class="OpsiTipePost">
                                             <label class="labelNWPT">Tipe Postingan</label>
-                                            <input type="radio" id="pengumuman" name="tipe" value="pengumuman" {{ old('tipe', 'pengumuman') == 'pengumuman' ? 'checked' : '' }}>
-                                            <input type="radio" id="blog" name="tipe" value="blog" {{ old('tipe') == 'blog' ? 'checked' : '' }}>
+                                            <input type="radio" id="pengumuman" name="tipe" value="pengumuman" {{ old('tipe', $postingan->tipe) == 'pengumuman' ? 'checked' : '' }}>
+                                            <input type="radio" id="blog" name="tipe" value="blog" {{ old('tipe', $postingan->tipe) == 'blog' ? 'checked' : '' }}>
                                             <label class="switch" for="pengumuman">
                                                 <span class="switch-left">Pengumuman</span>
                                                 <span class="switch-right">Blog</span>
@@ -77,6 +77,14 @@
                                         <div class="PreviewText" id="previewText" style="{{ $postingan->lampiran ? 'display: none;' : 'display: block;' }}">Preview foto akan muncul di sini</div>
                                         <button type="button" class="RemoveImage" id="removeImage" style="{{ $postingan->lampiran ? 'display: block;' : 'display: none;' }}">Hapus Foto</button>
                                     </div>
+
+                                    <div class="InfoSubmitEdit">
+                                        <button type="submit" class="TombolOJT TombolPosting">Update</button>
+                                        <a href="{{ route('admin.manajemenPost', ['TipePost' => $postingan->tipe]) }}" class="TombolOJT TombolCancel">Cancel</a>
+                                        <div class="UiPsnDis PsnError" style="display: none;" id="errorMessage">
+                                            Terjadi kesalahan!
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -88,15 +96,6 @@
                                     @error('isi')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                </div>
-                            </div>
-
-                            <div class="InfoSubmitEdit">
-                                    <button type="submit" class="TombolOJT TombolPosting">Update</button>
-                                    <a href="{{ route('admin.manajemenPost', ['TipePost' => $postingan->tipe]) }}" class="TombolOJT TombolCancel">Cancel</a>
-
-                                <div class="UiPsnDis PsnError" style="display: none;" id="errorMessage">
-                                    Terjadi kesalahan!
                                 </div>
                             </div>
                         </div>

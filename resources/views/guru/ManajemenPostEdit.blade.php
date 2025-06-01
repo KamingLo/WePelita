@@ -77,6 +77,14 @@
                                         <div class="PreviewText" id="previewText" style="{{ $postingan->lampiran ? 'display: none;' : 'display: block;' }}">Preview foto akan muncul di sini</div>
                                         <button type="button" class="RemoveImage" id="removeImage" style="{{ $postingan->lampiran ? 'display: block;' : 'display: none;' }}">Hapus Foto</button>
                                     </div>
+
+                                    <div class="InfoSubmitEdit">
+                                        <button type="submit" class="TombolOJT TombolPosting">Update</button>
+                                        <a href="{{ route('guru.ManajemenPost', ['TipePost' => $postingan->tipe]) }}" class="TombolOJT TombolCancel">Cancel</a>
+                                        <div class="UiPsnDis PsnError" style="display: none;" id="errorMessage">
+                                            Terjadi kesalahan!
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -88,14 +96,6 @@
                                     @error('isi')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                </div>
-                            </div>
-
-                            <div class="InfoSubmitEdit">
-                                <button type="submit" class="TombolOJT TombolPosting">Update</button>
-                                <a href="{{ route('guru.ManajemenPost', ['TipePost' => $postingan->tipe]) }}" class="TombolOJT TombolCancel">Cancel</a>
-                                <div class="UiPsnDis PsnError" style="display: none;" id="errorMessage">
-                                    Terjadi kesalahan!
                                 </div>
                             </div>
                         </div>

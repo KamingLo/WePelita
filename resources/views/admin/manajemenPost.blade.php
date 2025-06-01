@@ -9,27 +9,16 @@
 <body>
     <div class="ContainerPostManagement">
         <h1>Manajemen Post</h1>
-    
-        @if($errors->any())
-            <div class="UiPsnDis PsnError">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
         <div class="DisFlexFungsi">
             <div class="OpsiManajemenPost">
-                    <form method="GET" action="{{ route('admin.manajemenPost') }}" id="filterForm">
-                        <label for="TipePost">Filter berdasarkan tipe:</label>
-                        <select name="TipePost" id="TipePost" class="PilihOpsiMP" onchange="this.form.submit()">
-                            <option value="" {{ request('TipePost') == '' ? 'selected' : '' }}>Postingan Baru</option>
-                            <option value="pengumuman" {{ request('TipePost') == 'pengumuman' ? 'selected' : '' }}>Pengumuman</option>
-                            <option value="blog" {{ request('TipePost') == 'blog' ? 'selected' : '' }}>Blog</option>
-                        </select>
-                    </form>
+                <form method="GET" action="{{ route('admin.manajemenPost') }}" id="filterForm">
+                    <label for="TipePost">Filter berdasarkan tipe:</label>
+                    <select name="TipePost" id="TipePost" class="PilihOpsiMP" onchange="this.form.submit()">
+                        <option value="" {{ request('TipePost') == '' ? 'selected' : '' }}>Postingan Baru</option>
+                        <option value="pengumuman" {{ request('TipePost') == 'pengumuman' ? 'selected' : '' }}>Pengumuman</option>
+                        <option value="blog" {{ request('TipePost') == 'blog' ? 'selected' : '' }}>Blog</option>
+                    </select>
+                </form>
             </div>
 
             <div class="NotifPostingan">
@@ -91,6 +80,13 @@
                                         <div class="PreviewText" id="previewText">Preview foto akan muncul di sini</div>
                                         <button type="button" class="RemoveImage" id="removeImage">Hapus Foto</button>
                                     </div>
+
+                                    <div class="InfoSubmit">
+                                        <button type="submit" class="TombolOJT TombolPosting">Posting</button>
+                                        <div class="UiPsnDis PsnError" style="display: none;" id="errorMessage">
+                                            Postingan Bermasalah
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -102,13 +98,6 @@
                                     @error('isi')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
-                                </div>
-                            </div>
-
-                            <div class="InfoSubmit">
-                                <button type="submit" class="TombolOJT TombolPosting">Posting</button>
-                                <div class="UiPsnDis PsnError" style="display: none;" id="errorMessage">
-                                    Postingan Bermasalah
                                 </div>
                             </div>
                         </div>
@@ -135,10 +124,20 @@
                                     <div class="FooterCardPost">
                                         <div class="InfoUserCardPost">
                                             <div class="FotoProfileCardPost">
-                                                {{ strtoupper(substr($pengumuman->admin->profile->name, 0, 2)) }}
+                                                @if($pengumuman->creator())
+                                                    {{ strtoupper(substr($pengumuman->creator()->name, 0, 2)) }}
+                                                @else
+                                                    ??
+                                                @endif
                                             </div>
                                             <div class="UserProfileCardPost">
-                                                <span class="NamaPengunaCP">{{ $pengumuman->admin->profile->name }}</span>
+                                                <span class="NamaPengunaCP">
+                                                    @if($pengumuman->creator())
+                                                        {{ $pengumuman->creator()->name }}
+                                                    @else
+                                                        Unknown Author
+                                                    @endif
+                                                </span>
                                                 <span class="TanggalPublikasihCP">{{ $pengumuman->created_at->format('M d, Y') }}</span>
                                             </div>
                                         </div>
@@ -180,10 +179,20 @@
                                     <div class="FooterCardPost">
                                         <div class="InfoUserCardPost">
                                             <div class="FotoProfileCardPost">
-                                                {{ strtoupper(substr($blog->admin->profile->name, 0, 2)) }}
+                                                @if($blog->creator())
+                                                    {{ strtoupper(substr($blog->creator()->name, 0, 2)) }}
+                                                @else
+                                                    ??
+                                                @endif
                                             </div>
                                             <div class="UserProfileCardPost">
-                                                <span class="NamaPengunaCP">{{ $blog->admin->profile->name }}</span>
+                                                <span class="NamaPengunaCP">
+                                                    @if($blog->creator())
+                                                        {{ $blog->creator()->name }}
+                                                    @else
+                                                        Unknown Author
+                                                    @endif
+                                                </span>
                                                 <span class="TanggalPublikasihCP">{{ $blog->created_at->format('M d, Y') }}</span>
                                             </div>
                                         </div>
@@ -205,3 +214,6 @@
                     @endif
                 </div>
             </div>
+        </div>
+    </div>
+</body>

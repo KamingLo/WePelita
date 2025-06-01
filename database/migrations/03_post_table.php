@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('postingan', function (Blueprint $table) {
             $table->id('postingan_id');
-            $table->foreignId('admin_id')->constrained('admin', 'admin_id')->onDelete('cascade');
+            $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
             $table->enum('tipe', ['pengumuman', 'blog']);
             $table->string('judul');
             $table->text('isi');

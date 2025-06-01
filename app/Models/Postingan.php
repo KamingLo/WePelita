@@ -11,16 +11,11 @@ class Postingan extends Model
 
     protected $table = 'postingan';
     protected $primaryKey = 'postingan_id';
-    protected $fillable = ['admin_id', 'guru_id', 'tipe', 'judul', 'isi', 'lampiran'];
+    protected $fillable = ['profile_id', 'tipe', 'judul', 'isi', 'lampiran'];
 
-    public function admin()
+    public function profile()
     {
-        return $this->belongsTo(Admin::class, 'admin_id');
-    }
-
-    public function guru()
-    {
-        return $this->belongsTo(Guru::class, 'guru_id');
+        return $this->belongsTo(Profile::class, 'profile_id');
     }
 
     public function komentar()
@@ -28,14 +23,18 @@ class Postingan extends Model
         return $this->hasMany(Komentar::class, 'postingan_id');
     }
 
-    // Helper method to get the creator's profile (admin or guru)
     public function creator()
     {
-        if ($this->admin_id) {
-            return $this->admin->profile;
-        } elseif ($this->guru_id) {
-            return $this->guru->profile;
+        $admin = Admin::where('profile_id', $this->profile_id)->first();
+        if ($admin) {
+            return $admin->profile;
         }
-        return null;
+
+        $guru = Guru::where('profile_id', $this->profile_id)->first();
+        if ($guru) {
+            return $guru->profile;
+        }
+
+        return $this->profile;
     }
 }

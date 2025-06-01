@@ -83,6 +83,7 @@ h2:after {
     box-shadow: var(--shadow);
     transform: translateY(-14.5rem);
     margin-bottom: 30px;
+    min-height: 600px;
 }
 
 .KotakBGLayoutEdit {
@@ -160,12 +161,14 @@ label {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
+    height: 100%;
 }
 
 .FormKiri, .FormKanan {
     display: flex;
     flex-direction: column;
     margin-top: -1rem;
+    flex-grow: 1;
 }
 
 .IsiData {
@@ -434,12 +437,11 @@ input[type="radio"] + label {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    max-height: 680px;
-    overflow-y: auto;
     padding-bottom: 10px;
     border: 2px solid #e1e8ed;
-    transform: translateY(-2rem);
     border-radius: 12px;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+    max-height: calc(100vh - 400px); /* Adjust based on container height */
 }
 
 .CardPost {
@@ -642,6 +644,7 @@ input[type="radio"] + label {
     height: 3rem;
     width: 8rem;
     justify-content: center;
+    position: sticky;
 }
 
 .TombolPosting:hover {
@@ -677,13 +680,19 @@ input[type="radio"] + label {
 }
 
 .InfoSubmit {
-    transform: translateY(31.5rem);
-    position: fixed;
+    display: flex;
+    gap: 20px;
+    padding: 15px 0;
+    margin-top: auto;
+    justify-content: flex-start;
 }
 
 .InfoSubmitEdit {
     display: flex;
     gap: 20px;
+    padding: 15px 0;
+    margin-top: auto;
+    justify-content: flex-start;
 }
 
 /* ----------------------------------------------- */
