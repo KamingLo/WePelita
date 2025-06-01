@@ -93,7 +93,6 @@ class GuruController extends Controller
 
     public function tambahPostingan(Request $request)
     {
-        Log::info('tambahPostingan called (Guru)', $request->all());
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
 
         $validated = $request->validate([
@@ -103,15 +102,12 @@ class GuruController extends Controller
             'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
-        Log::info('Validated data (Guru)', $validated);
-
         $lampiranPath = null;
         if ($request->hasFile('lampiran')) {
             $file = $request->file('lampiran');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('storage/lampiran'), $filename);
             $lampiranPath = 'lampiran/' . $filename;
-            Log::info('File uploaded (Guru)', ['path' => $lampiranPath]);
         }
 
         try {
@@ -122,7 +118,6 @@ class GuruController extends Controller
                 'isi' => $validated['isi'],
                 'lampiran' => $lampiranPath
             ]);
-            Log::info('Post created (Guru)', ['post_id' => $post->postingan_id]);
 
             return redirect()
                 ->route('guru.ManajemenPost')
@@ -131,7 +126,6 @@ class GuruController extends Controller
             if ($lampiranPath && file_exists(public_path('storage/' . $lampiranPath))) {
                 unlink(public_path('storage/' . $lampiranPath));
             }
-            Log::error('Failed to create post (Guru)', ['error' => $e->getMessage()]);
 
             return back()
                 ->withInput()
