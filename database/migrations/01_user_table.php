@@ -37,6 +37,14 @@ return new class extends Migration
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
         });
         
+        Schema::create('murid', function (Blueprint $table){
+            $table->id('murid_id');
+            $table->string('asal_sekolah');
+            $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
+            $table->string('nis');
+            $table->string('nisn');
+        });
+
 
         Schema::create('orang_tua', function (Blueprint $table){
             $table -> id('orang_tua_id');
@@ -61,13 +69,6 @@ return new class extends Migration
             $table -> string('status');
         });
 
-        Schema::create('murid', function (Blueprint $table){
-            $table->id('murid_id');
-            $table->string('asal_sekolah');
-            $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
-            $table->string('nis');
-            $table->string('nisn');
-        });
 
         Schema::create('kelas_tahun', function(Blueprint $table){
             $table->id('kelas_tahun_id');
@@ -88,9 +89,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('kegiatan');

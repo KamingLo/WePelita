@@ -21,6 +21,9 @@ class AllSeeder extends Seeder
             TahunAjarSeeder::class,
             KelasTahunSeeder::class,
         ]);
-        $this->call(GuruSeeder::class);
+        $this->call([
+            GuruSeeder::class,
+            MuridSeeder::class,
+        ]);
     }
 }

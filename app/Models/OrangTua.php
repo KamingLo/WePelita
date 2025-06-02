@@ -12,7 +12,7 @@ class OrangTua extends Model
     public $timestamps = false;
     protected $table = 'orang_tua';
     protected $primaryKey = 'orang_tua_id';
-    protected $fillable = ['profile_id','profesi'];
+    protected $fillable = ['profile_id', 'profesi'];
 
     public function profile()
     {
@@ -25,7 +25,7 @@ class OrangTua extends Model
             Murid::class,
             'murid_orang_tua',
             'orang_tua_id',
-            'murid_kelas_id'
+            'murid_id'
         );
     }
 }

@@ -83,7 +83,7 @@ h2:after {
     box-shadow: var(--shadow);
     transform: translateY(-14.5rem);
     margin-bottom: 30px;
-    min-height: 600px;
+    height: auto;
 }
 
 .KotakBGLayoutEdit {
@@ -118,6 +118,7 @@ label {
     justify-items: center;
     display: flex;
 }
+
 .PilihOpsiMP {
     width: 12rem;
     padding: 10px 15px;
@@ -159,7 +160,7 @@ label {
 
 .ContainerDalam {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr; /* Adjusted ratio to give more space to FormKanan */
     gap: 30px;
     height: 100%;
 }
@@ -169,6 +170,23 @@ label {
     flex-direction: column;
     margin-top: -1rem;
     flex-grow: 1;
+}
+
+.FormKiri {
+    max-width: 420px;
+}
+
+.FormKanan {
+    position: relative;
+}
+
+.SubmitContainer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 .IsiData {
@@ -413,15 +431,23 @@ input[type="radio"] + label {
     left: 2px;
 }
 
+.KhususTrixIsiKonten {
+    max-width: 100%; /* Adjusted to fit the new layout */
+}
+
+/* Removed .KhususTujuanKelasManaNakDiPost since it's no longer needed as a separate wrapper */
+
+/* Adjusted FormKanan styling */
 .FormKanan {
     display: flex;
     flex-direction: column;
+    padding-top: 60px; /* Space for SubmitContainer */
 }
 
 .FormKanan .IsiData {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: auto;
 }
 
 .FormKanan .labelNWPT {
@@ -440,8 +466,8 @@ input[type="radio"] + label {
     padding-bottom: 10px;
     border: 2px solid #e1e8ed;
     border-radius: 12px;
-    overflow-y: auto; /* Allow scrolling if content overflows */
-    max-height: calc(100vh - 400px); /* Adjust based on container height */
+    overflow-y: auto;
+    max-height: calc(100vh - 400px);
 }
 
 .CardPost {
@@ -644,7 +670,6 @@ input[type="radio"] + label {
     height: 3rem;
     width: 8rem;
     justify-content: center;
-    position: sticky;
 }
 
 .TombolPosting:hover {
@@ -738,6 +763,19 @@ input[type="radio"] + label {
     .OpsiTombolCp .btn {
         font-size: 12px;
         padding: 5px 10px;
+    }
+    
+    .ContainerDalam {
+        grid-template-columns: 1fr; /* Stack on mobile */
+    }
+    
+    .FormKiri {
+        max-width: 100%;
+    }
+    
+    .SubmitContainer {
+        position: static;
+        margin-bottom: 20px;
     }
 }
 

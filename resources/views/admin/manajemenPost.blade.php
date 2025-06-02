@@ -1,8 +1,7 @@
 @include('admin.partials.header')
 @include('admin.partials.sidebar')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/ManajemenPost.css') }}" />
 <script src="{{ asset('js/CssAdmin.js') }}"></script>
 
@@ -37,7 +36,69 @@
                     <form id="postForm" action="{{ route('admin.post.tambah') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="ContainerDalam">
+                            <!-- Left Section: Buttons and Controls -->
                             <div class="FormKiri">
+                                <div class="IsiData">
+                                    <div class="OpsiTipePost">
+                                        <label class="labelNWPT">Tipe Postingan</label>
+                                        <input type="radio" id="pengumuman" name="tipe" value="pengumuman" {{ old('tipe', 'pengumuman') == 'pengumuman' ? 'checked' : '' }}>
+                                        <input type="radio" id="blog" name="tipe" value="blog" {{ old('tipe') == 'blog' ? 'checked' : '' }}>
+                                        <label class="switch" for="pengumuman">
+                                            <span class="switch-left">Pengumuman</span>
+                                            <span class="switch-right">Blog</span>
+                                            <span class="switch-button"></span>
+                                        </label>
+                                        @error('tipe')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="IsiData" id="tujuanContainer" style="display: none;">
+                                    <label for="tujuan" class="labelNWPT">Tujuan</label>
+                                    <select name="tujuan" id="tujuan" class="TampilanIsiData">
+                                        <option value="">Semua Kelas</option>
+                                        @foreach($kelasTahuns as $kelasTahun)
+                                            <option value="{{ $kelasTahun->kelas_tahun_id }}" {{ old('tujuan') == $kelasTahun->kelas_tahun_id ? 'selected' : '' }}>
+                                                {{ $kelasTahun->kelas->nama_kelas }} - {{ $kelasTahun->tahunajar->tahun_ajaran }} ({{ $kelasTahun->tahunajar->semester }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('tujuan')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="IsiData">
+                                    <div class="UploadFoto">
+                                        <label for="lampiran" class="labelNWPT">Foto Thumbnail</label>
+                                        <input type="file" class="TampilanIsiData" id="lampiran" name="lampiran">
+                                        <div class="TombolUploadFoto">
+                                            <span class="DeskripsiBarUpload" id="FileNamaFoto">Pilih file</span>
+                                            <button type="button" class="BrowseFoto">Browse</button>
+                                        </div>
+                                        @error('lampiran')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="PreviewContainer" id="previewContainer">
+                                    <img id="previewImage" class="PreviewImage" alt="Preview">
+                                    <div class="PreviewText" id="previewText">Preview foto akan muncul di sini</div>
+                                    <button type="button" class="RemoveImage" id="removeImage">Hapus Foto</button>
+                                </div>
+                            </div>
+
+                            <!-- Right Section: Content and Submit Button -->
+                            <div class="FormKanan">
+                                <div class="SubmitContainer">
+                                    <button type="submit" class="TombolOJT TombolPosting">Posting</button>
+                                    <div class="UiPsnDis PsnError" style="display: none;" id="errorMessage">
+                                        Postingan Bermasalah
+                                    </div>
+                                </div>
+
                                 <div class="IsiData">
                                     <label for="judul" class="labelNWPT">Judul</label>
                                     <input class="TampilanIsiData" type="text" id="judul" name="judul" value="{{ old('judul') }}" placeholder="Isi judul postingan" required>
@@ -46,58 +107,15 @@
                                     @enderror
                                 </div>
 
-                                <div class="IsiData">
-                                    <div class="JuduldanOpsi">
-                                        <div class="UploadFoto">
-                                            <label for="lampiran" class="labelNWPT">Foto Thumbnail</label>
-                                            <input type="file" class="TampilanIsiData" id="lampiran" name="lampiran">
-                                            <div class="TombolUploadFoto">
-                                                <span class="DeskripsiBarUpload" id="FileNamaFoto">Pilih file</span>
-                                                <button type="button" class="BrowseFoto">Browse</button>
-                                            </div>
-                                            @error('lampiran')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="OpsiTipePost">
-                                            <label class="labelNWPT">Tipe Postingan</label>
-                                            <input type="radio" id="pengumuman" name="tipe" value="pengumuman" {{ old('tipe', 'pengumuman') == 'pengumuman' ? 'checked' : '' }}>
-                                            <input type="radio" id="blog" name="tipe" value="blog" {{ old('tipe') == 'blog' ? 'checked' : '' }}>
-                                            <label class="switch" for="pengumuman">
-                                                <span class="switch-left">Pengumuman</span>
-                                                <span class="switch-right">Blog</span>
-                                                <span class="switch-button"></span>
-                                            </label>
-                                            @error('tipe')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
+                                <div class="KhususTrixIsiKonten">
+                                    <div class="IsiData">
+                                        <label for="isi_trix" class="labelNWPT">Isi Konten</label>
+                                        <input id="isi_trix" type="hidden" name="isi_trix" value="{{ old('isi_trix') }}">
+                                        <trix-editor input="isi_trix" placeholder="Tulis konten postingan Anda di sini..."></trix-editor>
+                                        @error('isi_trix')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    
-                                    <div class="PreviewContainer" id="previewContainer">
-                                        <img id="previewImage" class="PreviewImage" alt="Preview">
-                                        <div class="PreviewText" id="previewText">Preview foto akan muncul di sini</div>
-                                        <button type="button" class="RemoveImage" id="removeImage">Hapus Foto</button>
-                                    </div>
-
-                                    <div class="InfoSubmit">
-                                        <button type="submit" class="TombolOJT TombolPosting">Posting</button>
-                                        <div class="UiPsnDis PsnError" style="display: none;" id="errorMessage">
-                                            Postingan Bermasalah
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="FormKanan">
-                                <div class="IsiData">
-                                    <label for="isi" class="labelNWPT">Isi Konten</label>
-                                    <input id="isi" type="hidden" name="isi" value="{{ old('isi') }}">
-                                    <trix-editor input="isi" placeholder="Tulis konten postingan Anda di sini..."></trix-editor>
-                                    @error('isi')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -105,6 +123,7 @@
                 </div>
             </div>
 
+            <!-- Rest of the Blade file remains unchanged -->
             <div id="pengumumanList" style="{{ request('TipePost') == 'pengumuman' ? 'display: block;' : 'display: none;' }}">
                 <h2>Daftar Pengumuman</h2>
                 <div class="LayoutDisplayPostingan">
@@ -124,21 +143,24 @@
                                     <div class="FooterCardPost">
                                         <div class="InfoUserCardPost">
                                             <div class="FotoProfileCardPost">
-                                                @if($pengumuman->creator())
-                                                    {{ strtoupper(substr($pengumuman->creator()->name, 0, 2)) }}
+                                                @if($pengumuman->profile)
+                                                    {{ strtoupper(substr($pengumuman->profile->name, 0, 2)) }}
                                                 @else
                                                     ??
                                                 @endif
                                             </div>
                                             <div class="UserProfileCardPost">
                                                 <span class="NamaPengunaCP">
-                                                    @if($pengumuman->creator())
-                                                        {{ $pengumuman->creator()->name }}
+                                                    @if($pengumuman->profile)
+                                                        {{ $pengumuman->profile->name }}
                                                     @else
                                                         Unknown Author
                                                     @endif
                                                 </span>
                                                 <span class="TanggalPublikasihCP">{{ $pengumuman->created_at->format('M d, Y') }}</span>
+                                                <span class="TujuanPost">
+                                                    Tujuan: {{ $pengumuman->kelasTahun ? $pengumuman->kelasTahun->kelas->nama_kelas . ' - ' . $pengumuman->kelasTahun->tahunajar->tahun_ajaran : 'Publik' }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="OpsiTombolCp">
@@ -179,16 +201,16 @@
                                     <div class="FooterCardPost">
                                         <div class="InfoUserCardPost">
                                             <div class="FotoProfileCardPost">
-                                                @if($blog->creator())
-                                                    {{ strtoupper(substr($blog->creator()->name, 0, 2)) }}
+                                                @if($blog->profile)
+                                                    {{ strtoupper(substr($blog->profile->name, 0, 2)) }}
                                                 @else
                                                     ??
                                                 @endif
                                             </div>
                                             <div class="UserProfileCardPost">
                                                 <span class="NamaPengunaCP">
-                                                    @if($blog->creator())
-                                                        {{ $blog->creator()->name }}
+                                                    @if($blog->profile)
+                                                        {{ $blog->profile->name }}
                                                     @else
                                                         Unknown Author
                                                     @endif
@@ -202,7 +224,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="TipePost" value="blog">
-                                                <button type="submit" class="TombolOJT TombolHapus" data-post-type="blog" data-post-id="{{ $blog->postingan_id }}">Hapus</button>
+                                                <button type="submit" class="TombolOJT TombolHapus">Hapus</button>
                                             </form>
                                         </div>
                                     </div>
@@ -216,4 +238,48 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const pengumumanRadio = document.getElementById('pengumuman');
+            const blogRadio = document.getElementById('blog');
+            const tujuanContainer = document.getElementById('tujuanContainer');
+
+            function toggleTujuanField() {
+                if (pengumumanRadio.checked) {
+                    tujuanContainer.style.display = 'block';
+                } else {
+                    tujuanContainer.style.display = 'none';
+                }
+            }
+
+            pengumumanRadio.addEventListener('change', toggleTujuanField);
+            blogRadio.addEventListener('change', toggleTujuanField);
+            toggleTujuanField(); // Initial check
+        });
+    </script>
 </body>
+
+<!-- === Trix Editor JS (via CDN) === -->
+<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+<!-- ====================================== -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Tunggu hingga Trix siap dengan interval
+        const waitForTrix = setInterval(function() {
+            const trixEditor = document.querySelector("trix-editor");
+            if (trixEditor) {
+                // Pastikan toolbar sudah ada
+                const toolbar = trixEditor.toolbarElement;
+                if (toolbar) {
+                    const attachButton = toolbar.querySelector("[data-trix-action='attachFiles']");
+                    if (attachButton) {
+                        attachButton.style.display = "none";
+                        clearInterval(waitForTrix); // Hentikan interval setelah berhasil
+                    }
+                }
+            }
+        }, 100); // Cek setiap 100ms
+    });
+</script>

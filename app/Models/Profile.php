@@ -10,10 +10,12 @@ class Profile extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $table = 'profiles';
-    protected $primaryKey = 'profile_id'; // Penting!
+    protected $primaryKey = 'profile_id';
     public $incrementing = true;
-    protected $keyType = 'int'; // Tipe primary key
-    protected $fillable = ['name', 'email', 'foto' ,'alamat','jenis_kelamin','tanggal_lahir','tempat_lahir','pendidikan', 'password', 'no_telp'];
+    protected $keyType = 'int';
+    protected $fillable = ['name', 'email', 'foto', 'alamat', 'jenis_kelamin', 'tanggal_lahir', 'tempat_lahir', 'pendidikan', 'password', 'no_telp', 'role'];
+
+    protected $hidden = ['password', 'remember_token'];
 
     public function guru()
     {
@@ -45,4 +47,3 @@ class Profile extends Authenticatable
         return $this->hasMany(Komentar::class, 'profile_id');
     }
 }
-?>

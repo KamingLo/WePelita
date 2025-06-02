@@ -21,7 +21,7 @@ class LoginController extends Controller
     {
         // Validasi input login
         $request->validate([
-            'email' => 'required|email',
+            'email' => 'required|email|lowercase',
             'password' => 'required|min:8',
         ]);
 

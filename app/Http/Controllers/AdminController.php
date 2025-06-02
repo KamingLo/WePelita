@@ -12,14 +12,15 @@ use App\Models\Kelas;
 use App\Models\TahunAjar;
 use App\Models\Pelajaran;
 use App\Models\JadwalPelajaran;
-use App\Models\Komentar;
 use App\Models\Postingan;
+use App\Models\Kegiatan;
 use App\Models\KelasTahun;
 use App\Models\MuridKelas;
 use App\Models\MuridOrangTua;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -510,10 +511,11 @@ class AdminController extends Controller
         return redirect()->route('admin.TambahPelajaran')->with('success', 'Pelajaran berhasil dihapus.');
     }
 
+    // Added the missing tampilkanManajemenPost method
     public function tampilkanManajemenPost()
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $pengumumans = Postingan::with('profile')
+        $pengumumans = Postingan::with(['profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar'])
             ->where('profile_id', $admin->profile_id)
             ->where('tipe', 'pengumuman')
             ->orderBy('created_at', 'desc')
@@ -523,52 +525,84 @@ class AdminController extends Controller
             ->where('tipe', 'blog')
             ->orderBy('created_at', 'desc')
             ->get();
+        $kelasTahuns = KelasTahun::with(['kelas', 'tahunajar'])
+            ->whereHas('tahunajar', function ($query) {
+                $query->where('status', 'Aktif');
+            })->get();
 
-        return view('admin.manajemenPost', compact('admin', 'pengumumans', 'blogs'));
+        return view('admin.manajemenPost', compact('admin', 'pengumumans', 'blogs', 'kelasTahuns'));
     }
 
     public function tambahPostingan(Request $request)
     {
-        Log::info('tambahPostingan called (Admin)', $request->all());
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-
-        $validated = $request->validate([
-            'tipe' => 'required|in:pengumuman,blog',
-            'judul' => 'required|string|max:255',
-            'isi' => 'required|string|min:10',
-            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-        ]);
-
-        Log::info('Validated data (Admin)', $validated);
-
+        \Log::info('tambahPostingan called', ['admin_profile_id' => $admin->profile_id, 'request' => $request->all()]);
+    
         $lampiranPath = null;
-        if ($request->hasFile('lampiran')) {
-            $file = $request->file('lampiran');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('storage/lampiran'), $filename);
-            $lampiranPath = 'lampiran/' . $filename;
-            Log::info('File uploaded (Admin)', ['path' => $lampiranPath]);
-        }
-
+    
         try {
-            $post = Postingan::create([
+            $validated = $request->validate([
+                'tipe' => 'required|in:pengumuman,blog',
+                'judul' => 'required|string|max:255',
+                'isi_trix' => 'required|string|min:10', // Ganti 'isi' menjadi 'isi_trix'
+                'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+                'tujuan' => 'nullable|exists:kelas_tahun,kelas_tahun_id',
+            ]);
+    
+            \Log::info('Validation passed', ['validated' => $validated]);
+    
+            if ($request->hasFile('lampiran')) {
+                $file = $request->file('lampiran');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                \Log::info('Uploading file', ['filename' => $filename]);
+                if (!file_exists(public_path('storage/lampiran'))) {
+                    mkdir(public_path('storage/lampiran'), 0775, true);
+                    \Log::info('Created directory storage/lampiran');
+                }
+                $file->move(public_path('storage/lampiran'), $filename);
+                $lampiranPath = 'lampiran/' . $filename;
+                \Log::info('File uploaded', ['lampiranPath' => $lampiranPath]);
+            }
+    
+            $kelasTahunId = ($validated['tipe'] == 'blog') ? null : $validated['tujuan'];
+            \Log::info('kelas_tahun_id determined', ['kelasTahunId' => $kelasTahunId]);
+    
+            \Log::info('Attempting to create post', [
                 'profile_id' => $admin->profile_id,
+                'kelas_tahun_id' => $kelasTahunId,
                 'tipe' => $validated['tipe'],
                 'judul' => $validated['judul'],
-                'isi' => $validated['isi'],
-                'lampiran' => $lampiranPath
+                'isi' => $validated['isi_trix'], // Gunakan isi_trix sebagai isi
+                'lampiran' => $lampiranPath,
             ]);
-            Log::info('Post created (Admin)', ['post_id' => $post->postingan_id]);
-
+    
+            $post = Postingan::create([
+                'profile_id' => $admin->profile_id,
+                'kelas_tahun_id' => $kelasTahunId,
+                'tipe' => $validated['tipe'],
+                'judul' => $validated['judul'],
+                'isi' => $validated['isi_trix'], // Gunakan isi_trix sebagai isi
+                'lampiran' => $lampiranPath,
+            ]);
+    
+            \Log::info('Post created', ['post_id' => $post->postingan_id]);
+    
             return redirect()
-                ->route('admin.manajemenPost')
+                ->route('admin.manajemenPost', ['TipePost' => $validated['tipe']])
                 ->with('success', 'Postingan berhasil dibuat.');
         } catch (\Exception $e) {
+            \Log::error('Error in tambahPostingan', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'request' => $request->all(),
+                'lampiranPath' => $lampiranPath,
+            ]);
+    
             if ($lampiranPath && file_exists(public_path('storage/' . $lampiranPath))) {
                 unlink(public_path('storage/' . $lampiranPath));
+                \Log::info('Deleted uploaded file', ['path' => $lampiranPath]);
             }
-            Log::error('Failed to create post (Admin)', ['error' => $e->getMessage()]);
-
+    
             return back()
                 ->withInput()
                 ->withErrors(['error' => 'Gagal membuat postingan: ' . $e->getMessage()]);
@@ -578,8 +612,15 @@ class AdminController extends Controller
     public function editPostingan($id)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
-        $postingan = Postingan::where('profile_id', $admin->profile_id)->findOrFail($id);
-        return view('admin.ManajemenPostEdit', compact('postingan', 'admin'));
+        $postingan = Postingan::with(['profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar'])
+            ->where('profile_id', $admin->profile_id)
+            ->findOrFail($id);
+        $kelasTahuns = KelasTahun::with(['kelas', 'tahunajar'])
+            ->whereHas('tahunajar', function ($query) {
+                $query->where('status', 'Aktif');
+            })->get();
+
+        return view('admin.ManajemenPostEdit', compact('postingan', 'admin', 'kelasTahuns'));
     }
 
     public function updatePostingan(Request $request, $id)
@@ -587,14 +628,15 @@ class AdminController extends Controller
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         $postingan = Postingan::where('profile_id', $admin->profile_id)->findOrFail($id);
 
-        $validated = $request->validate([
-            'tipe' => 'required|in:pengumuman,blog',
-            'judul' => 'required|string|max:255',
-            'isi' => 'required|string|min:10',
-            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-        ]);
-
         try {
+            $validated = $request->validate([
+                'tipe' => 'required|in:pengumuman,blog',
+                'judul' => 'required|string|max:255',
+                'isi' => 'required|string|min:10',
+                'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+                'tujuan' => 'required_if:tipe,pengumuman|nullable|in:public,' . implode(',', KelasTahun::pluck('kelas_tahun_id')->toArray()),
+            ]);
+
             $lampiranPath = $postingan->lampiran;
             if ($request->hasFile('lampiran')) {
                 if ($lampiranPath && Storage::disk('public')->exists($lampiranPath)) {
@@ -606,7 +648,10 @@ class AdminController extends Controller
                 $lampiranPath = 'lampiran/' . $filename;
             }
 
+            $kelasTahunId = ($validated['tipe'] == 'blog') ? null : ($validated['tujuan'] == 'public' ? null : $validated['tujuan']);
+
             $postingan->update([
+                'kelas_tahun_id' => $kelasTahunId,
                 'tipe' => $validated['tipe'],
                 'judul' => $validated['judul'],
                 'isi' => $validated['isi'],
@@ -640,6 +685,104 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal menghapus postingan: ' . $e->getMessage()]);
         }
+    }
+
+    public function updateKegiatan(Request $request, $id)
+    {
+        $kegiatan = Kegiatan::findOrFail($id);
+        
+        $validated = $request->validate([
+            'judul_kegiatan' => 'required|string|max:255',
+            'isi_kegiatan' => 'required|string',
+            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+        
+        try {
+            $lampiranPath = $kegiatan->lampiran;
+            if ($request->hasFile('lampiran')) {
+                if ($lampiranPath && Storage::disk('public')->exists($lampiranPath)) {
+                    Storage::disk('public')->delete($lampiranPath);
+                }
+                $lampiranPath = $request->file('lampiran')->store('uploads', 'public');
+            }
+            
+            $kegiatan->update([
+                'judul_kegiatan' => $validated['judul_kegiatan'],
+                'isi_kegiatan' => $validated['isi_kegiatan'],
+                'lampiran' => $lampiranPath,
+            ]);
+            
+            return redirect()->route('admin.manajemenPost', ['TipePost' => 'kegiatan'])
+                ->with('success', 'Kegiatan berhasil diupdate!');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors(['error' => 'Gagal mengupdate kegiatan: ' . $e->getMessage()]);
+        }
+    }
+
+    public function destroyKegiatan($id)
+    {
+        $kegiatan = Kegiatan::findOrFail($id);
+        
+        try {
+            if ($kegiatan->lampiran && Storage::disk('public')->exists($kegiatan->lampiran)) {
+                Storage::disk('public')->delete($kegiatan->lampiran);
+            }
+            $kegiatan->delete();
+            
+            return redirect()->route('admin.manajemenPost', ['TipePost' => 'kegiatan'])
+                ->with('success', 'Kegiatan berhasil dihapus!');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Gagal menghapus kegiatan: ' . $e->getMessage()]);
+        }
+    }
+
+    public function index()
+    {
+        $blogs = Postingan::with(['profile'])
+            ->where('tipe', 'blog')
+            ->orderBy('created_at', 'desc')
+            ->take(4)
+            ->get();
+
+        return view('welcome', compact('blogs'));
+    }
+
+    public function tampilkanBlog(Request $request)
+    {
+        $query = Postingan::with(['profile'])
+            ->where('tipe', 'blog')
+            ->orderBy('created_at', 'desc');
+
+        if ($filter = $request->query('filter')) {
+            switch ($filter) {
+                case 'today':
+                    $query->whereDate('created_at', Carbon::today());
+                    break;
+                case 'week':
+                    $query->whereBetween('created_at', [
+                        Carbon::now()->startOfWeek(),
+                        Carbon::now()->endOfWeek()
+                    ]);
+                    break;
+                case 'month':
+                    $query->whereMonth('created_at', Carbon::now()->month)
+                          ->whereYear('created_at', Carbon::now()->year);
+                    break;
+                case 'year':
+                    $query->whereYear('created_at', Carbon::now()->year);
+                    break;
+            }
+        }
+
+        $blogs = $query->get();
+        
+        return view('blog', compact('blogs'));
+    }
+
+    public function tampilkanBlogDetail($postingan_id)
+    {
+        $blog = Postingan::with(['profile'])->findOrFail($postingan_id);
+        return view('blogFull', compact('blog'));
     }
 
     public function tampilkanManajemenUser(Request $request)

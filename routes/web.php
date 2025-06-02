@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuruController;
-use App\Http\Controllers\PublicController;
+use App\Http\Controllers\MuridController;
 use App\Models\Admin;
 use App\Models\Guru;
 use Illuminate\Support\Str;
@@ -19,13 +19,11 @@ Route::get('/blog', function () {
     return view('blog');
 })->name('blog');
 
-Route::get('/', [PublicController::class, 'index'])->name('home');
-Route::get('/blog', [PublicController::class, 'tampilkanBlog'])->name('blog');
-Route::get('/blog-full/{id}', [PublicController::class, 'tampilkanBlogDetail'])->name('blog.full');
-Route::get('/blog/{postingan}', [PublicController::class, 'tampilkanBlogDetail'])->name('blog.show');
+Route::get('/', [AdminController::class, 'index'])->name('home');
+Route::get('/blog', [AdminController::class, 'tampilkanBlog'])->name('blog');
+Route::get('/blog-full/{id}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.full');
+Route::get('/blog/{postingan}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.show');
 
-Route::get('/editor', [EditorController::class, 'show'])->name('editor');
-Route::post('/editor', [EditorController::class, 'store'])->name('editor.store');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
@@ -95,4 +93,8 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     Route::get('guru/', function() {
         return view('guru.post');
     })->name('guru.post');
+});
+
+Route::middleware(['auth', 'role:murid'])->group(function () {
+    Route::get('/dashboard', [MuridController::class, 'dashboard'])->name('murid.dashboard');
 });

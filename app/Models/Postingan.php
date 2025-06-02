@@ -10,31 +10,42 @@ class Postingan extends Model
     use HasFactory;
 
     protected $table = 'postingan';
-    protected $primaryKey = 'postingan_id';
-    protected $fillable = ['profile_id', 'tipe', 'judul', 'isi', 'lampiran'];
 
+    protected $primaryKey = 'postingan_id';
+
+    protected $fillable = [
+        'profile_id',
+        'kelas_tahun_id',
+        'tipe',
+        'judul',
+        'isi', 
+        'lampiran',
+    ];
+
+    /**
+     * Relasi dengan model Profile (pengguna yang membuat postingan).
+     */
     public function profile()
     {
-        return $this->belongsTo(Profile::class, 'profile_id');
+        // Sesuaikan foreign key jika berbeda dari konvensi Laravel
+        return $this->belongsTo(Profile::class, 'profile_id', 'profile_id');
     }
 
+    /**
+     * Relasi dengan model Komentar (komentar pada postingan ini).
+     */
     public function komentar()
     {
-        return $this->hasMany(Komentar::class, 'postingan_id');
+        // Sesuaikan foreign key jika berbeda dari konvensi Laravel
+        return $this->hasMany(Komentar::class, 'postingan_id', 'postingan_id');
     }
 
-    public function creator()
+    /**
+     * Relasi dengan model KelasTahun (jika postingan ini terkait dengan kelas/tahun tertentu).
+     */
+    public function kelasTahun()
     {
-        $admin = Admin::where('profile_id', $this->profile_id)->first();
-        if ($admin) {
-            return $admin->profile;
-        }
-
-        $guru = Guru::where('profile_id', $this->profile_id)->first();
-        if ($guru) {
-            return $guru->profile;
-        }
-
-        return $this->profile;
+        // Sesuaikan foreign key jika berbeda dari konvensi Laravel
+        return $this->belongsTo(KelasTahun::class, 'kelas_tahun_id', 'kelas_tahun_id');
     }
 }
