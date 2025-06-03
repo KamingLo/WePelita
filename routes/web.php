@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\MuridController;
+use App\Http\Controllers\PostinganController;
 use App\Models\Admin;
 use App\Models\Guru;
 use Illuminate\Support\Str;
@@ -22,7 +23,6 @@ Route::get('/blog', function () {
 
 Route::get('/', [AdminController::class, 'index'])->name('home');
 Route::get('/blog', [AdminController::class, 'tampilkanBlog'])->name('blog');
-Route::get('/blog-full/{id}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.full');
 Route::get('/blog/{postingan}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.show');
 
 Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
@@ -71,6 +71,9 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::get('admin/export-jadwal', function () {
     return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
     })->name('admin.export');
+
+    Route::get('/postingan/{id}', [PostinganController::class, 'show']);
+    Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
 });
 
 Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
@@ -93,6 +96,9 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     Route::get('/export-jadwal', function () {
     return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
     });
+
+    Route::get('/postingan/{id}', [PostinganController::class, 'show']);
+    Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
 
     Route::get('guru/', function() {
         return view('guru.post');

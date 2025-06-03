@@ -1,17 +1,18 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use BeyondCode\Comments\Traits\HasComments;
 use BeyondCode\Comments\Contracts\Commentator;
 
-class Profile extends Authenticatable
+class Profile extends Authenticatable implements Commentator
 {
-    use Notifiable, HasComments;
+    use Notifiable, HasFactory, HasComments;
 
     protected $primaryKey = 'profile_id';
-
     protected $table = 'profiles';
 
     protected $fillable = [
@@ -38,4 +39,10 @@ class Profile extends Authenticatable
     public function admin() {
         return $this->hasOne(Admin::class, 'profile_id');
     }
+
+    public function needsCommentApproval($model): bool
+    {
+        return false;
+    }
+
 }

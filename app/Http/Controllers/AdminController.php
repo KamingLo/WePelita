@@ -779,10 +779,10 @@ class AdminController extends Controller
         return view('blog', compact('blogs'));
     }
 
-    public function tampilkanBlogDetail($postingan_id)
+    public function tampilkanBlogDetail($id)
     {
-        $blog = Postingan::with(['profile'])->findOrFail($postingan_id);
-        return view('blogFull', compact('blog'));
+        $postingan = Postingan::with('comments.commentator', 'profile')->findOrFail($id);
+        return view('blogFull', compact('postingan'));
     }
 
     public function tampilkanManajemenUser(Request $request)

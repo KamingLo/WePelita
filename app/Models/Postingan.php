@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use BeyondCode\Comments\Traits\Commentable;
+use BeyondCode\Comments\Traits\HasComments;
 use Illuminate\Database\Eloquent\Model;
 
 class Postingan extends Model
 {
-    use HasFactory;
+    use HasFactory, HasComments;
 
     protected $table = 'postingan';
 
@@ -32,14 +32,6 @@ class Postingan extends Model
         return $this->belongsTo(Profile::class, 'profile_id', 'profile_id');
     }
 
-    /**
-     * Relasi dengan model Komentar (komentar pada postingan ini).
-     */
-    public function komentar()
-    {
-        // Sesuaikan foreign key jika berbeda dari konvensi Laravel
-        return $this->hasMany(Komentar::class, 'postingan_id', 'postingan_id');
-    }
 
     /**
      * Relasi dengan model KelasTahun (jika postingan ini terkait dengan kelas/tahun tertentu).

@@ -7,30 +7,60 @@
 <section class="blog-detail-section">
     <div class="blog-detail-container">
         <div class="blog-image" data-aos="fade-up">
-            @if($blog->lampiran)
-                <img src="{{ asset('storage/' . $blog->lampiran) }}" alt="{{ $blog->judul }}">
+            @if($postingan->lampiran)
+                <img src="{{ asset('storage/' . $postingan->lampiran) }}" alt="{{ $postingan->judul }}">
             @else
-                <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $blog->judul }}">
+                <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="{{ $postingan->judul }}">
             @endif
         </div>
         <div class="blog-content" data-aos="fade-up" data-aos-delay="100">
-            <h1>{{ $blog->judul }}</h1>
+            <h1>{{ $postingan->judul }}</h1>
             <div class="blog-meta">
                 <span class="author">
-                    <i class='bx bx-user'></i> {{ $blog->creator()->name }}
+                    <i class='bx bx-user'></i> {{ $postingan->profile->name ?? 'Penulis Tidak Diketahui' }}
                 </span>
                 <span class="date">
-                    <i class='bx bx-calendar'></i> {{ $blog->created_at->format('M d, Y') }}
+                    <i class='bx bx-calendar'></i> {{ $postingan->created_at->format('M d, Y') }}
                 </span>
             </div>
             <div class="blog-body">
-                {!! $blog->isi !!}
+                {!! $postingan->isi !!}
             </div>
             <a href="{{ route('blog') }}" class="back-btn" data-aos="fade-up" data-aos-delay="200">
                 <i class='bx bx-arrow-back'></i> Kembali ke Blog
             </a>
         </div>
     </div>
+</section>
+
+{{-- Bagian Komentar --}}
+<section class="comments-section" data-aos="fade-up" data-aos-delay="300" style="margin-top: 40px;">
+    <h2>Komentar</h2>
+
+    @foreach($postingan->comments as $comment)
+        <div style="border:1px solid #ddd; padding:10px; margin-bottom:15px; border-radius:5px;">
+            <strong>{{ $comment->commentator->name ?? 'Anonymous' }}</strong>
+            <small style="color:#777; font-size:12px;"> - {{ $comment->created_at->diffForHumans() }}</small>
+            <p>{{ $comment->comment }}</p>
+        </div>
+    @endforeach
+
+    @auth
+        <form action="{{ route('postingan.comment', $postingan->postingan_id) }}" method="POST" style="margin-top:20px;">
+            @csrf
+            <label for="comment">Tambahkan Komentar:</label><br>
+            <textarea name="comment" id="comment" rows="4" style="width:100%; padding:10px;" required></textarea><br><br>
+            <button type="submit" style="padding:10px 20px; background-color:#0056b3; color:white; border:none; border-radius:4px;">Kirim Komentar</button>
+        </form>
+    @else
+        <p>Silakan <a href="{{ route('login') }}">login</a> untuk memberikan komentar.</p>
+    @endauth
+
+    @if(session('success'))
+        <div style="color:green; margin-top:10px;">
+            {{ session('success') }}
+        </div>
+    @endif
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>

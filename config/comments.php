@@ -19,4 +19,7 @@ return [
      * Determines if replies will be deleted when comments are deleted
      */
     'delete_replies_along_comments' => false,
+
+    'commentator_model' => \App\Models\Profile::class,
+
 ];
