@@ -2,14 +2,14 @@
 
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\MuridController;
 use App\Models\Admin;
 use App\Models\Guru;
 use Illuminate\Support\Str;
-use App\Http\Controllers\EditorController;
+use App\Exports\JadwalPelajaranExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,15 +19,11 @@ Route::get('/blog', function () {
     return view('blog');
 })->name('blog');
 
+
 Route::get('/', [AdminController::class, 'index'])->name('home');
 Route::get('/blog', [AdminController::class, 'tampilkanBlog'])->name('blog');
 Route::get('/blog-full/{id}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.full');
 Route::get('/blog/{postingan}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.show');
-
-
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::get('admin/dashboard', function() {
@@ -71,6 +67,10 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::get('/admin/user/edit/{id}', [AdminController::class, 'editUser'])->name('admin.user.edit');
     Route::put('/admin/user/update/{id}', [AdminController::class, 'updateUser'])->name('admin.user.update');
     Route::delete('/admin/user/delete/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.delete');
+
+    Route::get('admin/export-jadwal', function () {
+    return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
+    })->name('admin.export');
 });
 
 Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
@@ -90,11 +90,11 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     Route::put('guru/manajemenPost/edit/{id}', [GuruController::class, 'updatePostingan'])->name('guru.post.update');
     Route::delete('guru/manajemenPost/destroy/{id}', [GuruController::class, 'hapusPostingan'])->name('guru.post.hapus');
 
+    Route::get('/export-jadwal', function () {
+    return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
+    });
+
     Route::get('guru/', function() {
         return view('guru.post');
     })->name('guru.post');
-});
-
-Route::middleware(['auth', 'role:murid'])->group(function () {
-    Route::get('/dashboard', [MuridController::class, 'dashboard'])->name('murid.dashboard');
 });

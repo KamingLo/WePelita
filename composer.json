@@ -6,9 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "beyondcode/laravel-comments": "^1.8",
+        "laravel/fortify": "^1.25",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.6",
+        "maatwebsite/excel": "^3.1",
         "tonysm/rich-text-laravel": "^3.3"
     },
     "require-dev": {

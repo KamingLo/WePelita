@@ -81,6 +81,7 @@
 
         <div class="LayoutJadwalTable">
             <h2>Jadwal Pembelajaran</h2>
+            <a href="{{ route('admin.export') }}">download jadwal</a>
             <div class="DisplayDataTable">
                 <table class="table">
                     <thead>

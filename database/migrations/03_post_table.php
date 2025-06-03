@@ -18,19 +18,10 @@ return new class extends Migration
             $table->string('lampiran')->nullable();
             $table->timestamps();
         });
-
-        Schema::create('komentar', function (Blueprint $table) {
-            $table->id('komentar_id');
-            $table->foreignId('postingan_id')->constrained('postingan', 'postingan_id')->onDelete('cascade');
-            $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
-            $table->text('isi_komentar');
-            $table->timestamps();
-        });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('komentar');
         Schema::dropIfExists('postingan');
     }
 };

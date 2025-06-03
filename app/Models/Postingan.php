@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use BeyondCode\Comments\Traits\Commentable;
 use Illuminate\Database\Eloquent\Model;
 
 class Postingan extends Model
