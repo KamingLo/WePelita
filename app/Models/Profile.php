@@ -1,48 +1,48 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use BeyondCode\Comments\Traits\HasComments;
+use BeyondCode\Comments\Contracts\Commentator;
 
-class Profile extends Authenticatable
+class Profile extends Authenticatable implements Commentator
 {
-    use HasFactory, Notifiable;
+    use Notifiable, HasFactory, HasComments;
 
+    protected $primaryKey = 'profile_id';
     protected $table = 'profiles';
-    protected $primaryKey = 'profile_id'; // Penting!
-    public $incrementing = true;
-    protected $keyType = 'int'; // Tipe primary key
-    protected $fillable = ['name', 'email', 'foto' ,'alamat','jenis_kelamin','tanggal_lahir','tempat_lahir','pendidikan', 'password', 'no_telp'];
 
-    public function guru()
-    {
+    protected $fillable = [
+        'name', 'email', 'alamat', 'foto', 'jenis_kelamin', 'tanggal_lahir',
+        'tempat_lahir', 'pendidikan', 'password', 'no_telp',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
+
+    public function guru() {
         return $this->hasOne(Guru::class, 'profile_id');
     }
 
-    public function orangTua()
-    {
-        return $this->hasOne(OrangTua::class, 'profile_id');
-    }
-
-    public function admin()
-    {
-        return $this->hasOne(Admin::class, 'profile_id');
-    }
-
-    public function murid()
-    {
+    public function murid() {
         return $this->hasOne(Murid::class, 'profile_id');
     }
 
-    public function postingan()
-    {
-        return $this->hasMany(Postingan::class, 'profile_id');
+    public function orangTua() {
+        return $this->hasOne(OrangTua::class, 'profile_id');
     }
 
-    public function komentar()
-    {
-        return $this->hasMany(Komentar::class, 'profile_id');
+    public function admin() {
+        return $this->hasOne(Admin::class, 'profile_id');
     }
+
+    public function needsCommentApproval($model): bool
+    {
+        return false;
+    }
+
 }
-?>

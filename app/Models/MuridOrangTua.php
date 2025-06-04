@@ -11,6 +11,7 @@ class MuridOrangTua extends Model
 
     protected $table = 'murid_orang_tua';
     protected $primaryKey = 'murid_orang_tua_id';
+    public $timestamps = false;
 
     protected $fillable = [
         'murid_kelas_id',

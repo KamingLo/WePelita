@@ -10,10 +10,8 @@ class RoleMiddleware
 {
     public function handle(Request $request, Closure $next, $role)
     {
-        \Log::info('Role dari session: ' . session('role'));
-
         if (session('role') !== $role) {
-            return redirect('login');  // Atau halaman lain jika role tidak sesuai
+            return redirect('login'); 
         }
 
         return $next($request);

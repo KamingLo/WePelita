@@ -7,12 +7,44 @@ document.addEventListener('DOMContentLoaded', function() {
     const postRemoveImageBtn = document.getElementById('removeImage');
     const postBrowseBtn = document.querySelector('.BrowseFoto');
     const filterSelect = document.getElementById('TipePost');
+    const filterForm = document.getElementById('filterForm');
     const tambahPost = document.getElementById('tambahPost');
     const pengumumanList = document.getElementById('pengumumanList');
     const blogList = document.getElementById('blogList');
     const postForm = document.getElementById('postForm');
     const successAlert = document.getElementById('successAlert');
     const errorMessage = document.getElementById('errorMessage');
+
+    if (filterSelect && filterForm) {
+        filterSelect.addEventListener('change', function() {
+            console.log('Filter changed to:', this.value);
+            const selectedValue = this.value;
+
+            if (tambahPost) tambahPost.style.display = selectedValue === '' ? 'block' : 'none';
+            if (pengumumanList) pengumumanList.style.display = selectedValue === 'pengumuman' ? 'block' : 'none';
+            if (blogList) blogList.style.display = selectedValue === 'blog' ? 'block' : 'none';
+
+            try {
+                filterForm.submit();
+                console.log('Form submitted');
+            } catch (error) {
+                console.error('Form submission error:', error);
+            }
+        });
+    }
+
+    function initializeDisplay() {
+        const selectedValue = filterSelect ? filterSelect.value : '';
+        console.log('Initializing display with value:', selectedValue);
+
+        if (tambahPost) tambahPost.style.display = selectedValue === '' ? 'block' : 'none';
+        if (pengumumanList) pengumumanList.style.display = selectedValue === 'pengumuman' ? 'block' : 'none';
+        if (blogList) blogList.style.display = selectedValue === 'blog' ? 'block' : 'none';
+    }
+
+    if (filterSelect) {
+        initializeDisplay();
+    }
 
     if (postBrowseBtn && postFileInput) {
         postBrowseBtn.addEventListener('click', function() {
@@ -58,28 +90,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (postFileNameDisplay) postFileNameDisplay.textContent = 'Pilih file';
     }
 
-    if (filterSelect) {
-        filterSelect.removeAttribute('onchange');
-        filterSelect.addEventListener('change', function() {
-            const selectedValue = this.value;
-            if (tambahPost) tambahPost.style.display = 'none';
-            if (pengumumanList) pengumumanList.style.display = 'none';
-            if (blogList) blogList.style.display = 'none';
-            switch(selectedValue) {
-                case 'pengumuman':
-                    if (pengumumanList) pengumumanList.style.display = 'block';
-                    break;
-                case 'blog':
-                    if (blogList) blogList.style.display = 'block';
-                    break;
-                default:
-                    if (tambahPost) tambahPost.style.display = 'block';
-                    break;
-            }
-            this.form.submit();
-        });
-    }
-
     if (postForm) {
         postForm.addEventListener('submit', function(e) {
             const judul = document.getElementById('judul').value;
@@ -105,33 +115,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function initializeDisplay() {
-        const currentValue = filterSelect ? filterSelect.value : '';
-        if (tambahPost) tambahPost.style.display = 'none';
-        if (pengumumanList) pengumumanList.style.display = 'none';
-        if (blogList) blogList.style.display = 'none';
-        switch(currentValue) {
-            case 'pengumuman':
-                if (pengumumanList) pengumumanList.style.display = 'block';
-                break;
-            case 'blog':
-                if (blogList) blogList.style.display = 'block';
-                break;
-            default:
-                if (tambahPost) tambahPost.style.display = 'block';
-                break;
-        }
-    }
-
-    initializeDisplay();
-
-    // Updated Switch Logic for Animation
     const pengumumanRadio = document.getElementById('pengumuman');
     const blogRadio = document.getElementById('blog');
     const switchElement = document.querySelector('.switch');
 
     if (pengumumanRadio && blogRadio && switchElement) {
-        // Initialize switch state based on checked radio
         function updateSwitchState() {
             if (blogRadio.checked) {
                 switchElement.classList.add('active');
@@ -142,10 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Set initial state
         updateSwitchState();
 
-        // Handle click on switch to toggle radio buttons
         switchElement.addEventListener('click', function(e) {
             e.preventDefault();
             if (pengumumanRadio.checked) {
@@ -154,12 +140,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 pengumumanRadio.checked = true;
             }
             updateSwitchState();
-            // Trigger change event for form validation or other listeners
             const changeEvent = new Event('change', { bubbles: true });
             (pengumumanRadio.checked ? pengumumanRadio : blogRadio).dispatchEvent(changeEvent);
         });
 
-        // Handle keyboard accessibility
         switchElement.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -167,11 +151,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Update switch state on radio change
         pengumumanRadio.addEventListener('change', updateSwitchState);
         blogRadio.addEventListener('change', updateSwitchState);
 
-        // Add accessibility attributes
         switchElement.setAttribute('tabindex', '0');
         switchElement.setAttribute('role', 'switch');
     }
@@ -182,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('isi').value = this.innerHTML;
         });
     }
-    
+
     const successMessages = document.querySelectorAll('.alert-success, .PsnBerhasil');
     successMessages.forEach(message => {
         setTimeout(() => {
@@ -205,21 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
         });
     });
-    
-    const deleteButtons = document.querySelectorAll('.btn-danger');
-    deleteButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const form = this.closest('form');
-            const postType = form.action.includes('pengumuman') ? 'pengumuman' : 'blog';
-            const postTitle = this.closest('.mini-post-preview').querySelector('.mini-post-title').textContent;
-            if (confirm(`Yakin ingin menghapus ${postType} "${postTitle}"?`)) {
-                form.submit();
-            }
-        });
-    });
-    
-    // Original CssAdmin.js Functionality
+
     const fileInput = document.getElementById('lampiran');
     const fileNameDisplay = document.getElementById('FileNamaFoto');
     const preview = {
@@ -330,16 +298,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const input = document.getElementById(inputId);
         const clearBtn = document.getElementById(buttonId);
         
-        if (!input || !clearBtn) {
-            return;
-        }
+        if (!input || !clearBtn) return;
         
         function toggleClearButton() {
-            if (input.value.trim() !== "") {
-                clearBtn.style.display = "inline-block";
-            } else {
-                clearBtn.style.display = "none";
-            }
+            clearBtn.style.display = input.value.trim() !== "" ? "inline-block" : "none";
         }
 
         input.addEventListener("input", toggleClearButton);
@@ -353,7 +315,6 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleClearButton();
     }
 
-    // Main user fields
     setupClearButton("name", "clearName");
     setupClearButton("email", "clearEmail");
     setupClearButton("alamat", "clearAlamat");
@@ -364,14 +325,10 @@ document.addEventListener('DOMContentLoaded', function() {
     setupClearButton("no_telp", "clearNoTelp");
     setupClearButton("password", "clearPassword");
     setupClearButton("UserUntuk", "clearRole");
-    
-    // Student fields
     setupClearButton("asal_sekolah", "clearAsalSekolah");
     setupClearButton("nis", "clearNis");
     setupClearButton("nisn", "clearNisn");
     setupClearButton("kelas_id", "clearKelasId");
-    
-    // Parent fields
     setupClearButton("ortu_name", "clearOrtuName");
     setupClearButton("ortu_email", "clearOrtuEmail");
     setupClearButton("ortu_alamat", "clearOrtuAlamat");
@@ -382,35 +339,18 @@ document.addEventListener('DOMContentLoaded', function() {
     setupClearButton("ortu_pendidikan", "clearOrtuPendidikan");
     setupClearButton("ortu_no_telp", "clearOrtuNoTelp");
     setupClearButton("ortu_password", "clearOrtuPassword");
-    
-    // Teacher fields
     setupClearButton("gelar", "clearGelar");
     setupClearButton("nuptk", "clearNuptk");
     setupClearButton("statusMenikah", "clearStatusMenikah");
     setupClearButton("statusKerja", "clearStatusKerja");
-
-    // Tambah Pelajaran
     setupClearButton("namaPelajaran", "clearNamaPelajaran");
-
-    // Manajemen Kelas
     setupClearButton("nama_kelas", "clearNamaKelas");
 
     function switchTab(tabName) { 
-        const tabContents = document.querySelectorAll('.TabContent');
-        tabContents.forEach(content => {
-            content.classList.remove('active');
-        });
-        
-        const oldTabButtons = document.querySelectorAll('.TabButton');
-        const newTabButtons = document.querySelectorAll('.HeaderTabButton');
-        
-        oldTabButtons.forEach(button => {
-            button.classList.remove('active');
-        });
-        
-        newTabButtons.forEach(button => {
-            button.classList.remove('active');
-        });
+        const tabContents = document.querySelectorAll('.DisSwitchKelas');
+        tabContents.forEach(content => content.classList.remove('active'));
+        const tabButtons = document.querySelectorAll('.SwitchKelasTab');
+        tabButtons.forEach(button => button.classList.remove('active'));
         
         if (tabName === 'manajemen') {
             document.getElementById('manajemenTab')?.classList.add('active');
@@ -419,6 +359,23 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('kenaikanTab')?.classList.add('active');
             document.getElementById('tabKenaikan')?.classList.add('active');
         }
+    }
+
+    const tabManajemenBtn = document.getElementById('tabManajemen');
+    const tabKenaikanBtn = document.getElementById('tabKenaikan');
+    
+    if (tabManajemenBtn) {
+        tabManajemenBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            switchTab('manajemen');
+        });
+    }
+    
+    if (tabKenaikanBtn) {
+        tabKenaikanBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            switchTab('kenaikan');
+        });
     }
 
     const handleFileInputs = () => {
@@ -446,12 +403,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const handleSuccessMessages = () => {
         const successMessages = document.querySelectorAll('.alert-success, .PsnBerhasil');
-        
         successMessages.forEach(message => {
             setTimeout(() => {
                 message.style.opacity = '0';
                 message.style.transition = 'opacity 0.5s ease-out';
-                
                 setTimeout(() => {
                     message.style.display = 'none';
                 }, 500);
@@ -461,40 +416,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const handlePostPreviews = () => {
         const postPreviews = document.querySelectorAll('.mini-post-preview');
-        
         postPreviews.forEach(preview => {
             preview.addEventListener('mouseenter', function() {
                 this.style.transform = 'translateY(-5px)';
                 this.style.boxShadow = '0 8px 15px rgba(0,0,0,0.1)';
             });
-            
             preview.addEventListener('mouseleave', function() {
                 this.style.transform = 'translateY(0)';
                 this.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
             });
         });
     };
-    
-    const handleDeleteConfirmations = () => {
-        const deleteButtons = document.querySelectorAll('.btn-danger[onclick*="confirm"]');
-        
-        deleteButtons.forEach(button => {
-            button.removeAttribute('onclick');
-            
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const form = this.closest('form');
-                const postType = form.action.includes('pengumuman') ? 'pengumuman' : 'kegiatan';
-                const postTitle = this.closest('.mini-post-preview').querySelector('.mini-post-title').textContent;
-                
-                if (confirm(`Yakin ingin menghapus ${postType} "${postTitle}"?`)) {
-                    form.submit();
-                }
-            });
-        });
-    };
-    
+
     handleFileInputs();
     handleSuccessMessages();
     handlePostPreviews();
@@ -502,34 +435,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.addEventListener('livewire:load', function() {
         Livewire.hook('message.processed', (message, component) => {
+            handleDeleteConfirmations();
             handleFileInputs();
             handleSuccessMessages();
             handlePostPreviews();
-            handleDeleteConfirmations();
+            initializeDisplay();
         });
     });
 
-    const sessionTabElement = document.getElementById('sessionTab');
-    const tabToActivate = sessionTabElement?.dataset.tab || 'manajemen';
-    switchTab(tabToActivate);
-    
-    const tabManajemenBtn = document.getElementById('tabManajemen');
-    const tabKenaikanBtn = document.getElementById('tabKenaikan');
-    
-    if (tabManajemenBtn) {
-        tabManajemenBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            switchTab('manajemen');
+    function handleDeleteConfirmations() {
+        const deleteForms = document.querySelectorAll('.delete-post-form');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (confirm('Apakah Anda yakin ingin menghapus postingan ini?')) {
+                    form.submit();
+                }
+            });
         });
     }
-    
-    if (tabKenaikanBtn) {
-        tabKenaikanBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            switchTab('kenaikan');
-        });
-    }
-    
+
     const clearNamaKelasBtn = document.getElementById('clearNamaKelas');
     const namaKelasInput = document.getElementById('nama_kelas');
     

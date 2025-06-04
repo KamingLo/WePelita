@@ -8,37 +8,42 @@ class Murid extends Model
 {
     use HasFactory;
 
-    public $timestamps = false; // Jika tidak ada kolom created_at dan updated_at
+    public $timestamps = false;
     protected $table = 'murid';
-    protected $primaryKey = 'murid_id'; // WAJIB
+    protected $primaryKey = 'murid_id';
     public $incrementing = true;
     protected $keyType = 'int';
 
     protected $fillable = ['profile_id', 'kelas_tahun_id', 'nis', 'nisn', 'asal_sekolah'];
 
-public function profile()
-{
-    return $this->belongsTo(Profile::class, 'profile_id');
-}
-
-
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class, 'profile_id');
+    }
 
     public function orangTua()
     {
         return $this->belongsToMany(
             OrangTua::class,
             'murid_orang_tua',
-            'murid_kelas_id',
+            'murid_id',
             'orang_tua_id'
         );
     }
 
-    public function muridkelas()
+    public function kelasTahun()
     {
-        return $this->belongsToMany(KelasTahun::class,
-        'murid_kelas',
-        'murid_id',
-        'kelas_tahun_id');
+        return $this->belongsTo(KelasTahun::class, 'kelas_tahun_id');
+    }
+
+    public function muridKelas()
+    {
+        return $this->belongsToMany(
+            KelasTahun::class,
+            'murid_kelas',
+            'murid_id',
+            'kelas_tahun_id'
+        )->withPivot('murid_kelas_id');
     }
 
     public function absensi()

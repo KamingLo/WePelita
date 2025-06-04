@@ -3,23 +3,42 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use BeyondCode\Comments\Traits\HasComments;
 use Illuminate\Database\Eloquent\Model;
 
 class Postingan extends Model
 {
-    use HasFactory;
+    use HasFactory, HasComments;
 
     protected $table = 'postingan';
-    protected $primaryKey = 'postingan_id';
-    protected $fillable = ['admin_id', 'tipe', 'judul', 'isi', 'lampiran'];
 
-    public function admin()
+    protected $primaryKey = 'postingan_id';
+
+    protected $fillable = [
+        'profile_id',
+        'kelas_tahun_id',
+        'tipe',
+        'judul',
+        'isi', 
+        'lampiran',
+    ];
+
+    /**
+     * Relasi dengan model Profile (pengguna yang membuat postingan).
+     */
+    public function profile()
     {
-        return $this->belongsTo(Admin::class, 'admin_id');
+        // Sesuaikan foreign key jika berbeda dari konvensi Laravel
+        return $this->belongsTo(Profile::class, 'profile_id', 'profile_id');
     }
 
-    public function komentar()
+
+    /**
+     * Relasi dengan model KelasTahun (jika postingan ini terkait dengan kelas/tahun tertentu).
+     */
+    public function kelasTahun()
     {
-        return $this->hasMany(Komentar::class, 'postingan_id');
+        // Sesuaikan foreign key jika berbeda dari konvensi Laravel
+        return $this->belongsTo(KelasTahun::class, 'kelas_tahun_id', 'kelas_tahun_id');
     }
 }

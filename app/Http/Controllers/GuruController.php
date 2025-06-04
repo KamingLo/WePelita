@@ -19,68 +19,146 @@ use App\Models\Nilai;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class GuruController extends Controller
 {
+    public function tampilkanManajemenPost()
+    {
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
+        $pengumumans = Postingan::with('profile')
+            ->where('profile_id', $guru->profile_id)
+            ->where('tipe', 'pengumuman')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $blogs = Postingan::with('profile')
+            ->where('profile_id', $guru->profile_id)
+            ->where('tipe', 'blog')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $kelasTahuns = KelasTahun::with(['kelas', 'tahunajar'])
+            ->whereHas('tahunajar', function ($query) {
+                $query->where('status', 'Aktif');
+            })->get();
+        return view('guru.ManajemenPost', compact('guru', 'pengumumans', 'blogs', 'kelasTahuns'));
+    }
+
+    public function tambahPostingan(Request $request)
+    {
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
+
+        $validated = $request->validate([
+            'tipe' => 'required|in:pengumuman,blog',
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string|min:10',
+            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'tujuan' => 'nullable|exists:kelas_tahun,kelas_tahun_id',
+        ]);
+
+        $lampiranPath = null;
+        if ($request->hasFile('lampiran')) {
+            $file = $request->file('lampiran');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('storage/lampiran'), $filename);
+            $lampiranPath = 'lampiran/' . $filename;
+        }
+
+        try {
+            $kelasTahunId = ($validated['tipe'] == 'blog') ? null : $validated['tujuan'];
+            $post = Postingan::create([
+                'profile_id' => $guru->profile_id,
+                'kelas_tahun_id' => $kelasTahunId,
+                'tipe' => $validated['tipe'],
+                'judul' => $validated['judul'],
+                'isi' => $validated['isi'],
+                'lampiran' => $lampiranPath
+            ]);
+
+            return redirect()
+                ->route('guru.ManajemenPost')
+                ->with('success', 'Postingan berhasil dibuat.');
+        } catch (\Exception $e) {
+            if ($lampiranPath && file_exists(public_path('storage/' . $lampiranPath))) {
+                unlink(public_path('storage/' . $lampiranPath));
+            }
+
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Gagal membuat postingan: ' . $e->getMessage()]);
+        }
+    }
+
+    public function updatePostingan(Request $request, $id)
+    {
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
+        $postingan = Postingan::where('profile_id', $guru->profile_id)->findOrFail($id);
+
+        $validated = $request->validate([
+            'tipe' => 'required|in:pengumuman,blog',
+            'judul' => 'required|string|max:255',
+            'isi' => 'required|string|min:10',
+            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+            'tujuan' => 'nullable|exists:kelas_tahun,kelas_tahun_id',
+        ]);
+
+        try {
+            $lampiranPath = $postingan->lampiran;
+
+            if ($request->hasFile('lampiran')) {
+                if ($lampiranPath && Storage::disk('public')->exists($lampiranPath)) {
+                    Storage::disk('public')->delete($lampiranPath);
+                }
+                $file = $request->file('lampiran');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->move(public_path('storage/lampiran'), $filename);
+                $lampiranPath = 'lampiran/' . $filename;
+            }
+
+            $kelasTahunId = ($validated['tipe'] == 'blog') ? null : $validated['tujuan'];
+
+            $postingan->update([
+                'kelas_tahun_id' => $kelasTahunId,
+                'tipe' => $validated['tipe'],
+                'judul' => $validated['judul'],
+                'isi' => $validated['isi'],
+                'lampiran' => $lampiranPath,
+            ]);
+
+            return redirect()->route('guru.ManajemenPost', ['TipePost' => $validated['tipe']])
+                ->with('success', 'Postingan berhasil diperbarui.');
+        } catch (\Exception $e) {
+            if ($lampiranPath && $request->hasFile('lampiran') && Storage::disk('public')->exists($lampiranPath)) {
+                Storage::disk('public')->delete($lampiranPath);
+            }
+            return back()->withInput()->withErrors(['error' => 'Gagal memperbarui postingan: ' . $e->getMessage()]);
+        }
+    }
+
     public function tampilkanDashboardGuru()
     {
-        $guru = Guru::findOrFail(auth()->id());
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
         return view('guru.dashboard', compact('guru'));
     }
 
-    public function tampilkanJadwalPelajaran(){
-        $guru =Guru::where('profile_id', auth()->id())->firstOrFail();
+    public function tampilkanJadwalPelajaran()
+    {
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
         return view('guru.jadwalpelajaran', compact('guru'));
     }
     
-    public function tampilkanJadwalAnda(){
-        $guru =Guru::where('profile_id', auth()->id())->firstOrFail();
+    public function tampilkanJadwalAnda()
+    {
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
         return view('guru.jadwalajaranda', compact('guru'));
     }
 
-    public function tampilkanPengumuman()
+    public function tampilkanMenuNilai()
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
-        $pengumuman = Postingan::where('profile_id', $guru->profile_id)->get();
-        return view('guru.pengumuman', compact('guru', 'pengumuman'));
-    }
-
-    public function tampilkanManajemenPost(){
-        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
-        return view('guru.ManajemenPostGuru', compact('guru')); // atau 'guru.ManajemenPostGuru' jika dalam subfolder
-    }
-
-    public function index()
-    {
-        return view('ManajemenPostGuru');
-    }
-
-
-    public function buatPengumuman(Request $request)
-    {
-        $title = $request->title;
-        $content = $request->content;
-
-        // Simpan file HTML di storage/app/blog/
-        $filename = now()->format('YmdHis') . '-' . \Str::slug($title) . '.html';
-
-        Storage::disk('local')->put("blog/$filename", $content);
-
-        // Optional: Simpan nama file di database jika kamu ingin tracking
-        Postingan::create([
-            'title' => $title,
-            'content' => $filename, // hanya simpan nama file
-        ]);
-
-        return redirect()->route('guru.pengumuman')->with('success', 'Blog saved');
-    }
-
-    public function tampilkanMenuNilai(){
-        $guru = Guru::where('profile_id', auth()->id())->firstorFail();
         return view('guru.isinilai', compact('guru'));
     }
 
-        public function simpanNilai(Request $request)
+    public function simpanNilai(Request $request)
     {
         $request->validate([
             'pelajaran_id' => 'required|exists:pelajaran,pelajaran_id',
@@ -108,4 +186,35 @@ class GuruController extends Controller
         return back()->with('success', 'Nilai berhasil disimpan.');
     }
 
+    public function editPostingan($id)
+    {
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
+        $postingan = Postingan::where('profile_id', $guru->profile_id)->findOrFail($id);
+        $kelasTahuns = KelasTahun::with(['kelas', 'tahunajar'])
+            ->whereHas('tahunajar', function ($query) {
+                $query->where('status', 'Aktif');
+            })->get();
+        return view('guru.ManajemenPostEdit', compact('postingan', 'guru', 'kelasTahuns'));
+    }
+
+    public function hapusPostingan($id, Request $request)
+    {
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
+        $postingan = Postingan::where('profile_id', $guru->profile_id)->findOrFail($id);
+
+        try {
+            $tipe = $request->input('TipePost', $postingan->tipe);
+            
+            if ($postingan->lampiran && Storage::disk('public')->exists($postingan->lampiran)) {
+                Storage::disk('public')->delete($postingan->lampiran);
+            }
+            
+            $postingan->delete();
+            
+            return redirect()->route('guru.ManajemenPost', ['TipePost' => $tipe])
+                ->with('success', 'Postingan berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Gagal menghapus postingan: ' . $e->getMessage()]);
+        }
+    }
 }

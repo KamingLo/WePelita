@@ -2,16 +2,15 @@
 
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GuruController;
-use App\Http\Controllers\PublicController;
+use App\Http\Controllers\MuridController;
+use App\Http\Controllers\PostinganController;
 use App\Models\Admin;
 use App\Models\Guru;
 use Illuminate\Support\Str;
-use App\Http\Controllers\TrixController;
-use App\Http\Controllers\EditorController;
-
+use App\Exports\JadwalPelajaranExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,20 +20,16 @@ Route::get('/blog', function () {
     return view('blog');
 })->name('blog');
 
-Route::get('/', [PublicController::class, 'index'])->name('home');
-Route::get('/blog', [PublicController::class, 'tampilkanBlog'])->name('blog');
-Route::get('/blog-full/{id}', [PublicController::class, 'tampilkanBlogDetail'])->name('blog.full');
-Route::get('/blog/{postingan}', [PublicController::class, 'tampilkanBlogDetail'])->name('blog.show');
 
-Route::get('/editor', [EditorController::class, 'show'])->name('editor');
-Route::post('/editor', [EditorController::class, 'store'])->name('editor.store');
+Route::get('/', [AdminController::class, 'index'])->name('home');
+Route::get('/blog', [AdminController::class, 'tampilkanBlog'])->name('blog');
+Route::get('/blog/{postingan}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.show');
 
-Route::get('post', [PublicController::class, 'tampilkanPostingan'])->name('postingan');
-Route::get('post/{id}', [PublicController::class, 'tampilkanPostinganByIndex'])->name('postingan.index');
+    Route::get('/postingan/{id}', [PostinganController::class, 'show']);
+    Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
 
-Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('login', [LoginController::class, 'login']);
-Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/register', [AdminController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AdminController::class, 'register'])->name('register.submit');
 
 Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::get('admin/dashboard', function() {
@@ -45,15 +40,15 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::get('/admin/register', [AdminController::class, 'formUser']);
     Route::post('/admin/register', [AdminController::class, 'tambahkanUser'])->name('admin.register');
 
-    Route::get('admin/pelajaran', [AdminController::class, 'tampilkanPelajaran'])->name('admin.pelajaran');
-    Route::post('admin/pelajaran', [AdminController::class, 'simpanPelajaran'])->name('admin.pelajaran');
+    Route::get('admin/TambahPelajaran', [AdminController::class, 'tampilkanPelajaran'])->name('admin.TambahPelajaran');
+    Route::post('admin/TambahPelajaran', [AdminController::class, 'simpanPelajaran'])->name('admin.TambahPelajaran');
     
     Route::get('admin/pelajaran/edit/{id}', [AdminController::class, 'tampilkanUpdatePelajaran'])->name('pelajaran.update');
     Route::put('admin/pelajaran/edit/{id}', [AdminController::class, 'updatePelajaran'])->name('pelajaran.update');
     Route::delete('admin/pelajaran/destroy/{id}', [AdminController::class, 'hapusPelajaran'])->name('pelajaran.destroy');
 
-    Route::get('admin/jadwal', [AdminController::class, 'tampilkanJadwal'])->name('admin.jadwal');
-    Route::post('admin/jadwal/store', [AdminController::class, 'simpanJadwal'])->name('jadwal.store');
+    Route::get('admin/TambahJadwal', [AdminController::class, 'tampilkanJadwal'])->name('admin.TambahJadwal');
+    Route::post('admin/TambahJadwal/store', [AdminController::class, 'simpanJadwal'])->name('TambahJadwal.store');
     
     Route::get('admin/jadwal/edit/{id}', [AdminController::class, 'tampilkanUpdateJadwal'])->name('jadwal.update');
     Route::put('admin/jadwal/edit/{id}', [AdminController::class, 'updateJadwal'])->name('jadwal.update');
@@ -74,10 +69,16 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::put('admin/manajemenPost/edit/{id}', [AdminController::class, 'updatePostingan'])->name('admin.post.update');
     Route::delete('admin/manajemenPost/destroy/{id}', [AdminController::class, 'hapusPostingan'])->name('admin.post.hapus');
 
-    Route::get('admin/manajemenUser', [AdminController::class, 'tampilkanManajemenUser'])->name('admin.ManajemenUser');
+    Route::get('admin/ManajemenUser', [AdminController::class, 'tampilkanManajemenUser'])->name('admin.ManajemenUser');
     Route::get('/admin/user/edit/{id}', [AdminController::class, 'editUser'])->name('admin.user.edit');
     Route::put('/admin/user/update/{id}', [AdminController::class, 'updateUser'])->name('admin.user.update');
     Route::delete('/admin/user/delete/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.delete');
+
+    Route::get('admin/export-jadwal', function () {
+    return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
+    })->name('admin.export');
+
+
 });
 
 Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
@@ -88,12 +89,18 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
 
     Route::get('guru/jadwal', [GuruController::class, 'tampilkanJadwalPelajaran'])->name('guru.jadwal');
     Route::get('guru/jadwalanda', [GuruController::class, 'tampilkanJadwalAnda'])->name('guru.jadwalanda');
-    Route::get('guru/buatpengumuman', [GuruController::class, 'tampilkanPengumuman'])->name('guru.pengumuman');
-
     Route::get('guru/menu-nilai', [GuruController::class, 'tampilkanMenuNilai'])->name('guru.isinilai');
     Route::post('guru/menu-nilai', [GuruController::class, 'simpanNilai'])->name('guru.isinilai');
 
-    Route::get('guru/ManajemenPostGuru', [GuruController::class, 'tampilkanManajemenPost'])->name('guru.manajemenPost');    
+    Route::get('guru/ManajemenPost', [GuruController::class, 'tampilkanManajemenPost'])->name('guru.ManajemenPost');
+    Route::post('guru/ManajemenPost', [GuruController::class, 'tambahPostingan'])->name('guru.post.tambah');
+    Route::get('guru/manajemenPost/edit/{id}', [GuruController::class, 'editPostingan'])->name('guru.post.edit');
+    Route::put('guru/manajemenPost/edit/{id}', [GuruController::class, 'updatePostingan'])->name('guru.post.update');
+    Route::delete('guru/manajemenPost/destroy/{id}', [GuruController::class, 'hapusPostingan'])->name('guru.post.hapus');
+
+    Route::get('/export-jadwal', function () {
+    return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
+    });
 
     Route::get('guru/', function() {
         return view('guru.post');

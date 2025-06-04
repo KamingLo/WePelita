@@ -269,10 +269,10 @@
                         <a href="{{ route('blog.show', $blog->postingan_id) }}" class="read-more-btn">Baca Selengkapnya</a>
                         <div class="blog-meta">
                             <div class="author-avatar">
-                                {{ strtoupper(substr($blog->admin->profile->name, 0, 2)) }}
+                                {{ strtoupper(substr($blog->profile->name, 0, 2)) }}
                             </div>
                             <div class="author-info">
-                                <div class="author-name">{{ $blog->admin->profile->name }}</div>
+                                <div class="author-name">{{ $blog->profile->name }}</div>
                                 <div class="publish-date">{{ $blog->created_at->format('M d, Y') }}</div>
                             </div>
                         </div>
