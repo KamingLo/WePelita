@@ -1,4 +1,4 @@
-@include('partials.header', ['NamaPage' => 'Blog Detail'])
+@include('partials.header', ['NamaPage' => $postingan->judul])
 
 <link rel="stylesheet" href="{{ asset('css/blog.css') }}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />

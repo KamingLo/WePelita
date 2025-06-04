@@ -25,6 +25,12 @@ Route::get('/', [AdminController::class, 'index'])->name('home');
 Route::get('/blog', [AdminController::class, 'tampilkanBlog'])->name('blog');
 Route::get('/blog/{postingan}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.show');
 
+    Route::get('/postingan/{id}', [PostinganController::class, 'show']);
+    Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
+
+    Route::get('/register', [AdminController::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AdminController::class, 'registerMurid'])->name('register.submit');
+
 Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::get('admin/dashboard', function() {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -72,8 +78,7 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
     })->name('admin.export');
 
-    Route::get('/postingan/{id}', [PostinganController::class, 'show']);
-    Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
+
 });
 
 Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
@@ -96,9 +101,6 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     Route::get('/export-jadwal', function () {
     return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
     });
-
-    Route::get('/postingan/{id}', [PostinganController::class, 'show']);
-    Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
 
     Route::get('guru/', function() {
         return view('guru.post');

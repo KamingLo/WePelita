@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.6",
         "maatwebsite/excel": "^3.1",
+        "sendinblue/api-v3-sdk": "^8.4",
         "tonysm/rich-text-laravel": "^3.3"
     },
     "require-dev": {

@@ -23,6 +23,8 @@
           @endphp
           <a class="sign-btn" href="{{ $dashboardRoute }}"><span>Dashboard</span></a>
       @else
+          <a class="sign-btn" href="{{ route('register') }}"><span>Register disini</span></a>
+
           <a class="sign-btn" href="{{ route('login') }}"><span>Login disini</span></a>
       @endauth
     </div>

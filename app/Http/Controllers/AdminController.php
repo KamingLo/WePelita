@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Models\User;
+use Illuminate\Support\Str;
+use App\Services\BrevoMailer;
 
 class AdminController extends Controller
 {
@@ -978,4 +981,104 @@ class AdminController extends Controller
             default => abort(404),
         };
     }
+
+public function register(Request $request)
+{
+    $request->validate([
+        // Data murid
+        'name' => 'required|string',
+        'email' => 'required|email|unique:profiles,email',
+        'alamat' => 'required|string',
+        'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+        'tanggal_lahir' => 'required|date',
+        'tempat_lahir' => 'required|string',
+        'pendidikan' => 'required|string',
+        'no_telp' => 'required|string',
+        'asal_sekolah' => 'required|string',
+        'nis' => 'required|string',
+        'nisn' => 'required|string',
+        'kelas_tahun_id' => 'required|integer|exists:kelas_tahun,kelas_tahun_id',
+
+        // Data orang tua
+        'ortu_name' => 'required|string',
+        'ortu_email' => 'required|email|unique:profiles,email',
+        'ortu_alamat' => 'required|string',
+        'ortu_tempat_lahir' => 'required|string',
+        'ortu_tanggal_lahir' => 'required|date',
+        'ortu_jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+        'ortu_pendidikan' => 'required|string',
+        'ortu_no_telp' => 'required|string',
+        'ortu_profesi' => 'required|string',
+    ]);
+
+    // Auto generate password
+    $muridPassword = Str::random(8);
+    $ortuPassword = Str::random(8);
+
+    // Simpan profile murid
+    $profile = Profile::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'alamat' => $request->alamat,
+        'jenis_kelamin' => $request->jenis_kelamin,
+        'tanggal_lahir' => $request->tanggal_lahir,
+        'tempat_lahir' => $request->tempat_lahir,
+        'pendidikan' => $request->pendidikan,
+        'no_telp' => $request->no_telp,
+        'password' => Hash::make($muridPassword),
+    ]);
+
+    // Simpan profile orang tua
+    $ortuProfile = Profile::create([
+        'name' => $request->ortu_name,
+        'email' => $request->ortu_email,
+        'alamat' => $request->ortu_alamat,
+        'tempat_lahir' => $request->ortu_tempat_lahir,
+        'jenis_kelamin' => $request->ortu_jenis_kelamin,
+        'tanggal_lahir' => $request->ortu_tanggal_lahir,
+        'pendidikan' => $request->ortu_pendidikan,
+        'no_telp' => $request->ortu_no_telp,
+        'password' => Hash::make($ortuPassword),
+    ]);
+
+    // Simpan data orang tua
+    $orangTua = OrangTua::create([
+        'profesi' => $request->ortu_profesi,
+        'profile_id' => $ortuProfile->profile_id,
+    ]);
+
+    // Simpan data murid
+    $murid = Murid::create([
+        'profile_id' => $profile->profile_id,
+        'asal_sekolah' => $request->asal_sekolah,
+        'nis' => $request->nis,
+        'nisn' => $request->nisn,
+    ]);
+
+    // Relasi murid ke kelas
+    $murid->muridKelas()->attach($request->kelas_tahun_id);
+
+    // Relasi murid ke orang tua
+    $murid->orangTua()->attach($orangTua->orang_tua_id);
+
+    // Kirim email Brevo
+    $brevo = new BrevoMailer();
+    $brevo->sendCredentialsToMurid(
+        $profile->email,           // email tujuan (murid)
+        $profile->name,            // nama murid
+        $profile->email,           // akun email murid
+        $muridPassword,            // password murid
+        $ortuProfile->email,       // email ortu
+        $ortuPassword              // password ortu
+    );
+
+    return redirect()->back()->with('success', 'Registrasi berhasil! Data login telah dikirim via email.');
+}
+
+    public function showRegisterForm()
+    {
+        $kelasTahunList = KelasTahun::all();
+        return view('register', compact('kelasTahunList'));
+    }
+
 }

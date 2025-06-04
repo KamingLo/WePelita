@@ -36,6 +36,11 @@ class Murid extends Model
         return $this->belongsTo(KelasTahun::class, 'kelas_tahun_id');
     }
 
+    public function muridKelas()
+    {
+        return $this->belongsToMany(KelasTahun::class, 'murid_kelas', 'murid_id', 'kelas_tahun_id');
+    }
+
     public function absensi()
     {
         return $this->hasMany(Absensi::class, 'murid_id');
