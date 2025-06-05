@@ -1,11 +1,198 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const postFileInput = document.getElementById('lampiran');
-    const postFileNameDisplay = document.getElementById('FileNamaFoto');
-    const postPreviewContainer = document.getElementById('previewContainer');
-    const postPreviewImage = document.getElementById('previewImage');
-    const postPreviewText = document.getElementById('previewText');
-    const postRemoveImageBtn = document.getElementById('removeImage');
-    const postBrowseBtn = document.querySelector('.BrowseFoto');
+    function initializePostManagement() {
+        let postFileInput = document.getElementById('lampiran');
+        let postFileNameDisplay = document.getElementById('FileNamaFoto');
+        let postPreviewContainer = document.getElementById('previewContainer');
+        let postPreviewImage = document.getElementById('previewImage');
+        let postPreviewText = document.getElementById('previewText');
+        let browseBtn = document.getElementById('browseButton');
+        let deleteBtn = document.getElementById('deleteButton');
+
+        console.log('Initializing post management with separate buttons');
+        console.log('browseBtn:', browseBtn);
+        console.log('deleteBtn:', deleteBtn);
+        console.log('postFileInput:', postFileInput);
+
+        if (!browseBtn || !deleteBtn || !postFileInput) {
+            console.error('Required elements not found. Setting up MutationObserver...');
+            const observer = new MutationObserver((mutations, obs) => {
+                postFileInput = document.getElementById('lampiran');
+                postFileNameDisplay = document.getElementById('FileNamaFoto');
+                postPreviewContainer = document.getElementById('previewContainer');
+                postPreviewImage = document.getElementById('previewImage');
+                postPreviewText = document.getElementById('previewText');
+                browseBtn = document.getElementById('browseButton');
+                deleteBtn = document.getElementById('deleteButton');
+
+                if (browseBtn && deleteBtn && postFileInput) {
+                    console.log('Elements found via observer. Setting up handlers.');
+                    setupEventHandlers();
+                    obs.disconnect();
+                }
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true });
+            return;
+        }
+
+        // Initialize preview if there's an existing image
+        if (postPreviewImage && postPreviewImage.src && postPreviewImage.src !== '') {
+            showDeleteButton();
+        } else {
+            showBrowseButton();
+        }
+
+        setupEventHandlers();
+
+        function setupEventHandlers() {
+            // Event listener for Browse button
+            if (browseBtn) {
+                browseBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Browse button clicked');
+                    postFileInput.click();
+                });
+            }
+
+            // Event listener for Delete button
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Delete button clicked');
+                    
+                    // Clear file input
+                    postFileInput.value = '';
+                    
+                    // Reset preview
+                    resetPostPreview();
+                });
+            }
+
+            // File input change event
+            if (postFileInput) {
+                postFileInput.addEventListener('change', function(e) {
+                    console.log('File input changed, files:', this.files.length);
+                    
+                    const file = this.files[0];
+                    if (file) {
+                        console.log('File selected:', file.name);
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            console.log('File loaded successfully');
+                            
+                            // Update preview
+                            if (postPreviewImage) {
+                                postPreviewImage.src = e.target.result;
+                                postPreviewImage.style.display = 'block';
+                            }
+                            if (postPreviewText) {
+                                postPreviewText.style.display = 'none';
+                            }
+                            if (postPreviewContainer) {
+                                postPreviewContainer.classList.add('has-image');
+                            }
+                            if (postFileNameDisplay) {
+                                postFileNameDisplay.textContent = 'File dipilih: ' + file.name;
+                            }
+                            
+                            // Toggle buttons
+                            showDeleteButton();
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        console.log('No file selected');
+                        resetPostPreview();
+                    }
+                });
+            }
+        }
+
+        function showDeleteButton() {
+            console.log('Showing delete button, hiding browse button');
+            if (browseBtn) {
+                browseBtn.style.display = 'none';
+            }
+            if (deleteBtn) {
+                deleteBtn.style.display = 'inline-block';
+            }
+        }
+
+        function showBrowseButton() {
+            console.log('Showing browse button, hiding delete button');
+            if (browseBtn) {
+                browseBtn.style.display = 'inline-block';
+            }
+            if (deleteBtn) {
+                deleteBtn.style.display = 'none';
+            }
+        }
+
+        function resetPostPreview() {
+            console.log('Resetting preview and showing browse button');
+            
+            if (postPreviewImage) {
+                postPreviewImage.src = '';
+                postPreviewImage.style.display = 'none';
+            }
+            
+            if (postPreviewText) {
+                postPreviewText.style.display = 'block';
+            }
+            
+            if (postPreviewContainer) {
+                postPreviewContainer.classList.remove('has-image');
+            }
+            
+            if (postFileNameDisplay) {
+                postFileNameDisplay.textContent = 'Pilih file';
+            }
+            
+            // Toggle buttons back
+            showBrowseButton();
+        }
+    }
+
+    // Initialize Trix editor and hide attach files button
+    function initializeTrixEditor() {
+        const waitForTrix = setInterval(function() {
+            const trixEditor = document.querySelector("trix-editor");
+            if (trixEditor) {
+                const toolbar = trixEditor.toolbarElement;
+                if (toolbar) {
+                    const attachButton = toolbar.querySelector("[data-trix-action='attachFiles']");
+                    if (attachButton) {
+                        attachButton.style.display = "none";
+                        clearInterval(waitForTrix);
+                    }
+                }
+            }
+        }, 100);
+    }
+
+    // Toggle tujuan field based on post type
+    function initializePostTypeToggle() {
+        const pengumumanRadio = document.getElementById('pengumuman');
+        const blogRadio = document.getElementById('blog');
+        const tujuanContainer = document.getElementById('tujuanContainer');
+
+        if (pengumumanRadio && blogRadio && tujuanContainer) {
+            function toggleTujuanField() {
+                if (pengumumanRadio.checked) {
+                    tujuanContainer.style.display = 'block';
+                } else {
+                    tujuanContainer.style.display = 'none';
+                }
+            }
+
+            pengumumanRadio.addEventListener('change', toggleTujuanField);
+            blogRadio.addEventListener('change', toggleTujuanField);
+            toggleTujuanField(); // Initial check
+        }
+    }
+
+    // Other existing functionality (unchanged)
     const filterSelect = document.getElementById('TipePost');
     const filterForm = document.getElementById('filterForm');
     const tambahPost = document.getElementById('tambahPost');
@@ -46,54 +233,11 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeDisplay();
     }
 
-    if (postBrowseBtn && postFileInput) {
-        postBrowseBtn.addEventListener('click', function() {
-            postFileInput.click();
-        });
-    }
-
-    if (postFileInput) {
-        postFileInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    postPreviewImage.src = e.target.result;
-                    postPreviewImage.style.display = 'block';
-                    postPreviewText.style.display = 'none';
-                    postRemoveImageBtn.style.display = 'inline-block';
-                    postPreviewContainer.classList.add('has-image');
-                    if (postFileNameDisplay) {
-                        postFileNameDisplay.textContent = 'File dipilih: ' + file.name;
-                    }
-                };
-                reader.readAsDataURL(file);
-            } else {
-                resetPostPreview();
-            }
-        });
-    }
-
-    if (postRemoveImageBtn) {
-        postRemoveImageBtn.addEventListener('click', function() {
-            if (postFileInput) postFileInput.value = '';
-            resetPostPreview();
-        });
-    }
-
-    function resetPostPreview() {
-        if (postPreviewImage) postPreviewImage.src = '';
-        if (postPreviewImage) postPreviewImage.style.display = 'none';
-        if (postPreviewText) postPreviewText.style.display = 'block';
-        if (postRemoveImageBtn) postRemoveImageBtn.style.display = 'none';
-        if (postPreviewContainer) postPreviewContainer.classList.remove('has-image');
-        if (postFileNameDisplay) postFileNameDisplay.textContent = 'Pilih file';
-    }
-
     if (postForm) {
         postForm.addEventListener('submit', function(e) {
             const judul = document.getElementById('judul').value;
-            const isi = document.querySelector('trix-editor[input="isi"]').value;
+            const isi = document.querySelector('trix-editor[input="isi"]')?.value || 
+                       document.querySelector('trix-editor[input="isi_trix"]')?.value;
 
             if (!judul || !isi) {
                 e.preventDefault();
@@ -158,10 +302,11 @@ document.addEventListener('DOMContentLoaded', function() {
         switchElement.setAttribute('role', 'switch');
     }
 
-    const trixEditor = document.querySelector('trix-editor[input="isi"]');
+    const trixEditor = document.querySelector('trix-editor[input="isi"], trix-editor[input="isi_trix"]');
     if (trixEditor) {
         trixEditor.addEventListener('trix-change', function() {
-            document.getElementById('isi').value = this.innerHTML;
+            const inputId = this.getAttribute('input');
+            document.getElementById(inputId).value = this.innerHTML;
         });
     }
 
@@ -188,62 +333,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    const fileInput = document.getElementById('lampiran');
-    const fileNameDisplay = document.getElementById('FileNamaFoto');
-    const preview = {
-        container: document.getElementById('PreviewLayoutFoto'),
-        image: document.getElementById('PreviewFoto'),
-        name: document.getElementById('NamaFileFoto')
-    };
-    const forms = {
-        left: document.querySelector('.FormKiri'),
-        right: document.querySelector('.FormKanan'),
-        layout: document.querySelector('.LayoutNewPost')
-    };
     const closeBtn = document.getElementById('MenutupPreview');
-
-    const togglePreview = (show, file) => {
-        if (preview.image) preview.image.style.display = show ? 'block' : 'none';
-        if (preview.name) preview.name.style.display = show ? 'block' : 'none';
-        if (preview.container) preview.container.classList.toggle('has-preview', show);
-        
-        [forms.left, forms.right, forms.layout].forEach(el => {
-            if (el) el.classList.toggle('preview-active', show);
-        });
-        
-        if (show) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                if (preview.image) preview.image.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-            if (preview.name) preview.name.textContent = file.name;
-            
-            if (fileNameDisplay) {
-                fileNameDisplay.textContent = 'File dipilih: ' + file.name;
-            }
-        } else {
-            if (preview.image) preview.image.src = '';
-            if (preview.name) preview.name.textContent = '';
-            if (fileInput) fileInput.value = '';
-            
-            if (fileNameDisplay) {
-                fileNameDisplay.textContent = 'Pilih file';
-            }
-        }
-    };
-
-    if (fileInput) {
-        fileInput.addEventListener('change', () => 
-            fileInput.files[0] 
-                ? togglePreview(true, fileInput.files[0]) 
-                : togglePreview(false));
-    }
-    
     if (closeBtn) {
         closeBtn.addEventListener('click', e => {
             e.preventDefault();
-            togglePreview(false);
+            const fileInput = document.getElementById('lampiran');
+            if (fileInput) fileInput.value = '';
+            resetPostPreview();
         });
     }
 
@@ -378,29 +474,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    const handleFileInputs = () => {
-        const inputFile = document.getElementById('lampiran');
-        if (!inputFile) return;
-        
-        const fileNameDisplay = document.getElementById('FileNamaFoto');
-        const browseButton = document.querySelector('.BrowseFoto');
-        
-        if (browseButton) {
-            browseButton.addEventListener('click', function() {
-                inputFile.click();
-            });
-        }
-        
-        inputFile.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                const fileName = this.files[0].name;
-                if (fileNameDisplay) {
-                    fileNameDisplay.textContent = fileName;
-                }
-            }
-        });
-    };
-    
     const handleSuccessMessages = () => {
         const successMessages = document.querySelectorAll('.alert-success, .PsnBerhasil');
         successMessages.forEach(message => {
@@ -428,7 +501,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     };
 
-    handleFileInputs();
     handleSuccessMessages();
     handlePostPreviews();
     handleDeleteConfirmations();
@@ -436,10 +508,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('livewire:load', function() {
         Livewire.hook('message.processed', (message, component) => {
             handleDeleteConfirmations();
-            handleFileInputs();
             handleSuccessMessages();
             handlePostPreviews();
             initializeDisplay();
+            initializePostManagement();
         });
     });
 
@@ -456,7 +528,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     const clearNamaKelasBtn = document.getElementById('clearNamaKelas');
-    const namaKelasInput = document.getElementById('nama_kelas');
+    const namaKelasInput = document.getElementById('querySelector');
     
     if (clearNamaKelasBtn && namaKelasInput) {
         clearNamaKelasBtn.addEventListener('click', function() {
@@ -464,4 +536,9 @@ document.addEventListener('DOMContentLoaded', function() {
             namaKelasInput.focus();
         });
     }
+
+    // Initialize all components
+    initializePostManagement();
+    initializeTrixEditor();
+    initializePostTypeToggle();
 });

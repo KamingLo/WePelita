@@ -1,0 +1,213 @@
+/* ----------------------------------------------- */
+/* -------------- TambahPelajaran.css ------------ */
+/* ----------------------------------------------- */
+
+:root {
+    --primary-color: #4a6cf7;
+    --danger-color: #dc3545;
+    --dark-color: #343a40;
+    --border-radius: 10px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Main Container -------------- */
+/* ----------------------------------------------- */
+
+.add-lesson-container {
+    margin-left: 280px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    min-height: calc(100vh - 80px);
+}
+
+.add-lesson-section {
+    width: 100%;
+    background: #ffffff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 30px;
+}
+
+h2 {
+    color: var(--dark-color);
+    font-size: 24px;
+    margin: 0 0 25px;
+    position: relative;
+    padding-bottom: 8px;
+    display: inline-block;
+}
+
+h2:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100px;
+    background-color: var(--primary-color);
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Form Styles ----------------- */
+/* ----------------------------------------------- */
+
+.add-lesson-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    padding: 12px;
+    font-size: 15px;
+    border: 1px solid #e1e8ed;
+    border-radius: 6px;
+    transition: var(--transition);
+    background-color: #f9fafb;
+    color: #333;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+.form-group input[type="file"] {
+    padding: 8px;
+    background-color: transparent;
+}
+
+.form-error {
+    color: var(--danger-color);
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Buttons -------------------- */
+/* ----------------------------------------------- */
+
+.form-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    padding: 12px 20px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: var(--transition);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
+    box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Responsive Design ----------- */
+/* ----------------------------------------------- */
+
+@media (max-width: 1200px) {
+    .add-lesson-container {
+        margin-left: 0;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .add-lesson-section {
+        padding: 20px;
+    }
+
+    .form-group label {
+        font-size: 15px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+}

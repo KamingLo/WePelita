@@ -6,33 +6,28 @@
 <div class="dashboard-container">
     <h1>Hi, {{ $guru->profile->name }}</h1>
 
-    {{-- <div class="dashboard-actions">
-        <a href="{{ route('admin.ManajemenUser') }}" class="action-card" data-aos="fade-up" data-aos-delay="100">
+    <div class="dashboard-actions">
+        <a href="jadwal" class="action-card" data-aos="fade-up" data-aos-delay="100">
             <div class="action-icon"><i class="fas fa-users"></i></div>
-            <h3>Manage Users</h3>
+            <h3>Liat Jadwal Pelajaran</h3>
             <p>Manage students, teachers, parents, and admins</p>
         </a>
-        <a href="{{ route('admin.manajemenKelas') }}" class="action-card" data-aos="fade-up" data-aos-delay="200">
+        <a href="jadwalanda" class="action-card" data-aos="fade-up" data-aos-delay="200">
             <div class="action-icon"><i class="fas fa-chalkboard"></i></div>
-            <h3>Manage Classes</h3>
+            <h3>Liat Jadwal Ajar Anda</h3>
             <p>Create and manage class assignments</p>
         </a>
-        <a href="{{ route('admin.TambahJadwal') }}" class="action-card" data-aos="fade-up" data-aos-delay="300">
+        <a href="menu-nilai" class="action-card" data-aos="fade-up" data-aos-delay="300">
             <div class="action-icon"><i class="fas fa-calendar-alt"></i></div>
-            <h3>Manage Schedules</h3>
+            <h3>Menu nilai</h3>
             <p>Schedule classes and check for conflicts</p>
         </a>
-        <a href="{{ route('admin.TambahPelajaran') }}" class="action-card" data-aos="fade-up" data-aos-delay="400">
+        <a href="/guru/ManajemenPost" class="action-card" data-aos="fade-up" data-aos-delay="400">
             <div class="action-icon"><i class="fas fa-book"></i></div>
-            <h3>Manage Subjects</h3>
+            <h3>Manajemen postingan</h3>
             <p>Add and update school subjects</p>
         </a>
-        <a href="{{ route('admin.manajemenPost') }}" class="action-card" data-aos="fade-up" data-aos-delay="500">
-            <div class="action-icon"><i class="fas fa-bullhorn"></i></div>
-            <h3>Manage Posts</h3>
-            <p>Create and manage announcements and blogs</p>
-        </a>
-    </div> --}}
+    </div>
 
     <div class="profile-section">
         <div class="profile-card">

@@ -4,12 +4,12 @@
   <aside class="ContainerSideBar">
     <div class="ProfileSiUser">
         <div class="HeaderUser">
-            <a href="dashboard">
+            <a href="{{ route('orangtua.dashboard') }}">
                 <img src="/image/logo_pelita.png"/>
             </a>
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
         </div>
-        <h6 class="UseridName">{{ $murid->profile->name }}</h6>
+        <h6 class="UseridName">{{ $orangtua->profile->name }}</h6>
     </div>
 
     <ul class="ListSideBar">
@@ -17,27 +17,33 @@
         <span>‎</span> {{-- ‎ ni buat teks kosong --}}
 
       <li>
-        <a href="dashboard" class="{{ request()->is('murid/dashboard*') ? 'active-link' : '' }}">
+        <a href="{{ route('orangtua.dashboard') }}" class="{{ request()->is('orangtua/dashboard*') ? 'active-link' : '' }}">
           <i class='bx bx-home-alt IconSidebar'></i>Halaman Utama
         </a>
       </li>
 
       <h4>
-        <span>Guru Tools</span>
+        <span>Parent Tools</span>
       </h4>
 
       <li>
-          <a href="{{ route('murid.jadwal') }}" class="{{ request()->is(' murid/jadwal*') ? 'active-link' : '' }}">
+          <a href="{{ route('orangtua.jadwal') }}" class="{{ request()->is('orangtua/jadwal*') ? 'active-link' : '' }}">
               <i class='bx bx-table IconSidebar'></i>Jadwal Kelas
           </a>
       </li>
 
       <li>
-          <a href="{{ route('murid.nilai') }}" class="{{ request()->is(' murid/nilai*') ? 'active-link' : '' }}">
-              <i class='bx bx-table IconSidebar'></i>Nilai Murid
+          <a href="{{ route('orangtua.nilai') }}" class="{{ request()->is('orangtua/nilai*') ? 'active-link' : '' }}">
+              <i class='bx bx-table IconSidebar'></i>Nilai Anak
           </a>
       </li>
-    
+
+      <li>
+          <a href="{{ route('orangtua.pengumuman') }}" class="{{ request()->is('orangtua/pengumuman*') ? 'active-link' : '' }}">
+              <i class='bx bx-bell IconSidebar'></i>Pengumuman
+          </a>
+      </li>
+    </ul>
     <div class="logout-container">
         <form action="{{ route('logout') }}" method="POST">
             @csrf

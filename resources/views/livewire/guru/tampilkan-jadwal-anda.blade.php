@@ -1,15 +1,15 @@
 <div>
-    <link rel="stylesheet" href="{{ asset('css/JadwalGuru.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/GuruCSS/JadwalGuru.css') }}" />
     
     <div class="ContainerTampilkanJadwal">
-        <h1>Jadwal Ajar anda</h1>
+        <h1>Jadwal Ajar Anda</h1>
 
-        <div class="LayoutTabelTerintegrasi">
-            <div class="HeaderTabel">
+        <div class="LayoutTabelJadwal">
+            <div class="HeaderTabelJadwal">
                 <div class="FilterDalamTabel">
                     <h2>Jadwal ajar anda hari ini</h2>
-                    <div class="FilterControls">
-                        <div class="FilterGroup">
+                    <div class="KhususOpsi">
+                        <div class="OpsiHari">
                             <label for="hari">Pilih Hari:</label>
                             <select wire:model.live="hari" id="hari" class="FilterSelect">
                                 <option value="">Semuanya</option>
@@ -42,7 +42,7 @@
                                 <td>{{ $jadwal->pelajaran->namaPelajaran }}</td>
                                 <td>{{ $jadwal->kelasTahun->kelas->nama_kelas }}</td>
                                 <td>
-                                    <span class="WaktuBadge">
+                                    <span class="WaktuPelajaran">
                                         {{ $jadwal->waktu_mulai }} - {{ $jadwal->waktu_selesai }}
                                     </span>
                                 </td>
@@ -50,7 +50,7 @@
                         @empty
                             <tr>
                                 <td colspan="4">
-                                    <div class="EmptyMessage">
+                                    <div class="Kosongajah">
                                         <i class="fas fa-calendar-times"></i>
                                         <br>
                                         Tidak ada jadwal untuk hari {{ $hari }}.

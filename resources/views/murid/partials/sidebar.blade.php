@@ -27,17 +27,23 @@
       </h4>
 
       <li>
-          <a href="{{ route('murid.jadwal') }}" class="{{ request()->is(' murid/jadwal*') ? 'active-link' : '' }}">
+          <a href="{{ route('murid.jadwal') }}" class="{{ request()->is('murid/jadwal*') ? 'active-link' : '' }}">
               <i class='bx bx-table IconSidebar'></i>Jadwal Kelas
           </a>
       </li>
 
       <li>
-          <a href="{{ route('murid.nilai') }}" class="{{ request()->is(' murid/nilai*') ? 'active-link' : '' }}">
+          <a href="{{ route('murid.nilai') }}" class="{{ request()->is('murid/nilai*') ? 'active-link' : '' }}">
               <i class='bx bx-table IconSidebar'></i>Nilai Murid
           </a>
       </li>
-    
+
+      <li>
+          <a href="{{ route('murid.pengumuman') }}" class="{{ request()->is('murid/pengumuman*') ? 'active-link' : '' }}">
+              <i class='bx bx-bell IconSidebar'></i>Pengumuman
+          </a>
+      </li>
+    </ul>
     <div class="logout-container">
         <form action="{{ route('logout') }}" method="POST">
             @csrf

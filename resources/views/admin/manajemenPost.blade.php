@@ -4,6 +4,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/ManajemenPost.css') }}" />
 <script src="{{ asset('js/CssAdmin.js') }}"></script>
+<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 
 <body>
     <div class="ContainerPostManagement">
@@ -36,7 +37,6 @@
                     <form id="postForm" action="{{ route('admin.post.tambah') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="ContainerDalam">
-                            <!-- Left Section: Buttons and Controls -->
                             <div class="FormKiri">
                                 <div class="IsiData">
                                     <div class="OpsiTipePost">
@@ -72,10 +72,11 @@
                                 <div class="IsiData">
                                     <div class="UploadFoto">
                                         <label for="lampiran" class="labelNWPT">Foto Thumbnail</label>
-                                        <input type="file" class="TampilanIsiData" id="lampiran" name="lampiran">
+                                        <input type="file" class="TampilanIsiData" id="lampiran" name="lampiran" style="display: none;">
                                         <div class="TombolUploadFoto">
                                             <span class="DeskripsiBarUpload" id="FileNamaFoto">Pilih file</span>
-                                            <button type="button" class="BrowseFoto">Browse</button>
+                                            <button type="button" class="BrowseFoto" id="browseButton">Browse</button>
+                                            <button type="button" class="BrowseFoto hapus" id="deleteButton" style="display: none;">Hapus</button>
                                         </div>
                                         @error('lampiran')
                                             <span class="text-danger">{{ $message }}</span>
@@ -86,11 +87,9 @@
                                 <div class="PreviewContainer" id="previewContainer">
                                     <img id="previewImage" class="PreviewImage" alt="Preview">
                                     <div class="PreviewText" id="previewText">Preview foto akan muncul di sini</div>
-                                    <button type="button" class="RemoveImage" id="removeImage">Hapus Foto</button>
                                 </div>
                             </div>
 
-                            <!-- Right Section: Content and Submit Button -->
                             <div class="FormKanan">
                                 <div class="SubmitContainer">
                                     <button type="submit" class="TombolOJT TombolPosting">Posting</button>
@@ -123,7 +122,6 @@
                 </div>
             </div>
 
-            <!-- Rest of the Blade file remains unchanged -->
             <div id="pengumumanList" style="{{ request('TipePost') == 'pengumuman' ? 'display: block;' : 'display: none;' }}">
                 <h2>Daftar Pengumuman</h2>
                 <div class="LayoutDisplayPostingan">
@@ -238,48 +236,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const pengumumanRadio = document.getElementById('pengumuman');
-            const blogRadio = document.getElementById('blog');
-            const tujuanContainer = document.getElementById('tujuanContainer');
-
-            function toggleTujuanField() {
-                if (pengumumanRadio.checked) {
-                    tujuanContainer.style.display = 'block';
-                } else {
-                    tujuanContainer.style.display = 'none';
-                }
-            }
-
-            pengumumanRadio.addEventListener('change', toggleTujuanField);
-            blogRadio.addEventListener('change', toggleTujuanField);
-            toggleTujuanField(); // Initial check
-        });
-    </script>
 </body>
-
-<!-- === Trix Editor JS (via CDN) === -->
-<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
-<!-- ====================================== -->
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Tunggu hingga Trix siap dengan interval
-        const waitForTrix = setInterval(function() {
-            const trixEditor = document.querySelector("trix-editor");
-            if (trixEditor) {
-                // Pastikan toolbar sudah ada
-                const toolbar = trixEditor.toolbarElement;
-                if (toolbar) {
-                    const attachButton = toolbar.querySelector("[data-trix-action='attachFiles']");
-                    if (attachButton) {
-                        attachButton.style.display = "none";
-                        clearInterval(waitForTrix); // Hentikan interval setelah berhasil
-                    }
-                }
-            }
-        }, 100); // Cek setiap 100ms
-    });
-</script>

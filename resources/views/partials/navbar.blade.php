@@ -17,7 +17,7 @@
                   'admin' => route('admin.dashboard'),
                   'guru' => route('guru.dashboard'),
                   'murid' => route('murid.dashboard'),
-                  'orang_tua' => route('orang_tua.dashboard'),
+                  'orang_tua' => route('orangtua.dashboard'),
                   default => '/',
               };
           @endphp

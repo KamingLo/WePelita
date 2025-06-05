@@ -5,7 +5,6 @@
 :root {
     --primary-color: #4a6cf7;
     --success-color: #28a745;
-    --danger-color: #dc3545;
     --dark-color: #343a40;
     --light-gray: #f8f9fa;
     --border-radius: 10px;
@@ -28,6 +27,7 @@ body {
     padding: 30px;
     min-height: 100vh;
     margin-left: 280px;
+    transform: translateY(-10rem);
 }
 
 .JudulHalaman {
@@ -93,6 +93,7 @@ body {
     padding: 30px;
     transition: var(--transition);
     max-width: 50rem;
+    margin-bottom: 30px;
 }
 
 .KontainerFormNilai:hover {
@@ -103,8 +104,15 @@ body {
 /* ------------- Bagian Dropdown ---------------- */
 /* ----------------------------------------------- */
 
+.KontainerFormNilai .GrupInput {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
 .GrupInput {
-    margin-bottom: 25px;
+    flex: 1;
+    min-width: 200px;
 }
 
 .LabelInput {
@@ -143,8 +151,48 @@ body {
 }
 
 /* ----------------------------------------------- */
+/* ------------- Bagian Search Bar -------------- */
+/* ----------------------------------------------- */
+
+.InputCari {
+    width: 100%;
+    padding: 12px 15px 12px 40px; /* Extra padding for icon */
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: white;
+    transition: var(--transition);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 12px center;
+}
+
+.InputCari:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+}
+
+.InputCari:hover {
+    border-color: var(--primary-color);
+}
+
+/* ----------------------------------------------- */
 /* ------------- Bagian Tabel Nilai ------------- */
 /* ----------------------------------------------- */
+
+.KontainerTabelNilai {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 30px;
+    transition: var(--transition);
+    max-width: 50rem;
+}
+
+.KontainerTabelNilai:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
 
 .JudulSeksi {
     color: var(--dark-color);
@@ -169,7 +217,7 @@ body {
     overflow-x: auto;
     border-radius: var(--border-radius);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    margin-bottom: 25px;
+    margin: 25px 0;
 }
 
 .TabelNilai {
@@ -177,6 +225,8 @@ body {
     border-collapse: collapse;
     background-color: white;
     min-width: 500px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
 }
 
 .TabelNilai thead th {
@@ -302,6 +352,37 @@ body {
     font-size: 16px;
 }
 
+.TombolOJT.DownloadBtn {
+    background-color: var(--success-color);
+    color: white;
+    border: 2px solid var(--success-color);
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.TombolOJT.DownloadBtn:hover {
+    background-color: #218838;
+    border-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.TombolOJT.DownloadBtn:active {
+    transform: translateY(0);
+}
+
+.TombolOJT.DownloadBtn:before {
+    content: "⬇";
+    font-size: 16px;
+}
+
 /* ----------------------------------------------- */
 /* ------------- Responsive Design --------------- */
 /* ----------------------------------------------- */
@@ -326,6 +407,14 @@ body {
         padding: 20px;
     }
     
+    .KontainerFormNilai .GrupInput {
+        flex-direction: column;
+    }
+    
+    .KontainerTabelNilai {
+        padding: 20px;
+    }
+    
     .TabelNilai thead th,
     .TabelNilai tbody td {
         padding: 10px 15px;
@@ -337,7 +426,12 @@ body {
         padding: 6px 8px;
     }
     
-    .TombolSimpan {
+    .InputCari {
+        padding: 10px 15px 10px 35px;
+        font-size: 13px;
+    }
+    
+    .TombolSimpan, .TombolOJT.DownloadBtn {
         padding: 10px 20px;
         font-size: 13px;
     }
@@ -349,6 +443,10 @@ body {
     }
     
     .KontainerFormNilai {
+        padding: 15px;
+    }
+    
+    .KontainerTabelNilai {
         padding: 15px;
     }
     
@@ -366,38 +464,9 @@ body {
         padding: 4px 6px;
         font-size: 12px;
     }
+    
+    .InputCari {
+        padding: 8px 10px 8px 30px;
+        font-size: 12px;
+    }
 }
-
-/* ----------------------------------------------- */
-/* ------------- Animasi Loading ----------------- */
-/* ----------------------------------------------- */
-
-.Loading {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-left: 10px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* ----------------------------------------------- */
-/* ------------- Efek Hover Tabel --------------- */
-/* ----------------------------------------------- */
-
-.TabelNilai tbody tr:nth-child(even) {
-    background-color: rgba(248, 249, 250, 0.5);
-}
-
-.TabelNilai tbody tr:nth-child(even):hover {
-    background-color: rgba(74, 108, 247, 0.08);
-}
-
-/* ---------------------- End ---------------------- */

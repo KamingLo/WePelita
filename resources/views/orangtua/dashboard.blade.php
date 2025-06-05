@@ -1,34 +1,49 @@
-@include('murid.partials.header')
-@include('murid.partials.sidebar')
-<link rel="stylesheet" href="{{ asset('css/MuridCSS/Dashboard.css') }}" />
+@include('orangtua.partials.header')
+@include('orangtua.partials.sidebar')
+<link rel="stylesheet" href="{{ asset('css/OrtuCSS/Dashboard.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <div class="dashboard-container">
     @php
-        $muridKelas = App\Models\MuridKelas::where('murid_id', $murid->murid_id)
-            ->whereHas('kelasTahun.tahunajar', function ($query) {
-                $query->where('status', 'Aktif');
-            })
-            ->with('kelasTahun.kelas', 'kelasTahun.tahunajar')
-            ->first();
         $kelasName = $muridKelas ? $muridKelas->kelasTahun->kelas->nama_kelas . ' (' . $muridKelas->kelasTahun->tahunajar->tahun_ajaran . ')' : 'No class assigned';
+        $muridName = $muridKelas ? $muridKelas->murid->profile->name : 'No child assigned';
     @endphp
-    <h1>Hi, {{ $murid->profile->name }}</h1>
-    <h1>Class: {{ $kelasName }}</h1>
+    <div class="HeaderDashboardOrangTua">
+        <h1>Hi, {{ $orangtua->profile->name }}</h1>
+        <h4>Anak: {{ $muridName }} | Kelas: {{ $kelasName }}</h4>
+    </div>
 
-    <!-- Display student's class -->
+    <div class="dashboard-actions">
+        <a href="{{ route('orangtua.jadwal') }}" class="action-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="action-icon"><i class="fas fa-users"></i></div>
+            <h3>Jadwal Kelas</h3>
+            <p>View your child's class schedule</p>
+        </a>
+        <a href="{{ route('orangtua.nilai') }}" class="action-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="action-icon"><i class="fas fa-chalkboard"></i></div>
+            <h3>Nilai Anak</h3>
+            <p>Check your child's grades</p>
+        </a>
+        <a href="{{ route('orangtua.pengumuman') }}" class="action-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="action-icon"><i class="fas fa-calendar-alt"></i></div>
+            <h3>Pengumuman</h3>
+            <p>View all announcements</p>
+        </a>
+    </div>
+
+    <!-- Display parent's profile -->
     <div class="profile-section">
         <div class="profile-card">
             <div class="profile-avatar">
-                @if($murid->profile->foto)
-                    <img src="{{ asset('storage/' . $murid->profile->foto) }}" alt="{{ $murid->profile->name }} Avatar">
+                @if($orangtua->profile->foto)
+                    <img src="{{ asset('storage/' . $orangtua->profile->foto) }}" alt="{{ $orangtua->profile->name }} Avatar">
                 @else
-                    <div class="profile-placeholder">{{ strtoupper(substr($murid->profile->name, 0, 2)) }}</div>
+                    <div class="profile-placeholder">{{ strtoupper(substr($orangtua->profile->name, 0, 2)) }}</div>
                 @endif
             </div>
             <div class="profile-details">
-                <h2>{{ $murid->profile->name }}</h2>
-                <p>Student</p>
+                <h2>{{ $orangtua->profile->name }}</h2>
+                <p>Parent</p>
                 <a href="" class="edit-profile-btn">
                     <i class="fas fa-edit"></i> Edit Profile
                 </a>
@@ -37,53 +52,55 @@
     </div>
 
     <div class="announcement-section">
-        <h2>Daftar Pengumuman</h2>
+        <h2>Pengumuman Terbaru</h2>
         <div class="LayoutDisplayPostingan">
             @if($announcements->isNotEmpty())
-                @foreach($announcements as $announcement)
-                    <div class="CardPost">
-                        <div class="ImagePostCard"
-                            @if($announcement->lampiran)
-                                style="background-image: url('{{ asset('storage/' . $announcement->lampiran) }}');"
-                            @else
-                                style="background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"
-                            @endif>
-                        </div>
-                        <div class="IsiCardPost">
-                            <h3 class="JudulCardPost">{{ $announcement->judul }}</h3>
-                            <p class="KontenCardPost">{{ Str::limit(strip_tags($announcement->isi), 210) }}</p>
-                            <div class="FooterCardPost">
-                                <div class="InfoUserCardPost">
-                                    <div class="FotoProfileCardPost">
-                                        @if($announcement->profile)
-                                            {{ strtoupper(substr($announcement->profile->name, 0, 2)) }}
+                @php
+                    $latestAnnouncement = $announcements->first();
+                @endphp
+                <div class="CardPost">
+                    <div class="ImagePostCard"
+                        @if($latestAnnouncement->lampiran)
+                            style="background-image: url('{{ asset('storage/' . $latestAnnouncement->lampiran) }}');"
+                        @else
+                            style="background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"
+                        @endif>
+                    </div>
+                    <div class="IsiCardPost">
+                        <h3 class="JudulCardPost">{{ $latestAnnouncement->judul }}</h3>
+                        <p class="KontenCardPost">{{ Str::limit(strip_tags($latestAnnouncement->isi), 210) }}</p>
+                        <div class="FooterCardPost">
+                            <div class="InfoUserCardPost">
+                                <div class="FotoProfileCardPost">
+                                    @if($latestAnnouncement->profile)
+                                        {{ strtoupper(substr($latestAnnouncement->profile->name, 0, 2)) }}
+                                    @else
+                                        ??
+                                    @endif
+                                </div>
+                                <div class="UserProfileCardPost">
+                                    <span class="NamaPengunaCP">
+                                        @if($latestAnnouncement->profile)
+                                            {{ $latestAnnouncement->profile->name }}
                                         @else
-                                            ??
+                                            Unknown Author
                                         @endif
-                                    </div>
-                                    <div class="UserProfileCardPost">
-                                        <span class="NamaPengunaCP">
-                                            @if($announcement->profile)
-                                                {{ $announcement->profile->name }}
-                                            @else
-                                                Unknown Author
-                                            @endif
-                                        </span>
-                                        <span class="TanggalPublikasihCP">{{ $announcement->created_at->format('M d, Y') }}</span>
-                                        <span class="TujuanPost">
-                                            Tujuan: {{ $announcement->kelasTahun ? $announcement->kelasTahun->kelas->nama_kelas . ' - ' . $announcement->kelasTahun->tahunajar->tahun_ajaran : 'Publik' }}
-                                        </span>
-                                    </div>
+                                    </span>
+                                    <span class="TanggalPublikasihCP">{{ $latestAnnouncement->created_at->format('M d, Y') }}</span>
+                                    <span class="TujuanPost">
+                                        Tujuan: {{ $latestAnnouncement->kelasTahun ? $latestAnnouncement->kelasTahun->kelas->nama_kelas . ' - ' . $latestAnnouncement->kelasTahun->tahunajar->tahun_ajaran : 'Publik' }}
+                                    </span>
                                 </div>
-                                <div class="OpsiTombolCp">
-                                    <a href="#" class="TombolOJT TombolBacaSelengkapnya" data-id="{{ $announcement->postingan_id }}">
-                                        <i class="fas fa-eye"></i> Baca Selengkapnya
-                                    </a>
-                                </div>
+                            </div>
+                            <div class="OpsiTombolCp">
+                                <a href="#" class="TombolOJT TombolBacaSelengkapnya" data-id="{{ $latestAnnouncement->postingan_id }}">
+                                    <i class="fas fa-eye"></i> Baca Selengkapnya
+                                </a>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                </div>
+                <a href="{{ route('orangtua.pengumuman') }}" class="view-all-btn">Lihat Semua Pengumuman</a>
             @else
                 <p>Tidak ada pengumuman tersedia.</p>
             @endif
@@ -103,6 +120,8 @@
                     <span class="author"><i class='bx bx-user'></i> <span class="popup-author"></span></span>
                     <span class="date"><i class='bx bx-calendar'></i> <span class="popup-date"></span></span>
                 </div>
+
+
                 <div class="blog-body"></div>
                 <a href="#" class="back-btn" data-aos="fade-up" data-aos-delay="200">
                     <i class='bx bx-arrow-back'></i> Kembali

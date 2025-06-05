@@ -16,6 +16,8 @@ use App\Models\Komentar;
 use App\Models\KelasTahun;
 use App\Models\MuridOrangTua;
 use App\Models\Nilai;
+use App\Models\MuridKelas;
+use App\Models\GuruPelajaranKelas;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -23,6 +25,53 @@ use Illuminate\Support\Facades\Log;
 
 class GuruController extends Controller
 {
+    public function tampilkanMenuNilai(Request $request)
+    {
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
+
+        // Get subjects taught by the teacher
+        $pelajaranList = Pelajaran::where('guru_id', $guru->guru_id)->get();
+
+        // Initialize variables
+        $pilihanPelajaran = null;
+        $kelasTahunList = collect();
+        $pilihanKelasTahun = null;
+        $muridList = collect();
+
+        // Handle subject selection
+        if ($request->has('pelajaran_id') && $request->pelajaran_id) {
+            $pilihanPelajaran = Pelajaran::where('guru_id', $guru->guru_id)
+                ->findOrFail($request->pelajaran_id);
+
+            // Get classes associated with the teacher and subject
+            $kelasTahunList = KelasTahun::with(['kelas', 'tahunajar'])
+                ->whereHas('tahunajar', function ($query) {
+                    $query->where('status', 'Aktif');
+                })
+                ->whereHas('jadwalpelajaran', function ($query) use ($pilihanPelajaran) {
+                    $query->where('pelajaran_id', $pilihanPelajaran->pelajaran_id);
+                })
+                ->get();
+        }
+
+        // Handle class selection
+        if ($request->has('kelas_tahun_id') && $request->kelas_tahun_id && $pilihanPelajaran) {
+            $pilihanKelasTahun = KelasTahun::whereHas('tahunajar', function ($query) {
+                $query->where('status', 'Aktif');
+            })->findOrFail($request->kelas_tahun_id);
+
+            // Get students in the selected class with their grades
+            $muridList = MuridKelas::with(['murid.profile', 'nilai' => function ($query) use ($pilihanPelajaran) {
+                $query->where('pelajaran_id', $pilihanPelajaran->pelajaran_id);
+            }])
+                ->where('kelas_tahun_id', $pilihanKelasTahun->kelas_tahun_id)
+                ->get();
+        }
+
+        return view('guru.isinilai', compact('guru', 'pelajaranList', 'pilihanPelajaran', 'kelasTahunList', 'pilihanKelasTahun', 'muridList'));
+    }
+
+    // Other methods (tampilkanManajemenPost, tambahPostingan, etc.) remain unchanged
     public function tampilkanManajemenPost()
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
@@ -150,12 +199,6 @@ class GuruController extends Controller
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
         return view('guru.jadwalajaranda', compact('guru'));
-    }
-
-    public function tampilkanMenuNilai()
-    {
-        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
-        return view('guru.isinilai', compact('guru'));
     }
 
     public function simpanNilai(Request $request)

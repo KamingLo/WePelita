@@ -1,5 +1,5 @@
 /* ----------------------------------------------- */
-/* ----------- tampilkan-jadwal-hari.css --------- */
+/* ---------------- JadwalGuru.css --------------- */
 /* ----------------------------------------------- */
 
 :root {
@@ -50,10 +50,10 @@ h1:after {
 }
 
 /* ----------------------------------------------- */
-/* ------------- Layout Tabel Terintegrasi ------- */
+/* -------------- Bagian Header Layout ----------- */
 /* ----------------------------------------------- */
 
-.LayoutTabelTerintegrasi {
+.LayoutTabelJadwal {
     background-color: white;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
@@ -62,13 +62,12 @@ h1:after {
     width: 100%;
 }
 
-.HeaderTabel {
+.HeaderTabelJadwal {
     padding: 25px;
     background-color: #f8f9fa;
     border-bottom: 1px solid #dee2e6;
 }
 
-/* Header dengan filter horizontal */
 .FilterDalamTabel {
     display: flex;
     justify-content: space-between;
@@ -97,25 +96,20 @@ h1:after {
     background-color: var(--primary-color);
 }
 
-/* Kontrol filter di sebelah kanan */
-.FilterControls {
+.KhususOpsi {
     display: flex;
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
 }
 
-/* ----------------------------------------------- */
-/* -------------- Filter Styling ----------------- */
-/* ----------------------------------------------- */
-
-.FilterGroup {
+.OpsiHari {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.FilterGroup label {
+.OpsiHari label {
     font-weight: 500;
     color: var(--dark-color);
     font-size: 14px;
@@ -159,10 +153,6 @@ h1:after {
     gap: 5px;
     white-space: nowrap;
 }
-
-/* ----------------------------------------------- */
-/* ------------- Info Statistik ------------------ */
-/* ----------------------------------------------- */
 
 .InfoStatistik {
     background-color: #e7f3ff;
@@ -238,29 +228,7 @@ h1:after {
     background-color: rgba(0, 0, 0, 0.02);
 }
 
-/* ----------------------------------------------- */
-/* ------------ Pesan Kosong/Empty -------------- */
-/* ----------------------------------------------- */
-
-.EmptyMessage {
-    text-align: center;
-    padding: 40px;
-    color: #6c757d;
-    font-style: italic;
-    background-color: #f8f9fa;
-}
-
-.EmptyMessage i {
-    font-size: 48px;
-    color: #dee2e6;
-    margin-bottom: 15px;
-}
-
-/* ----------------------------------------------- */
-/* ------------- Badge untuk Waktu --------------- */
-/* ----------------------------------------------- */
-
-.WaktuBadge {
+.WaktuPelajaran {
     background-color: var(--primary-color);
     color: white;
     padding: 6px 10px;
@@ -271,7 +239,25 @@ h1:after {
 }
 
 /* ----------------------------------------------- */
-/* ---------------- Responsive Design ------------ */
+/* ----------------- Pesan Error ----------------- */
+/* ----------------------------------------------- */
+
+.Kosongajah {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+    font-style: italic;
+    background-color: #f8f9fa;
+}
+
+.Kosongajah i {
+    font-size: 48px;
+    color: #dee2e6;
+    margin-bottom: 15px;
+}
+
+/* ----------------------------------------------- */
+/* ---------------- Bagian View ------------------ */
 /* ----------------------------------------------- */
 
 @media (max-width: 1200px) {
@@ -316,7 +302,7 @@ h1:after {
         text-align: center;
     }
 
-    .FilterControls {
+    .KhususOpsi {
         justify-content: center;
         gap: 10px;
     }
@@ -336,12 +322,12 @@ h1:after {
 }
 
 @media (max-width: 480px) {
-    .FilterControls {
+    .KhususOpsi {
         flex-direction: column;
         gap: 10px;
     }
 
-    .FilterGroup {
+    .OpsiHari {
         justify-content: space-between;
         width: 100%;
     }

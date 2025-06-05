@@ -13,8 +13,28 @@
             ->first();
         $kelasName = $muridKelas ? $muridKelas->kelasTahun->kelas->nama_kelas . ' (' . $muridKelas->kelasTahun->tahunajar->tahun_ajaran . ')' : 'No class assigned';
     @endphp
-    <h1>Hi, {{ $murid->profile->name }}</h1>
-    <h1>Class: {{ $kelasName }}</h1>
+    <div class="HeaderDashboardMurid">
+        <h1>Hi, {{ $murid->profile->name }}</h1>
+        <h4>Kelas: {{ $kelasName }}</h4>
+    </div>
+
+    <div class="dashboard-actions">
+        <a href="{{ route('murid.jadwal') }}" class="action-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="action-icon"><i class="fas fa-users"></i></div>
+            <h3>Jadwal Kelas</h3>
+            <p>Manage students, teachers, parents, and admins</p>
+        </a>
+        <a href="{{ route('murid.nilai') }}" class="action-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="action-icon"><i class="fas fa-chalkboard"></i></div>
+            <h3>Nilai Murid</h3>
+            <p>Create and manage class assignments</p>
+        </a>
+        <a href="{{ route('murid.pengumuman') }}" class="action-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="action-icon"><i class="fas fa-calendar-alt"></i></div>
+            <h3>Pengumuman</h3>
+            <p>View all announcements</p>
+        </a>
+    </div>
 
     <!-- Display student's class -->
     <div class="profile-section">
@@ -37,53 +57,55 @@
     </div>
 
     <div class="announcement-section">
-        <h2>Daftar Pengumuman</h2>
+        <h2>Pengumuman Terbaru</h2>
         <div class="LayoutDisplayPostingan">
             @if($announcements->isNotEmpty())
-                @foreach($announcements as $announcement)
-                    <div class="CardPost">
-                        <div class="ImagePostCard"
-                            @if($announcement->lampiran)
-                                style="background-image: url('{{ asset('storage/' . $announcement->lampiran) }}');"
-                            @else
-                                style="background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"
-                            @endif>
-                        </div>
-                        <div class="IsiCardPost">
-                            <h3 class="JudulCardPost">{{ $announcement->judul }}</h3>
-                            <p class="KontenCardPost">{{ Str::limit(strip_tags($announcement->isi), 210) }}</p>
-                            <div class="FooterCardPost">
-                                <div class="InfoUserCardPost">
-                                    <div class="FotoProfileCardPost">
-                                        @if($announcement->profile)
-                                            {{ strtoupper(substr($announcement->profile->name, 0, 2)) }}
+                @php
+                    $latestAnnouncement = $announcements->first();
+                @endphp
+                <div class="CardPost">
+                    <div class="ImagePostCard"
+                        @if($latestAnnouncement->lampiran)
+                            style="background-image: url('{{ asset('storage/' . $latestAnnouncement->lampiran) }}');"
+                        @else
+                            style="background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"
+                        @endif>
+                    </div>
+                    <div class="IsiCardPost">
+                        <h3 class="JudulCardPost">{{ $latestAnnouncement->judul }}</h3>
+                        <p class="KontenCardPost">{{ Str::limit(strip_tags($latestAnnouncement->isi), 210) }}</p>
+                        <div class="FooterCardPost">
+                            <div class="InfoUserCardPost">
+                                <div class="FotoProfileCardPost">
+                                    @if($latestAnnouncement->profile)
+                                        {{ strtoupper(substr($latestAnnouncement->profile->name, 0, 2)) }}
+                                    @else
+                                        ??
+                                    @endif
+                                </div>
+                                <div class="UserProfileCardPost">
+                                    <span class="NamaPengunaCP">
+                                        @if($latestAnnouncement->profile)
+                                            {{ $latestAnnouncement->profile->name }}
                                         @else
-                                            ??
+                                            Unknown Author
                                         @endif
-                                    </div>
-                                    <div class="UserProfileCardPost">
-                                        <span class="NamaPengunaCP">
-                                            @if($announcement->profile)
-                                                {{ $announcement->profile->name }}
-                                            @else
-                                                Unknown Author
-                                            @endif
-                                        </span>
-                                        <span class="TanggalPublikasihCP">{{ $announcement->created_at->format('M d, Y') }}</span>
-                                        <span class="TujuanPost">
-                                            Tujuan: {{ $announcement->kelasTahun ? $announcement->kelasTahun->kelas->nama_kelas . ' - ' . $announcement->kelasTahun->tahunajar->tahun_ajaran : 'Publik' }}
-                                        </span>
-                                    </div>
+                                    </span>
+                                    <span class="TanggalPublikasihCP">{{ $latestAnnouncement->created_at->format('M d, Y') }}</span>
+                                    <span class="TujuanPost">
+                                        Tujuan: {{ $latestAnnouncement->kelasTahun ? $latestAnnouncement->kelasTahun->kelas->nama_kelas . ' - ' . $latestAnnouncement->kelasTahun->tahunajar->tahun_ajaran : 'Publik' }}
+                                    </span>
                                 </div>
-                                <div class="OpsiTombolCp">
-                                    <a href="#" class="TombolOJT TombolBacaSelengkapnya" data-id="{{ $announcement->postingan_id }}">
-                                        <i class="fas fa-eye"></i> Baca Selengkapnya
-                                    </a>
-                                </div>
+                            </div>
+                            <div class="OpsiTombolCp">
+                                <a href="#" class="TombolOJT TombolBacaSelengkapnya" data-id="{{ $latestAnnouncement->postingan_id }}">
+                                    <i class="fas fa-eye"></i> Baca Selengkapnya
+                                </a>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                </div>
+                <a href="{{ route('murid.pengumuman') }}" class="view-all-btn">Lihat Semua Pengumuman</a>
             @else
                 <p>Tidak ada pengumuman tersedia.</p>
             @endif

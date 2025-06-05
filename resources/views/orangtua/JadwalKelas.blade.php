@@ -1,5 +1,5 @@
-@include('murid.partials.header')
-@include('murid.partials.sidebar')
+@include('orangtua.partials.header')
+@include('orangtua.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/TambahPelajaran.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
@@ -99,24 +99,19 @@
     <div class="ContainerPelajaran">
         <h1>Jadwal Pelajaran</h1>
 
-        <!-- Display student's class -->
+        <!-- Display child's class -->
         @php
-            $muridKelas = App\Models\MuridKelas::where('murid_id', $murid->murid_id)
-                ->whereHas('kelasTahun.tahunajar', function ($query) {
-                    $query->where('status', 'Aktif');
-                })
-                ->with('kelasTahun.kelas', 'kelasTahun.tahunajar')
-                ->first();
             $kelasName = $muridKelas ? $muridKelas->kelasTahun->kelas->nama_kelas . ' (' . $muridKelas->kelasTahun->tahunajar->tahun_ajaran . ')' : 'No class assigned';
+            $muridName = $muridKelas ? $muridKelas->murid->profile->name : 'No child assigned';
             $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
             $selectedDays = request()->input('hari', []);
         @endphp
 
         <div class="LayoutPelajaranTable">
-            <h2>Jadwal Kelas: {{ $kelasName }}</h2>
+            <h2>Jadwal Kelas: {{ $muridName }} - {{ $kelasName }}</h2>
             <div class="FilterContainer">
                 <button class="FilterButton" onclick="toggleDropdown()">Filter Hari</button>
-                <form action="{{ route('murid.jadwal') }}" method="GET" id="filterForm">
+                <form action="{{ route('orangtua.jadwal') }}" method="GET" id="filterForm">
                     <div class="FilterDropdown" id="filterDropdown">
                         @foreach($days as $day)
                             <label class="FilterOption">
@@ -128,7 +123,7 @@
                     </div>
                 </form>
                 <div class="KhususTombolUnduh">
-                    <a href="{{ route('murid.export') }}" class="TombolOJT DownloadJadwal">Download Jadwal</a>
+                    <a href="{{ route('orangtua.export-jadwal') }}" class="TombolOJT DownloadJadwal">Download Jadwal</a>
                 </div>
             </div>
             <div class="DisplayDataTable">
@@ -163,7 +158,7 @@
     </div>
 </body>
 
-<script src="{{ asset('js/CssAdmin.js') }}"></script>
+<script src="{{ asset('js/CssOrangTua.js') }}"></script>
 <script>
     let dropdownOpen = false;
 

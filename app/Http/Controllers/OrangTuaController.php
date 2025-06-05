@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Murid;
-use App\Models\Postingan;
+use App\Models\OrangTua;
 use App\Models\MuridKelas;
+use App\Models\Postingan;
 use App\Models\JadwalPelajaran;
 use App\Models\Nilai;
 use App\Exports\MuridJadwalExport;
@@ -12,15 +12,18 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class MuridController extends Controller
+class OrangTuaController extends Controller
 {
     public function dashboard()
     {
-        $murid = Auth::user()->murid;
-        $muridKelas = MuridKelas::where('murid_id', $murid->murid_id)
+        $orangtua = Auth::user()->orangtua;
+        $muridKelas = MuridKelas::whereHas('muridOrangTua', function ($query) use ($orangtua) {
+                $query->where('orang_tua_id', $orangtua->orang_tua_id);
+            })
             ->whereHas('kelasTahun.tahunajar', function ($query) {
                 $query->where('status', 'Aktif');
             })
+            ->with('murid.profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')
             ->first();
 
         $announcements = collect();
@@ -35,16 +38,19 @@ class MuridController extends Controller
                 ->get();
         }
 
-        return view('murid.dashboard', compact('murid', 'announcements'));
+        return view('orangtua.dashboard', compact('orangtua', 'muridKelas', 'announcements'));
     }
 
     public function jadwalKelas(Request $request)
     {
-        $murid = Auth::user()->murid;
-        $muridKelas = MuridKelas::where('murid_id', $murid->murid_id)
+        $orangtua = Auth::user()->orangtua;
+        $muridKelas = MuridKelas::whereHas('muridOrangTua', function ($query) use ($orangtua) {
+                $query->where('orang_tua_id', $orangtua->orang_tua_id);
+            })
             ->whereHas('kelasTahun.tahunajar', function ($query) {
                 $query->where('status', 'Aktif');
             })
+            ->with('murid.profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')
             ->first();
 
         $jadwals = collect();
@@ -61,7 +67,7 @@ class MuridController extends Controller
             $jadwals = $query->get();
         }
 
-        return view('murid.JadwalKelas', compact('murid', 'jadwals'));
+        return view('orangtua.JadwalKelas', compact('orangtua', 'muridKelas', 'jadwals'));
     }
 
     public function exportJadwal()
@@ -71,11 +77,14 @@ class MuridController extends Controller
 
     public function nilaiKelas()
     {
-        $murid = Auth::user()->murid;
-        $muridKelas = MuridKelas::where('murid_id', $murid->murid_id)
+        $orangtua = Auth::user()->orangtua;
+        $muridKelas = MuridKelas::whereHas('muridOrangTua', function ($query) use ($orangtua) {
+                $query->where('orang_tua_id', $orangtua->orang_tua_id);
+            })
             ->whereHas('kelasTahun.tahunajar', function ($query) {
                 $query->where('status', 'Aktif');
             })
+            ->with('murid.profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')
             ->first();
 
         $nilais = collect();
@@ -85,22 +94,19 @@ class MuridController extends Controller
                 ->get();
         }
 
-        return view('murid.NilaiMurid', compact('murid', 'nilais'));
-    }
-
-    public function getAnnouncement($id)
-    {
-        $announcement = Postingan::with('profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')->findOrFail($id);
-        return response()->json($announcement);
+        return view('orangtua.NilaiMurid', compact('orangtua', 'muridKelas', 'nilais'));
     }
 
     public function pengumuman()
     {
-        $murid = Auth::user()->murid;
-        $muridKelas = MuridKelas::where('murid_id', $murid->murid_id)
+        $orangtua = Auth::user()->orangtua;
+        $muridKelas = MuridKelas::whereHas('muridOrangTua', function ($query) use ($orangtua) {
+                $query->where('orang_tua_id', $orangtua->orang_tua_id);
+            })
             ->whereHas('kelasTahun.tahunajar', function ($query) {
                 $query->where('status', 'Aktif');
             })
+            ->with('murid.profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')
             ->first();
 
         $announcements = collect();
@@ -115,6 +121,12 @@ class MuridController extends Controller
                 ->get();
         }
 
-        return view('murid.Pengumuman', compact('murid', 'announcements'));
+        return view('orangtua.Pengumuman', compact('orangtua', 'muridKelas', 'announcements'));
+    }
+
+    public function getAnnouncement($id)
+    {
+        $announcement = Postingan::with('profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')->findOrFail($id);
+        return response()->json($announcement);
     }
 }
