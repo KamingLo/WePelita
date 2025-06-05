@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DownloadUser;
 use Illuminate\Http\Request;
 use App\Models\Profile;
 use App\Models\Guru;
@@ -1148,4 +1150,14 @@ public function prosesKenaikanKelas(Request $request)
         return view('register', compact('kelasTahunList'));
     }
 
+    public function exportUser($role)
+    {
+        $validRoles = ['admin', 'guru', 'murid', 'orang_tua'];
+
+        if (!in_array(strtolower($role), $validRoles)) {
+            abort(404, 'Role not found');
+        }
+
+        return Excel::download(new DownloadUser($role), $role . '.xlsx');
+    }
 }

@@ -26,11 +26,11 @@ Route::get('/', [AdminController::class, 'index'])->name('home');
 Route::get('/blog', [AdminController::class, 'tampilkanBlog'])->name('blog');
 Route::get('/blog/{postingan}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.show');
 
-    Route::get('/postingan/{id}', [PostinganController::class, 'show']);
-    Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
+Route::get('/postingan/{id}', [PostinganController::class, 'show']);
+Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
 
-    Route::get('/register', [AdminController::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [AdminController::class, 'register'])->name('register.submit');
+Route::get('/register', [AdminController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [AdminController::class, 'register'])->name('register.submit');
 
 Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::get('admin/dashboard', function() {
@@ -38,6 +38,7 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
         return view('admin.dashboard', compact('admin'));
     })->name('admin.dashboard');
 
+    Route::get('admin/downloaduser/{role}', [AdminController::class, 'exportUser'])->name('admin.downloaduser');
     Route::get('/admin/register', [AdminController::class, 'formUser']);
     Route::post('/admin/register', [AdminController::class, 'tambahkanUser'])->name('admin.register');
 

@@ -464,6 +464,7 @@
 
                 @php $role = request('role'); @endphp
 
+                <a href="downloaduser/{{$role}}">Download data {{ $role }}</a>
                 <div class="FormTabelDataUser">
                     @if ($role === 'admin')
                         <h3>Data Admin</h3>
