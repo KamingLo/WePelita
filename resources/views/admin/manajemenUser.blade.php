@@ -591,6 +591,8 @@
                                         <th>Nama</th>
                                         <th>Email</th>
                                         <th>Kelas</th>
+                                        <th>tahun ajaran</th>
+                                        <th>semester</th>
                                         <th>Nis</th>
                                         <th>Nisn</th>
                                         <th>Nama Orang Tua</th>
@@ -604,6 +606,8 @@
                                             <td>{{ $muridOrangTua->muridKelas->murid->profile->name }}</td>
                                             <td>{{ $muridOrangTua->muridKelas->murid->profile->email }}</td>
                                             <td>{{ $muridOrangTua->muridKelas->kelasTahun->kelas->nama_kelas }}</td>
+                                            <td>{{ $muridOrangTua->muridKelas->kelasTahun->tahunajar->tahun_ajaran }}</td>
+                                            <td>{{ $muridOrangTua->muridKelas->kelasTahun->tahunajar->semester }}</td>
                                             <td>{{ $muridOrangTua->muridKelas->murid->nis }}</td>
                                             <td>{{ $muridOrangTua->muridKelas->murid->nisn }}</td>
                                             <td>{{ $muridOrangTua->orangTua->profile->name }}</td>

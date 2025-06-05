@@ -35,7 +35,19 @@ return new class extends Migration
             $table->string('statusKerja');
             $table->string('nuptk');
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
+        });    
+        
+        Schema::create('orang_tua', function (Blueprint $table){
+            $table -> id('orang_tua_id');
+            $table -> string('profesi');
+            $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
         });
+        
+        Schema::create('admin', function (Blueprint $table){
+            $table->id('admin_id');
+            $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
+        });
+        
         
         Schema::create('murid', function (Blueprint $table){
             $table->id('murid_id');
@@ -43,18 +55,6 @@ return new class extends Migration
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
             $table->string('nis');
             $table->string('nisn');
-        });
-
-
-        Schema::create('orang_tua', function (Blueprint $table){
-            $table -> id('orang_tua_id');
-            $table -> string('profesi');
-            $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
-        });
-
-        Schema::create('admin', function (Blueprint $table){
-            $table->id('admin_id');
-            $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
         });
 
         Schema::create('kelas', function (Blueprint $table){

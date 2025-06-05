@@ -228,8 +228,7 @@ class AdminController extends Controller
     public function hapusKelas($id)
     {
         $kelastahun = KelasTahun::findOrFail($id);
-        $kelas = Kelas::findOrFail($kelastahun->kelas_id);
-        $kelas->delete();
+        $kelastahun->delete();
 
         return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas berhasil dihapus.');
     }
@@ -248,8 +247,6 @@ class AdminController extends Controller
         ->select('kelas_tahun.*')
         ->get();
 
-
-
         // Ambil semua kelas yang tersedia
         $semuaKelas = Kelas::orderBy('nama_kelas')->get();
 
@@ -258,80 +255,93 @@ class AdminController extends Controller
     }
 
 
-    public function prosesKenaikanKelas(Request $request)
-    {
-        $validated = $request->validate([
-            'kelas_asal' => 'required|exists:kelas_tahun,kelas_tahun_id',
-            'kelas_tujuan' => 'required|exists:kelas,kelas_id',
-            'tahun_ajaran' => 'required|string',
-            'semester' => 'required|in:Ganjil,Genap',
+public function prosesKenaikanKelas(Request $request)
+{
+    $validated = $request->validate([
+        'kelas_asal' => 'required|exists:kelas_tahun,kelas_tahun_id',
+        'kelas_tujuan' => 'required|exists:kelas,kelas_id',
+        'tahun_ajaran' => 'required|string',
+        'semester' => 'required|in:Ganjil,Genap',
+    ]);
+
+    // Ambil data kelas asal dengan relasi tahunajar
+    $kelasAsal = KelasTahun::with('tahunajar')->findOrFail($request->kelas_asal);
+
+    $kelasTujuanId = $request->kelas_tujuan;
+    $tahunAjarTujuan = $request->tahun_ajaran;
+    $semesterTujuan = $request->semester;
+
+    // Cek apakah kelas asal dan tujuan + tahun ajar dan semester sama
+    if (
+        $kelasAsal->kelas_id == $kelasTujuanId &&
+        $kelasAsal->tahunajar->tahun_ajaran == $tahunAjarTujuan &&
+        $kelasAsal->tahunajar->semester == $semesterTujuan
+    ) {
+        return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
+            ->with('error', 'Kenaikan kelas gagal: Kelas asal dan kelas tujuan dengan tahun ajar dan semester yang sama tidak diperbolehkan.');
+    }
+
+    // Update status tahun ajar asal menjadi Tidak Aktif (sesuaikan kebutuhan)
+    $kelasAsal->tahunajar->update(['status' => 'Tidak Aktif']);
+
+    // Cari atau buat tahun ajar baru
+    $tahunAjarBaru = TahunAjar::firstOrCreate(
+        [
+            'tahun_ajaran' => $tahunAjarTujuan,
+            'semester' => $semesterTujuan,
+        ],
+        [
+            'status' => 'Aktif',
+        ]
+    );
+
+    // Cari atau buat kelas_tahun baru untuk kelas tujuan dan tahun ajar baru
+    $kelasTahunBaru = KelasTahun::firstOrCreate(
+        [
+            'kelas_id' => $kelasTujuanId,
+            'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id,
+        ]
+    );
+
+    // Ambil semua murid_kelas dari kelas asal
+    $muridKelasAsal = MuridKelas::where('kelas_tahun_id', $kelasAsal->kelas_tahun_id)->get();
+
+    if ($muridKelasAsal->isEmpty()) {
+        return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
+            ->with('error', 'Tidak ada siswa di kelas asal untuk dipindahkan.');
+    }
+
+    // Update status murid_kelas asal jadi tidak aktif (jika ada kolom status, sesuaikan)
+    foreach ($muridKelasAsal as $mk) {
+        $mk->update(['status' => 'Tidak Aktif']);
+    }
+
+    // Proses pembuatan murid_kelas baru dan duplikasi murid_orang_tua
+    foreach ($muridKelasAsal as $mk) {
+        // Buat murid_kelas baru di kelas tujuan
+        $mkBaru = MuridKelas::create([
+            'murid_id' => $mk->murid_id,
+            'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id,
+            'status' => 'Aktif', // jika ada kolom status
         ]);
 
-        $kelasAsal = KelasTahun::with('tahunajar')->findOrFail($request->kelas_asal);
+        // Ambil data murid_orang_tua lama berdasar murid_kelas_id lama
+        $orangTuaMuridLama = MuridOrangTua::where('murid_kelas_id', $mk->murid_kelas_id)->get();
 
-        // Ambil data kelas tujuan dan tahun ajar tujuan
-        $kelasTujuanId = $request->kelas_tujuan;
-        $tahunAjarTujuan = $request->tahun_ajaran;
-        $semesterTujuan = $request->semester;
-
-        // Cek apakah kelas asal dan tujuan sama DAN tahun ajar + semester juga sama
-        if (
-            $kelasAsal->kelas_id == $kelasTujuanId &&
-            $kelasAsal->tahunajar->tahun_ajaran == $tahunAjarTujuan &&
-            $kelasAsal->tahunajar->semester == $semesterTujuan
-        ) {
-            return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
-                ->with('error', 'Kenaikan kelas gagal: Kelas asal dan kelas tujuan dengan tahun ajar dan semester yang sama tidak diperbolehkan.');
-        }
-
-        // Update status tahun ajar asal menjadi Tidak Aktif (bisa diubah sesuai kebutuhan, misal hanya jika kelas sudah kosong)
-        $kelasAsal->tahunajar->update(['status' => 'Tidak Aktif']);
-
-        // Cari atau buat tahun ajar baru berdasarkan input
-        $tahunAjarBaru = TahunAjar::firstOrCreate(
-            [
-                'tahun_ajaran' => $tahunAjarTujuan,
-                'semester' => $semesterTujuan,
-            ],
-            [
-                'status' => 'Aktif',
-            ]
-        );
-
-        // Cari atau buat kelas_tahun baru untuk kelas tujuan dan tahun ajar baru
-        $kelasTahunBaru = KelasTahun::firstOrCreate(
-            [
-                'kelas_id' => $kelasTujuanId,
-                'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id,
-            ]
-        );
-
-        // Ambil semua murid_kelas dari kelas asal
-        $muridKelasAsal = MuridKelas::where('kelas_tahun_id', $kelasAsal->kelas_tahun_id)->get();
-
-        if ($muridKelasAsal->isEmpty()) {
-            return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
-                ->with('error', 'Tidak ada siswa di kelas asal untuk dipindahkan.');
-        }
-
-        // Update murid_kelas asal status jadi nonaktif atau sesuai kebutuhan
-        foreach ($muridKelasAsal as $mk) {
-            $mk->update(['status' => 'Tidak Aktif']); // Asumsi kamu punya kolom status
-        }
-
-        // Buat murid_kelas baru untuk kelas tujuan
-        foreach ($muridKelasAsal as $mk) {
-            MuridKelas::create([
-                'murid_id' => $mk->murid_id,
-                'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id,
-                // set status aktif jika ada kolom status
-                'status' => 'Aktif',
+        // Duplikasi data murid_orang_tua ke murid_kelas baru
+        foreach ($orangTuaMuridLama as $ot) {
+            MuridOrangTua::create([
+                'murid_kelas_id' => $mkBaru->murid_kelas_id,
+                'orang_tua_id' => $ot->orang_tua_id,
+                // jika ada kolom lain, tambahkan di sini
             ]);
         }
-
-        return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
-            ->with('success', 'Kenaikan kelas berhasil diproses.');
     }
+
+    return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
+        ->with('success', 'Kenaikan kelas berhasil diproses.');
+}
+
 
 
 
@@ -825,81 +835,96 @@ class AdminController extends Controller
     }
 
     public function tampilkanManajemenUser(Request $request)
-    {
-        try {
-            $role = $request->input('role');
-            $search = $request->input('search');
-            $additionalFilter = $request->input('additional_filter');
+{
+    try {
+        $role = $request->input('role');
+        $search = $request->input('search');
+        $additionalFilter = $request->input('additional_filter');
 
-            $admins = collect();
-            $gurus = collect();
-            $muridOrangTuas = collect();
+        $admins = collect();
+        $gurus = collect();
+        $muridOrangTuas = collect();
 
-            $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
-                $query->where('status', 'Aktif');
-            })->with(['kelas', 'tahunajar'])->get();
+        // Ambil semua kelas yang berstatus aktif
+        $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
+            $query->where('status', 'Aktif');
+        })->with(['kelas', 'tahunajar'])->get();
 
-            $admin = Admin::where('profile_id', auth()->id())->first();
-            if (!$admin) {
-                return redirect()->to('/login')->withErrors(['error' => 'Admin tidak ditemukan. Silakan login kembali.']);
-            }
-
-            if ($role === 'admin') {
-                $admins = Admin::with('profile')
-                    ->when($search, function ($query) use ($search) {
-                        return $query->whereHas('profile', function ($q) use ($search) {
-                            $q->where('name', 'like', '%' . $search . '%')
-                              ->orWhere('email', 'like', '%' . $search . '%');
-                        });
-                    })
-                    ->get();
-            } elseif ($role === 'guru') {
-                $gurus = Guru::with('profile')
-                    ->when($additionalFilter, function ($query) use ($additionalFilter) {
-                        return $query->where('statusKerja', $additionalFilter);
-                    })
-                    ->when($search, function ($query) use ($search) {
-                        return $query->whereHas('profile', function ($q) use ($search) {
-                            $q->where('name', 'like', '%' . $search . '%')
-                              ->orWhere('email', 'like', '%' . $search . '%');
-                        });
-                    })
-                    ->get();
-            } elseif ($role === 'murid') {
-                $muridOrangTuas = MuridOrangTua::with([
-                    'muridKelas.murid.profile',
-                    'muridKelas.kelasTahun.kelas',
-                    'muridKelas.kelasTahun.tahunajar',
-                    'orangTua.profile'
-                ])
-                    ->when($additionalFilter, function ($query) use ($additionalFilter) {
-                        return $query->whereHas('muridKelas', function ($q) use ($additionalFilter) {
-                            $q->where('kelas_tahun_id', $additionalFilter);
-                        });
-                    })
-                    ->when($search, function ($query) use ($search) {
-                        return $query->whereHas('muridKelas.murid.profile', function ($q) use ($search) {
-                            $q->where('name', 'like', '%' . $search . '%')
-                              ->orWhere('email', 'like', '%' . $search . '%');
-                        });
-                    })
-                    ->get();
-            } elseif ($role === 'orang_tua') {
-                $muridOrangTuas = MuridOrangTua::with(['orangTua.profile'])
-                    ->when($search, function ($query) use ($search) {
-                        return $query->whereHas('orangTua.profile', function ($q) use ($search) {
-                            $q->where('name', 'like', '%' . $search . '%')
-                              ->orWhere('email', 'like', '%' . $search . '%');
-                        });
-                    })
-                    ->get();
-            }
-
-            return view('admin.ManajemenUser', compact('admin', 'admins', 'gurus', 'muridOrangTuas', 'kelasList'));
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Gagal memuat data: ' . $e->getMessage()]);
+        // Cek admin login
+        $admin = Admin::where('profile_id', auth()->id())->first();
+        if (!$admin) {
+            return redirect()->to('/login')->withErrors(['error' => 'Admin tidak ditemukan. Silakan login kembali.']);
         }
+
+        // Ambil tahun ajaran aktif
+        $tahunAjarAktif = TahunAjar::where('status', 'Aktif')->first();
+
+        if ($role === 'admin') {
+            $admins = Admin::with('profile')
+                ->when($search, function ($query) use ($search) {
+                    return $query->whereHas('profile', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%')
+                          ->orWhere('email', 'like', '%' . $search . '%');
+                    });
+                })
+                ->get();
+        } elseif ($role === 'guru') {
+            $gurus = Guru::with('profile')
+                ->when($additionalFilter, function ($query) use ($additionalFilter) {
+                    return $query->where('statusKerja', $additionalFilter);
+                })
+                ->when($search, function ($query) use ($search) {
+                    return $query->whereHas('profile', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%')
+                          ->orWhere('email', 'like', '%' . $search . '%');
+                    });
+                })
+                ->get();
+        } elseif ($role === 'murid') {
+            $muridOrangTuas = MuridOrangTua::with([
+                'muridKelas.murid.profile',
+                'muridKelas.kelasTahun.kelas',
+                'muridKelas.kelasTahun.tahunajar',
+                'orangTua.profile'
+            ])
+                ->whereHas('muridKelas.kelasTahun.tahunAjar', function ($query) use ($tahunAjarAktif) {
+                    $query->where('tahun_ajaran_id', $tahunAjarAktif->tahun_ajaran_id);
+                })
+                ->when($additionalFilter, function ($query) use ($additionalFilter) {
+                    return $query->whereHas('muridKelas', function ($q) use ($additionalFilter) {
+                        $q->where('kelas_tahun_id', $additionalFilter);
+                    });
+                })
+                ->when($search, function ($query) use ($search) {
+                    return $query->whereHas('muridKelas.murid.profile', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%')
+                          ->orWhere('email', 'like', '%' . $search . '%');
+                    });
+                })
+                ->get();
+        } elseif ($role === 'orang_tua') {
+            $muridOrangTuas = MuridOrangTua::with([
+                'muridKelas.murid.profile',
+                'muridKelas.kelasTahun.tahunAjar',
+                'orangTua.profile'
+            ])
+                ->whereHas('muridKelas.kelasTahun.tahunAjar', function ($query) use ($tahunAjarAktif) {
+                    $query->where('tahun_ajaran_id', $tahunAjarAktif->tahun_ajaran_id);
+                })
+                ->when($search, function ($query) use ($search) {
+                    return $query->whereHas('orangTua.profile', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%')
+                          ->orWhere('email', 'like', '%' . $search . '%');
+                    });
+                })
+                ->get();
+        }
+
+        return view('admin.ManajemenUser', compact('admin', 'admins', 'gurus', 'muridOrangTuas', 'kelasList'));
+    } catch (\Exception $e) {
+        return redirect()->back()->withErrors(['error' => 'Gagal memuat data: ' . $e->getMessage()]);
     }
+}
 
     public function editUser($id, Request $request)
     {
