@@ -38,21 +38,6 @@ class GuruController extends Controller
         $pilihanKelasTahun = null;
         $muridList = collect();
 
-        // Handle subject selection
-        if ($request->has('pelajaran_id') && $request->pelajaran_id) {
-            $pilihanPelajaran = Pelajaran::where('guru_id', $guru->guru_id)
-                ->findOrFail($request->pelajaran_id);
-
-            // Get classes associated with the teacher and subject
-            $kelasTahunList = KelasTahun::with(['kelas', 'tahunajar'])
-                ->whereHas('tahunajar', function ($query) {
-                    $query->where('status', 'Aktif');
-                })
-                ->whereHas('jadwalpelajaran', function ($query) use ($pilihanPelajaran) {
-                    $query->where('pelajaran_id', $pilihanPelajaran->pelajaran_id);
-                })
-                ->get();
-        }
 
         // Handle class selection
         if ($request->has('kelas_tahun_id') && $request->kelas_tahun_id && $pilihanPelajaran) {
@@ -68,7 +53,7 @@ class GuruController extends Controller
                 ->get();
         }
 
-        return view('guru.isinilai', compact('guru', 'pelajaranList', 'pilihanPelajaran', 'kelasTahunList', 'pilihanKelasTahun', 'muridList'));
+        return view('guru.isinilai', compact('guru', 'pelajaranList', 'pilihanPelajaran', 'pilihanKelasTahun', 'muridList'));
     }
 
     // Other methods (tampilkanManajemenPost, tambahPostingan, etc.) remain unchanged
