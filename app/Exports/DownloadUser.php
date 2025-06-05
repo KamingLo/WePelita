@@ -60,34 +60,46 @@ class DownloadUser implements FromCollection, WithHeadings
                 });
 
             case 'murid':
-                return Murid::with('profile')->get()->map(function ($murid) {
-                    return [
-                        'id' => $murid->murid_id,
-                        'name' => $murid->profile->name,
-                        'email' => $murid->profile->email,
-                        'alamat' => $murid->profile->alamat,
-                        'jenis_kelamin' => $murid->profile->jenis_kelamin,
-                        'tanggal_lahir' => $murid->profile->tanggal_lahir,
-                        'no_telp' => $murid->profile->no_telp,
-                        'asal_sekolah' => $murid->asal_sekolah,
-                        'nis' => $murid->nis,
-                        'nisn' => $murid->nisn,
-                    ];
-                });
+    return Murid::with(['profile', 'muridKelas.kelasTahun.tahunAjaran'])
+        ->whereHas('muridKelas.kelasTahun.tahunAjaran', function ($query) {
+            $query->where('status', 'aktif');
+        })
+        ->get()
+        ->map(function ($murid) {
+            return [
+                'id' => $murid->murid_id,
+                'name' => $murid->profile->name,
+                'email' => $murid->profile->email,
+                'alamat' => $murid->profile->alamat,
+                'jenis_kelamin' => $murid->profile->jenis_kelamin,
+                'tanggal_lahir' => $murid->profile->tanggal_lahir,
+                'no_telp' => $murid->profile->no_telp,
+                'asal_sekolah' => $murid->asal_sekolah,
+                'nis' => $murid->nis,
+                'nisn' => $murid->nisn,
+            ];
+        });
+
 
             case 'orang_tua':
-                return OrangTua::with('profile')->get()->map(function ($orangTua) {
-                    return [
-                        'id' => $orangTua->orang_tua_id,
-                        'name' => $orangTua->profile->name,
-                        'email' => $orangTua->profile->email,
-                        'alamat' => $orangTua->profile->alamat,
-                        'jenis_kelamin' => $orangTua->profile->jenis_kelamin,
-                        'tanggal_lahir' => $orangTua->profile->tanggal_lahir,
-                        'no_telp' => $orangTua->profile->no_telp,
-                        'profesi' => $orangTua->profesi,
-                    ];
-                });
+    return OrangTua::with(['profile', 'muridOrangTua.muridKelas.kelasTahun.tahunAjaran'])
+        ->whereHas('muridOrangTua.muridKelas.kelasTahun.tahunAjaran', function ($query) {
+            $query->where('status', 'aktif');
+        })
+        ->get()
+        ->map(function ($ortu) {
+            return [
+                'id' => $ortu->orang_tua_id,
+                'name' => $ortu->profile->name,
+                'email' => $ortu->profile->email,
+                'alamat' => $ortu->profile->alamat,
+                'jenis_kelamin' => $ortu->profile->jenis_kelamin,
+                'tanggal_lahir' => $ortu->profile->tanggal_lahir,
+                'no_telp' => $ortu->profile->no_telp,
+                'profesi' => $ortu->profesi,
+            ];
+        });
+
 
             default:
                 return collect([]);
