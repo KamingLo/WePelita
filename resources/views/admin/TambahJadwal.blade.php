@@ -80,8 +80,13 @@
         </div>
 
         <div class="LayoutJadwalTable">
-            <h2>Jadwal Pembelajaran</h2>
-            <a href="{{ route('admin.export') }}">download jadwal</a>
+            <div class="HeaderJadwalTable">
+                <h2>Jadwal Pembelajaran</h2>
+                <div class="KhususTombolUnduh">
+                    <a href="{{ route('admin.export') }}" class="TombolOJT DownloadJadwal">download jadwal</a>
+                </div>
+            </div>
+
             <div class="DisplayDataTable">
                 <table class="table">
                     <thead>

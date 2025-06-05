@@ -106,3 +106,11 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
         return view('guru.post');
     })->name('guru.post');
 });
+
+Route::middleware([RoleMiddleware::class.':murid'])->group(function() {
+    Route::get('murid/dashboard', [MuridController::class, 'dashboard'])->name('murid.dashboard');
+    Route::get('murid/jadwal', [MuridController::class, 'jadwalKelas'])->name('murid.jadwal');
+    Route::get('murid/export-jadwal', [MuridController::class, 'exportJadwal'])->name('murid.export');
+    Route::get('murid/nilai', [MuridController::class, 'nilaiKelas'])->name('murid.nilai');
+    Route::get('/announcement/{id}', [MuridController::class, 'getAnnouncement'])->name('announcement.show');
+});

@@ -81,16 +81,16 @@ body {
 
 .SplitFormMu {
     display: flex;
-    height: 100vh;
+    height: calc(100vh - 150px);
     gap: 20px;
-    box-sizing: border-box;;
+    box-sizing: border-box;
 }
 
 .SplitFormMuEdit {
     display: flex;
-    height: 100vh;
+    height: calc(100vh - 150px);
     gap: 20px;
-    box-sizing: border-box;;
+    box-sizing: border-box;
     left: 50%;
     transform: translateX(25%);
 }
@@ -100,7 +100,6 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    
 }
 
 /* ----------------------------------------------- */
@@ -111,10 +110,9 @@ body {
     flex: 0 0 45%;
     background-color: white;
     border-radius: var(--border-radius);
-    height: 42rem;
     box-shadow: var(--shadow);
     overflow-y: auto;
-    max-height: calc(100vh - 40px);
+    width: 100%;
 }
 
 .ReisterUser .ContainerRegister {
@@ -142,7 +140,6 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     box-sizing: border-box;
-    /* border: 2px solid black; */
 }
 
 .LayoutRegisterForm h2 {
@@ -215,7 +212,6 @@ body {
     outline: none;
     box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
 }
-
 
 input.TampilanIsiData {
     width: 100%;
@@ -371,9 +367,8 @@ input.SearchBarInput:focus {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     overflow-y: auto;
-    max-height: calc(100vh - 40px);
+    width: 100%;
     display: flex;
-    height: 42rem  ;
     flex-direction: column;
 }
 
@@ -478,7 +473,6 @@ input.SearchBarInput:focus {
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
-    
 }
 
 .additional-filter {
@@ -493,7 +487,7 @@ input.SearchBarInput:focus {
     display: flex;
 }
 
-.FilterHeaderGuruMu{
+.FilterHeaderGuruMu {
     margin-left: auto;
 }
 
@@ -501,7 +495,7 @@ input.SearchBarInput:focus {
     display: flex;
 }
 
-.FilterHeaderMuridMu{
+.FilterHeaderMuridMu {
     margin-left: auto;
 }
 
@@ -573,7 +567,7 @@ input.SearchBarInput:focus {
 }
 
 .TombolDelete i {
-    transform: translateY(0.08rem)
+    transform: translateY(0.08rem);
 }
 
 .TombolDelete:hover {
@@ -617,6 +611,10 @@ input.SearchBarInput:focus {
 /* ----------------------------------------------- */
 
 @media (max-width: 1400px) {
+    .ContainerUtamaManajemenUser {
+        margin-left: 0;
+    }
+    
     .SplitFormMu {
         margin-left: 0;
     }
@@ -660,6 +658,7 @@ input.SearchBarInput:focus {
     .TabelDataUser {
         flex: none;
         max-height: none;
+        width: 100%;
     }
     
     .ReisterUser {
@@ -668,6 +667,11 @@ input.SearchBarInput:focus {
 }
 
 @media (max-width: 768px) {
+    .ContainerUtamaManajemenUser {
+        margin-left: 0;
+        padding: 15px;
+    }
+    
     .ContainerRegister {
         margin-left: 0;
         padding: 15px;
@@ -680,6 +684,13 @@ input.SearchBarInput:focus {
     .SplitFormMu {
         padding: 10px;
         gap: 10px;
+        height: auto;
+    }
+    
+    .ReisterUser,
+    .TabelDataUser {
+        width: 100%;
+        max-height: none;
     }
     
     .FormTabelDataUser {

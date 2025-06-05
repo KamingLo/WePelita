@@ -125,6 +125,14 @@ select.TampilanIsiData {
 /* ----------------- Bagian Table ---------------- */
 /* ----------------------------------------------- */
 
+.HeaderJadwalTable {
+    display: flex;
+}
+
+.KhususTombolUnduh {
+    margin-left: auto;
+}
+
 .LayoutJadwalTable {
     flex: 2;
     min-width: 600px;
@@ -337,6 +345,21 @@ select.TampilanIsiData {
 .TombolJadwalBatal:hover {
     background-color: #c82333;
     border-color: #bd2130;
+}
+
+.DownloadJadwal {
+    color: white;
+    background-color: #25953f;;
+    border-color: #4a6cf7;
+    padding: 6px 12px;
+    font-size: 13px;
+    text-decoration: none;
+    width: 100%;
+}
+
+.DownloadJadwal:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
 }
 
 /* ----------------------------------------------- */
