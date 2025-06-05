@@ -9,6 +9,7 @@ class KelasTahun extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     protected $table = 'kelas_tahun';
     protected $primaryKey = 'kelas_tahun_id';
     protected $fillable = ['kelas_id', 'tahun_ajaran_id'];

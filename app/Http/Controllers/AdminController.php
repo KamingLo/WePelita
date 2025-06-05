@@ -236,16 +236,27 @@ class AdminController extends Controller
 
     public function tampilkanFormKenaikanKelas()
     {
+        // Ambil admin berdasarkan profile_id yang login
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+
         $kelasSekarang = KelasTahun::with(['kelas', 'tahunajar'])
-            ->whereHas('tahunajar', function($query) {
-                $query->where('status', 'Aktif');
-            })->get();
-    
-        $semuaKelas = Kelas::all();
-    
+        ->whereHas('tahunajar', function($query) {
+            $query->where('status', 'Aktif');
+        })
+        ->join('kelas', 'kelas_tahun.kelas_id', '=', 'kelas.kelas_id')
+        ->orderBy('kelas.nama_kelas')
+        ->select('kelas_tahun.*')
+        ->get();
+
+
+
+        // Ambil semua kelas yang tersedia
+        $semuaKelas = Kelas::orderBy('nama_kelas')->get();
+
+        // Kirim data ke view
         return view('admin.kenaikanKelas', compact('kelasSekarang', 'semuaKelas', 'admin'));
     }
+
 
     public function prosesKenaikanKelas(Request $request)
     {
@@ -256,48 +267,73 @@ class AdminController extends Controller
             'semester' => 'required|in:Ganjil,Genap',
         ]);
 
-        $kelasAsal = KelasTahun::findOrFail($request->kelas_asal);
-        if ($kelasAsal->kelas_id == $request->kelas_tujuan) {
+        $kelasAsal = KelasTahun::with('tahunajar')->findOrFail($request->kelas_asal);
+
+        // Ambil data kelas tujuan dan tahun ajar tujuan
+        $kelasTujuanId = $request->kelas_tujuan;
+        $tahunAjarTujuan = $request->tahun_ajaran;
+        $semesterTujuan = $request->semester;
+
+        // Cek apakah kelas asal dan tujuan sama DAN tahun ajar + semester juga sama
+        if (
+            $kelasAsal->kelas_id == $kelasTujuanId &&
+            $kelasAsal->tahunajar->tahun_ajaran == $tahunAjarTujuan &&
+            $kelasAsal->tahunajar->semester == $semesterTujuan
+        ) {
             return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
-                ->with('error', 'Kelas asal dan kelas tujuan tidak boleh sama.');
+                ->with('error', 'Kenaikan kelas gagal: Kelas asal dan kelas tujuan dengan tahun ajar dan semester yang sama tidak diperbolehkan.');
         }
 
+        // Update status tahun ajar asal menjadi Tidak Aktif (bisa diubah sesuai kebutuhan, misal hanya jika kelas sudah kosong)
+        $kelasAsal->tahunajar->update(['status' => 'Tidak Aktif']);
+
+        // Cari atau buat tahun ajar baru berdasarkan input
         $tahunAjarBaru = TahunAjar::firstOrCreate(
             [
-                'tahun_ajaran' => $request->tahun_ajaran,
-                'semester' => $request->semester,
+                'tahun_ajaran' => $tahunAjarTujuan,
+                'semester' => $semesterTujuan,
             ],
             [
                 'status' => 'Aktif',
             ]
         );
 
+        // Cari atau buat kelas_tahun baru untuk kelas tujuan dan tahun ajar baru
         $kelasTahunBaru = KelasTahun::firstOrCreate(
             [
-                'kelas_id' => $request->kelas_tujuan,
+                'kelas_id' => $kelasTujuanId,
                 'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id,
             ]
         );
 
-        $muridKelas = MuridKelas::where('kelas_tahun_id', $request->kelas_asal)->get();
+        // Ambil semua murid_kelas dari kelas asal
+        $muridKelasAsal = MuridKelas::where('kelas_tahun_id', $kelasAsal->kelas_tahun_id)->get();
 
-        if ($muridKelas->isEmpty()) {
+        if ($muridKelasAsal->isEmpty()) {
             return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
                 ->with('error', 'Tidak ada siswa di kelas asal untuk dipindahkan.');
         }
 
-        foreach ($muridKelas as $mk) {
+        // Update murid_kelas asal status jadi nonaktif atau sesuai kebutuhan
+        foreach ($muridKelasAsal as $mk) {
+            $mk->update(['status' => 'Tidak Aktif']); // Asumsi kamu punya kolom status
+        }
+
+        // Buat murid_kelas baru untuk kelas tujuan
+        foreach ($muridKelasAsal as $mk) {
             MuridKelas::create([
                 'murid_id' => $mk->murid_id,
                 'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id,
+                // set status aktif jika ada kolom status
+                'status' => 'Aktif',
             ]);
         }
-
-        $kelasAsal->tahunajar->update(['status' => 'Tidak Aktif']);
 
         return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
             ->with('success', 'Kenaikan kelas berhasil diproses.');
     }
+
+
 
     public function tampilkanJadwal()
     {
@@ -1078,7 +1114,7 @@ class AdminController extends Controller
             $ortuPassword              // password ortu
         );
 
-        return redirect()->back()->with('success', 'Registrasi berhasil! Data login telah dikirim via email.');
+        return redirect()->route('home');
     }
 
     public function showRegisterForm()

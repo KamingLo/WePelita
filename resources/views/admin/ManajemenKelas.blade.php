@@ -88,10 +88,10 @@
                     <div class="IsiData">
                         <label for="kelas_asal">Kelas Asal</label>
                         <select name="kelas_asal" id="kelas_asal" class="TampilanIsiData" required>
-                            <option value="" disabled selected>-- Pilih Kelas Asal --</option>
+                            <option value="" disabled {{ old('kelas_asal') ? '' : 'selected' }}>-- Pilih Kelas Asal --</option>
                             @if(isset($kelasSekarang) && $kelasSekarang->isNotEmpty())
                                 @foreach($kelasSekarang as $kelas)
-                                    <option value="{{ $kelas->kelas_tahun_id }}">
+                                    <option value="{{ $kelas->kelas_tahun_id }}" {{ old('kelas_asal') == $kelas->kelas_tahun_id ? 'selected' : '' }}>
                                         {{ $kelas->kelas->nama_kelas }} - {{ $kelas->tahunajar->tahun_ajaran }} {{ $kelas->tahunajar->semester }}
                                     </option>
                                 @endforeach
@@ -107,10 +107,10 @@
                     <div class="IsiData">
                         <label for="kelas_tujuan">Kelas Tujuan</label>
                         <select name="kelas_tujuan" id="kelas_tujuan" class="TampilanIsiData" required>
-                            <option value="" disabled selected>-- Pilih Kelas Tujuan --</option>
+                            <option value="" disabled {{ old('kelas_tujuan') ? '' : 'selected' }}>-- Pilih Kelas Tujuan --</option>
                             @if(isset($semuaKelas) && $semuaKelas->isNotEmpty())
                                 @foreach($semuaKelas as $kelas)
-                                    <option value="{{ $kelas->kelas_id }}">
+                                    <option value="{{ $kelas->kelas_id }}" {{ old('kelas_tujuan') == $kelas->kelas_id ? 'selected' : '' }}>
                                         {{ $kelas->nama_kelas }}
                                     </option>
                                 @endforeach
@@ -126,8 +126,12 @@
                     <div class="IsiData">
                         <label for="tahun_ajaran_kenaikan">Tahun Ajaran</label>
                         <select name="tahun_ajaran" id="tahun_ajaran_kenaikan" class="TampilanIsiData" required>
-                            <option value="{{ (now()->year) }}/{{ (now()->year)+1}}">{{ (now()->year) }}/{{ (now()->year)+1}}</option>
-                            <option value="{{ (now()->year)-1 }}/{{ (now()->year)}}">{{ (now()->year)-1 }}/{{ (now()->year)}}</option>
+                            <option value="{{ now()->year }}/{{ now()->year + 1 }}" {{ old('tahun_ajaran') == now()->year . '/' . (now()->year + 1) ? 'selected' : '' }}>
+                                {{ now()->year }}/{{ now()->year + 1 }}
+                            </option>
+                            <option value="{{ now()->year - 1 }}/{{ now()->year }}" {{ old('tahun_ajaran') == (now()->year - 1) . '/' . now()->year ? 'selected' : '' }}>
+                                {{ now()->year - 1 }}/{{ now()->year }}
+                            </option>
                         </select>
                         @error('tahun_ajaran')
                             <div class="UiPsnDis PsnError">{{ $message }}</div>
@@ -137,8 +141,8 @@
                     <div class="IsiData">
                         <label for="semester_kenaikan">Semester</label>
                         <select name="semester" id="semester_kenaikan" class="TampilanIsiData" required>
-                            <option value="Ganjil">Ganjil</option>
-                            <option value="Genap">Genap</option>
+                            <option value="Ganjil" {{ old('semester') == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
+                            <option value="Genap" {{ old('semester') == 'Genap' ? 'selected' : '' }}>Genap</option>
                         </select>
                         @error('semester')
                             <div class="UiPsnDis PsnError">{{ $message }}</div>
@@ -151,6 +155,7 @@
                         </button>
                     </div>
                 </form>
+
 
                 @if(session('success'))
                     <div class="UiPsnDis PsnBerhasil">
