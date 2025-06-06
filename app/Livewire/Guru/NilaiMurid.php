@@ -88,6 +88,7 @@ class NilaiMurid extends Component
     }
 
     return view('livewire.guru.nilai-murid', [
+        'kelasTahuns' => KelasTahun::all(),
         'pelajaranList' => $pelajaranList,
         'kelasTahunList' => $kelasTahunList,
         'muridList' => $muridList,

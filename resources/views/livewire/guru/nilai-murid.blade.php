@@ -8,6 +8,7 @@
                 {{ session('success') }}
             </div>
         @endif
+        
 
         <!-- Dropdowns Container -->
         <div class="KontainerFormNilai">
@@ -34,6 +35,23 @@
                     @endforeach
                 </select>
             </div>
+
+            <form method="GET" action="{{ route('guru.nilai.download') }}" id="filterForm">
+                <label for="kelasTahunId">Pilih Kelas:</label>
+                <select name="kelas_tahun_id" id="kelasTahunId" class="PilihOpsiMP" required>
+                    <option value="" disabled selected>-- Pilih Kelas --</option>
+
+                    @foreach($kelasTahuns as $kelasTahun)
+                        <option value="{{ $kelasTahun->kelas_tahun_id }}" {{ request('kelas_tahun_id') == $kelasTahun->kelas_tahun_id ? 'selected' : '' }}>
+                            {{ $kelasTahun->kelas->nama_kelas }} - {{ $kelasTahun->tahunajar->tahun_ajaran }} ({{ $kelasTahun->tahunajar->semester }})
+                        </option>
+                    @endforeach
+                    
+                </select>
+                <button type="submit" class="TombolOJT TombolPosting" style="margin-left: 10px;">
+                    <i class="fas fa-download"></i> Download Nilai
+                </button>
+            </form>
         </div>
         <!-- Table and Form -->
         @if($pilihanKelasTahun)

@@ -248,24 +248,24 @@ class GuruController extends Controller
     }
 
     public function cekNilai(Request $request)
-{
-    $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
-    $kelasTahuns= KelasTahun::all();
-    $selectedKelas = $request->input('kelas_tahun_id');
-    $nilaiList = null;
+    {
+        $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
+        $kelasTahuns= KelasTahun::all();
+        $selectedKelas = $request->input('kelas_tahun_id');
+        $nilaiList = null;
 
-    if ($selectedKelas) {
-        $nilaiList = Nilai::with(['muridKelas.murid', 'muridKelas.kelasTahun', 'pelajaran'])
-            ->whereHas('muridKelas', function($q) use ($selectedKelas) {
-                $q->where('kelas_tahun_id', $selectedKelas);
-            })
-            ->get()
-            ->groupBy(fn($item) => $item->pelajaran->namaPelajaran);
+        if ($selectedKelas) {
+            $nilaiList = Nilai::with(['muridKelas.murid', 'muridKelas.kelasTahun', 'pelajaran'])
+                ->whereHas('muridKelas', function($q) use ($selectedKelas) {
+                    $q->where('kelas_tahun_id', $selectedKelas);
+                })
+                ->get()
+                ->groupBy(fn($item) => $item->pelajaran->namaPelajaran);
+        }
+
+        // Kirim data ke blade yang sesuai
+        return view('guru.nilai-export', compact('guru', 'kelasTahuns', 'nilaiList', 'selectedKelas'));
     }
-
-    // Kirim data ke blade yang sesuai
-    return view('guru.nilai-export', compact('guru', 'kelasTahuns', 'nilaiList', 'selectedKelas'));
-}
 
 
     public function downloadNilai(Request $request)
