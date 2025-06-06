@@ -17,6 +17,7 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 /* ----------------------------------------------- */
@@ -24,95 +25,88 @@ body {
 /* ----------------------------------------------- */
 
 .KontainerNilai {
-    padding: 30px;
-    min-height: 100vh;
     margin-left: 280px;
+    padding: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+h1.JudulHalaman {
+    width: 100%;
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 26px;
+    position: relative;
+    padding-bottom: 10px;
     transform: translateY(-10rem);
 }
 
-.JudulHalaman {
-    color: var(--dark-color);
-    margin-bottom: 30px;
-    font-size: 28px;
-    font-weight: bold;
-    position: relative;
-    padding-bottom: 15px;
-}
-
-.JudulHalaman:after {
+h1.JudulHalaman:after {
     content: "";
     position: absolute;
     left: 0;
     bottom: 0;
     height: 3px;
-    width: 80px;
+    width: 100%;
     background-color: var(--primary-color);
-    border-radius: 2px;
 }
 
 /* ----------------------------------------------- */
-/* ------------- Pesan Notifikasi --------------- */
+/* ------------- Kontainer Form Kiri ------------ */
 /* ----------------------------------------------- */
 
-.PesanSukses {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-    padding: 15px 20px;
+.LayoutPelajaranForm {
+    flex: 1;
+    min-width: 300px;
+    max-width: 400px;
+    background-color: white;
+    padding: 25px;
     border-radius: var(--border-radius);
-    margin-bottom: 25px;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
     box-shadow: var(--shadow);
+    transform: translateY(-10.5rem);
+    min-height: 80vh;
 }
 
-.PesanSukses:before {
-    content: "✓";
-    background-color: var(--success-color);
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 10px;
-    font-size: 12px;
-    font-weight: bold;
+.LayoutPelajaranForm h2 {
+    color: var(--dark-color);
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
 }
 
-/* ----------------------------------------------- */
-/* ------------- Kontainer Utama ---------------- */
-/* ----------------------------------------------- */
+.LayoutPelajaranForm h2:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 40px;
+    background-color: var(--primary-color);
+}
 
 .KontainerFormNilai {
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    padding: 30px;
-    transition: var(--transition);
-    max-width: 50rem;
-    margin-bottom: 30px;
-}
-
-.KontainerFormNilai:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* ----------------------------------------------- */
-/* ------------- Bagian Dropdown ---------------- */
-/* ----------------------------------------------- */
-
-.KontainerFormNilai .GrupInput {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 20px;
 }
 
+.FilterRow {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
 .GrupInput {
-    flex: 1;
-    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.GrupInputSearchBar {
+    display: flex;
+    gap: 16px;
 }
 
 .LabelInput {
@@ -122,6 +116,19 @@ body {
     font-weight: 600;
     margin-bottom: 8px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.LabelInputSearchBar {
+    display: block;
+    width: 8rem;
+    height: 2.4rem;
+    display: flex;
+    align-items: center;
+    color: var(--dark-color);
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
     letter-spacing: 0.5px;
 }
 
@@ -138,6 +145,7 @@ body {
     background-repeat: no-repeat;
     background-position: right 15px center;
     padding-right: 45px;
+    box-sizing: border-box;
 }
 
 .DropdownPilihan:focus {
@@ -151,115 +159,231 @@ body {
 }
 
 /* ----------------------------------------------- */
-/* ------------- Bagian Search Bar -------------- */
+/* ------------- Tombol Aksi Kiri --------------- */
 /* ----------------------------------------------- */
 
-.InputCari {
+.KontainerTombol {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.KontainerTombolAtas {
+    margin-top: 15px;
+}
+
+.TombolSimpan, .TombolOJT.DownloadBtn {
     width: 100%;
-    padding: 12px 15px 12px 40px; /* Extra padding for icon */
-    border: 2px solid #e9ecef;
+    background-color: var(--primary-color);
+    color: white;
+    border: 2px solid var(--primary-color);
+    padding: 12px 20px;
     border-radius: 8px;
     font-size: 14px;
-    background-color: white;
+    font-weight: 600;
+    cursor: pointer;
     transition: var(--transition);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: left 12px center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    box-sizing: border-box;
 }
 
-.InputCari:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+.TombolSimpan:hover, .TombolOJT.DownloadBtn:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(74, 108, 247, 0.3);
 }
 
-.InputCari:hover {
-    border-color: var(--primary-color);
+.TombolOJT.DownloadBtn {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.TombolOJT.DownloadBtn:hover {
+    background-color: #218838;
+    border-color: #218838;
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.TombolSimpan:before {
+    content: "💾";
+    font-size: 16px;
+}
+
+.TombolOJT.DownloadBtn:before {
+    content: "⬇";
+    font-size: 16px;
 }
 
 /* ----------------------------------------------- */
-/* ------------- Bagian Tabel Nilai ------------- */
+/* ------------- Kontainer Tabel Kanan ---------- */
 /* ----------------------------------------------- */
 
-.KontainerTabelNilai {
+.LayoutPelajaranTable {
+    flex: 2;
+    min-width: 600px;
     background-color: white;
+    padding: 25px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    padding: 30px;
-    transition: var(--transition);
-    max-width: 50rem;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-10.5rem);
+    min-height: 80vh;
 }
 
-.KontainerTabelNilai:hover {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.JudulSeksi {
+.LayoutPelajaranTable h2 {
     color: var(--dark-color);
+    margin-top: 0;
     font-size: 20px;
-    font-weight: 600;
     margin-bottom: 20px;
     position: relative;
     padding-bottom: 10px;
 }
 
-.JudulSeksi:after {
+.LayoutPelajaranTable h2:after {
     content: "";
     position: absolute;
     left: 0;
     bottom: 0;
     height: 2px;
-    width: 50px;
+    width: 40px;
     background-color: var(--primary-color);
 }
 
-.KontainerTabel {
-    overflow-x: auto;
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    margin: 25px 0;
+/* ----------------------------------------------- */
+/* ------------- Search Bar di Kanan ------------ */
+/* ----------------------------------------------- */
+
+.InputCari {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: white;
+    transition: var(--transition);
+    box-sizing: border-box;
+    margin-bottom: 20px;
 }
 
-.TabelNilai {
+input.InputCari {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    color: black;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: var(--transition);
+    box-sizing: border-box;
+}
+
+input.InputCari:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    color: black;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+
+.InputCari:hover {
+    border-color: var(--primary-color);
+}
+
+.KhususHeaderPelajaraTable {
+    display: flex;
+}
+
+.CumanMaginDoang {
+    margin-left: auto;
+    
+}
+
+/* ----------------------------------------------- */
+/* ------------- Info Seleksi ------------------- */
+/* ----------------------------------------------- */
+
+.InfoSeleksi {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.InfoTag {
+    font-size: 14px;
+    color: var(--dark-color);
+}
+
+.InfoTag strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* ----------------------------------------------- */
+/* ------------- Tabel Container ---------------- */
+/* ----------------------------------------------- */
+
+.DisplayDataTable {
+    overflow-y: auto;
+    flex: 1;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.table {
     width: 100%;
     border-collapse: collapse;
     background-color: white;
-    min-width: 500px;
+    min-width: 700px;
     border-radius: var(--border-radius);
     overflow: hidden;
 }
 
-.TabelNilai thead th {
+.table thead th {
     background-color: var(--light-gray);
     color: var(--dark-color);
     font-weight: 600;
     text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 0.5px;
-    padding: 15px 20px;
-    text-align: left;
+    padding: 15px 12px;
+    text-align: center;
     border-bottom: 2px solid #dee2e6;
     position: sticky;
     top: 0;
     z-index: 10;
 }
 
-.TabelNilai tbody td {
-    padding: 15px 20px;
+.table tbody td {
+    padding: 12px;
     border-bottom: 1px solid #e9ecef;
     vertical-align: middle;
     font-size: 14px;
+    text-align: center;
 }
 
-.TabelNilai tbody tr {
+.table tbody tr {
     transition: var(--transition);
 }
 
-.TabelNilai tbody tr:hover {
+.table tbody tr:hover {
     background-color: rgba(74, 108, 247, 0.05);
 }
 
-.TabelNilai tbody tr:last-child td {
+.table tbody tr:last-child td {
     border-bottom: none;
 }
 
@@ -276,6 +400,7 @@ body {
     text-align: center;
     transition: var(--transition);
     background-color: white;
+    box-sizing: border-box;
 }
 
 .InputNilai:focus {
@@ -287,6 +412,23 @@ body {
 .InputNilai:hover {
     border-color: var(--primary-color);
 }
+
+/* ----------------------------------------------- */
+/* ------------- Grade Styling ------------------ */
+/* ----------------------------------------------- */
+
+.Grade {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
+}
+
+.GradeA { background-color: #28a745; }
+.GradeB { background-color: #17a2b8; }
+.GradeC { background-color: #ffc107; color: #333; }
+.GradeD { background-color: #fd7e14; }
+.GradeE { background-color: #dc3545; }
 
 /* ----------------------------------------------- */
 /* ------------- Pesan Kosong ------------------- */
@@ -309,78 +451,34 @@ body {
 }
 
 /* ----------------------------------------------- */
-/* ------------- Tombol Aksi -------------------- */
+/* ------------- Pesan Sukses ------------------- */
 /* ----------------------------------------------- */
 
-.KontainerTombol {
-    margin-top: 30px;
-    display: flex;
-    justify-content: flex-start;
-    gap: 15px;
-}
-
-.TombolSimpan {
-    background-color: var(--primary-color);
-    color: white;
-    border: 2px solid var(--primary-color);
-    padding: 12px 30px;
-    border-radius: 8px;
+.PesanSukses {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+    padding: 15px 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 25px;
     font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 8px;
+    width: 100%;
 }
 
-.TombolSimpan:hover {
-    background-color: #3959d9;
-    border-color: #3959d9;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(74, 108, 247, 0.3);
-}
-
-.TombolSimpan:active {
-    transform: translateY(0);
-}
-
-.TombolSimpan:before {
-    content: "💾";
-    font-size: 16px;
-}
-
-.TombolOJT.DownloadBtn {
+.PesanSukses:before {
     background-color: var(--success-color);
     color: white;
-    border: 2px solid var(--success-color);
-    padding: 12px 30px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: var(--transition);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-}
-
-.TombolOJT.DownloadBtn:hover {
-    background-color: #218838;
-    border-color: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
-}
-
-.TombolOJT.DownloadBtn:active {
-    transform: translateY(0);
-}
-
-.TombolOJT.DownloadBtn:before {
-    content: "⬇";
-    font-size: 16px;
+    justify-content: center;
+    margin-right: 10px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 /* ----------------------------------------------- */
@@ -388,36 +486,45 @@ body {
 /* ----------------------------------------------- */
 
 @media (max-width: 1200px) {
-    .KontainerNilai {
-        padding: 20px;
+    body {
+        overflow: visible;
+    }
+
+    .LayoutPelajaranForm,
+    .LayoutPelajaranTable {
+        max-width: 100%;
     }
 }
 
 @media (max-width: 768px) {
-    .KontainerNilai {
-        padding: 15px;
+    body {
+        overflow: visible;
     }
     
-    .JudulHalaman {
+    .KontainerNilai {
+        padding: 15px;
+        flex-direction: column;
+    }
+    
+    h1.JudulHalaman {
         font-size: 24px;
         margin-bottom: 20px;
     }
     
-    .KontainerFormNilai {
+    .LayoutPelajaranForm {
         padding: 20px;
+        min-width: 100%;
+        max-width: 100%;
     }
     
-    .KontainerFormNilai .GrupInput {
-        flex-direction: column;
-    }
-    
-    .KontainerTabelNilai {
+    .LayoutPelajaranTable {
         padding: 20px;
+        min-width: 100%;
     }
     
-    .TabelNilai thead th,
-    .TabelNilai tbody td {
-        padding: 10px 15px;
+    .table thead th,
+    .table tbody td {
+        padding: 10px 8px;
         font-size: 13px;
     }
     
@@ -432,7 +539,7 @@ body {
     }
     
     .TombolSimpan, .TombolOJT.DownloadBtn {
-        padding: 10px 20px;
+        padding: 10px 15px;
         font-size: 13px;
     }
 }
@@ -442,21 +549,21 @@ body {
         padding: 10px;
     }
     
-    .KontainerFormNilai {
+    .LayoutPelajaranForm {
         padding: 15px;
     }
     
-    .KontainerTabelNilai {
+    .LayoutPelajaranTable {
         padding: 15px;
     }
     
-    .TabelNilai {
+    .table {
         font-size: 12px;
     }
     
-    .TabelNilai thead th,
-    .TabelNilai tbody td {
-        padding: 8px 10px;
+    .table thead th,
+    .table tbody td {
+        padding: 8px 6px;
     }
     
     .InputNilai {

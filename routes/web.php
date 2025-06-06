@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/blog', function () {
     return view('blog');
@@ -26,11 +26,11 @@ Route::get('/', [AdminController::class, 'index'])->name('home');
 Route::get('/blog', [AdminController::class, 'tampilkanBlog'])->name('blog');
 Route::get('/blog/{postingan}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.show');
 
-    Route::get('/postingan/{id}', [PostinganController::class, 'show']);
-    Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
+Route::get('/postingan/{id}', [PostinganController::class, 'show']);
+Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
 
-    Route::get('/register', [AdminController::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [AdminController::class, 'register'])->name('register.submit');
+Route::get('/register', [AdminController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [AdminController::class, 'register'])->name('register.submit');
 
 Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::get('admin/dashboard', function() {
@@ -38,6 +38,7 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
         return view('admin.dashboard', compact('admin'));
     })->name('admin.dashboard');
 
+    Route::get('admin/downloaduser/{role}', [AdminController::class, 'exportUser'])->name('admin.downloaduser');
     Route::get('/admin/register', [AdminController::class, 'formUser']);
     Route::post('/admin/register', [AdminController::class, 'tambahkanUser'])->name('admin.register');
 
@@ -110,6 +111,8 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     Route::get('guru/', function() {
         return view('guru.post');
     })->name('guru.post');
+
+    Route::get('/guru/ceknilai/download', [GuruController::class, 'downloadNilai'])->name('guru.nilai.download');
 });
 
 Route::middleware([RoleMiddleware::class.':murid'])->group(function() {
@@ -128,4 +131,8 @@ Route::middleware([RoleMiddleware::class.':orangtua'])->group(function() {
     Route::get('orangtua/pengumuman', [OrangTuaController::class, 'pengumuman'])->name('orangtua.pengumuman');
     Route::get('/announcement/{id}', [OrangTuaController::class, 'getAnnouncement'])->name('announcement.show');
     Route::get('orangtua/export-jadwal', [OrangTuaController::class, 'exportJadwal'])->name('orangtua.export-jadwal');
+});
+
+Route::fallback(function () {
+    return redirect('/');
 });

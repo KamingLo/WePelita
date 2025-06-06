@@ -466,7 +466,12 @@
 
                 <div class="FormTabelDataUser">
                     @if ($role === 'admin')
+                    <div class="KhususHeaderTabelUser">
                         <h3>Data Admin</h3>
+                        <div class="HanyaMaginAuto">
+                            <a href="downloaduser/{{$role}}" class="Tedit">Unduh Data {{ $role }}</a>
+                        </div>
+                    </div>
                         @if (isset($admins) && $admins->isNotEmpty())
                             <table class="table">
                                 <thead>
@@ -505,11 +510,15 @@
                     
                     @elseif ($role === 'guru')
                         <div class="HeaderGuruMU">
-                            <h3>Data Guru</h3>
+                            <div class="KhususHeaderTabelUser">
+                                <h3>Data Admin</h3>
+                                <div class="HanyaMaginAutoV2">
+                                    <a href="downloaduser/{{$role}}" class="Tedit">Unduh Data {{ $role }}</a>
+                                </div>
+                            </div>
                             <div class="FilterHeaderGuruMu">
                                 <form method="GET" action="{{ route('admin.ManajemenUser') }}" class="filter-form">
                                     <div class="ForFilterRoleOnly additional-filter">
-                                        <label for="additional_filter" class="sr-only">Filter Tambahan</label>
                                         <select name="additional_filter" id="additional_filter" onchange="this.form.submit()" class="TampilanIsiData" style="padding-right: 40px; min-width: 150px;">
                                             <option value="" {{ request('additional_filter') == '' ? 'selected' : '' }}>-- Pilih Status Kerja --</option>
                                             <option value="Full time" {{ request('additional_filter') == 'Full time' ? 'selected' : '' }}>Full time</option>
@@ -564,7 +573,12 @@
 
                     @elseif ($role === 'murid')
                         <div class="HeaderMuridMU">
-                            <h3>Data Murid</h3>
+                            <div class="KhususHeaderTabelUser">
+                                <h3>Data Murid</h3>
+                                <div class="HanyaMaginAutoV2">
+                                    <a href="downloaduser/{{$role}}" class="Tedit">Unduh Data {{ $role }}</a>
+                                </div>
+                            </div>
                             <div class="FilterHeaderMuridMu">
                                 <form method="GET" action="{{ route('admin.ManajemenUser') }}" class="filter-form">
                                     <div class="ForFilterRoleOnly additional-filter">
@@ -591,6 +605,8 @@
                                         <th>Nama</th>
                                         <th>Email</th>
                                         <th>Kelas</th>
+                                        <th>tahun ajaran</th>
+                                        <th>semester</th>
                                         <th>Nis</th>
                                         <th>Nisn</th>
                                         <th>Nama Orang Tua</th>
@@ -604,6 +620,8 @@
                                             <td>{{ $muridOrangTua->muridKelas->murid->profile->name }}</td>
                                             <td>{{ $muridOrangTua->muridKelas->murid->profile->email }}</td>
                                             <td>{{ $muridOrangTua->muridKelas->kelasTahun->kelas->nama_kelas }}</td>
+                                            <td>{{ $muridOrangTua->muridKelas->kelasTahun->tahunajar->tahun_ajaran }}</td>
+                                            <td>{{ $muridOrangTua->muridKelas->kelasTahun->tahunajar->semester }}</td>
                                             <td>{{ $muridOrangTua->muridKelas->murid->nis }}</td>
                                             <td>{{ $muridOrangTua->muridKelas->murid->nisn }}</td>
                                             <td>{{ $muridOrangTua->orangTua->profile->name }}</td>
@@ -629,7 +647,13 @@
                         @endif
 
                     @elseif ($role === 'orang_tua')
+                    <div class="KhususHeaderTabelUser">
                         <h3>Data Orang Tua</h3>
+                        <div class="HanyaMaginAuto">
+                            <a href="downloaduser/{{$role}}" class="Tedit">Unduh Data {{ $role }}</a>
+                        </div>
+                    </div>
+
                         @if (isset($muridOrangTuas) && $muridOrangTuas->isNotEmpty())
                             <table class="table">
                                 <thead>

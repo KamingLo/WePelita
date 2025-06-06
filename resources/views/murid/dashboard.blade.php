@@ -58,6 +58,7 @@
 
     <div class="announcement-section">
         <h2>Pengumuman Terbaru</h2>
+        <a href="{{ route('murid.pengumuman') }}" class="view-all-btn">Lihat Semua Pengumuman</a>
         <div class="LayoutDisplayPostingan">
             @if($announcements->isNotEmpty())
                 @php
@@ -105,7 +106,6 @@
                         </div>
                     </div>
                 </div>
-                <a href="{{ route('murid.pengumuman') }}" class="view-all-btn">Lihat Semua Pengumuman</a>
             @else
                 <p>Tidak ada pengumuman tersedia.</p>
             @endif

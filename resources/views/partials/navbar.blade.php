@@ -8,7 +8,7 @@
 
     <div class="navbtn">
       <a href="/blog">Blog</a>
-      <a href="#">About</a>
+      <a href="#">List Guru</a>
 
       @auth
           @php
@@ -23,9 +23,8 @@
           @endphp
           <a class="sign-btn" href="{{ $dashboardRoute }}"><span>Dashboard</span></a>
       @else
-          <a class="sign-btn" href="{{ route('register') }}"><span>Register disini</span></a>
-
-          <a class="sign-btn" href="{{ route('login') }}"><span>Login disini</span></a>
+          <a class="sign-btn secondary" href="{{ route('register') }}"><span>Register</span></a>
+          <a class="sign-btn" href="{{ route('login') }}"><span>Login</span></a>
       @endauth
     </div>
   </nav>

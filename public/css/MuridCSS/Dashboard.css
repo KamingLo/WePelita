@@ -165,7 +165,6 @@ h2 {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     padding-bottom: 10px;
-    border: 2px solid #e1e8ed;
     border-radius: 12px;
     overflow-y: auto;
     max-height: calc(100vh - 400px);

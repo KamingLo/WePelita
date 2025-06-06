@@ -576,6 +576,23 @@ input.SearchBarInput:focus {
     transform: translateY(-1px);
 }
 
+.KhususHeaderTabelUser {
+    display: flex;
+    min-width: 37rem;
+    max-width: 50rem;
+}
+
+.HanyaMaginAuto {
+    margin-left: auto;
+    transform: translateY(0.5rem);
+}
+
+.HanyaMaginAutoV2 {
+    margin-left: auto;
+    padding-right: 1rem;
+    transform: translateY(0.5rem);
+}
+
 /* ----------------------------------------------- */
 /* ----------------- Pesan Error ----------------- */
 /* ----------------------------------------------- */

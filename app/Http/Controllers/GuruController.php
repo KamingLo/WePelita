@@ -18,6 +18,7 @@ use App\Models\MuridOrangTua;
 use App\Models\Nilai;
 use App\Models\MuridKelas;
 use App\Models\GuruPelajaranKelas;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -29,47 +30,46 @@ class GuruController extends Controller
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
 
-        // Get subjects taught by the teacher
-        $pelajaranList = Pelajaran::where('guru_id', $guru->guru_id)->get();
+        // Ambil kelas tahun aktif
+        $kelasTahunList = KelasTahun::whereHas('tahunajar', function ($query) {
+            $query->where('status', 'Aktif');
+        })->get();
 
-        // Initialize variables
-        $pilihanPelajaran = null;
-        $kelasTahunList = collect();
         $pilihanKelasTahun = null;
+        $pelajaranList = collect();
+        $pilihanPelajaran = null;
         $muridList = collect();
 
-        // Handle subject selection
-        if ($request->has('pelajaran_id') && $request->pelajaran_id) {
-            $pilihanPelajaran = Pelajaran::where('guru_id', $guru->guru_id)
-                ->findOrFail($request->pelajaran_id);
-
-            // Get classes associated with the teacher and subject
-            $kelasTahunList = KelasTahun::with(['kelas', 'tahunajar'])
-                ->whereHas('tahunajar', function ($query) {
-                    $query->where('status', 'Aktif');
-                })
-                ->whereHas('jadwalpelajaran', function ($query) use ($pilihanPelajaran) {
-                    $query->where('pelajaran_id', $pilihanPelajaran->pelajaran_id);
-                })
-                ->get();
-        }
-
-        // Handle class selection
-        if ($request->has('kelas_tahun_id') && $request->kelas_tahun_id && $pilihanPelajaran) {
+        // Jika kelas tahun dipilih
+        if ($request->has('kelas_tahun_id') && $request->kelas_tahun_id) {
             $pilihanKelasTahun = KelasTahun::whereHas('tahunajar', function ($query) {
                 $query->where('status', 'Aktif');
             })->findOrFail($request->kelas_tahun_id);
 
-            // Get students in the selected class with their grades
-            $muridList = MuridKelas::with(['murid.profile', 'nilai' => function ($query) use ($pilihanPelajaran) {
-                $query->where('pelajaran_id', $pilihanPelajaran->pelajaran_id);
-            }])
+            // Ambil pelajaran yang diajar guru ini di kelas tahun terpilih berdasarkan jadwal
+            $pelajaranList = Jadwal::with('pelajaran')
+                ->where('guru_id', $guru->guru_id)
                 ->where('kelas_tahun_id', $pilihanKelasTahun->kelas_tahun_id)
-                ->get();
+                ->get()
+                ->pluck('pelajaran')
+                ->unique('pelajaran_id');
+
+            // Jika pelajaran dipilih
+            if ($request->has('pelajaran_id') && $request->pelajaran_id) {
+                $pilihanPelajaran = $pelajaranList->firstWhere('pelajaran_id', $request->pelajaran_id);
+
+                // Ambil murid dan nilai
+                $muridList = MuridKelas::with(['murid.profile', 'nilai' => function ($query) use ($pilihanPelajaran) {
+                    $query->where('pelajaran_id', $pilihanPelajaran->pelajaran_id);
+                }])
+                    ->where('kelas_tahun_id', $pilihanKelasTahun->kelas_tahun_id)
+                    ->get();
+            }
         }
 
-        return view('guru.isinilai', compact('guru', 'pelajaranList', 'pilihanPelajaran', 'kelasTahunList', 'pilihanKelasTahun', 'muridList'));
+        return view('guru.isinilai', compact('guru', 'kelasTahunList', 'pilihanKelasTahun', 'pelajaranList', 'pilihanPelajaran', 'muridList'));
     }
+
 
     // Other methods (tampilkanManajemenPost, tambahPostingan, etc.) remain unchanged
     public function tampilkanManajemenPost()
@@ -259,5 +259,38 @@ class GuruController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal menghapus postingan: ' . $e->getMessage()]);
         }
+    }
+
+    public function downloadNilai(Request $request)
+    {
+        $selectedKelas = $request->input('kelas_tahun_id');
+
+        if (!$selectedKelas) {
+            return redirect()->route('guru.isinilai')->with('error', 'Pilih kelas dulu');
+        }
+
+        $nilaiList = Nilai::with(['muridKelas.murid', 'muridKelas.kelasTahun', 'pelajaran'])
+            ->whereHas('muridKelas', function($q) use ($selectedKelas) {
+                $q->where('kelas_tahun_id', $selectedKelas);
+            })
+            ->get();
+
+        // Buat array data untuk export
+        $data = [];
+        foreach ($nilaiList as $nilai) {
+            $data[] = [
+                'Nama Murid' => $nilai->muridKelas->murid->profile->name,
+                'Kelas' => $nilai->muridKelas->kelasTahun->kelas->nama_kelas ?? '-',
+                'Pelajaran' => $nilai->pelajaran->namaPelajaran,
+                'Nilai Tugas' => $nilai->nilai_tugas ?? '-',
+                'Nilai UTS' => $nilai->nilai_uts ?? '-',
+                'Nilai UAS' => $nilai->nilai_uas ?? '-',
+            ];
+        }
+
+        $filename = 'nilai_kelas_'.$selectedKelas.'_'.date('Ymd_His').'.xlsx';
+
+        // Buat export menggunakan \Maatwebsite\Excel\Excel::download
+        return Excel::download(new \App\Exports\NilaiExport($data), $filename);
     }
 }

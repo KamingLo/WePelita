@@ -72,7 +72,7 @@
                 <img src="/image/KepalaSekolah1.png" alt="Kepala Sekolah SMK Pelita IV">
             </div>
             <div class="kepala-sekolah-content" data-aos="fade-left">
-                <h3>Sigit.</h3>
+                <h3>Yohanes Sigit Widiatmaka, S.Pd</h3>
                 <p class="kepala-title">Kepala SMK Pelita IV Jakarta</p>
                 <div class="divider"></div>
                 <p>Assalamualaikum Wr. Wb.</p>
@@ -239,21 +239,9 @@
         <a href="/blog" class="more-btn">Lihat Semua Berita</a>
     </div>
 </section>
-
-        {{-- <section class="video-section">
-            <div class="video-content">
-                <h2 data-aos="fade-up">SMK Pelita IV Jakarta</h2>
-                <p data-aos="fade-up" data-aos-delay="100">SMK Bisa, SMK Hebat, illustrasi seperti ini</p>
-                <div class="video-container" data-aos="zoom-in" data-aos-delay="200">
-                    <video id="introVideo" autoplay muted controls poster="/image/video-poster.jpg">
-                        <source src="{{ asset('image/logo pelita.mp4') }}" type="video/mp4">
-                        Browser Anda tidak mendukung tag video.
-                    </video>
-                </div>
-            </div>
-        </section> --}}
-
 </div>
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script>
