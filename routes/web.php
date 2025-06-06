@@ -113,7 +113,7 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     })->name('guru.post');
 
     Route::get('/guru/ceknilai', [GuruController::class, 'cekNilai'])->name('guru.nilai.export');
-Route::post('/guru/ceknilai/download', [GuruController::class, 'downloadNilai'])->name('guru.nilai.download');
+    Route::get('/guru/ceknilai/download', [GuruController::class, 'downloadNilai'])->name('guru.nilai.download');
 });
 
 Route::middleware([RoleMiddleware::class.':murid'])->group(function() {
