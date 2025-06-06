@@ -18,6 +18,7 @@ use App\Models\MuridOrangTua;
 use App\Models\Nilai;
 use App\Models\MuridKelas;
 use App\Models\GuruPelajaranKelas;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -244,5 +245,59 @@ class GuruController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Gagal menghapus postingan: ' . $e->getMessage()]);
         }
+    }
+
+    public function cekNilai(Request $request)
+{
+    $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
+    $kelasTahuns= KelasTahun::all();
+    $selectedKelas = $request->input('kelas_tahun_id');
+    $nilaiList = null;
+
+    if ($selectedKelas) {
+        $nilaiList = Nilai::with(['muridKelas.murid', 'muridKelas.kelasTahun', 'pelajaran'])
+            ->whereHas('muridKelas', function($q) use ($selectedKelas) {
+                $q->where('kelas_tahun_id', $selectedKelas);
+            })
+            ->get()
+            ->groupBy(fn($item) => $item->pelajaran->namaPelajaran);
+    }
+
+    // Kirim data ke blade yang sesuai
+    return view('guru.nilai-export', compact('guru', 'kelasTahuns', 'nilaiList', 'selectedKelas'));
+}
+
+
+    public function downloadNilai(Request $request)
+    {
+        $selectedKelas = $request->input('kelas_tahun_id');
+
+        if (!$selectedKelas) {
+            return redirect()->route('guru.nilai.export')->with('error', 'Pilih kelas dulu');
+        }
+
+        $nilaiList = Nilai::with(['muridKelas.murid', 'muridKelas.kelasTahun', 'pelajaran'])
+            ->whereHas('muridKelas', function($q) use ($selectedKelas) {
+                $q->where('kelas_tahun_id', $selectedKelas);
+            })
+            ->get();
+
+        // Buat array data untuk export
+        $data = [];
+        foreach ($nilaiList as $nilai) {
+            $data[] = [
+                'Nama Murid' => $nilai->muridKelas->murid->profile->name,
+                'Kelas' => $nilai->muridKelas->kelasTahun->kelas->nama_kelas ?? '-',
+                'Pelajaran' => $nilai->pelajaran->namaPelajaran,
+                'Nilai Tugas' => $nilai->nilai_tugas ?? '-',
+                'Nilai UTS' => $nilai->nilai_uts ?? '-',
+                'Nilai UAS' => $nilai->nilai_uas ?? '-',
+            ];
+        }
+
+        $filename = 'nilai_kelas_'.$selectedKelas.'_'.date('Ymd_His').'.xlsx';
+
+        // Buat export menggunakan \Maatwebsite\Excel\Excel::download
+        return Excel::download(new \App\Exports\NilaiExport($data), $filename);
     }
 }

@@ -111,6 +111,9 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     Route::get('guru/', function() {
         return view('guru.post');
     })->name('guru.post');
+
+    Route::get('/guru/ceknilai', [GuruController::class, 'cekNilai'])->name('guru.nilai.export');
+Route::post('/guru/ceknilai/download', [GuruController::class, 'downloadNilai'])->name('guru.nilai.download');
 });
 
 Route::middleware([RoleMiddleware::class.':murid'])->group(function() {
