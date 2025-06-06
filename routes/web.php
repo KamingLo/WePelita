@@ -132,3 +132,7 @@ Route::middleware([RoleMiddleware::class.':orangtua'])->group(function() {
     Route::get('/announcement/{id}', [OrangTuaController::class, 'getAnnouncement'])->name('announcement.show');
     Route::get('orangtua/export-jadwal', [OrangTuaController::class, 'exportJadwal'])->name('orangtua.export-jadwal');
 });
+
+Route::fallback(function () {
+    return redirect('/');
+});
