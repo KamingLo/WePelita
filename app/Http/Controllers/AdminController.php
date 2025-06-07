@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DownloadUser;
+use App\Exports\AdminExcelNilai;
 use Illuminate\Http\Request;
 use App\Models\Profile;
 use App\Models\Guru;
@@ -1159,5 +1160,39 @@ public function prosesKenaikanKelas(Request $request)
         }
 
         return Excel::download(new DownloadUser($role), $role . '.xlsx');
+    }
+
+    public function tampilkanNilai(Request $request)
+    {
+        $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
+        $pelajaranList = Pelajaran::all();
+        $kelasTahuns = KelasTahun::whereHas('tahunajar', function ($query) {
+            $query->where('status', 'Aktif');
+        })->with(['kelas', 'tahunajar'])->get();
+
+        $pilihanPelajaran = $request->input('pelajaran_id');
+        $pilihanKelasTahun = $request->input('kelas_tahun_id');
+        $search = $request->input('search');
+
+        $muridList = collect();
+        if ($pilihanPelajaran && $pilihanKelasTahun) {
+            $muridList = MuridKelas::with(['murid.profile', 'nilai' => function ($query) use ($pilihanPelajaran) {
+                $query->where('pelajaran_id', $pilihanPelajaran);
+            }])
+                ->where('kelas_tahun_id', $pilihanKelasTahun)
+                ->when($search, function ($query) use ($search) {
+                    $query->whereHas('murid.profile', function ($q) use ($search) {
+                        $q->where('name', 'like', '%' . $search . '%');
+                    });
+                })
+                ->get();
+        }
+
+        return view('admin.NilaiSiswa', compact('admin', 'pelajaranList', 'kelasTahuns', 'muridList', 'pilihanPelajaran', 'pilihanKelasTahun'));
+    }
+
+    public function exportNilai($kelas_tahun_id, $pelajaran_id)
+    {
+        return Excel::download(new AdminExcelNilai($kelas_tahun_id, $pelajaran_id), 'nilai-murid-' . $kelas_tahun_id . '-' . $pelajaran_id . '-' . date('Ymd_His') . '.xlsx');
     }
 }

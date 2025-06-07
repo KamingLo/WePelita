@@ -1,5 +1,5 @@
 /* ----------------------------------------------- */
-/* ----------------- Dashboard.css --------------- */
+/* --------------- dashboardOrangTua.css --------- */
 /* ----------------------------------------------- */
 
 :root {
@@ -20,10 +20,10 @@ body {
 }
 
 /* ----------------------------------------------- */
-/* ----------------- Main Container -------------- */
+/* ----------------- Bagian Header --------------- */
 /* ----------------------------------------------- */
 
-.dashboard-container {
+.ContainerDashboardOrangTua {
     margin-left: 280px;
     padding: 30px;
     display: flex;
@@ -43,9 +43,28 @@ h1 {
     font-size: 26px;
     position: relative;
     padding-bottom: 10px;
+    width: 12.5%;
 }
 
 h1:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+h2 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 26px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+h2:after {
     content: "";
     position: absolute;
     left: 0;
@@ -61,26 +80,77 @@ h4 {
     font-size: 26px;
     position: relative;
     padding-bottom: 10px;
-}
-
-h2 {
-    color: var(--dark-color);
-    font-size: 24px;
-    margin: 25px 0 25px;
-    position: relative;
-    padding-bottom: 8px;
-    display: inline-block;
-}
-
-/* ----------------------------------------------- */
-/* ----------------- Profile Section ------------- */
-/* ----------------------------------------------- */
-
-.profile-section {
     width: 100%;
 }
 
-.profile-card {
+h4:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+/* ----------------------------------------------- */
+/* --------------- Bagian Shorcut ---------------- */
+/* ----------------------------------------------- */
+
+.ShorcutSidebar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.Shorcut {
+    background-color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    transition: var(--transition);
+}
+
+.Shorcut:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.IconShorcut {
+    font-size: 36px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.Shorcut h3 {
+    font-size: 18px;
+    color: var(--dark-color);
+    margin: 0 0 10px;
+}
+
+.Shorcut p {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Bagian Profile -------------- */
+/* ----------------------------------------------- */
+
+.ProfileOrangTua {
+    width: 100%;
+}
+
+.DetailProfile {
+    display: flex;
+    width: 100%;
+}
+
+.LayoutProfileOrangTua {
     background-color: white;
     padding: 25px;
     border-radius: var(--border-radius);
@@ -91,8 +161,8 @@ h2 {
     max-width: 500px;
 }
 
-.profile-avatar {
-    width: 100px;
+.FotoProfilie {
+    width: 140px;
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
@@ -102,33 +172,17 @@ h2 {
     background-color: #f1f3f5;
 }
 
-.profile-avatar img {
+.FotoProfilie img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.profile-placeholder {
+.FotoDefault {
     font-size: 36px;
     font-weight: 600;
     color: var(--primary-color);
     text-transform: uppercase;
-}
-
-.profile-details {
-    flex: 1;
-}
-
-.profile-details h2 {
-    margin: 0;
-    font-size: 20px;
-    color: var(--dark-color);
-}
-
-.profile-details p {
-    margin: 5px 0;
-    font-size: 14px;
-    color: #6c757d;
 }
 
 .edit-profile-btn {
@@ -152,10 +206,10 @@ h2 {
 }
 
 /* ----------------------------------------------- */
-/* ----------------- Announcement Section -------- */
+/* --------------- Bagian Pengumuman ------------- */
 /* ----------------------------------------------- */
 
-.announcement-section {
+.PengumumanLayout {
     width: 100%;
 }
 
@@ -164,7 +218,6 @@ h2 {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     padding-bottom: 10px;
-    border: 2px solid #e1e8ed;
     border-radius: 12px;
     overflow-y: auto;
     max-height: calc(100vh - 400px);
@@ -204,10 +257,12 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: -3rem;
+    height: 10rem;
 }
 
 .JudulCardPost {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     color: #1c1e21;
     margin: 0;
@@ -215,15 +270,11 @@ h2 {
 }
 
 .KontenCardPost {
-    color: #65676b;
+    color: #4f4f4f;
     font-size: 14px;
-    line-height: 1.6;
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
+    margin-bottom: -2.5rem;
+    min-height: 7rem !important;
 }
 
 .FooterCardPost {
@@ -387,7 +438,7 @@ h2 {
 }
 
 /* ----------------------------------------------- */
-/* ----------------- Buttons -------------------- */
+/* ---------------- Bagian Tombol ---------------- */
 /* ----------------------------------------------- */
 
 .TombolOJT {
@@ -417,76 +468,57 @@ h2 {
     box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
 }
 
-/* ----------------------------------------------- */
-/* ----------------- Action Cards ---------------- */
-/* ----------------------------------------------- */
-
-.dashboard-actions {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
+.EditButtonFlex {
+    margin-left: auto;
 }
 
-.action-card {
-    background-color: white;
-    padding: 20px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    text-align: center;
+.TombolKecilTDKP {
+    margin-left: 1rem;
+    padding-top: 0.5rem;
+}
+
+.TombolDirectKePengumuman {
+    color: white;
+    background-color: #4a6cf7;
+    border-color: #4a6cf7;
+    padding: 6px 12px;
+    font-size: 13px;
     text-decoration: none;
-    color: #333;
-    transition: var(--transition);
+    width: 100%;
 }
 
-.action-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.action-icon {
-    font-size: 36px;
-    color: var(--primary-color);
-    margin-bottom: 15px;
-}
-
-.action-card h3 {
-    font-size: 18px;
-    color: var(--dark-color);
-    margin: 0 0 10px;
-}
-
-.action-card p {
-    font-size: 14px;
-    color: #6c757d;
-    margin: 0;
+.TombolDirectKePengumuman:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
+    box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
 }
 
 /* ----------------------------------------------- */
-/* ----------------- Responsive Design ----------- */
+/* ---------------- Bagian View ------------------ */
 /* ----------------------------------------------- */
 
 @media (max-width: 1200px) {
-    .dashboard-container {
+    .ContainerDashboardOrangTua {
         margin-left: 0;
         padding: 20px;
     }
 
-    .profile-card {
+    .LayoutProfileOrangTua {
         max-width: 100%;
     }
 }
 
 @media (max-width: 768px) {
-    .dashboard-container {
+    .ContainerDashboardOrangTua {
         overflow-y: visible;
     }
 
-    .profile-card {
+    .LayoutProfileOrangTua {
         flex-direction: column;
         text-align: center;
     }
 
-    .profile-avatar {
+    .FotoProfilie {
         margin-bottom: 15px;
     }
 
@@ -521,3 +553,5 @@ h2 {
         margin: 10% auto;
     }
 }
+
+/* ---------------------- End ---------------------- */

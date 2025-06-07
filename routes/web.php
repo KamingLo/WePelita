@@ -80,7 +80,11 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
     })->name('admin.export');
 
+    Route::get('admin/NilaiSiswa', [AdminController::class, 'tampilkanNilai'])->name('admin.tampilkanNilai');
+    Route::get('admin/export-nilai/{kelas_tahun_id}/{pelajaran_id}', [AdminController::class, 'exportNilai'])->name('admin.export.nilai');
 
+    Route::get('/profile', [PostinganController::class, 'showProfile'])->name('postingan.profile.show');
+    Route::put('/profile', [PostinganController::class, 'updateProfile'])->name('postingan.profile.update');
 });
 
 Route::middleware([RoleMiddleware::class.':guru'])->group(function() {

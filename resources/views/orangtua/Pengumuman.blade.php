@@ -3,8 +3,8 @@
 <link rel="stylesheet" href="{{ asset('css/OrtuCSS/Pengumuman.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
-<div class="announcement-container">
-    <div class="announcement-section">
+<div class="ContainerPengumuman">
+    <div class="LayoutPengumuman">
         <h2>Daftar Pengumuman</h2>
         <div class="LayoutDisplayPostingan">
             @if($announcements->isNotEmpty())
@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="OpsiTombolCp">
                                     <a href="#" class="TombolOJT TombolBacaSelengkapnya" data-id="{{ $announcement->postingan_id }}">
-                                        <i class="fas fa-eye"></i> Baca Selengkapnya
+                                        Baca Selengkapnya
                                     </a>
                                 </div>
                             </div>
@@ -59,7 +59,6 @@
     </div>
 </div>
 
-<!-- Pop-out for full announcement -->
 <div id="announcementPopup" class="popup" style="display: none;">
     <div class="popup-content">
         <span class="close-btn">&times;</span>
@@ -91,13 +90,12 @@
             once: true
         });
 
-        // Handle "Baca Selengkapnya" click
         $('.TombolBacaSelengkapnya').on('click', function(e) {
             e.preventDefault();
             const id = $(this).data('id');
-            console.log('Fetching announcement ID:', id); // Debug
+            console.log('Fetching announcement ID:', id);
             $.get(`/announcement/${id}`, function(data) {
-                console.log('Data received:', data); // Debug
+                console.log('Data received:', data);
                 $('#announcementPopup .blog-image').html(
                     data.lampiran ? `<img src="{{ asset('storage/') }}/${data.lampiran}" alt="${data.judul}">` : 
                     `<img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="${data.judul}">`
@@ -108,24 +106,21 @@
                 $('#announcementPopup .blog-body').html(data.isi);
                 $('#announcementPopup').fadeIn();
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                console.error('AJAX error:', textStatus, errorThrown); // Debug
+                console.error('AJAX error:', textStatus, errorThrown);
                 alert('Failed to load announcement. Please try again.');
             });
         });
 
-        // Close popup with "close-btn"
         $(document).on('click', '.close-btn', function() {
             $('#announcementPopup').fadeOut();
         });
 
-        // Close popup with "Kembali" button
         $(document).on('click', '.back-btn', function(e) {
             e.preventDefault();
-            console.log('Kembali button clicked'); // Debug
+            console.log('Kembali button clicked');
             $('#announcementPopup').fadeOut();
         });
 
-        // Close popup when clicking outside
         $(window).on('click', function(e) {
             if ($(e.target).is('.popup')) {
                 $('#announcementPopup').fadeOut();

@@ -37,8 +37,8 @@
     <div class="profile-section">
         <div class="profile-card">
             <div class="profile-avatar">
-                @if($admin->profile->foto)
-                    <img src="{{ asset('storage/' . $admin->profile->foto) }}" alt="{{ $admin->profile->name }} Avatar">
+                @if($admin->profile->avatar)
+                    <img src="{{ asset('storage/' . $admin->profile->avatar) }}" alt="{{ $admin->profile->name }} Avatar">
                 @else
                     <div class="profile-placeholder">{{ strtoupper(substr($admin->profile->name, 0, 2)) }}</div>
                 @endif
@@ -46,7 +46,7 @@
             <div class="profile-details">
                 <h2>{{ $admin->profile->name }}</h2>
                 <p>Administrator</p>
-                    <a href="" class="edit-profile-btn">
+                <a href="{{ route('postingan.profile.show') }}" class="edit-profile-btn">
                     <i class="fas fa-edit"></i> Edit Profile
                 </a>
             </div>

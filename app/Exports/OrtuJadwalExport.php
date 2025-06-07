@@ -8,18 +8,21 @@ use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class MuridJadwalExport implements FromCollection, WithHeadings
+class OrtuJadwalExport implements FromCollection, WithHeadings
 {
     public function collection()
     {
-        $murid = Auth::user()->murid;
+        $orangtua = Auth::user()->orangtua;
         $jadwals = collect();
 
-        if ($murid) {
-            $muridKelas = MuridKelas::where('murid_id', $murid->murid_id)
+        if ($orangtua) {
+            $muridKelas = MuridKelas::whereHas('muridOrangTua', function ($query) use ($orangtua) {
+                    $query->where('orang_tua_id', $orangtua->orang_tua_id);
+                })
                 ->whereHas('kelasTahun.tahunajar', function ($query) {
                     $query->where('status', 'Aktif');
                 })
+                ->with('murid.profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')
                 ->first();
 
             if ($muridKelas) {

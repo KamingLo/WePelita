@@ -20,10 +20,10 @@ body {
 }
 
 /* ----------------------------------------------- */
-/* ----------------- Main Container -------------- */
+/* ----------------- Bagian Header --------------- */
 /* ----------------------------------------------- */
 
-.announcement-container {
+.ContainerPengumuman {
     margin-left: 280px;
     padding: 30px;
     display: flex;
@@ -31,17 +31,18 @@ body {
     gap: 30px;
 }
 
-.announcement-section {
+.LayoutPengumuman {
     width: 100%;
 }
 
 h2 {
+    width: 100%;
     color: var(--dark-color);
-    font-size: 24px;
-    margin: 25px 0 25px;
+    margin-bottom: 20px;
+    font-size: 26px;
     position: relative;
-    padding-bottom: 8px;
-    display: inline-block;
+    padding-bottom: 10px;
+    transform: translateY(-10rem);
 }
 
 h2:after {
@@ -50,23 +51,27 @@ h2:after {
     left: 0;
     bottom: 0;
     height: 3px;
-    width: 100px;
+    width: 100%;
     background-color: var(--primary-color);
 }
 
 /* ----------------------------------------------- */
-/* ----------------- Announcement Cards ----------- */
+/* --------------- Bagian Pengumuman ------------- */
 /* ----------------------------------------------- */
+
+.PengumumanLayout {
+    width: 100%;
+}
 
 .LayoutDisplayPostingan {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     padding-bottom: 10px;
-    border: 2px solid #e1e8ed;
     border-radius: 12px;
     overflow-y: auto;
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - 400px);
+    transform: translateY(-10rem);
 }
 
 .CardPost {
@@ -103,26 +108,27 @@ h2:after {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: -3rem;
+    height: 10rem;
 }
 
 .JudulCardPost {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     color: #1c1e21;
     margin: 0;
     line-height: 1.4;
+    position: fixed;
 }
 
 .KontenCardPost {
-    color: #65676b;
+    color: #4f4f4f;
     font-size: 14px;
-    line-height: 1.6;
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
+    margin-left: -2.5rem !important;
+    margin-bottom: -1.5rem;
+    min-height: 8rem !important;
+    text-align: justify !important;
 }
 
 .FooterCardPost {
@@ -286,7 +292,7 @@ h2:after {
 }
 
 /* ----------------------------------------------- */
-/* ----------------- Buttons -------------------- */
+/* ---------------- Bagian Tombol ---------------- */
 /* ----------------------------------------------- */
 
 .TombolOJT {
@@ -317,18 +323,18 @@ h2:after {
 }
 
 /* ----------------------------------------------- */
-/* ----------------- Responsive Design ----------- */
+/* ---------------- Bagian View ------------------ */
 /* ----------------------------------------------- */
 
 @media (max-width: 1200px) {
-    .announcement-container {
+    .ContainerPengumuman {
         margin-left: 0;
         padding: 20px;
     }
 }
 
 @media (max-width: 768px) {
-    .announcement-container {
+    .ContainerPengumuman {
         overflow-y: visible;
     }
 
@@ -363,3 +369,5 @@ h2:after {
         margin: 10% auto;
     }
 }
+
+/* ---------------------- End ---------------------- */

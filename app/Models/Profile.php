@@ -16,7 +16,7 @@ class Profile extends Authenticatable implements Commentator
     protected $table = 'profiles';
 
     protected $fillable = [
-        'name', 'email', 'alamat', 'foto', 'jenis_kelamin', 'tanggal_lahir',
+        'name', 'email', 'alamat', 'avatar', 'jenis_kelamin', 'tanggal_lahir',
         'tempat_lahir', 'pendidikan', 'password', 'no_telp',
     ];
 

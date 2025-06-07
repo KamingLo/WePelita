@@ -1,13 +1,11 @@
 @include('murid.partials.header')
 @include('murid.partials.sidebar')
-<link rel="stylesheet" href="{{ asset('css/AdminCSS/TambahPelajaran.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/MuridCSS/JadwalKelas.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
     <div class="ContainerPelajaran">
         <h1>Cek Nilai</h1>
-
-        <!-- Display student's class and academic year -->
         @php
             $muridKelas = App\Models\MuridKelas::where('murid_id', $murid->murid_id)
                 ->whereHas('kelasTahun.tahunajar', function ($query) {
@@ -49,5 +47,3 @@
         </div>
     </div>
 </body>
-
-<script src="{{ asset('js/CssAdmin.js') }}"></script>

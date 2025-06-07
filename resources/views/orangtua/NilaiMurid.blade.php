@@ -1,20 +1,21 @@
 @include('orangtua.partials.header')
 @include('orangtua.partials.sidebar')
-<link rel="stylesheet" href="{{ asset('css/AdminCSS/TambahPelajaran.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/OrtuCSS/JadwalKelas.css') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
     <div class="ContainerPelajaran">
         <h1>Cek Nilai Anak</h1>
 
-        <!-- Display child's class and academic year -->
         @php
             $kelasName = $muridKelas ? $muridKelas->kelasTahun->kelas->nama_kelas . ' (' . $muridKelas->kelasTahun->tahunajar->tahun_ajaran . ')' : 'No class assigned';
             $muridName = $muridKelas ? $muridKelas->murid->profile->name : 'No child assigned';
         @endphp
 
         <div class="LayoutPelajaranTable">
-            <h2>Nilai Anak: {{ $muridName }} - {{ $kelasName }}</h2>
+            <div class="KhususHeaderPelajaranTable" style="display: flex;">
+                <h2>Nilai Anak: {{ $muridName }} - {{ $kelasName }}</h2>
+            </div>
             <div class="DisplayDataTable">
                 @if($nilais->isNotEmpty())
                     <table class="table">
@@ -44,5 +45,3 @@
         </div>
     </div>
 </body>
-
-<script src="{{ asset('js/CssOrangTua.js') }}"></script>

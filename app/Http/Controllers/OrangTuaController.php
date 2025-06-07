@@ -7,7 +7,7 @@ use App\Models\MuridKelas;
 use App\Models\Postingan;
 use App\Models\JadwalPelajaran;
 use App\Models\Nilai;
-use App\Exports\MuridJadwalExport;
+use App\Exports\OrtuJadwalExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,7 +72,7 @@ class OrangTuaController extends Controller
 
     public function exportJadwal()
     {
-        return Excel::download(new MuridJadwalExport(), 'jadwal-kelas.xlsx');
+        return Excel::download(new OrtuJadwalExport(), 'jadwal-kelas.xlsx');
     }
 
     public function nilaiKelas()

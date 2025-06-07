@@ -48,6 +48,11 @@
           <i class='bx bx-message-square-edit IconSideBar'></i>Manajemen postingan
         </a>
       </li>
+      <li>
+        <a href="/admin/NilaiSiswa" class="{{ request()->is('admin/NilaiSiswa*') ? 'active-link' : '' }}">
+          <i class='bx bx-message-square-edit IconSideBar'></i>Nilai Siswa
+        </a>
+      </li>
 
     </ul>
     <div class="logout-container">
