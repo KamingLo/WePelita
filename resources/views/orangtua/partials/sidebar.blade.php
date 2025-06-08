@@ -9,14 +9,14 @@
                 </a>
                 <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
             </div>
-            <h6 class="UseridName">{{ $orangtua->profile->name }}</h6>
+            <h6 class="UseridName">{{ auth()->user()->name }}</h6>
         </div>
 
         <ul class="ListSideBar">
             <span>‎</span> {{-- ‎ ni buat teks kosong --}}
 
             <li>
-                <a href="{{ route('orangtua.dashboard') }}" class="{{ request()->is('orangtua/dashboard*') ? 'active-link' : '' }}">
+                <a href="{{ route('orangtua.dashboard') }}" class="{{ request()->is('orangtua/dashboard*') || request()->is('profile*') ? 'active-link' : '' }}">
                     <i class='bx bx-home-alt IconSidebar'></i>Halaman Utama
                 </a>
             </li>

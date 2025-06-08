@@ -14,6 +14,11 @@ class LoginResponse implements LoginResponseContract
         $role = Session::get('role');
         Log::info('LoginResponse role:', ['role' => $role, 'user_id' => auth()->id()]);
 
+        // Handle AJAX requests
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Authenticated', 'role' => $role]);
+        }
+
         switch ($role) {
             case 'admin':
                 return redirect()->route('admin.dashboard');

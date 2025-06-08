@@ -14,5 +14,3 @@
 </head>
 
 <div class="BgPelita"></div>
-{{-- @include('guru.partials.sidebar') --}}
-{{-- @include('partials.navbar') --}}

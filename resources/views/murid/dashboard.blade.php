@@ -1,18 +1,24 @@
 @include('murid.partials.header')
 @include('murid.partials.sidebar')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="{{ asset('css/MuridCSS/Dashboard.css') }}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
+@php
+    $role = session('role');
+@endphp
+<script>window.role = '{{ $role }}';</script>
+
 <div class="ContainerDashboardMurid">
-    @php
-        $muridKelas = App\Models\MuridKelas::where('murid_id', $murid->murid_id)
-            ->whereHas('kelasTahun.tahunajar', fn($query) => $query->where('status', 'Aktif'))
-            ->with('kelasTahun.kelas', 'kelasTahun.tahunajar')
-            ->first();
-        $kelasName = $muridKelas
-            ? "{$muridKelas->kelasTahun->kelas->nama_kelas} ({$muridKelas->kelasTahun->tahunajar->tahun_ajaran})"
-            : 'No class assigned';
-    @endphp
+@php
+    $muridKelas = App\Models\MuridKelas::where('murid_id', $murid->murid_id)
+        ->whereHas('kelasTahun.tahunajar', fn($query) => $query->where('status', 'Aktif'))
+        ->with('kelasTahun.kelas', 'kelasTahun.tahunajar')
+        ->first();
+    $kelasName = $muridKelas
+        ? "{$muridKelas->kelasTahun->kelas->nama_kelas} ({$muridKelas->kelasTahun->tahunajar->tahun_ajaran})"
+        : 'No class assigned';
+@endphp
 
     <div class="HeaderDashboardMurid">
         <h1>Hi, {{ $murid->profile->name }}</h1>
@@ -20,17 +26,17 @@
     </div>
 
     <div class="ShorcutSidebar">
-        <a href="{{ route('murid.jadwal') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="100">
+        <a href="{{ request()->routeIs('postingan.profile.show') ? 'http://127.0.0.1:8000/' : route('murid.jadwal') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="100">
             <div class="IconShorcut"><i class="fas fa-users"></i></div>
             <h3>Jadwal Kelas</h3>
             <p>View your class schedule</p>
         </a>
-        <a href="{{ route('murid.nilai') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="200">
+        <a href="{{ request()->routeIs('postingan.profile.show') ? 'http://127.0.0.1:8000/' : route('murid.nilai') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="200">
             <div class="IconShorcut"><i class="fas fa-chalkboard"></i></div>
             <h3>Nilai Murid</h3>
             <p>Check your grades</p>
         </a>
-        <a href="{{ route('murid.pengumuman') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="300">
+        <a href="{{ request()->routeIs('postingan.profile.show') ? 'http://127.0.0.1:8000/' : route('murid.pengumuman') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="300">
             <div class="IconShorcut"><i class="fas fa-calendar-alt"></i></div>
             <h3>Pengumuman</h3>
             <p>View all announcements</p>
@@ -39,11 +45,11 @@
 
     <div class="ProfileMurid">
         <div class="LayoutProfileMurid">
-            <div class="FotoProfilie">
-                @if($murid->profile->foto)
-                    <img src="{{ asset('storage/' . $murid->profile->foto) }}" alt="{{ $murid->profile->name }} Avatar">
+            <div class="profile-avatar">
+                @if($murid->profile && $murid->profile->avatar && file_exists(public_path('storage/file/' . $murid->profile->avatar)))
+                    <img src="{{ asset('storage/file/' . $murid->profile->avatar . '?v=' . time()) }}" alt="{{ $murid->profile->name }} Avatar">
                 @else
-                    <div class="FotoDefault">{{ strtoupper(substr($murid->profile->name, 0, 2)) }}</div>
+                    <div class="profile-placeholder">{{ strtoupper(substr($murid->profile->name, 0, 2)) }}</div>
                 @endif
             </div>
             <div class="DetailProfile">
@@ -52,7 +58,7 @@
                     <p>Student</p>
                 </div>
                 <div class="EditButtonFlex">
-                    <a href="" class="edit-profile-btn"><i class="fas fa-edit"></i> Edit Profile</a>
+                    <a href="{{ route('postingan.profile.update') }}" class="edit-profile-btn"><i class="fas fa-edit"></i> Edit Profile</a>
                 </div>
             </div>
         </div>
@@ -128,9 +134,11 @@
     </div>
 </div>
 
+<!-- dashboard.blade.php -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<!-- dashboard.blade.php -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         AOS.init({
@@ -143,20 +151,49 @@
             e.preventDefault();
             const id = $(this).data('id');
             console.log('Fetching announcement ID:', id);
-            $.get(`/announcement/${id}`, function(data) {
-                console.log('Data received:', data);
-                $('#announcementPopup .blog-image').html(
-                    data.lampiran ? `<img src="{{ asset('storage/') }}/${data.lampiran}" alt="${data.judul}">` : 
-                    `<img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="${data.judul}">`
-                );
-                $('#announcementPopup .popup-title').text(data.judul);
-                $('#announcementPopup .popup-author').text(data.profile?.name ?? 'Penulis Tidak Diketahui');
-                $('#announcementPopup .popup-date').text(moment(data.created_at).format('MMM D, YYYY'));
-                $('#announcementPopup .blog-body').html(data.isi);
-                $('#announcementPopup').fadeIn();
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                console.error('AJAX error:', textStatus, errorThrown);
-                alert('Failed to load announcement. Please try again.');
+
+            // Dynamically determine the URL based on session role (assumed available via PHP or JS)
+            let url = '';
+            const role = '{{ session('role') }}'; // Ensure this is passed from the backend
+            if (role === 'orangtua') {
+                url = `/announcement/orangtua/${id}`;
+            } else if (role === 'murid') {
+                url = `/announcement/murid/${id}`;
+            } else {
+                console.error('Unknown role:', role);
+                alert('Role not recognized. Please log in again.');
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                xhrFields: {
+                    withCredentials: true // Include session cookies
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Accept': 'application/json' // Request JSON response
+                },
+                success: function(data) {
+                    console.log('Data received:', data);
+                    $('#announcementPopup .blog-image').html(
+                        data.lampiran ? `<img src="{{ asset('storage/') }}/${data.lampiran}" alt="${data.judul}">` : 
+                        `<img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="${data.judul}">`
+                    );
+                    $('#announcementPopup .popup-title').text(data.judul);
+                    $('#announcementPopup .popup-author').text(data.profile?.name ?? 'Penulis Tidak Diketahui');
+                    $('#announcementPopup .popup-date').text(moment(data.created_at).format('MMM D, YYYY'));
+                    $('#announcementPopup .blog-body').html(data.isi);
+                    $('#announcementPopup').fadeIn();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('AJAX error:', textStatus, errorThrown);
+                    console.log('Response:', jqXHR.responseText);
+                    let response = jqXHR.responseJSON;
+                    let errorMessage = response?.error || 'Failed to load announcement. Please try again.';
+                    alert(errorMessage);
+                }
             });
         });
 

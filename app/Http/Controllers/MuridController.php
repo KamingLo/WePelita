@@ -28,13 +28,17 @@ class MuridController extends Controller
             $announcements = Postingan::where('tipe', 'pengumuman')
                 ->where(function ($query) use ($muridKelas) {
                     $query->where('kelas_tahun_id', $muridKelas->kelas_tahun_id)
-                          ->orWhereNull('kelas_tahun_id');
+                        ->orWhereNull('kelas_tahun_id');
                 })
                 ->with('profile')
                 ->orderBy('created_at', 'desc')
                 ->get();
         }
 
+        // Debug the user's roles
+        // dd(Auth::user()->roles); // This will dump the roles and stop execution
+
+        \Log::info('Dashboard Data', ['announcements' => $announcements->toArray()]);
         return view('murid.dashboard', compact('murid', 'announcements'));
     }
 
@@ -88,11 +92,6 @@ class MuridController extends Controller
         return view('murid.NilaiMurid', compact('murid', 'nilais'));
     }
 
-    public function getAnnouncement($id)
-    {
-        $announcement = Postingan::with('profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')->findOrFail($id);
-        return response()->json($announcement);
-    }
 
     public function pengumuman()
     {
@@ -116,5 +115,11 @@ class MuridController extends Controller
         }
 
         return view('murid.Pengumuman', compact('murid', 'announcements'));
+    }
+
+    public function getAnnouncement($id)
+    {
+        $announcement = Postingan::with('profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')->findOrFail($id);
+        return response()->json($announcement);
     }
 }

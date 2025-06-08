@@ -39,108 +39,152 @@ class AdminController extends Controller
     
     public function tambahkanUser(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:profiles,email',
-            'alamat' => 'required|string',
-            'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-            'tanggal_lahir' => 'required|date',
-            'tempat_lahir' => 'required|string',
-            'pendidikan' => 'required|string',
-            'no_telp' => 'required|string',
-            'password' => 'required|min:8|string',
-            'role' => 'required|in:guru,admin,murid',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:profiles,email',
+                'alamat' => 'required|string',
+                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                'tanggal_lahir' => 'required|date',
+                'tempat_lahir' => 'required|string',
+                'pendidikan' => 'required|string',
+                'no_telp' => 'required|string',
+                'role' => 'required|in:guru,admin,murid',
+            ]);
 
-        $avatarPath = null;
-        if ($request->hasFile('foto')) {
-            $avatarPath = $request->file('foto')->store('avatar', 'public');
+            $password = Str::random(8);
+
+            $profile = Profile::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'alamat' => $request->alamat,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'tempat_lahir' => $request->tempat_lahir,
+                'pendidikan' => $request->pendidikan,
+                'no_telp' => $request->no_telp,
+                'password' => Hash::make($password),
+            ]);
+
+            switch ($request->role) {
+                case 'guru':
+                    $request->validate([
+                        'gelar' => 'required|string',
+                        'statusMenikah' => 'required|string',
+                        'statusKerja' => 'required|string',
+                        'nuptk' => 'required|string',
+                    ]);
+
+                    Guru::create([
+                        'profile_id' => $profile->profile_id,
+                        'gelar' => $request->gelar,
+                        'statusMenikah' => $request->statusMenikah,
+                        'statusKerja' => $request->statusKerja,
+                        'nuptk' => $request->nuptk,
+                    ]);
+
+                    $brevo = new BrevoMailer();
+                    $brevo->sendCredentialsToEmail(
+                        $profile->name,
+                        $profile->email,
+                        $password,
+                        'Guru',
+                    );
+                    break;
+
+                case 'admin':
+                    Admin::create(['profile_id' => $profile->profile_id]);
+
+                    $brevo = new BrevoMailer();
+                    $brevo->sendCredentialsToEmail(
+                        $profile->name,
+                        $profile->email,
+                        $password,
+                        'Admin',
+                    );
+                    break;
+
+                case 'murid':
+                    $request->validate([
+                        'asal_sekolah' => 'required|string',
+                        'nis' => 'required|string',
+                        'nisn' => 'required|string',
+                        'kelas_tahun_id' => 'required|integer|exists:kelas_tahun,kelas_tahun_id',
+                        'ortu_name' => 'required|string',
+                        'ortu_email' => 'required|email|unique:profiles,email',
+                        'ortu_alamat' => 'required|string',
+                        'ortu_tempat_lahir' => 'required|string',
+                        'ortu_tanggal_lahir' => 'required|date',
+                        'ortu_jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                        'ortu_pendidikan' => 'required|string',
+                        'ortu_no_telp' => 'required|string',
+                        'ortu_profesi' => 'required|string',
+                    ]);
+
+                    $ortuPassword = Str::random(8);
+
+                    $ortuProfile = Profile::create([
+                        'name' => $request->ortu_name,
+                        'email' => $request->ortu_email,
+                        'alamat' => $request->ortu_alamat,
+                        'tempat_lahir' => $request->ortu_tempat_lahir,
+                        'jenis_kelamin' => $request->ortu_jenis_kelamin,
+                        'tanggal_lahir' => $request->ortu_tanggal_lahir,
+                        'pendidikan' => $request->ortu_pendidikan,
+                        'no_telp' => $request->ortu_no_telp,
+                        'password' => Hash::make($ortuPassword),
+                    ]);
+
+                    $orangTua = OrangTua::create([
+                        'profesi' => $request->ortu_profesi,
+                        'profile_id' => $ortuProfile->profile_id,
+                    ]);
+
+                    $murid = Murid::create([
+                        'profile_id' => $profile->profile_id,
+                        'asal_sekolah' => $request->asal_sekolah,
+                        'nis' => $request->nis,
+                        'nisn' => $request->nisn,
+                    ]);
+
+                    // Create MuridKelas record
+                    $muridKelas = MuridKelas::create([
+                        'murid_id' => $murid->murid_id,
+                        'kelas_tahun_id' => $request->kelas_tahun_id,
+                    ]);
+
+                    // Create MuridOrangTua record using murid_kelas_id
+                    MuridOrangTua::create([
+                        'murid_kelas_id' => $muridKelas->murid_kelas_id,
+                        'orang_tua_id' => $orangTua->orang_tua_id,
+                    ]);
+
+                    // Kirim email Brevo
+                    $brevo = new BrevoMailer();
+                    $brevo->sendCredentialsToMurid(
+                        $profile->email,
+                        $profile->name,
+                        $profile->email,
+                        $password,
+                        $ortuProfile->email,
+                        $ortuPassword
+                    );
+                    break;
+            }
+
+            return redirect()->route('admin.ManajemenUser')->with('success', 'User baru berhasil ditambahkan.');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()
+                ->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (\Exception $e) {
+            Log::error('Gagal menambahkan user: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Terjadi kesalahan saat menambahkan user: ' . $e->getMessage())
+                ->withInput();
         }
-
-        $profile = Profile::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'alamat' => $request->alamat,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'tempat_lahir' => $request->tempat_lahir,
-            'pendidikan' => $request->pendidikan,
-            'no_telp' => $request->no_telp,
-            'password' => Hash::make($request->password),
-            'foto' => $avatarPath,
-        ]);
-
-        switch ($request->role) {
-            case 'guru':
-                $request->validate([
-                    'gelar' => 'required|string',
-                    'statusMenikah' => 'required|string',
-                    'statusKerja' => 'required|string',
-                    'nuptk' => 'required|string',
-                ]);
-
-                Guru::create([
-                    'profile_id' => $profile->profile_id,
-                    'gelar' => $request->gelar,
-                    'statusMenikah' => $request->statusMenikah,
-                    'statusKerja' => $request->statusKerja,
-                    'nuptk' => $request->nuptk,
-                ]);
-                break;
-
-            case 'admin':
-                Admin::create(['profile_id' => $profile->profile_id]);
-                break;
-
-            case 'murid':
-                $request->validate([
-                    'asal_sekolah' => 'required|string',
-                    'nis' => 'required|string',
-                    'nisn' => 'required|string',
-                    'kelas_tahun_id' => 'required|integer|exists:kelas_tahun,kelas_tahun_id',
-                    'ortu_name' => 'required|string',
-                    'ortu_email' => 'required|email|unique:profiles,email',
-                    'ortu_alamat' => 'required|string',
-                    'ortu_tempat_lahir' => 'required|string',
-                    'ortu_tanggal_lahir' => 'required|date',
-                    'ortu_jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
-                    'ortu_pendidikan' => 'required|string',
-                    'ortu_no_telp' => 'required|string',
-                    'ortu_profesi' => 'required|string',
-                    'ortu_password' => 'required|min:6|string',
-                ]);
-
-                $ortuProfile = Profile::create([
-                    'name' => $request->ortu_name,
-                    'email' => $request->ortu_email,
-                    'alamat' => $request->ortu_alamat,
-                    'tempat_lahir' => $request->ortu_tempat_lahir,
-                    'jenis_kelamin' => $request->ortu_jenis_kelamin,
-                    'tanggal_lahir' => $request->ortu_tanggal_lahir,
-                    'pendidikan' => $request->ortu_pendidikan,
-                    'no_telp' => $request->ortu_no_telp,
-                    'password' => Hash::make($request->ortu_password),
-                ]);
-                
-                $orangTua = OrangTua::create([
-                    'profesi' => $request->ortu_profesi,
-                    'profile_id' => $ortuProfile->profile_id,
-                ]);
-
-                $murid = Murid::create([
-                    'profile_id' => $profile->profile_id,
-                    'asal_sekolah' => $request->asal_sekolah,
-                    'nis' => $request->nis,
-                    'nisn' => $request->nisn,
-                ]);
-
-                $murid->muridKelas()->attach($request->kelas_tahun_id);
-                $murid->orangTua()->attach($orangTua->orang_tua_id);
-                break;
-        }
-
-        return redirect()->route('admin.ManajemenUser')->with('success', 'User baru berhasil ditambahkan.');
     }
 
     public function tampilkanManajemenKelas()
@@ -238,115 +282,96 @@ class AdminController extends Controller
 
     public function tampilkanFormKenaikanKelas()
     {
-        // Ambil admin berdasarkan profile_id yang login
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
 
         $kelasSekarang = KelasTahun::with(['kelas', 'tahunajar'])
-        ->whereHas('tahunajar', function($query) {
-            $query->where('status', 'Aktif');
-        })
-        ->join('kelas', 'kelas_tahun.kelas_id', '=', 'kelas.kelas_id')
-        ->orderBy('kelas.nama_kelas')
-        ->select('kelas_tahun.*')
-        ->get();
+            ->whereHas('tahunajar', function($query) {
+                $query->where('status', 'Aktif');
+            })
+            ->join('kelas', 'kelas_tahun.kelas_id', '=', 'kelas.kelas_id')
+            ->orderBy('kelas.nama_kelas')
+            ->select('kelas_tahun.*')
+            ->get();
 
-        // Ambil semua kelas yang tersedia
         $semuaKelas = Kelas::orderBy('nama_kelas')->get();
 
-        // Kirim data ke view
         return view('admin.kenaikanKelas', compact('kelasSekarang', 'semuaKelas', 'admin'));
     }
 
-
-public function prosesKenaikanKelas(Request $request)
-{
-    $validated = $request->validate([
-        'kelas_asal' => 'required|exists:kelas_tahun,kelas_tahun_id',
-        'kelas_tujuan' => 'required|exists:kelas,kelas_id',
-        'tahun_ajaran' => 'required|string',
-        'semester' => 'required|in:Ganjil,Genap',
-    ]);
-
-    // Ambil data kelas asal dengan relasi tahunajar
-    $kelasAsal = KelasTahun::with('tahunajar')->findOrFail($request->kelas_asal);
-
-    $kelasTujuanId = $request->kelas_tujuan;
-    $tahunAjarTujuan = $request->tahun_ajaran;
-    $semesterTujuan = $request->semester;
-
-    // Cek apakah kelas asal dan tujuan + tahun ajar dan semester sama
-    if (
-        $kelasAsal->kelas_id == $kelasTujuanId &&
-        $kelasAsal->tahunajar->tahun_ajaran == $tahunAjarTujuan &&
-        $kelasAsal->tahunajar->semester == $semesterTujuan
-    ) {
-        return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
-            ->with('error', 'Kenaikan kelas gagal: Kelas asal dan kelas tujuan dengan tahun ajar dan semester yang sama tidak diperbolehkan.');
-    }
-
-    // Update status tahun ajar asal menjadi Tidak Aktif (sesuaikan kebutuhan)
-    $kelasAsal->tahunajar->update(['status' => 'Tidak Aktif']);
-
-    // Cari atau buat tahun ajar baru
-    $tahunAjarBaru = TahunAjar::firstOrCreate(
-        [
-            'tahun_ajaran' => $tahunAjarTujuan,
-            'semester' => $semesterTujuan,
-        ],
-        [
-            'status' => 'Aktif',
-        ]
-    );
-
-    // Cari atau buat kelas_tahun baru untuk kelas tujuan dan tahun ajar baru
-    $kelasTahunBaru = KelasTahun::firstOrCreate(
-        [
-            'kelas_id' => $kelasTujuanId,
-            'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id,
-        ]
-    );
-
-    // Ambil semua murid_kelas dari kelas asal
-    $muridKelasAsal = MuridKelas::where('kelas_tahun_id', $kelasAsal->kelas_tahun_id)->get();
-
-    if ($muridKelasAsal->isEmpty()) {
-        return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
-            ->with('error', 'Tidak ada siswa di kelas asal untuk dipindahkan.');
-    }
-
-    // Update status murid_kelas asal jadi tidak aktif (jika ada kolom status, sesuaikan)
-    foreach ($muridKelasAsal as $mk) {
-        $mk->update(['status' => 'Tidak Aktif']);
-    }
-
-    // Proses pembuatan murid_kelas baru dan duplikasi murid_orang_tua
-    foreach ($muridKelasAsal as $mk) {
-        // Buat murid_kelas baru di kelas tujuan
-        $mkBaru = MuridKelas::create([
-            'murid_id' => $mk->murid_id,
-            'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id,
-            'status' => 'Aktif', // jika ada kolom status
+    public function prosesKenaikanKelas(Request $request)
+    {
+        $validated = $request->validate([
+            'kelas_asal' => 'required|exists:kelas_tahun,kelas_tahun_id',
+            'kelas_tujuan' => 'required|exists:kelas,kelas_id',
+            'tahun_ajaran' => 'required|string',
+            'semester' => 'required|in:Ganjil,Genap',
         ]);
 
-        // Ambil data murid_orang_tua lama berdasar murid_kelas_id lama
-        $orangTuaMuridLama = MuridOrangTua::where('murid_kelas_id', $mk->murid_kelas_id)->get();
+        $kelasAsal = KelasTahun::with('tahunajar')->findOrFail($request->kelas_asal);
 
-        // Duplikasi data murid_orang_tua ke murid_kelas baru
-        foreach ($orangTuaMuridLama as $ot) {
-            MuridOrangTua::create([
-                'murid_kelas_id' => $mkBaru->murid_kelas_id,
-                'orang_tua_id' => $ot->orang_tua_id,
-                // jika ada kolom lain, tambahkan di sini
-            ]);
+        $kelasTujuanId = $request->kelas_tujuan;
+        $tahunAjarTujuan = $request->tahun_ajaran;
+        $semesterTujuan = $request->semester;
+
+        if (
+            $kelasAsal->kelas_id == $kelasTujuanId &&
+            $kelasAsal->tahunajar->tahun_ajaran == $tahunAjarTujuan &&
+            $kelasAsal->tahunajar->semester == $semesterTujuan
+        ) {
+            return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
+                ->with('error', 'Kenaikan kelas gagal: Kelas asal dan kelas tujuan dengan tahun ajar dan semester yang sama tidak diperbolehkan.');
         }
+
+        $kelasAsal->tahunajar->update(['status' => 'Tidak Aktif']);
+
+        $tahunAjarBaru = TahunAjar::firstOrCreate(
+            [
+                'tahun_ajaran' => $tahunAjarTujuan,
+                'semester' => $semesterTujuan,
+            ],
+            [
+                'status' => 'Aktif',
+            ]
+        );
+
+        $kelasTahunBaru = KelasTahun::firstOrCreate(
+            [
+                'kelas_id' => $kelasTujuanId,
+                'tahun_ajaran_id' => $tahunAjarBaru->tahun_ajaran_id,
+            ]
+        );
+
+        $muridKelasAsal = MuridKelas::where('kelas_tahun_id', $kelasAsal->kelas_tahun_id)->get();
+
+        if ($muridKelasAsal->isEmpty()) {
+            return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
+                ->with('error', 'Tidak ada siswa di kelas asal untuk dipindahkan.');
+        }
+
+        foreach ($muridKelasAsal as $mk) {
+            $mk->update(['status' => 'Tidak Aktif']);
+        }
+
+        foreach ($muridKelasAsal as $mk) {
+            $mkBaru = MuridKelas::create([
+                'murid_id' => $mk->murid_id,
+                'kelas_tahun_id' => $kelasTahunBaru->kelas_tahun_id,
+                'status' => 'Aktif',
+            ]);
+
+            $orangTuaMuridLama = MuridOrangTua::where('murid_kelas_id', $mk->murid_kelas_id)->get();
+
+            foreach ($orangTuaMuridLama as $ot) {
+                MuridOrangTua::create([
+                    'murid_kelas_id' => $mkBaru->murid_kelas_id,
+                    'orang_tua_id' => $ot->orang_tua_id,
+                ]);
+            }
+        }
+
+        return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
+            ->with('success', 'Kenaikan kelas berhasil diproses.');
     }
-
-    return redirect()->to('/admin/manajemenKelas?tab=kenaikan')
-        ->with('success', 'Kenaikan kelas berhasil diproses.');
-}
-
-
-
 
     public function tampilkanJadwal()
     {
@@ -563,7 +588,6 @@ public function prosesKenaikanKelas(Request $request)
         return redirect()->route('admin.TambahPelajaran')->with('success', 'Pelajaran berhasil dihapus.');
     }
 
-    // Added the missing tampilkanManajemenPost method
     public function tampilkanManajemenPost()
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -596,7 +620,7 @@ public function prosesKenaikanKelas(Request $request)
             $validated = $request->validate([
                 'tipe' => 'required|in:pengumuman,blog',
                 'judul' => 'required|string|max:255',
-                'isi_trix' => 'required|string|min:10', // Ganti 'isi' menjadi 'isi_trix'
+                'isi_trix' => 'required|string|min:10',
                 'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
                 'tujuan' => 'nullable|exists:kelas_tahun,kelas_tahun_id',
             ]);
@@ -624,7 +648,7 @@ public function prosesKenaikanKelas(Request $request)
                 'kelas_tahun_id' => $kelasTahunId,
                 'tipe' => $validated['tipe'],
                 'judul' => $validated['judul'],
-                'isi' => $validated['isi_trix'], // Gunakan isi_trix sebagai isi
+                'isi' => $validated['isi_trix'],
                 'lampiran' => $lampiranPath,
             ]);
     
@@ -633,7 +657,7 @@ public function prosesKenaikanKelas(Request $request)
                 'kelas_tahun_id' => $kelasTahunId,
                 'tipe' => $validated['tipe'],
                 'judul' => $validated['judul'],
-                'isi' => $validated['isi_trix'], // Gunakan isi_trix sebagai isi
+                'isi' => $validated['isi_trix'],
                 'lampiran' => $lampiranPath,
             ]);
     
@@ -838,96 +862,93 @@ public function prosesKenaikanKelas(Request $request)
     }
 
     public function tampilkanManajemenUser(Request $request)
-{
-    try {
-        $role = $request->input('role');
-        $search = $request->input('search');
-        $additionalFilter = $request->input('additional_filter');
+    {
+        try {
+            $role = $request->input('role');
+            $search = $request->input('search');
+            $additionalFilter = $request->input('additional_filter');
 
-        $admins = collect();
-        $gurus = collect();
-        $muridOrangTuas = collect();
+            $admins = collect();
+            $gurus = collect();
+            $muridOrangTuas = collect();
 
-        // Ambil semua kelas yang berstatus aktif
-        $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
-            $query->where('status', 'Aktif');
-        })->with(['kelas', 'tahunajar'])->get();
+            $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
+                $query->where('status', 'Aktif');
+            })->with(['kelas', 'tahunajar'])->get();
 
-        // Cek admin login
-        $admin = Admin::where('profile_id', auth()->id())->first();
-        if (!$admin) {
-            return redirect()->to('/login')->withErrors(['error' => 'Admin tidak ditemukan. Silakan login kembali.']);
+            $admin = Admin::where('profile_id', auth()->id())->first();
+            if (!$admin) {
+                return redirect()->to('/login')->withErrors(['error' => 'Admin tidak ditemukan. Silakan login kembali.']);
+            }
+
+            $tahunAjarAktif = TahunAjar::where('status', 'Aktif')->first();
+
+            if ($role === 'admin') {
+                $admins = Admin::with('profile')
+                    ->when($search, function ($query) use ($search) {
+                        return $query->whereHas('profile', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%')
+                              ->orWhere('email', 'like', '%' . $search . '%');
+                        });
+                    })
+                    ->get();
+            } elseif ($role === 'guru') {
+                $gurus = Guru::with('profile')
+                    ->when($additionalFilter, function ($query) use ($additionalFilter) {
+                        return $query->where('statusKerja', $additionalFilter);
+                    })
+                    ->when($search, function ($query) use ($search) {
+                        return $query->whereHas('profile', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%')
+                              ->orWhere('email', 'like', '%' . $search . '%');
+                        });
+                    })
+                    ->get();
+            } elseif ($role === 'murid') {
+                $muridOrangTuas = MuridOrangTua::with([
+                    'muridKelas.murid.profile',
+                    'muridKelas.kelasTahun.kelas',
+                    'muridKelas.kelasTahun.tahunajar',
+                    'orangTua.profile'
+                ])
+                    ->whereHas('muridKelas.kelasTahun.tahunAjar', function ($query) use ($tahunAjarAktif) {
+                        $query->where('tahun_ajaran_id', $tahunAjarAktif->tahun_ajaran_id);
+                    })
+                    ->when($additionalFilter, function ($query) use ($additionalFilter) {
+                        return $query->whereHas('muridKelas', function ($q) use ($additionalFilter) {
+                            $q->where('kelas_tahun_id', $additionalFilter);
+                        });
+                    })
+                    ->when($search, function ($query) use ($search) {
+                        return $query->whereHas('muridKelas.murid.profile', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%')
+                              ->orWhere('email', 'like', '%' . $search . '%');
+                        });
+                    })
+                    ->get();
+            } elseif ($role === 'orang_tua') {
+                $muridOrangTuas = MuridOrangTua::with([
+                    'muridKelas.murid.profile',
+                    'muridKelas.kelasTahun.tahunAjar',
+                    'orangTua.profile'
+                ])
+                    ->whereHas('muridKelas.kelasTahun.tahunAjar', function ($query) use ($tahunAjarAktif) {
+                        $query->where('tahun_ajaran_id', $tahunAjarAktif->tahun_ajaran_id);
+                    })
+                    ->when($search, function ($query) use ($search) {
+                        return $query->whereHas('orangTua.profile', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%')
+                              ->orWhere('email', 'like', '%' . $search . '%');
+                        });
+                    })
+                    ->get();
+            }
+
+            return view('admin.ManajemenUser', compact('admin', 'admins', 'gurus', 'muridOrangTuas', 'kelasList'));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'Gagal memuat data: ' . $e->getMessage()]);
         }
-
-        // Ambil tahun ajaran aktif
-        $tahunAjarAktif = TahunAjar::where('status', 'Aktif')->first();
-
-        if ($role === 'admin') {
-            $admins = Admin::with('profile')
-                ->when($search, function ($query) use ($search) {
-                    return $query->whereHas('profile', function ($q) use ($search) {
-                        $q->where('name', 'like', '%' . $search . '%')
-                          ->orWhere('email', 'like', '%' . $search . '%');
-                    });
-                })
-                ->get();
-        } elseif ($role === 'guru') {
-            $gurus = Guru::with('profile')
-                ->when($additionalFilter, function ($query) use ($additionalFilter) {
-                    return $query->where('statusKerja', $additionalFilter);
-                })
-                ->when($search, function ($query) use ($search) {
-                    return $query->whereHas('profile', function ($q) use ($search) {
-                        $q->where('name', 'like', '%' . $search . '%')
-                          ->orWhere('email', 'like', '%' . $search . '%');
-                    });
-                })
-                ->get();
-        } elseif ($role === 'murid') {
-            $muridOrangTuas = MuridOrangTua::with([
-                'muridKelas.murid.profile',
-                'muridKelas.kelasTahun.kelas',
-                'muridKelas.kelasTahun.tahunajar',
-                'orangTua.profile'
-            ])
-                ->whereHas('muridKelas.kelasTahun.tahunAjar', function ($query) use ($tahunAjarAktif) {
-                    $query->where('tahun_ajaran_id', $tahunAjarAktif->tahun_ajaran_id);
-                })
-                ->when($additionalFilter, function ($query) use ($additionalFilter) {
-                    return $query->whereHas('muridKelas', function ($q) use ($additionalFilter) {
-                        $q->where('kelas_tahun_id', $additionalFilter);
-                    });
-                })
-                ->when($search, function ($query) use ($search) {
-                    return $query->whereHas('muridKelas.murid.profile', function ($q) use ($search) {
-                        $q->where('name', 'like', '%' . $search . '%')
-                          ->orWhere('email', 'like', '%' . $search . '%');
-                    });
-                })
-                ->get();
-        } elseif ($role === 'orang_tua') {
-            $muridOrangTuas = MuridOrangTua::with([
-                'muridKelas.murid.profile',
-                'muridKelas.kelasTahun.tahunAjar',
-                'orangTua.profile'
-            ])
-                ->whereHas('muridKelas.kelasTahun.tahunAjar', function ($query) use ($tahunAjarAktif) {
-                    $query->where('tahun_ajaran_id', $tahunAjarAktif->tahun_ajaran_id);
-                })
-                ->when($search, function ($query) use ($search) {
-                    return $query->whereHas('orangTua.profile', function ($q) use ($search) {
-                        $q->where('name', 'like', '%' . $search . '%')
-                          ->orWhere('email', 'like', '%' . $search . '%');
-                    });
-                })
-                ->get();
-        }
-
-        return view('admin.ManajemenUser', compact('admin', 'admins', 'gurus', 'muridOrangTuas', 'kelasList'));
-    } catch (\Exception $e) {
-        return redirect()->back()->withErrors(['error' => 'Gagal memuat data: ' . $e->getMessage()]);
     }
-}
 
     public function editUser($id, Request $request)
     {
@@ -1049,7 +1070,6 @@ public function prosesKenaikanKelas(Request $request)
     public function register(Request $request)
     {
         $request->validate([
-            // Data murid
             'name' => 'required|string',
             'email' => 'required|email|unique:profiles,email',
             'alamat' => 'required|string',
@@ -1062,8 +1082,6 @@ public function prosesKenaikanKelas(Request $request)
             'nis' => 'required|string',
             'nisn' => 'required|string',
             'kelas_tahun_id' => 'required|integer|exists:kelas_tahun,kelas_tahun_id',
-
-            // Data orang tua
             'ortu_name' => 'required|string',
             'ortu_email' => 'required|email|unique:profiles,email',
             'ortu_alamat' => 'required|string',
@@ -1075,11 +1093,9 @@ public function prosesKenaikanKelas(Request $request)
             'ortu_profesi' => 'required|string',
         ]);
 
-        // Auto generate password
         $muridPassword = Str::random(8);
         $ortuPassword = Str::random(8);
 
-        // Simpan profile murid
         $profile = Profile::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -1092,7 +1108,6 @@ public function prosesKenaikanKelas(Request $request)
             'password' => Hash::make($muridPassword),
         ]);
 
-        // Simpan profile orang tua
         $ortuProfile = Profile::create([
             'name' => $request->ortu_name,
             'email' => $request->ortu_email,
@@ -1105,13 +1120,11 @@ public function prosesKenaikanKelas(Request $request)
             'password' => Hash::make($ortuPassword),
         ]);
 
-        // Simpan data orang tua
         $orangTua = OrangTua::create([
             'profesi' => $request->ortu_profesi,
             'profile_id' => $ortuProfile->profile_id,
         ]);
 
-        // Simpan data murid
         $murid = Murid::create([
             'profile_id' => $profile->profile_id,
             'asal_sekolah' => $request->asal_sekolah,
@@ -1119,27 +1132,24 @@ public function prosesKenaikanKelas(Request $request)
             'nisn' => $request->nisn,
         ]);
 
-        // Relasi murid ke kelas
-        $murid->muridKelas()->attach($request->kelas_tahun_id);
+        $muridKelas = MuridKelas::create([
+            'murid_id' => $murid->murid_id,
+            'kelas_tahun_id' => $request->kelas_tahun_id,
+        ]);
 
-        // Relasi murid ke orang tua
-        $muridKelas = MuridKelas::where('murid_id', $murid->murid_id)
-                                ->where('kelas_tahun_id', $request->kelas_tahun_id)
-                                ->firstOrFail();
         MuridOrangTua::create([
             'murid_kelas_id' => $muridKelas->murid_kelas_id,
             'orang_tua_id' => $orangTua->orang_tua_id,
         ]);
 
-        // Kirim email Brevo
         $brevo = new BrevoMailer();
         $brevo->sendCredentialsToMurid(
-            $profile->email,           // email tujuan (murid)
-            $profile->name,            // nama murid
-            $profile->email,           // akun email murid
-            $muridPassword,            // password murid
-            $ortuProfile->email,       // email ortu
-            $ortuPassword              // password ortu
+            $profile->email,
+            $profile->name,
+            $profile->email,
+            $muridPassword,
+            $ortuProfile->email,
+            $ortuPassword
         );
 
         return redirect()->route('home');

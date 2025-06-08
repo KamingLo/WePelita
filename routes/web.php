@@ -7,30 +7,26 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\MuridController;
 use App\Http\Controllers\PostinganController;
 use App\Http\Controllers\OrangTuaController;
+use App\Http\Controllers\AnnouncementController;
 use App\Models\Admin;
 use App\Models\Guru;
-use Illuminate\Support\Str;
 use App\Exports\JadwalPelajaranExport;
 use Maatwebsite\Excel\Facades\Excel;
-
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
-Route::get('/blog', function () {
-    return view('blog');
-})->name('blog');
-
 
 Route::get('/', [AdminController::class, 'index'])->name('home');
 Route::get('/blog', [AdminController::class, 'tampilkanBlog'])->name('blog');
 Route::get('/blog/{postingan}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.show');
 
-Route::get('/postingan/{id}', [PostinganController::class, 'show']);
+Route::get('/postingan/{id}', [PostinganController::class, 'show'])->name('postingan.show');
 Route::post('/postingan/{id}/comment', [PostinganController::class, 'storeComment'])->name('postingan.comment');
 
 Route::get('/register', [AdminController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AdminController::class, 'register'])->name('register.submit');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [PostinganController::class, 'showProfile'])->name('postingan.profile.show');
+    Route::put('/profile', [PostinganController::class, 'updateProfile'])->name('postingan.profile.update');
+});
 
 Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::get('admin/dashboard', function() {
@@ -77,14 +73,11 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
     Route::delete('/admin/user/delete/{id}', [AdminController::class, 'destroyUser'])->name('admin.user.delete');
 
     Route::get('admin/export-jadwal', function () {
-    return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
+        return Excel::download(new JadwalPelajaranExport, 'jadwal-pelajaran.xlsx');
     })->name('admin.export');
 
     Route::get('admin/NilaiSiswa', [AdminController::class, 'tampilkanNilai'])->name('admin.tampilkanNilai');
     Route::get('admin/export-nilai/{kelas_tahun_id}/{pelajaran_id}', [AdminController::class, 'exportNilai'])->name('admin.export.nilai');
-
-    Route::get('/profile', [PostinganController::class, 'showProfile'])->name('postingan.profile.show');
-    Route::put('/profile', [PostinganController::class, 'updateProfile'])->name('postingan.profile.update');
 });
 
 Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
@@ -119,13 +112,18 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     Route::get('/guru/ceknilai/download', [GuruController::class, 'downloadNilai'])->name('guru.nilai.download');
 });
 
+// Route::middleware([RoleMiddleware::class.':orangtua,murid'])->group(function () {
+//     Route::get('/announcement/{id}', [MuridController::class, 'getAnnouncement'])->name('announcement.show');
+// });
+
 Route::middleware([RoleMiddleware::class.':murid'])->group(function() {
     Route::get('murid/dashboard', [MuridController::class, 'dashboard'])->name('murid.dashboard');
     Route::get('murid/jadwal', [MuridController::class, 'jadwalKelas'])->name('murid.jadwal');
     Route::get('murid/export-jadwal', [MuridController::class, 'exportJadwal'])->name('murid.export');
     Route::get('murid/nilai', [MuridController::class, 'nilaiKelas'])->name('murid.nilai');
     Route::get('murid/pengumuman', [MuridController::class, 'pengumuman'])->name('murid.pengumuman');
-    Route::get('/announcement/{id}', [MuridController::class, 'getAnnouncement'])->name('announcement.show');
+    Route::get('/announcement/murid/{id}', [MuridController::class, 'getAnnouncement'])->name('announcement.murid.show');
+    
 });
 
 Route::middleware([RoleMiddleware::class.':orangtua'])->group(function() {
@@ -133,8 +131,8 @@ Route::middleware([RoleMiddleware::class.':orangtua'])->group(function() {
     Route::get('orangtua/jadwal', [OrangTuaController::class, 'jadwalKelas'])->name('orangtua.jadwal');
     Route::get('orangtua/nilai', [OrangTuaController::class, 'nilaiKelas'])->name('orangtua.nilai');
     Route::get('orangtua/pengumuman', [OrangTuaController::class, 'pengumuman'])->name('orangtua.pengumuman');
-    Route::get('/announcement/{id}', [OrangTuaController::class, 'getAnnouncement'])->name('announcement.show');
     Route::get('orangtua/export-jadwal', [OrangTuaController::class, 'exportJadwal'])->name('orangtua.export-jadwal');
+    Route::get('/announcement/orangtua/{id}', [OrangTuaController::class, 'getAnnouncement'])->name('announcement.orangtua.show');
 });
 
 Route::fallback(function () {

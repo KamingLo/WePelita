@@ -65,4 +65,38 @@ class BrevoMailer
             return false;
         }
     }
+
+    public function sendCredentialsToEmail(
+        string $nama,
+        string $email,
+        string $password,
+        string $role,
+    ): bool {
+        $email = new \SendinBlue\Client\Model\SendSmtpEmail([
+            'templateId' => 3, // ganti dengan ID asli dari template Brevo
+            'sender' => [
+                'name' => 'Kuro Kyu',
+                'email' => 'joenks321@gmail.com',
+            ],
+            'to' => [[
+                'email' => $email,
+                'name' => $nama
+            ]],
+            'params' => [
+                'nama' => $nama,
+                'email' => $email,
+                'password' => $password,
+                'role' => $role,
+            ]
+        ]);
+
+
+        try {
+            $this->apiInstance->sendTransacEmail($email);
+            return true;
+        } catch (\Exception $e) {
+            \Log::error('Gagal mengirim email Brevo: ' . $e->getMessage());
+            return false;
+        }
+    }
 }

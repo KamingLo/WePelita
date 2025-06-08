@@ -4,19 +4,19 @@
     <aside class="ContainerSideBar">
         <div class="ProfileSiUser">
             <div class="HeaderUser">
-                <a href="dashboard">
-                    <img src="/image/logo_pelita.png"/>
+                <a href="{{ route('murid.dashboard') }}">
+                    <img src="/image/logo_pelita.png" alt="Logo Pelita"/>
                 </a>
                 <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
             </div>
-            <h6 class="UseridName">{{ $murid->profile->name }}</h6>
+            <h6 class="UseridName">{{ auth()->user()->name }}</h6>
         </div>
 
         <ul class="ListSideBar">
             <span>‎</span> {{-- ‎ ni buat teks kosong --}}
 
             <li>
-                <a href="dashboard" class="{{ request()->is('murid/dashboard*') ? 'active-link' : '' }}">
+                <a href="{{ route('murid.dashboard') }}" class="{{ request()->is('murid/dashboard*') || request()->is('profile*') ? 'active-link' : '' }}">
                     <i class='bx bx-home-alt IconSidebar'></i>Halaman Utama
                 </a>
             </li>
@@ -56,3 +56,4 @@
     </aside>
 
     <script src="{{ asset('js/dashboard.js') }}"></script>
+</body>

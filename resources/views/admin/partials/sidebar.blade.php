@@ -8,13 +8,14 @@
             </a>
             <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
         </div>
-        <h6 class="UseridName">{{ $admin->profile->name }}</h6>
+        <h6 class="UseridName">{{ auth()->user()->name }}</h6>
+
     </div>
 
     <ul class="ListSideBar">
 
       <li>
-        <a href="/admin/dashboard" class="{{ request()->is('admin/dashboard*') ? 'active-link' : '' }}">
+        <a href="/admin/dashboard" class="{{ request()->is('admin/dashboard*') || request()->is('profile*') ? 'active-link' : '' }}">
           <i class='bx bx-home-alt IconSidebar'></i>Halaman Utama
         </a>
       </li>

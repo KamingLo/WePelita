@@ -24,12 +24,40 @@
                             </div>
                         </div>
                         
+
+{{-- Menampilkan pesan error validasi --}}
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <strong>Terjadi kesalahan:</strong>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+{{-- Menampilkan pesan sukses --}}
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+{{-- Menampilkan pesan gagal --}}
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+
                         <form method="POST" action="{{ route('admin.register') }}">
                             @csrf
                             <div class="IsiData">
                                 <label for="name">Nama:</label>
                                 <div style="position: relative;">
-                                    <input type="text" name="name" id="name" class="TampilanIsiData" placeholder="Masukkan nama lengkap" style="padding-right: 40px;">
+                                    <input type="text" name="name" id="name" class="TampilanIsiData" placeholder="Masukkan nama lengkap" value="{{ old('name') }}" style="padding-right: 40px;">
                                     <button type="button" id="clearName" class="HapusBar">
                                         <i class='bx bx-x'></i>
                                     </button>
@@ -42,7 +70,7 @@
                             <div class="IsiData">
                                 <label for="email">Email:</label>
                                 <div style="position: relative;">
-                                    <input type="email" name="email" id="email" class="TampilanIsiData" placeholder="Masukkan email" style="padding-right: 40px;">
+                                    <input type="email" name="email" id="email" class="TampilanIsiData" placeholder="Masukkan email" value="{{ old('email') }}" style="padding-right: 40px;">
                                     <button type="button" id="clearEmail" class="HapusBar">
                                         <i class='bx bx-x'></i>
                                     </button>
@@ -55,7 +83,7 @@
                             <div class="IsiData">
                                 <label for="alamat">Alamat:</label>
                                 <div style="position: relative;">
-                                    <input type="text" name="alamat" id="alamat" class="TampilanIsiData" placeholder="Masukkan alamat" style="padding-right: 40px;">
+                                    <input type="text" name="alamat" id="alamat" class="TampilanIsiData" placeholder="Masukkan alamat" value="{{ old('alamat') }}" style="padding-right: 40px;">
                                     <button type="button" id="clearAlamat" class="HapusBar">
                                         <i class='bx bx-x'></i>
                                     </button>
@@ -69,9 +97,9 @@
                                 <label for="jenis_kelamin">Jenis kelamin:</label>
                                 <div style="position: relative;">
                                     <select name="jenis_kelamin" id="jenis_kelamin" class="TampilanIsiData" style="padding-right: 40px;">
-                                        <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
-                                        <option value="Laki-laki">Laki-laki</option>
-                                        <option value="Perempuan">Perempuan</option>
+                                        <option value="" disabled {{ old('jenis_kelamin') ? '' : 'selected' }}>-- Pilih Jenis Kelamin --</option>
+                                        <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                        <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                                     </select>
                                     <button type="button" id="clearJenisKelamin" class="HapusBar">
                                         <i class='bx bx-x'></i>
@@ -85,7 +113,7 @@
                             <div class="IsiData">
                                 <label for="tanggal_lahir">Tanggal lahir:</label>
                                 <div style="position: relative;">
-                                    <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="TampilanIsiData" placeholder="Masukkan tanggal lahir" style="padding-right: 40px;">
+                                    <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="TampilanIsiData" value="{{ old('tanggal_lahir') }}" style="padding-right: 40px;">
                                     <button type="button" id="clearTanggalLahir" class="HapusBar">
                                         <i class='bx bx-x'></i>
                                     </button>
@@ -98,7 +126,7 @@
                             <div class="IsiData">
                                 <label for="tempat_lahir">Tempat Lahir:</label>
                                 <div style="position: relative;">
-                                    <input type="text" name="tempat_lahir" id="tempat_lahir" class="TampilanIsiData" placeholder="Masukkan tempat lahir" style="padding-right: 40px;">
+                                    <input type="text" name="tempat_lahir" id="tempat_lahir" class="TampilanIsiData" placeholder="Masukkan tempat lahir" value="{{ old('tempat_lahir') }}" style="padding-right: 40px;">
                                     <button type="button" id="clearTempatLahir" class="HapusBar">
                                         <i class='bx bx-x'></i>
                                     </button>
@@ -111,15 +139,18 @@
                             <div class="IsiData">
                                 <label for="pendidikan">Pendidikan terakhir:</label>
                                 <div style="position: relative;">
-                                    <select name="pendidikan" id="pendidikan" class="TampilanIsiData" required style="padding-right: 40px;">
-                                        <option value="" disabled selected>-- Pilih Pendidikan Terakhir --</option>
-                                        <option value="SD atau Setaranya">SD atau setaranya</option>
-                                        <option value="SMP atau Setaranya">SMP atau Setaranya</option>
-                                        <option value="SMA atau Setaranya">SMA atau Setaranya</option>
-                                        <option value="S1 atau Setaranya">S1 atau Setaranya</option>
-                                        <option value="S2 atau Setaranya">S2 atau Setaranya</option>
-                                        <option value="S3 atau Setaranya">S3 atau Setaranya</option>
+                                    <select name="pendidikan" id="pendidikan" class="TampilanIsiData" style="padding-right: 40px;">
+                                        <option value="" disabled {{ old('pendidikan') ? '' : 'selected' }}>-- Pilih Pendidikan Terakhir --</option>
+                                        <option value="SD atau Setaranya" {{ old('pendidikan') == 'SD atau Setaranya' ? 'selected' : '' }}>SD atau setaranya</option>
+                                        <option value="SMP atau Setaranya" {{ old('pendidikan') == 'SMP atau Setaranya' ? 'selected' : '' }}>SMP atau Setaranya</option>
+                                        <option value="SMA atau Setaranya" {{ old('pendidikan') == 'SMA atau Setaranya' ? 'selected' : '' }}>SMA atau Setaranya</option>
+                                        <option value="S1 atau Setaranya" {{ old('pendidikan') == 'S1 atau Setaranya' ? 'selected' : '' }}>S1 atau Setaranya</option>
+                                        <option value="S2 atau Setaranya" {{ old('pendidikan') == 'S2 atau Setaranya' ? 'selected' : '' }}>S2 atau Setaranya</option>
+                                        <option value="S3 atau Setaranya" {{ old('pendidikan') == 'S3 atau Setaranya' ? 'selected' : '' }}>S3 atau Setaranya</option>
                                     </select>
+                                    <button type="button" id="clearPendidikan" class="HapusBar">
+                                        <i class='bx bx-x'></i>
+                                    </button>
                                 </div>
                                 @error('pendidikan')
                                     <span class="PsnError">{{ $message }}</span>
@@ -129,7 +160,7 @@
                             <div class="IsiData">
                                 <label for="no_telp">No Telp:</label>
                                 <div style="position: relative;">
-                                    <input type="text" name="no_telp" id="no_telp" class="TampilanIsiData NomorOnly" placeholder="Masukkan nomor telepon" style="padding-right: 40px;">
+                                    <input type="text" name="no_telp" id="no_telp" class="TampilanIsiData NomorOnly" placeholder="Masukkan nomor telepon" value="{{ old('no_telp') }}" style="padding-right: 40px;">
                                     <button type="button" id="clearNoTelp" class="HapusBar">
                                         <i class='bx bx-x'></i>
                                     </button>
@@ -140,26 +171,13 @@
                             </div>
                             
                             <div class="IsiData">
-                                <label for="password">Password:</label>
-                                <div style="position: relative;">
-                                    <input type="password" name="password" id="password" class="TampilanIsiData" placeholder="Masukkan password" style="padding-right: 40px;">
-                                    <button type="button" id="clearPassword" class="HapusBar">
-                                        <i class='bx bx-x'></i>
-                                    </button>
-                                </div>
-                                @error('password')
-                                    <span class="PsnError">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="IsiData">
                                 <label for="role-select">Role:</label>
                                 <div style="position: relative;">
-                                    <select name="role" id="UserUntuk" class="TampilanIsiData" required style="padding-right: 40px;">
+                                    <select name="role" id="UserUntuk" class="TampilanIsiData" style="padding-right: 40px;">
                                         <option value="" disabled selected>-- Pilih Role --</option>
                                         <option value="murid" {{ old('role') == 'murid' ? 'selected' : '' }}>Murid</option>
                                         <option value="guru" {{ old('role') == 'guru' ? 'selected' : '' }}>Guru</option>
-                                        <option value="admin">Admin</option>
+                                        <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                                     </select>
                                     <button type="button" id="clearRole" class="HapusBar">
                                         <i class='bx bx-x'></i>
@@ -170,13 +188,13 @@
                                 @enderror
                             </div>
                         
-                            <div class="DisplayDataTable" id="FormUntukMurid">
+                            <div class="DisplayDataTable" id="FormUntukMurid" style="display: none;">
                                 <h2>Data Murid</h2>
                                 
                                 <div class="IsiData">
                                     <label for="asal_sekolah">Asal Sekolah:</label>
                                     <div style="position: relative;">
-                                        <input type="text" name="asal_sekolah" id="asal_sekolah" class="TampilanIsiData" placeholder="Masukkan asal sekolah" style="padding-right: 40px;">
+                                        <input type="text" name="asal_sekolah" id="asal_sekolah" class="TampilanIsiData" placeholder="Masukkan asal sekolah" value="{{ old('asal_sekolah') }}" style="padding-right: 40px;">
                                         <button type="button" id="clearAsalSekolah" class="HapusBar">
                                             <i class='bx bx-x'></i>
                                         </button>
@@ -189,7 +207,7 @@
                                 <div class="IsiData">
                                     <label for="nis">NIS:</label>
                                     <div style="position: relative;">
-                                        <input type="text" name="nis" id="nis" class="TampilanIsiData" placeholder="Masukkan NIS" style="padding-right: 40px;">
+                                        <input type="text" name="nis" id="nis" class="TampilanIsiData" placeholder="Masukkan NIS" value="{{ old('nis') }}" style="padding-right: 40px;">
                                         <button type="button" id="clearNis" class="HapusBar">
                                             <i class='bx bx-x'></i>
                                         </button>
@@ -202,7 +220,7 @@
                                 <div class="IsiData">
                                     <label for="nisn">NISN:</label>
                                     <div style="position: relative;">
-                                        <input type="text" name="nisn" id="nisn" class="TampilanIsiData" placeholder="Masukkan NISN" style="padding-right: 40px;">
+                                        <input type="text" name="nisn" id="nisn" class="TampilanIsiData" placeholder="Masukkan NISN" value="{{ old('nisn') }}" style="padding-right: 40px;">
                                         <button type="button" id="clearNisn" class="HapusBar">
                                             <i class='bx bx-x'></i>
                                         </button>
@@ -213,19 +231,21 @@
                                 </div>
                                 
                                 <div class="IsiData">
-                                    <label for="kelas_id">Kelas:</label>
+                                    <label for="kelas_tahun_id">Kelas Tahun:</label>
                                     <div style="position: relative;">
-                                        <select name="kelas_tahun_id" id="kelas_id" class="TampilanIsiData" style="padding-right: 40px;">
-                                            <option value="">-- Pilih Kelas --</option>
+                                        <select name="kelas_tahun_id" id="kelas_tahun_id" class="TampilanIsiData" style="padding-right: 40px;">
+                                            <option value="" disabled selected>-- Pilih Kelas --</option>
                                             @foreach ($kelasList as $kelas)
-                                                <option value="{{ $kelas->kelas_tahun_id }}">{{ $kelas->kelas->nama_kelas }} - {{ $kelas->tahunajar->tahun_ajaran }}</option>
+                                                <option value="{{ $kelas->kelas_tahun_id }}" {{ old('kelas_tahun_id') == $kelas->kelas_tahun_id ? 'selected' : '' }}>
+                                                    {{ $kelas->kelas->nama_kelas }} - {{ $kelas->tahunajar->tahun_ajaran }}
+                                                </option>
                                             @endforeach
                                         </select>
-                                        <button type="button" id="clearKelasId" class="HapusBar">
+                                        <button type="button" id="clearKelasTahunId" class="HapusBar">
                                             <i class='bx bx-x'></i>
                                         </button>
                                     </div>
-                                    @error('kelas_id')
+                                    @error('kelas_tahun_id')
                                         <span class="PsnError">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -235,7 +255,7 @@
                                     <div class="IsiData">
                                         <label for="ortu_name">Nama Wali Murid:</label>
                                         <div style="position: relative;">
-                                            <input type="text" name="ortu_name" id="ortu_name" class="TampilanIsiData" placeholder="Nama wali murid" style="padding-right: 40px;">
+                                            <input type="text" name="ortu_name" id="ortu_name" class="TampilanIsiData" placeholder="Nama wali murid" value="{{ old('ortu_name') }}" style="padding-right: 40px;">
                                             <button type="button" id="clearOrtuName" class="HapusBar">
                                                 <i class='bx bx-x'></i>
                                             </button>
@@ -248,7 +268,7 @@
                                     <div class="IsiData">
                                         <label for="ortu_email">Email Wali Murid:</label>
                                         <div style="position: relative;">
-                                            <input type="email" name="ortu_email" id="ortu_email" class="TampilanIsiData" placeholder="Email wali murid" style="padding-right: 40px;">
+                                            <input type="email" name="ortu_email" id="ortu_email" class="TampilanIsiData" placeholder="Email wali murid" value="{{ old('ortu_email') }}" style="padding-right: 40px;">
                                             <button type="button" id="clearOrtuEmail" class="HapusBar">
                                                 <i class='bx bx-x'></i>
                                             </button>
@@ -261,7 +281,7 @@
                                     <div class="IsiData">
                                         <label for="ortu_alamat">Alamat Wali Murid:</label>
                                         <div style="position: relative;">
-                                            <input type="text" name="ortu_alamat" id="ortu_alamat" class="TampilanIsiData" placeholder="Alamat wali murid" style="padding-right: 40px;">
+                                            <input type="text" name="ortu_alamat" id="ortu_alamat" class="TampilanIsiData" placeholder="Alamat wali murid" value="{{ old('ortu_alamat') }}" style="padding-right: 40px;">
                                             <button type="button" id="clearOrtuAlamat" class="HapusBar">
                                                 <i class='bx bx-x'></i>
                                             </button>
@@ -275,9 +295,9 @@
                                         <label for="ortu_jenis_kelamin">Jenis Kelamin Wali Murid:</label>
                                         <div style="position: relative;">
                                             <select name="ortu_jenis_kelamin" id="ortu_jenis_kelamin" class="TampilanIsiData" style="padding-right: 40px;">
-                                                <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
-                                                <option value="Laki-laki">Laki-laki</option>
-                                                <option value="Perempuan">Perempuan</option>
+                                                <option value="" disabled {{ old('ortu_jenis_kelamin') ? '' : 'selected' }}>-- Pilih Jenis Kelamin --</option>
+                                                <option value="Laki-laki" {{ old('ortu_jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                                                <option value="Perempuan" {{ old('ortu_jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
                                             </select>
                                             <button type="button" id="clearOrtuJenisKelamin" class="HapusBar">
                                                 <i class='bx bx-x'></i>
@@ -291,7 +311,7 @@
                                     <div class="IsiData">
                                         <label for="ortu_tempat_lahir">Tempat Lahir Wali Murid:</label>
                                         <div style="position: relative;">
-                                            <input type="text" name="ortu_tempat_lahir" id="ortu_tempat_lahir" class="TampilanIsiData" placeholder="Tempat lahir wali murid" style="padding-right: 40px;">
+                                            <input type="text" name="ortu_tempat_lahir" id="ortu_tempat_lahir" class="TampilanIsiData" placeholder="Tempat lahir wali murid" value="{{ old('ortu_tempat_lahir') }}" style="padding-right: 40px;">
                                             <button type="button" id="clearOrtuTempatLahir" class="HapusBar">
                                                 <i class='bx bx-x'></i>
                                             </button>
@@ -302,9 +322,9 @@
                                     </div>
                                     
                                     <div class="IsiData">
-                                        <label for="ortu_tanggal_lahir">Tanggal lahir:</label>
+                                        <label for="ortu_tanggal_lahir">Tanggal Lahir Wali Murid:</label>
                                         <div style="position: relative;">
-                                            <input type="date" name="ortu_tanggal_lahir" id="ortu_tanggal_lahir" class="TampilanIsiData" placeholder="Tanggal lahir wali murid" style="padding-right: 40px;">
+                                            <input type="date" name="ortu_tanggal_lahir" id="ortu_tanggal_lahir" class="TampilanIsiData" value="{{ old('ortu_tanggal_lahir') }}" style="padding-right: 40px;">
                                             <button type="button" id="clearOrtuTanggalLahir" class="HapusBar">
                                                 <i class='bx bx-x'></i>
                                             </button>
@@ -317,7 +337,7 @@
                                     <div class="IsiData">
                                         <label for="ortu_profesi">Profesi Wali Murid:</label>
                                         <div style="position: relative;">
-                                            <input type="text" name="ortu_profesi" id="ortu_profesi" class="TampilanIsiData" placeholder="Profesi wali murid" style="padding-right: 40px;">
+                                            <input type="text" name="ortu_profesi" id="ortu_profesi" class="TampilanIsiData" placeholder="Profesi wali murid" value="{{ old('ortu_profesi') }}" style="padding-right: 40px;">
                                             <button type="button" id="clearOrtuProfesi" class="HapusBar">
                                                 <i class='bx bx-x'></i>
                                             </button>
@@ -328,9 +348,9 @@
                                     </div>
                                     
                                     <div class="IsiData">
-                                        <label for="ortu_pendidikan">Pendidikan terakhir Wali Murid:</label>
+                                        <label for="ortu_pendidikan">Pendidikan Terakhir Wali Murid:</label>
                                         <div style="position: relative;">
-                                            <input type="text" name="ortu_pendidikan" id="ortu_pendidikan" class="TampilanIsiData" placeholder="Pendidikan terakhir wali murid" style="padding-right: 40px;">
+                                            <input type="text" name="ortu_pendidikan" id="ortu_pendidikan" class="TampilanIsiData" placeholder="Pendidikan terakhir wali murid" value="{{ old('ortu_pendidikan') }}" style="padding-right: 40px;">
                                             <button type="button" id="clearOrtuPendidikan" class="HapusBar">
                                                 <i class='bx bx-x'></i>
                                             </button>
@@ -343,7 +363,7 @@
                                     <div class="IsiData">
                                         <label for="ortu_no_telp">No Telp Wali Murid:</label>
                                         <div style="position: relative;">
-                                            <input type="text" name="ortu_no_telp" id="ortu_no_telp" class="TampilanIsiData NomorOnly" placeholder="No Telp wali murid" style="padding-right: 40px;">
+                                            <input type="text" name="ortu_no_telp" id="ortu_no_telp" class="TampilanIsiData NomorOnly" placeholder="No Telp wali murid" value="{{ old('ortu_no_telp') }}" style="padding-right: 40px;">
                                             <button type="button" id="clearOrtuNoTelp" class="HapusBar">
                                                 <i class='bx bx-x'></i>
                                             </button>
@@ -352,28 +372,15 @@
                                             <span class="PsnError">{{ $message }}</span>
                                         @enderror 
                                     </div>
-                                    
-                                    <div class="IsiData">
-                                        <label for="ortu_password">Password Wali Murid:</label>
-                                        <div style="position: relative;">
-                                            <input type="password" name="ortu_password" id="ortu_password" class="TampilanIsiData" placeholder="Password wali murid" style="padding-right: 40px;">
-                                            <button type="button" id="clearOrtuPassword" class="HapusBar">
-                                                <i class='bx bx-x'></i>
-                                            </button>
-                                        </div>
-                                        @error('ortu_password')
-                                            <span class="PsnError">{{ $message }}</span>
-                                        @enderror
-                                    </div>
                                 </div>
                             </div>
 
-                            <div class="DisplayDataTable" id="FormUntukGuru">
+                            <div class="DisplayDataTable" id="FormUntukGuru" style="display: none;">
                                 <h2>Data Guru</h2>
                                 <div class="IsiData">
                                     <label for="gelar">Gelar:</label>
                                     <div style="position: relative;">
-                                        <input type="text" name="gelar" id="gelar" class="TampilanIsiData" placeholder="Masukkan gelar" style="padding-right: 40px;">
+                                        <input type="text" name="gelar" id="gelar" class="TampilanIsiData" placeholder="Masukkan gelar" value="{{ old('gelar') }}" style="padding-right: 40px;">
                                         <button type="button" id="clearGelar" class="HapusBar">
                                             <i class='bx bx-x'></i>
                                         </button>
@@ -384,9 +391,9 @@
                                 </div>
                                 
                                 <div class="IsiData">
-                                    <label for="nuptk">Masukkan Nomor Unik Pendidik dan Tenaga Kependidikan:</label>
+                                    <label for="nuptk">Nomor Unik Pendidik dan Tenaga Kependidikan:</label>
                                     <div style="position: relative;">
-                                        <input type="text" name="nuptk" id="nuptk" class="TampilanIsiData" placeholder="Masukkan NUPTK" style="padding-right: 40px;">
+                                        <input type="text" name="nuptk" id="nuptk" class="TampilanIsiData" placeholder="Masukkan NUPTK" value="{{ old('nuptk') }}" style="padding-right: 40px;">
                                         <button type="button" id="clearNuptk" class="HapusBar">
                                             <i class='bx bx-x'></i>
                                         </button>
@@ -400,9 +407,9 @@
                                     <label for="statusMenikah">Status Nikah:</label>
                                     <div style="position: relative;">
                                         <select name="statusMenikah" id="statusMenikah" class="TampilanIsiData" style="padding-right: 40px;">
-                                            <option value="" disabled selected>-- Pilih status nikah --</option>
-                                            <option value="Menikah">Menikah</option>
-                                            <option value="Belum Menikah">Belum Menikah</option>
+                                            <option value="" disabled {{ old('statusMenikah') ? '' : 'selected' }}>-- Pilih Status Nikah --</option>
+                                            <option value="Menikah" {{ old('statusMenikah') == 'Menikah' ? 'selected' : '' }}>Menikah</option>
+                                            <option value="Belum Menikah" {{ old('statusMenikah') == 'Belum Menikah' ? 'selected' : '' }}>Belum Menikah</option>
                                         </select>
                                         <button type="button" id="clearStatusMenikah" class="HapusBar">
                                             <i class='bx bx-x'></i>
@@ -414,12 +421,12 @@
                                 </div>
 
                                 <div class="IsiData">
-                                    <label for="statusKerja">Status kerja:</label>
+                                    <label for="statusKerja">Status Kerja:</label>
                                     <div style="position: relative;">
                                         <select name="statusKerja" id="statusKerja" class="TampilanIsiData" style="padding-right: 40px;">
-                                            <option value="" disabled selected>-- Pilih status kerja --</option>
-                                            <option value="Full time">Full time</option>
-                                            <option value="Honorer">Honorer</option>
+                                            <option value="" disabled {{ old('statusKerja') ? '' : 'selected' }}>-- Pilih Status Kerja --</option>
+                                            <option value="Full time" {{ old('statusKerja') == 'Full time' ? 'selected' : '' }}>Full time</option>
+                                            <option value="Honorer" {{ old('statusKerja') == 'Honorer' ? 'selected' : '' }}>Honorer</option>
                                         </select>
                                         <button type="button" id="clearStatusKerja" class="HapusBar">
                                             <i class='bx bx-x'></i>
@@ -469,7 +476,7 @@
                     <div class="KhususHeaderTabelUser">
                         <h3>Data Admin</h3>
                         <div class="HanyaMaginAuto">
-                            <a href="downloaduser/{{$role}}" class="Tedit">Unduh Data {{ $role }}</a>
+                            <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="Tedit">Unduh Data {{ $role }}</a>
                         </div>
                     </div>
                         @if (isset($admins) && $admins->isNotEmpty())
@@ -491,12 +498,14 @@
                                             <td>
                                                 <div class="OptionManajemenTabel">
                                                     <a href="{{ route('admin.user.edit', ['id' => $admin->admin_id, 'role' => 'admin']) }}" class="Tedit">
-                                                        <i class='bx bx-edit-alt IconForButton'></i>Edit‎ ‎ ‎ ‎ ‎</a>
+                                                        <i class='bx bx-edit-alt IconForButton'></i>Edit
+                                                    </a>
                                                     <form method="POST" action="{{ route('admin.user.delete', ['id' => $admin->admin_id, 'role' => 'admin']) }}" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="TombolDelete" onclick="return confirm('Yakin hapus user ini?')">
-                                                            <i class='bx bx-trash IconForButton'></i>Hapus</button>
+                                                            <i class='bx bx-trash IconForButton'></i>Hapus
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -511,9 +520,9 @@
                     @elseif ($role === 'guru')
                         <div class="HeaderGuruMU">
                             <div class="KhususHeaderTabelUser">
-                                <h3>Data Admin</h3>
+                                <h3>Data Guru</h3>
                                 <div class="HanyaMaginAutoV2">
-                                    <a href="downloaduser/{{$role}}" class="Tedit">Unduh Data {{ $role }}</a>
+                                    <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="Tedit">Unduh Data {{ $role }}</a>
                                 </div>
                             </div>
                             <div class="FilterHeaderGuruMu">
@@ -554,12 +563,14 @@
                                             <td>
                                                 <div class="OptionManajemenTabel">
                                                     <a href="{{ route('admin.user.edit', ['id' => $guru->guru_id, 'role' => 'guru']) }}" class="Tedit">
-                                                        <i class='bx bx-edit-alt IconForButton'></i>Edit‎ ‎ ‎ ‎ ‎</a>
+                                                        <i class='bx bx-edit-alt IconForButton'></i>Edit
+                                                    </a>
                                                     <form method="POST" action="{{ route('admin.user.delete', ['id' => $guru->guru_id, 'role' => 'guru']) }}" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="TombolDelete" onclick="return confirm('Yakin hapus user ini?')">
-                                                            <i class='bx bx-trash IconForButton'></i>Hapus</button>
+                                                            <i class='bx bx-trash IconForButton'></i>Hapus
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -576,7 +587,7 @@
                             <div class="KhususHeaderTabelUser">
                                 <h3>Data Murid</h3>
                                 <div class="HanyaMaginAutoV2">
-                                    <a href="downloaduser/{{$role}}" class="Tedit">Unduh Data {{ $role }}</a>
+                                    <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="Tedit">Unduh Data {{ $role }}</a>
                                 </div>
                             </div>
                             <div class="FilterHeaderMuridMu">
@@ -605,10 +616,10 @@
                                         <th>Nama</th>
                                         <th>Email</th>
                                         <th>Kelas</th>
-                                        <th>tahun ajaran</th>
-                                        <th>semester</th>
-                                        <th>Nis</th>
-                                        <th>Nisn</th>
+                                        <th>Tahun Ajaran</th>
+                                        <th>Semester</th>
+                                        <th>NIS</th>
+                                        <th>NSSN</th>
                                         <th>Nama Orang Tua</th>
                                         <th>Asal Sekolah</th>
                                         <th>Aksi</th>
@@ -629,12 +640,14 @@
                                             <td>
                                                 <div class="OptionManajemenTabel">
                                                     <a href="{{ route('admin.user.edit', ['id' => $muridOrangTua->muridKelas->murid_kelas_id, 'role' => 'murid']) }}" class="Tedit">
-                                                        <i class='bx bx-edit-alt IconForButton'></i>Edit‎ ‎ ‎ ‎ ‎</a>
+                                                        <i class='bx bx-edit-alt Icon'></i>Edit
+                                                    </a>
                                                     <form method="POST" action="{{ route('admin.user.delete', ['id' => $muridOrangTua->muridKelas->murid_kelas_id, 'role' => 'murid']) }}" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="TombolDelete" onclick="return confirm('Yakin hapus user ini?')">
-                                                            <i class='bx bx-trash IconForButton'></i>Hapus</button>
+                                                            <i class='bx bx-trash Icon'></i>Hapus
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -650,7 +663,7 @@
                     <div class="KhususHeaderTabelUser">
                         <h3>Data Orang Tua</h3>
                         <div class="HanyaMaginAuto">
-                            <a href="downloaduser/{{$role}}" class="Tedit">Unduh Data {{ $role }}</a>
+                            <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="Tedit">Unduh Data</a>
                         </div>
                     </div>
 
@@ -673,16 +686,19 @@
                                             <td>
                                                 <div class="OptionManajemenTabel">
                                                     <a href="{{ route('admin.user.edit', ['id' => $muridOrangTua->orangTua->orang_tua_id, 'role' => 'orang_tua']) }}" class="Tedit">
-                                                        <i class='bx bx-edit-alt IconForButton'></i>Edit‎ ‎ ‎ ‎ ‎</a>
+                                                        <i class='bx bx-edit-alt Icon'></i>Edit
+                                                    </a>
                                                     <form method="POST" action="{{ route('admin.user.delete', ['id' => $muridOrangTua->orangTua->orang_tua_id, 'role' => 'orang_tua']) }}" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="TombolDelete" onclick="return confirm('Yakin hapus user ini?')">
-                                                            <i class='bx bx-trash IconForButton'></i>Hapus</button>
+                                                            <i class='bx bx-trash Icon'></i>Hapus
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
                                         </tr>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
@@ -696,11 +712,52 @@
                 </div>
             </div>
         </div>
-    </div>
-    @else
-        <p>Anda tidak memiliki akses ke halaman ini</p>
-        <a href="/login">Login kembali disini</a>
-    @endif
-</body>
+        </div>
+        @else
+            <p>Anda tidak memiliki akses ke halaman ini.</p>
+            <a href="{{ route('login') }}">Login kembali di sini</a>
+        @endif
+    </body>
+    
+        <script src="{{ asset('js/CssAdmin.js') }}"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleSelect = document.getElementById('UserUntuk');
+            const formMurid = document.getElementById('FormUntukMurid');
+            const formGuru = document.getElementById('FormUntukGuru');
 
-<script src="{{ asset('js/CssAdmin.js') }}"></script>
+            function toggleForms() {
+                if (roleSelect.value === 'murid') {
+                    formMurid.style.display = 'block';
+                    formGuru.style.display = 'none';
+                } else if (roleSelect.value === 'guru') {
+                    formMurid.style.display = 'none';
+                    formGuru.style.display = 'block';
+                } else {
+                    formMurid.style.display = 'none';
+                    formGuru.style.display = 'none';
+                }
+            }
+
+            roleSelect.addEventListener('change', toggleForms);
+            toggleForms(); // Run on page load
+
+            // Clear buttons
+            document.querySelectorAll('.HapusBar').forEach(button => {
+                button.addEventListener('click', () => {
+                    const input = button.previousElementSibling;
+                    if (input.tagName === 'INPUT' || input.tagName === 'SELECT') {
+                        input.value = '';
+                    }
+                });
+            });
+
+            // Numeric-only input for phone numbers
+            document.querySelectorAll('.NomorOnly').forEach(input => {
+                input.addEventListener('input', () => {
+                    input.value = input.value.replace(/[^0-9]/g, '');
+                });
+            });
+        });
+    </script>
+</body>

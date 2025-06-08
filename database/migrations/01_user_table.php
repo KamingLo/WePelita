@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('alamat');
-            $table->string('foto')->nullable();
+            $table->string('avatar')->nullable();
             $table->string('jenis_kelamin');
             $table->date('tanggal_lahir');
             $table->string('tempat_lahir');

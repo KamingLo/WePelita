@@ -79,9 +79,11 @@
     </div>
 </div>
 
+<!-- dashboard.blade.php -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<!-- dashboard.blade.php -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         AOS.init({
@@ -94,20 +96,49 @@
             e.preventDefault();
             const id = $(this).data('id');
             console.log('Fetching announcement ID:', id);
-            $.get(`/announcement/${id}`, function(data) {
-                console.log('Data received:', data);
-                $('#announcementPopup .blog-image').html(
-                    data.lampiran ? `<img src="{{ asset('storage/') }}/${data.lampiran}" alt="${data.judul}">` : 
-                    `<img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="${data.judul}">`
-                );
-                $('#announcementPopup .popup-title').text(data.judul);
-                $('#announcementPopup .popup-author').text(data.profile?.name ?? 'Penulis Tidak Diketahui');
-                $('#announcementPopup .popup-date').text(moment(data.created_at).format('MMM D, YYYY'));
-                $('#announcementPopup .blog-body').html(data.isi);
-                $('#announcementPopup').fadeIn();
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                console.error('AJAX error:', textStatus, errorThrown);
-                alert('Failed to load announcement. Please try again.');
+
+            // Dynamically determine the URL based on session role (assumed available via PHP or JS)
+            let url = '';
+            const role = '{{ session('role') }}'; // Ensure this is passed from the backend
+            if (role === 'orangtua') {
+                url = `/announcement/orangtua/${id}`;
+            } else if (role === 'murid') {
+                url = `/announcement/murid/${id}`;
+            } else {
+                console.error('Unknown role:', role);
+                alert('Role not recognized. Please log in again.');
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                method: 'GET',
+                xhrFields: {
+                    withCredentials: true // Include session cookies
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Accept': 'application/json' // Request JSON response
+                },
+                success: function(data) {
+                    console.log('Data received:', data);
+                    $('#announcementPopup .blog-image').html(
+                        data.lampiran ? `<img src="{{ asset('storage/') }}/${data.lampiran}" alt="${data.judul}">` : 
+                        `<img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="${data.judul}">`
+                    );
+                    $('#announcementPopup .popup-title').text(data.judul);
+                    $('#announcementPopup .popup-author').text(data.profile?.name ?? 'Penulis Tidak Diketahui');
+                    $('#announcementPopup .popup-date').text(moment(data.created_at).format('MMM D, YYYY'));
+                    $('#announcementPopup .blog-body').html(data.isi);
+                    $('#announcementPopup').fadeIn();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('AJAX error:', textStatus, errorThrown);
+                    console.log('Response:', jqXHR.responseText);
+                    let response = jqXHR.responseJSON;
+                    let errorMessage = response?.error || 'Failed to load announcement. Please try again.';
+                    alert(errorMessage);
+                }
             });
         });
 

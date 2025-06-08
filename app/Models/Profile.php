@@ -24,6 +24,10 @@ class Profile extends Authenticatable implements Commentator
         'password',
     ];
 
+    protected $casts = [
+        'tanggal_lahir' => 'date',
+    ];
+
     public function guru() {
         return $this->hasOne(Guru::class, 'profile_id');
     }
