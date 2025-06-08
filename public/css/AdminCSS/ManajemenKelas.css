@@ -176,6 +176,7 @@ h1:after {
 
 .LayoutKenaikanKelasForm {
     flex: 1;
+    min-width: 300px;
     max-width: 300px;
     background-color: white;
     padding: 25px;

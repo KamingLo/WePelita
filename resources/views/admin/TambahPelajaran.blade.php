@@ -1,7 +1,6 @@
 @include('admin.partials.header')
 @include('admin.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/TambahPelajaran.css') }}" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
     <div class="ContainerPelajaran">
@@ -72,7 +71,7 @@
                                     <div class="OptionPelajaranTabel">
                                         <form action="{{ route('pelajaran.update', $pelajaran->pelajaran_id) }}" method="GET">
                                             <a href="pelajaran/edit/{{ $pelajaran->pelajaran_id }}" class="TombolOJT Tedit">
-                                                <i class='bx bx-edit-alt IconOJT'></i>Edit ‎ ‎ ‎ ‎ ‎ {{-- jan diubah kocak --}}
+                                                ‎ ‎ ‎ Edit‎ ‎ ‎ {{-- jan diubah kocak --}}
                                             </a>
                                         </form>
 
@@ -80,7 +79,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="TombolOJT TombolDelete">
-                                                <i class='bx bx-trash IconOJT'></i>Hapus
+                                                Hapus
                                             </button>
                                         </form>
                                     </div>

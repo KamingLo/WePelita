@@ -1,0 +1,272 @@
+/* ----------------------------------------------- */
+/* ----------------- BlogFull.css ---------------- */
+/* ----------------------------------------------- */
+
+:root {
+    --primary-color: #4a6cf7;
+    --danger-color: #dc3545;
+    --dark-color: #343a40;
+    --border-radius: 10px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8; /* Light background to match image */
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Blog Detail Section --------- */
+/* ----------------------------------------------- */
+
+.blog-detail-section {
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.blog-detail-container {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 30px;
+}
+
+.blog-image {
+    margin-bottom: 20px;
+}
+
+.blog-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+}
+
+.blog-content h1 {
+    font-size: 28px;
+    color: var(--dark-color);
+    margin-bottom: 15px;
+}
+
+.blog-meta {
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+.blog-meta i {
+    margin-right: 5px;
+}
+
+.blog-body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.blog-body p {
+    margin-bottom: 15px;
+}
+
+.blog-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    margin: 10px 0;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.back-btn:hover {
+    background-color: #3959d9;
+    box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Comments Section ------------ */
+/* ----------------------------------------------- */
+
+.comments-section {
+    margin-top: 40px;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.comments-section h2 {
+    font-size: 24px;
+    color: var(--dark-color);
+    margin-bottom: 20px;
+}
+
+.comments-list {
+    margin-bottom: 20px;
+}
+
+.comment-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: var(--shadow);
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: #333;
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #777;
+}
+
+.comment-text {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+}
+
+.no-comments {
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.comment-form-container {
+    background-color: #ffffff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-label {
+    font-size: 16px;
+    color: var(--dark-color);
+    margin-bottom: 5px;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    font-size: 14px;
+    min-height: 100px;
+}
+
+.submit-btn {
+    align-self: flex-start;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+    width: auto;
+}
+
+.submit-btn:hover {
+    background-color: #3959d9;
+    box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+}
+
+.login-prompt {
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.login-link {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+.success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e9fce9;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Responsive Design ----------- */
+/* ----------------------------------------------- */
+
+@media (max-width: 768px) {
+    .blog-detail-section {
+        padding: 20px;
+    }
+
+    .blog-detail-container {
+        padding: 20px;
+    }
+
+    .blog-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .comments-section {
+        padding: 10px;
+    }
+
+    .comment-form-container {
+        padding: 15px;
+    }
+
+    .form-textarea {
+        font-size: 14px;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
+}
+
+/* ---------------------- End ---------------------- */

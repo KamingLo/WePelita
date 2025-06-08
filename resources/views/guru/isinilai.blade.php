@@ -1,4 +1,4 @@
-@include('guru.partials.header', ['NamaPage' => 'Jadwal Mengajar Anda'])
+@include('guru.partials.header')
 @include('guru.partials.sidebar')
 
     @livewireScripts

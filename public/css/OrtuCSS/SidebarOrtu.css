@@ -10,11 +10,10 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
 }
 
 /* ----------------------------------------------- */
-/* Bagian Header */
+/* ----------------- Bagian Header --------------- */
 /* ----------------------------------------------- */
 
 .ContainerSideBar {
@@ -40,10 +39,9 @@ body {
     width: 42px;
     border-radius: 50%;
     transform: translateY(0.75rem);
-    cursor: pointer;
 }
 
-.ContainerSideBar .HeaderUser h6 {
+.ContainerSideBar .HeaderUser h3 {
     color: #fff;
     font-size: 1.25rem;
     font-weight: 600;
@@ -63,7 +61,7 @@ body {
 }
 
 /* ----------------------------------------------- */
-/* Bagian ListSideBar */
+/* ----------------- Bagian SideBar -------------- */
 /* ----------------------------------------------- */
 
 .ListSideBar {
@@ -76,10 +74,10 @@ body {
 }
 
 .IconSidebar {
-    font-size: 30px;
+    font-size: 26px;
 }
 
-.ListSideBar h6 {
+.ListSideBar h5 {
     color: #fff;
     font-weight: 500;
     white-space: nowrap;
@@ -137,11 +135,15 @@ body {
     text-align: center;
 }
 
+.sidebar:not(:hover) .sidebar-links li a.active-link {
+    background: #b4b34f;
+}
+
 /* ----------------------------------------------- */
-/* Bagian Logout */
+/* ---------------- Bagian Tombol ---------------- */
 /* ----------------------------------------------- */
 
-.logout-button {
+.TombolLogout {
     display: flex;
     align-items: center;
     gap: 20px;
@@ -159,36 +161,32 @@ body {
     margin-top: 15px;
 }
 
-.logout-button:hover {
+.TombolLogout:hover {
     color: #161a2d;
     background: #fff;
     border-radius: 4px;
 }
 
-.logout-button i {
+.TombolLogout i {
     font-size: 30px;
     min-width: 30px;
 }
 
-.logout-button span {
+.TombolLogout span {
     opacity: 1;
     transition: opacity 0.3s ease;
 }
 
-.sidebar:hover .logout-button span {
+.sidebar:hover .TombolLogout span {
     opacity: 1;
 }
 
-.logout-container {
+.BagianBawahSideBar {
     margin-top: auto;
     margin-bottom: 10px;
 }
 
-.logout-container + .user-account {
-    margin-top: 0;
-}
-
-.logout-button button[type="submit"] {
+.TombolLogout button[type="submit"] {
     grid-column: span 2;
     background-color: var(--primary-color);
     color: white;
@@ -202,41 +200,8 @@ body {
     transition: var(--transition);
 }
 
-.logout-button button[type="submit"]:hover {
+.TombolLogout button[type="submit"]:hover {
     background-color: var(--accent-color);
 }
 
-/* ----------------------------------------------- */
-/* Tombol Register & Configure */
-/* ----------------------------------------------- */
-
-.TombolRegister {
-    grid-column: span 2;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 16px;
-    margin-top: 10px;
-    transition: var(--transition);
-}
-
-.TombolCongifure {
-    color: white;
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.TombolCongifure:hover {
-    background-color: #3959d9;
-    border-color: #3959d9;
-}
-
-
-
-.sidebar:not(:hover) .sidebar-links li a.active-link {
-    background: #b4b34f;
-}
+/* ---------------------- End ---------------------- */

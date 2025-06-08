@@ -4,10 +4,103 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" />
 
+<style>
+    .hero-section {
+        position: relative;
+        width: 100%;
+        height: 70vh; /* Reduced height for lighter feel */
+        overflow: hidden;
+    }
+    .hero-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .hero-image-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    .hero-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+    .hero-image.active {
+        opacity: 1;
+    }
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3); /* Lighter overlay for less weight */
+        z-index: 1;
+    }
+    .hero-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #fff;
+        z-index: 2;
+        padding: 20px;
+    }
+    .hero-content h1 {
+        font-size: 2.5rem; /* Slightly smaller for lighter feel */
+        margin-bottom: 1rem;
+    }
+    .hero-content p {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+    .hero-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 10px 20px;
+        background: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: background 0.3s;
+    }
+    .hero-btn:hover {
+        background: #0056b3;
+    }
+    .hero-btn i {
+        margin-left: 5px;
+    }
+
+    /* Hide scrollbar globally for WebKit browsers */
+html::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar globally for Firefox */
+html {
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Ensure scrolling works globally */
+html {
+    -ms-overflow-style: none; /* IE and Edge */
+}
+</style>
+
 <section class="hero-section">
     <div class="hero-container">
         <div class="hero-image-container">
-            <img src="/image/imageSekolah.png" alt="SMK Pelita IV Building" class="hero-image">
+            <img src="/image/imageSekolah.png" alt="SMK Pelita IV Building" class="hero-image active">
+            <img src="/image/sekolah2.jpg" alt="SMK Pelita IV Event" class="hero-image">
+            <img src="/image/sekolah3.jpg" alt="SMK Pelita IV Classroom" class="hero-image">
             <div class="hero-overlay"></div>
         </div>
         <div class="hero-content">
@@ -117,6 +210,7 @@
                     Browser Anda tidak mendukung tag video.
                 </video>
             </div>
+        </div>
     </section>
 
     <section class="program-keahlian-section">
@@ -194,54 +288,52 @@
     </section>
 
     <section class="berita-section">
-    <div class="section-title" data-aos="fade-up">
-        <h2>Berita Terbaru</h2>
-        <p>Informasi dan Kegiatan Terkini</p>
-    </div>
-    <div class="berita-container">
-        @forelse($blogs as $index => $blog)
-            <div class="berita-card" data-aos="zoom-in" data-aos-delay="{{ ($index % 2 + 1) * 100 }}">
-                <div class="berita-image">
-                    @if($blog->lampiran)
-                        <img src="{{ asset('storage/' . $blog->lampiran) }}" alt="{{ $blog->judul }}">
-                    @else
-                        <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="{{ $blog->judul }}">
-                    @endif
-                    <div class="berita-date">
-                        <span class="day">{{ $blog->created_at->format('d') }}</span>
-                        <span class="month">{{ $blog->created_at->format('M') }}</span>
+        <div class="section-title" data-aos="fade-up">
+            <h2>Berita Terbaru</h2>
+            <p>Informasi dan Kegiatan Terkini</p>
+        </div>
+        <div class="berita-container">
+            @forelse($blogs as $index => $blog)
+                <div class="berita-card" data-aos="zoom-in" data-aos-delay="{{ ($index % 2 + 1) * 100 }}">
+                    <div class="berita-image">
+                        @if($blog->lampiran)
+                            <img src="{{ asset('storage/' . $blog->lampiran) }}" alt="{{ $blog->judul }}">
+                        @else
+                            <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="{{ $blog->judul }}">
+                        @endif
+                        <div class="berita-date">
+                            <span class="day">{{ $blog->created_at->format('d') }}</span>
+                            <span class="month">{{ $blog->created_at->format('M') }}</span>
+                        </div>
+                    </div>
+                    <div class="berita-content">
+                        <h3>{{ $blog->judul }}</h3>
+                        <p>{{ Str::limit(strip_tags($blog->isi), 120) }}</p>
+                        <a href="#" class="berita-btn">Baca Selengkapnya</a>
                     </div>
                 </div>
-                <div class="berita-content">
-                    <h3>{{ $blog->judul }}</h3>
-                    <p>{{ Str::limit(strip_tags($blog->isi), 120) }}</p>
-                    <a href="#" class="berita-btn">Baca Selengkapnya</a>
-                </div>
-            </div>
-        @empty
-            <div class="berita-card" data-aos="zoom-in" data-aos-delay="100">
-                <div class="berita-image">
-                    <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tidak ada berita">
-                    <div class="berita-date">
-                        <span class="day">--</span>
-                        <span class="month">---</span>
+            @empty
+                <div class="berita-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="berita-image">
+                        <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tidak ada berita">
+                        <div class="berita-date">
+                            <span class="day">--</span>
+                            <span class="month">---</span>
+                        </div>
+                    </div>
+                    <div class="berita-content">
+                        <h3>Belum Ada Berita</h3>
+                        <p>Saat ini belum ada berita terbaru yang dapat ditampilkan. Silakan kembali lagi nanti untuk melihat update terbaru dari SMK Pelita IV Jakarta.</p>
+                        <a href="/blog" class="berita-btn">Lihat Blog</a>
                     </div>
                 </div>
-                <div class="berita-content">
-                    <h3>Belum Ada Berita</h3>
-                    <p>Saat ini belum ada berita terbaru yang dapat ditampilkan. Silakan kembali lagi nanti untuk melihat update terbaru dari SMK Pelita IV Jakarta.</p>
-                    <a href="/blog" class="berita-btn">Lihat Blog</a>
-                </div>
-            </div>
-        @endforelse
-    </div>
-    <div class="berita-more" data-aos="fade-up">
-        <a href="/blog" class="more-btn">Lihat Semua Berita</a>
-    </div>
-</section>
+            @endforelse
+        </div>
+        <div class="berita-more" data-aos="fade-up">
+            <a href="/blog" class="more-btn">Lihat Semua Berita</a>
+        </div>
+    </section>
 </div>
-
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script>
@@ -252,6 +344,20 @@
             once: true
         });
 
+        // Hero Slider Functionality
+        const images = document.querySelectorAll('.hero-image');
+        let currentImage = 0;
+
+        function changeImage() {
+            images[currentImage].classList.remove('active');
+            currentImage = (currentImage + 1) % images.length;
+            images[currentImage].classList.add('active');
+        }
+
+        // Start slider
+        setInterval(changeImage, 5000); // Change image every 5 seconds
+
+        // Smooth scroll for hero button
         document.querySelector('.hero-btn').addEventListener('click', function(e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');

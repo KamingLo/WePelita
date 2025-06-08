@@ -96,6 +96,26 @@ h4:after {
     background-color: var(--primary-color);
 }
 
+h6 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 26px;
+    position: relative;
+    padding-bottom: 10px;
+    min-width: 83%;
+    max-width: 100%;
+}
+
+h6:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
 /* ----------------------------------------------- */
 /* --------------- Bagian Shorcut ---------------- */
 /* ----------------------------------------------- */
@@ -173,7 +193,7 @@ h4:after {
     align-items: center;
     justify-content: center;
     background-color: #f1f3f5;
-    border: 3px solid #ddd;
+    border: 3px solid var(--primary-color);
 }
 
 .profile-avatar img {

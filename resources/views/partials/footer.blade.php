@@ -1,18 +1,24 @@
+<link rel="stylesheet" href="{{ asset('css/Partials/Footer.css') }}" />
 <footer>
     <div class="containerFooter">
         <div class="footer-content">
-            
-            <!-- KIRI: Informasi Sekolah -->
             <div class="footer-column brand-column">
                 <img class="footer-logo" src="/image/LogoPelitaFooter.png" alt="Logo Pelita Project">
                 <p class="brand-description"><strong>Alamat:</strong></p>
                 <p class="brand-description">
                     Jl. Duri Utara No.23-29, RT.3/RW.6, Duri Utara, Kec. Tambora, Kota Jakarta Barat, DKI Jakarta 11270
                 </p>
-                    <p class="brand-description"><strong>Telepon:</strong></p>
-                    <p class="brand-description"><i class='bx bxs-phone'></i> 0216314072</p>
-                    <p class="brand-description"><strong>Email:</strong></p>
-                    <p class="brand-description"><i class='bx bx-envelope'></i> pelitaschool4@gmail.com</p>
+                    <div style="display: flex; max-width: 20rem;">
+                        <div style=" ">
+                            <p class="brand-description"><strong>Telepon:</strong></p>
+                            <p class="brand-description">0216314072</p>
+                        </div>
+
+                        <div style="margin-left: auto;">
+                            <p class="brand-description"><strong>Email:</strong></p>
+                            <p class="brand-description">pelitaschool4@gmail.com</p>
+                        </div>
+                    </div>
                     <p class="brand-description"><strong>Ikuti Kami:</strong></p>
                 <div class="social-icons">
                     <a href="https://www.youtube.com/@smkpelitaivjakbar7063" class="IconLink" style="text-decoration: none;"><i class='bx bxl-youtube'></i></a>
@@ -21,9 +27,9 @@
                 </div>
             </div>
 
-            <div class="footer-column">
+            <div class="footer-column-Tags">
+                <h4>Tags</h4>
                 <ul class="footer-links">
-                    <h4>Tags</h4>
                     <li><a class="Tags" title="SMK PELITA IV - SMK Bisa SMK Hebat">SMK PELITA IV - SMK Bisa SMK Hebat</a></li>
                     <li><a class="Tags" title="Pendaftaran Siswa Baru">PENDAFTARAN SISWA BARU</a></li>
                     <li><a class="Tags" title="Sekilas Info">SEKILAS-INFO</a></li>
@@ -35,7 +41,7 @@
                 </ul>
             </div>
             
-            <div class="footer-column">
+            <div class="footer-column-maps">
                 <div id="map" style="height: 290px; width: 100%; border-radius: 8px;"></div>
             </div>
 
@@ -47,7 +53,6 @@
     </div>
 </footer>
 
-<!-- Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>

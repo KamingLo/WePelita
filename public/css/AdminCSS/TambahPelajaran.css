@@ -323,12 +323,6 @@ select.TampilanIsiData {
     border-color: #3959d9;
 }
 
-.IconOJT {
-    font-size: 15px;
-    letter-spacing: 10px;
-    transform: translate(-0.10rem, 0.10rem);
-}
-
 .OptionPelajaranTabel {
     gap: 0.5rem;
     width: 4rem;

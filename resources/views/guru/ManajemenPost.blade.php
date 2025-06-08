@@ -1,10 +1,8 @@
 @include('guru.partials.header')
 @include('guru.partials.sidebar')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="{{ asset('css/GuruCSS/ManajemenPost.css') }}" />
 <script src="{{ asset('js/CssAdmin.js') }}"></script>
-<script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 
 <body>
     <div class="ContainerPostManagement">
@@ -122,7 +120,6 @@
                 </div>
             </div>
 
-            <!-- Tambahkan penanganan error umum di atas form -->
             @if ($errors->any())
                 <div class="UiPsnDis PsnError">
                     <ul>
@@ -133,7 +130,6 @@
                 </div>
             @endif
 
-            <!-- Daftar Pengumuman -->
             <div id="pengumumanList" style="{{ request('TipePost') == 'pengumuman' ? 'display: block;' : 'display: none;' }}">
                 <h2>Daftar Pengumuman</h2>
                 <div class="LayoutDisplayPostingan">
@@ -192,7 +188,6 @@
                 </div>
             </div>
 
-            <!-- Daftar Blog -->
             <div id="blogList" style="{{ request('TipePost') == 'blog' ? 'display: block;' : 'display: none;' }}">
                 <h2>Daftar Blog</h2>
                 <div class="LayoutDisplayPostingan">

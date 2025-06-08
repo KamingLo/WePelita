@@ -1,7 +1,6 @@
 @include('admin.partials.header')
 @include('admin.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/TambahPelajaran.css') }}" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <div class="ContainerPelajaran">
     <h1>Edit Pelajaran Baru</h1>

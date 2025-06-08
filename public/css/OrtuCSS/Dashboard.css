@@ -37,17 +37,17 @@ body {
     gap: 30px;
 }
 
-h1 {
+h6 {
     color: var(--dark-color);
     margin-bottom: 20px;
     font-size: 26px;
     position: relative;
     padding-bottom: 10px;
     min-width: 12.5%;
-    max-width: 20%;
+    max-width: 18%;
 }
 
-h1:after {
+h6:after {
     content: "";
     position: absolute;
     left: 0;

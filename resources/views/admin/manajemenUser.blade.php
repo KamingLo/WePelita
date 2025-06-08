@@ -1,7 +1,6 @@
 @include('admin.partials.header')
 @include('admin.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/ManajemenUser.css') }}" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
     @if (session('role') == 'admin')
@@ -25,31 +24,31 @@
                         </div>
                         
 
-{{-- Menampilkan pesan error validasi --}}
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <strong>Terjadi kesalahan:</strong>
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+                        {{-- Menampilkan pesan error validasi --}}
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <strong>Terjadi kesalahan:</strong>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
-{{-- Menampilkan pesan sukses --}}
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
+                        {{-- Menampilkan pesan sukses --}}
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
 
-{{-- Menampilkan pesan gagal --}}
-@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
+                        {{-- Menampilkan pesan gagal --}}
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
 
 
                         <form method="POST" action="{{ route('admin.register') }}">
@@ -476,7 +475,7 @@
                     <div class="KhususHeaderTabelUser">
                         <h3>Data Admin</h3>
                         <div class="HanyaMaginAuto">
-                            <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="Tedit">Unduh Data {{ $role }}</a>
+                            <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="TombolOJT DownloadJadwal"><i class="fa-solid fa-file-excel"></i>‎ ‎ ‎ Unduh Data {{ $role }}</a>
                         </div>
                     </div>
                         @if (isset($admins) && $admins->isNotEmpty())
@@ -498,13 +497,13 @@
                                             <td>
                                                 <div class="OptionManajemenTabel">
                                                     <a href="{{ route('admin.user.edit', ['id' => $admin->admin_id, 'role' => 'admin']) }}" class="Tedit">
-                                                        <i class='bx bx-edit-alt IconForButton'></i>Edit
+                                                        Edit
                                                     </a>
                                                     <form method="POST" action="{{ route('admin.user.delete', ['id' => $admin->admin_id, 'role' => 'admin']) }}" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="TombolDelete" onclick="return confirm('Yakin hapus user ini?')">
-                                                            <i class='bx bx-trash IconForButton'></i>Hapus
+                                                            Hapus
                                                         </button>
                                                     </form>
                                                 </div>
@@ -522,8 +521,7 @@
                             <div class="KhususHeaderTabelUser">
                                 <h3>Data Guru</h3>
                                 <div class="HanyaMaginAutoV2">
-                                    <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="Tedit">Unduh Data {{ $role }}</a>
-                                </div>
+                                <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="TombolOJT DownloadJadwal"><i class="fa-solid fa-file-excel"></i>‎ ‎ ‎ Unduh Data {{ $role }}</a>                                </div>
                             </div>
                             <div class="FilterHeaderGuruMu">
                                 <form method="GET" action="{{ route('admin.ManajemenUser') }}" class="filter-form">
@@ -563,13 +561,13 @@
                                             <td>
                                                 <div class="OptionManajemenTabel">
                                                     <a href="{{ route('admin.user.edit', ['id' => $guru->guru_id, 'role' => 'guru']) }}" class="Tedit">
-                                                        <i class='bx bx-edit-alt IconForButton'></i>Edit
+                                                        Edit
                                                     </a>
                                                     <form method="POST" action="{{ route('admin.user.delete', ['id' => $guru->guru_id, 'role' => 'guru']) }}" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="TombolDelete" onclick="return confirm('Yakin hapus user ini?')">
-                                                            <i class='bx bx-trash IconForButton'></i>Hapus
+                                                            Hapus
                                                         </button>
                                                     </form>
                                                 </div>
@@ -587,30 +585,35 @@
                             <div class="KhususHeaderTabelUser">
                                 <h3>Data Murid</h3>
                                 <div class="HanyaMaginAutoV2">
-                                    <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="Tedit">Unduh Data {{ $role }}</a>
+                                    <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="TombolOJT DownloadJadwal">
+                                        <i class="fa-solid fa-file-excel"></i>‎ ‎ ‎ Unduh Data {{ $role }}
+                                    </a>
                                 </div>
                             </div>
-                            <div class="FilterHeaderMuridMu">
-                                <form method="GET" action="{{ route('admin.ManajemenUser') }}" class="filter-form">
-                                    <div class="ForFilterRoleOnly additional-filter">
-                                        <label for="additional_filter" class="sr-only">Filter Tambahan</label>
-                                        <select name="additional_filter" id="additional_filter" onchange="this.form.submit()" class="TampilanIsiData" style="padding-right: 40px; min-width: 150px;">
-                                            <option value="" {{ request('additional_filter') == '' ? 'selected' : '' }}>-- Pilih Kelas --</option>
-                                            @foreach ($kelasList as $kelas)
-                                                <option value="{{ $kelas->kelas_tahun_id }}" {{ request('additional_filter') == $kelas->kelas_tahun_id ? 'selected' : '' }}>
-                                                    {{ $kelas->kelas->nama_kelas }} - {{ $kelas->tahunajar->tahun_ajaran }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <input type="hidden" name="role" value="murid">
-                                    <input type="hidden" name="search" value="{{ request('search') }}">
-                                </form>
+
+
+                                <div class="FilterHeaderMuridMu">
+                                    <form method="GET" action="{{ route('admin.ManajemenUser') }}" class="filter-form">
+                                        <div class="ForFilterRoleOnly additional-filter">
+                                            <label for="additional_filter" class="sr-only">Filter Tambahan</label>
+                                            <select name="additional_filter" id="additional_filter" onchange="this.form.submit()"
+                                                class="TampilanIsiData" style="padding-right: 40px; min-width: 150px;">
+                                                <option value="" {{ request('additional_filter') == '' ? 'selected' : '' }}>-- Pilih Kelas --</option>
+                                                @foreach ($kelasList as $kelas)
+                                                    <option value="{{ $kelas->kelas_tahun_id }}" {{ request('additional_filter') == $kelas->kelas_tahun_id ? 'selected' : '' }}>
+                                                        {{ $kelas->kelas->nama_kelas }} - {{ $kelas->tahunajar->tahun_ajaran }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <input type="hidden" name="role" value="murid">
+                                        <input type="hidden" name="search" value="{{ request('search') }}">
+                                    </form>
+                                </div>
                             </div>
-                        </div>
                         
                         @if (isset($muridOrangTuas) && $muridOrangTuas->isNotEmpty())
-                            <table class="table murid">
+                            <table class="table">
                                 <thead>
                                     <tr>
                                         <th>Nama</th>
@@ -640,14 +643,12 @@
                                             <td>
                                                 <div class="OptionManajemenTabel">
                                                     <a href="{{ route('admin.user.edit', ['id' => $muridOrangTua->muridKelas->murid_kelas_id, 'role' => 'murid']) }}" class="Tedit">
-                                                        <i class='bx bx-edit-alt Icon'></i>Edit
+                                                        Edit
                                                     </a>
                                                     <form method="POST" action="{{ route('admin.user.delete', ['id' => $muridOrangTua->muridKelas->murid_kelas_id, 'role' => 'murid']) }}" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="TombolDelete" onclick="return confirm('Yakin hapus user ini?')">
-                                                            <i class='bx bx-trash Icon'></i>Hapus
-                                                        </button>
+                                                        <button type="submit" class="TombolDelete" onclick="return confirm('Yakin hapus user ini?')">Hapus</button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -663,7 +664,7 @@
                     <div class="KhususHeaderTabelUser">
                         <h3>Data Orang Tua</h3>
                         <div class="HanyaMaginAuto">
-                            <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="Tedit">Unduh Data</a>
+                                <a href="{{ route('admin.downloaduser', ['role' => $role]) }}" class="TombolOJT DownloadJadwal"><i class="fa-solid fa-file-excel"></i>‎ ‎ ‎ Unduh Data {{ $role }}</a>
                         </div>
                     </div>
 
@@ -686,13 +687,13 @@
                                             <td>
                                                 <div class="OptionManajemenTabel">
                                                     <a href="{{ route('admin.user.edit', ['id' => $muridOrangTua->orangTua->orang_tua_id, 'role' => 'orang_tua']) }}" class="Tedit">
-                                                        <i class='bx bx-edit-alt Icon'></i>Edit
+                                                        Edit
                                                     </a>
                                                     <form method="POST" action="{{ route('admin.user.delete', ['id' => $muridOrangTua->orangTua->orang_tua_id, 'role' => 'orang_tua']) }}" style="display:inline-block;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="TombolDelete" onclick="return confirm('Yakin hapus user ini?')">
-                                                            <i class='bx bx-trash Icon'></i>Hapus
+                                                            Hapus
                                                         </button>
                                                     </form>
                                                 </div>
@@ -740,9 +741,8 @@
             }
 
             roleSelect.addEventListener('change', toggleForms);
-            toggleForms(); // Run on page load
+            toggleForms();
 
-            // Clear buttons
             document.querySelectorAll('.HapusBar').forEach(button => {
                 button.addEventListener('click', () => {
                     const input = button.previousElementSibling;
@@ -752,7 +752,6 @@
                 });
             });
 
-            // Numeric-only input for phone numbers
             document.querySelectorAll('.NomorOnly').forEach(input => {
                 input.addEventListener('input', () => {
                     input.value = input.value.replace(/[^0-9]/g, '');

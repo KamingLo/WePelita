@@ -2,8 +2,6 @@
 @include('murid.partials.sidebar')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="{{ asset('css/MuridCSS/Dashboard.css') }}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-
 @php
     $role = session('role');
 @endphp
@@ -27,19 +25,19 @@
 
     <div class="ShorcutSidebar">
         <a href="{{ request()->routeIs('postingan.profile.show') ? 'http://127.0.0.1:8000/' : route('murid.jadwal') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="100">
-            <div class="IconShorcut"><i class="fas fa-users"></i></div>
+            <div class="IconShorcut"><i class="fa-solid fa-calendar-days"></i></div>
             <h3>Jadwal Kelas</h3>
-            <p>View your class schedule</p>
+            <p>Lihat jadwal kelas anda</p>
         </a>
         <a href="{{ request()->routeIs('postingan.profile.show') ? 'http://127.0.0.1:8000/' : route('murid.nilai') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="200">
-            <div class="IconShorcut"><i class="fas fa-chalkboard"></i></div>
+            <div class="IconShorcut"><i class="fa-solid fa-scroll"></i></div>
             <h3>Nilai Murid</h3>
-            <p>Check your grades</p>
+            <p>Periksa nilai murid</p>
         </a>
         <a href="{{ request()->routeIs('postingan.profile.show') ? 'http://127.0.0.1:8000/' : route('murid.pengumuman') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="300">
-            <div class="IconShorcut"><i class="fas fa-calendar-alt"></i></div>
+            <div class="IconShorcut"><i class="fa-solid fa-bullhorn"></i></div>
             <h3>Pengumuman</h3>
-            <p>View all announcements</p>
+            <p>Lihat semua pengumuman</p>
         </a>
     </div>
 
@@ -120,7 +118,7 @@
         <div class="blog-detail-container">
             <div class="blog-image" data-aos="fade-up"></div>
             <div class="blog-content" data-aos="fade-up" data-aos-delay="100">
-                <h1 class="popup-title"></h1>
+                <h6 class="popup-title"></h6>
                 <div class="blog-meta">
                     <span class="author"><i class='bx bx-user'></i> <span class="popup-author"></span></span>
                     <span class="date"><i class='bx bx-calendar'></i> <span class="popup-date"></span></span>
@@ -134,11 +132,9 @@
     </div>
 </div>
 
-<!-- dashboard.blade.php -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<!-- dashboard.blade.php -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         AOS.init({
@@ -152,9 +148,8 @@
             const id = $(this).data('id');
             console.log('Fetching announcement ID:', id);
 
-            // Dynamically determine the URL based on session role (assumed available via PHP or JS)
             let url = '';
-            const role = '{{ session('role') }}'; // Ensure this is passed from the backend
+            const role = '{{ session('role') }}';
             if (role === 'orangtua') {
                 url = `/announcement/orangtua/${id}`;
             } else if (role === 'murid') {
@@ -169,11 +164,11 @@
                 url: url,
                 method: 'GET',
                 xhrFields: {
-                    withCredentials: true // Include session cookies
+                    withCredentials: true
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'Accept': 'application/json' // Request JSON response
+                    'Accept': 'application/json'
                 },
                 success: function(data) {
                     console.log('Data received:', data);

@@ -1,5 +1,5 @@
 /* ----------------------------------------------- */
-/* -------------- nilai-murid.css -------------- */
+/* ----------------- NilaiMurid.css -------------- */
 /* ----------------------------------------------- */
 
 :root {
@@ -53,7 +53,7 @@ h1.JudulHalaman:after {
 }
 
 /* ----------------------------------------------- */
-/* ------------- Kontainer Form Kiri ------------ */
+/* ------------------ Form Kiri ------------------ */
 /* ----------------------------------------------- */
 
 .LayoutPelajaranForm {
@@ -159,7 +159,182 @@ h1.JudulHalaman:after {
 }
 
 /* ----------------------------------------------- */
-/* ------------- Tombol Aksi Kiri --------------- */
+/* ------------------ From Kanan ----------------- */
+/* ----------------------------------------------- */
+
+.LayoutPelajaranTable {
+    flex: 2;
+    min-width: 600px;
+    background-color: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-10.5rem);
+    min-height: 80vh;
+}
+
+.LayoutPelajaranTable h2 {
+    color: var(--dark-color);
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.LayoutPelajaranTable h2:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 40px;
+    background-color: var(--primary-color);
+}
+
+.InputCari {
+    width: 100%;
+    padding: 12px 15px 12px 40px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: white;
+    transition: var(--transition);
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+input.InputCari {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    color: black;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: var(--transition);
+    box-sizing: border-box;
+}
+
+input.InputCari:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    color: black;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+
+.InputCari:hover {
+    border-color: var(--primary-color);
+}
+
+.KhususHeaderPelajaraTable {
+    display: flex;
+}
+
+.CumanMaginDoang {
+    margin-left: auto;
+    
+}
+
+.InfoSeleksi {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.InfoTag {
+    font-size: 14px;
+    color: var(--dark-color);
+}
+
+.InfoTag strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.DisplayDataTable {
+    overflow-y: auto;
+    flex: 1;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    min-width: 700px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: var(--light-gray);
+    color: var(--dark-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    padding: 15px 12px;
+    text-align: center;
+    border-bottom: 2px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+    font-size: 14px;
+    text-align: center;
+}
+
+.table tbody tr {
+    transition: var(--transition);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(74, 108, 247, 0.05);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.InputNilai {
+    width: 80px;
+    padding: 8px 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
+    transition: var(--transition);
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.InputNilai:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+}
+
+.InputNilai:hover {
+    border-color: var(--primary-color);
+}
+
+/* ----------------------------------------------- */
+/* ---------------- Bagian Tombol ---------------- */
 /* ----------------------------------------------- */
 
 .KontainerTombol {
@@ -213,225 +388,15 @@ h1.JudulHalaman:after {
 }
 
 .TombolSimpan:before {
-    content: "💾";
     font-size: 16px;
 }
 
 .TombolOJT.DownloadBtn:before {
-    content: "⬇";
     font-size: 16px;
 }
 
 /* ----------------------------------------------- */
-/* ------------- Kontainer Tabel Kanan ---------- */
-/* ----------------------------------------------- */
-
-.LayoutPelajaranTable {
-    flex: 2;
-    min-width: 600px;
-    background-color: white;
-    padding: 25px;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    max-height: 600px;
-    display: flex;
-    flex-direction: column;
-    transform: translateY(-10.5rem);
-    min-height: 80vh;
-}
-
-.LayoutPelajaranTable h2 {
-    color: var(--dark-color);
-    margin-top: 0;
-    font-size: 20px;
-    margin-bottom: 20px;
-    position: relative;
-    padding-bottom: 10px;
-}
-
-.LayoutPelajaranTable h2:after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 2px;
-    width: 40px;
-    background-color: var(--primary-color);
-}
-
-/* ----------------------------------------------- */
-/* ------------- Search Bar di Kanan ------------ */
-/* ----------------------------------------------- */
-
-.InputCari {
-    width: 100%;
-    padding: 12px 15px 12px 40px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 14px;
-    background-color: white;
-    transition: var(--transition);
-    box-sizing: border-box;
-    margin-bottom: 20px;
-}
-
-input.InputCari {
-    width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    color: black;
-    border-radius: 6px;
-    font-size: 14px;
-    transition: var(--transition);
-    box-sizing: border-box;
-}
-
-input.InputCari:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    color: black;
-    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
-}
-
-
-.InputCari:hover {
-    border-color: var(--primary-color);
-}
-
-.KhususHeaderPelajaraTable {
-    display: flex;
-}
-
-.CumanMaginDoang {
-    margin-left: auto;
-    
-}
-
-/* ----------------------------------------------- */
-/* ------------- Info Seleksi ------------------- */
-/* ----------------------------------------------- */
-
-.InfoSeleksi {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: var(--light-gray);
-    border-radius: 8px;
-    border-left: 4px solid var(--primary-color);
-}
-
-.InfoTag {
-    font-size: 14px;
-    color: var(--dark-color);
-}
-
-.InfoTag strong {
-    color: var(--primary-color);
-    font-weight: 600;
-}
-
-/* ----------------------------------------------- */
-/* ------------- Tabel Container ---------------- */
-/* ----------------------------------------------- */
-
-.DisplayDataTable {
-    overflow-y: auto;
-    flex: 1;
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    min-width: 700px;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-}
-
-.table thead th {
-    background-color: var(--light-gray);
-    color: var(--dark-color);
-    font-weight: 600;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    padding: 15px 12px;
-    text-align: center;
-    border-bottom: 2px solid #dee2e6;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.table tbody td {
-    padding: 12px;
-    border-bottom: 1px solid #e9ecef;
-    vertical-align: middle;
-    font-size: 14px;
-    text-align: center;
-}
-
-.table tbody tr {
-    transition: var(--transition);
-}
-
-.table tbody tr:hover {
-    background-color: rgba(74, 108, 247, 0.05);
-}
-
-.table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-/* ----------------------------------------------- */
-/* ------------ Input Nilai ------------------ */
-/* ----------------------------------------------- */
-
-.InputNilai {
-    width: 80px;
-    padding: 8px 12px;
-    border: 2px solid #e9ecef;
-    border-radius: 6px;
-    font-size: 14px;
-    text-align: center;
-    transition: var(--transition);
-    background-color: white;
-    box-sizing: border-box;
-}
-
-.InputNilai:focus {
-    border-color: var(--primary-color);
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
-}
-
-.InputNilai:hover {
-    border-color: var(--primary-color);
-}
-
-/* ----------------------------------------------- */
-/* ------------- Grade Styling ------------------ */
-/* ----------------------------------------------- */
-
-.Grade {
-    font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
-    color: white;
-}
-
-.GradeA { background-color: #28a745; }
-.GradeB { background-color: #17a2b8; }
-.GradeC { background-color: #ffc107; color: #333; }
-.GradeD { background-color: #fd7e14; }
-.GradeE { background-color: #dc3545; }
-
-/* ----------------------------------------------- */
-/* ------------- Pesan Kosong ------------------- */
+/* ----------------- Pesan Error ----------------- */
 /* ----------------------------------------------- */
 
 .PesanKosong {
@@ -449,10 +414,6 @@ input.InputCari:focus {
     margin-bottom: 15px;
     opacity: 0.5;
 }
-
-/* ----------------------------------------------- */
-/* ------------- Pesan Sukses ------------------- */
-/* ----------------------------------------------- */
 
 .PesanSukses {
     background-color: #d4edda;
@@ -482,7 +443,7 @@ input.InputCari:focus {
 }
 
 /* ----------------------------------------------- */
-/* ------------- Responsive Design --------------- */
+/* ---------------- Bagian View ------------------ */
 /* ----------------------------------------------- */
 
 @media (max-width: 1200px) {
@@ -577,3 +538,5 @@ input.InputCari:focus {
         font-size: 12px;
     }
 }
+
+/* ---------------------- End ---------------------- */

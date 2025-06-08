@@ -1,7 +1,6 @@
 @include('orangtua.partials.header')
 @include('orangtua.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/OrtuCSS/Dashboard.css') }}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <div class="ContainerDashboardOrangTua">
     @php
@@ -13,23 +12,23 @@
     @endphp
 
     <div class="HeaderDashboardOrangTua">
-        <h1>Hi, {{ $orangtua->profile->name }}</h1>
+        <h6>Hi, {{ $orangtua->profile->name }}</h6>
         <h4>Anak: {{ $muridName }} | Kelas: {{ $kelasName }}</h4>
     </div>
 
     <div class="ShorcutSidebar">
         <a href="{{ route('orangtua.jadwal') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="100">
-            <div class="IconShorcut"><i class="fas fa-users"></i></div>
+            <div class="IconShorcut"><i class="fa-solid fa-calendar-days"></i></div>
             <h3>Jadwal Kelas</h3>
             <p>View your child's class schedule</p>
         </a>
         <a href="{{ route('orangtua.nilai') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="200">
-            <div class="IconShorcut"><i class="fas fa-chalkboard"></i></div>
+            <div class="IconShorcut"><i class="fa-solid fa-scroll"></i></div>
             <h3>Nilai Anak</h3>
             <p>Check your child's grades</p>
         </a>
         <a href="{{ route('orangtua.pengumuman') }}" class="Shorcut" data-aos="fade-up" data-aos-delay="300">
-            <div class="IconShorcut"><i class="fas fa-calendar-alt"></i></div>
+            <div class="IconShorcut"><i class="fa-solid fa-bullhorn"></i></div>
             <h3>Pengumuman</h3>
             <p>View all announcements</p>
         </a>
@@ -129,7 +128,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-<!-- dashboard.blade.php -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         AOS.init({
@@ -143,9 +141,8 @@
             const id = $(this).data('id');
             console.log('Fetching announcement ID:', id);
 
-            // Dynamically determine the URL based on session role (assumed available via PHP or JS)
             let url = '';
-            const role = '{{ session('role') }}'; // Ensure this is passed from the backend
+            const role = '{{ session('role') }}'; 
             if (role === 'orangtua') {
                 url = `/announcement/orangtua/${id}`;
             } else if (role === 'murid') {
@@ -160,11 +157,11 @@
                 url: url,
                 method: 'GET',
                 xhrFields: {
-                    withCredentials: true // Include session cookies
+                    withCredentials: true 
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'Accept': 'application/json' // Request JSON response
+                    'Accept': 'application/json'
                 },
                 success: function(data) {
                     console.log('Data received:', data);

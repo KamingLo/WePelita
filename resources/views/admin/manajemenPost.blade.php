@@ -1,6 +1,5 @@
 @include('admin.partials.header')
 @include('admin.partials.sidebar')
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/ManajemenPost.css') }}" />
 <script src="{{ asset('js/CssAdmin.js') }}"></script>

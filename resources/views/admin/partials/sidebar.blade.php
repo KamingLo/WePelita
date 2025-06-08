@@ -1,69 +1,65 @@
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/SidebarAdmin.css') }}" />
+
 <body>
   <aside class="ContainerSideBar">
     <div class="ProfileSiUser">
-        <div class="HeaderUser">
-            <a href="/admin/dashboard">
-                <img src="/image/logo_pelita.png"/>
-            </a>
-            <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
-        </div>
-        <h6 class="UseridName">{{ auth()->user()->name }}</h6>
-
+      <div class="HeaderUser">
+          <img src="/image/logo_pelita.png"/>
+        </a>
+        <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
+      </div>
+      <h6 class="UseridName">{{ auth()->user()->name }}</h6>
     </div>
 
     <ul class="ListSideBar">
-
       <li>
         <a href="/admin/dashboard" class="{{ request()->is('admin/dashboard*') || request()->is('profile*') ? 'active-link' : '' }}">
-          <i class='bx bx-home-alt IconSidebar'></i>Halaman Utama
+          <i class="fa-solid fa-house IconSideBar"></i>Halaman Utama
         </a>
       </li>
 
-      <h4>
-        <span>Admin Tools</span>
-      </h4>
+      <h4><span>Admin Tools</span></h4>
 
       <li>
-        <a href="/admin/TambahPelajaran" class="{{ request()->is('admin/TambahPelajaran*') ? 'active-link' : '' }}">
-          <i class='bx bx-list-plus IconSideBar'></i>Tambah Pelajaran
+        <a href="/admin/TambahPelajaran" class="{{ request()->is('admin/TambahPelajaran*') || request()->is('admin/pelajaran*') ? 'active-link' : '' }}">
+          <i class="fa-solid fa-book IconSideBar"></i>Tambah Pelajaran
         </a>
       </li>
       <li>
         <a href="/admin/TambahJadwal" class="{{ request()->is('admin/TambahJadwal*') || request()->is('admin/jadwal/edit/*') ? 'active-link' : '' }}">
-            <i class='bx bx-layer-plus IconSideBar'></i>Tambahkan Jadwal
+          <i class="fa-solid fa-calendar-days IconSideBar"></i>Tambahkan Jadwal
         </a>
       </li>
-        <li>
+      <li>
         <a href="/admin/manajemenKelas" class="{{ request()->is('admin/manajemenKelas*') ? 'active-link' : '' }}">
-          <i class='bx bx-category-alt IconSideBar'></i>Manajemen Kelas
+          <i class="fa-solid fa-pen IconSideBar"></i>Manajemen Kelas
         </a>
       </li>
       <li>
         <a href="/admin/ManajemenUser" class="{{ request()->is(['admin/ManajemenUser*', 'admin/user*']) ? 'active-link' : '' }}">
-          <i class='bx bx-user IconSideBar' ></i>Manajemen User
+          <i class="fa-solid fa-users IconSideBar"></i>Manajemen User
         </a>
       </li>
       <li>
         <a href="/admin/manajemenPost" class="{{ request()->is('admin/manajemenPost*') ? 'active-link' : '' }}">
-          <i class='bx bx-message-square-edit IconSideBar'></i>Manajemen postingan
+          <i class="fa-solid fa-bullhorn IconSideBar"></i>Manajemen Postingan
         </a>
       </li>
       <li>
         <a href="/admin/NilaiSiswa" class="{{ request()->is('admin/NilaiSiswa*') ? 'active-link' : '' }}">
-          <i class='bx bx-message-square-edit IconSideBar'></i>Nilai Siswa
+          <i class="fa-solid fa-scroll IconSideBar"></i>Nilai Siswa
         </a>
       </li>
-
     </ul>
-    <div class="logout-container">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="logout-button">
-                <i class='bx bx-log-out IconSideBar'></i>
-                <span>Logout</span>
-            </button>
-        </form>
+
+    <div class="BagianBawahSideBar">
+      <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="TombolLogout">
+          <i class="fa-solid fa-arrow-right-from-bracket IconSideBar"></i>
+          <span>Logout</span>
+        </button>
+      </form>
     </div>
   </aside>
 </body>

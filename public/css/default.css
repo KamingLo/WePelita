@@ -6,6 +6,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  min-width: 100vh;
   background: #F0F4FF;
   padding-top: 10rem !important;
   overflow-x: hidden;
@@ -108,117 +109,7 @@ html, body {
   transition: all ease 0.3s;
 }
 
-/* ----------------------------------------------- */
-/* ----------------- footer.css ------------------ */
-/* ----------------------------------------------- */
 
-footer {
-  background-color: #2563EB;
-  color: #fff;
-  padding: 25px 0 10px;
-  width: 100%;
-  flex-shrink: 0;
-  margin-top: 5rem;
-}
-
-.containerFooter {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.footer-content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  align-items: flex-start;
-}
-
-.footer-column {
-  flex: 1;
-  min-width: 150px;
-  margin-bottom: 15px;
-  padding-right: 20px;
-}
-
-.brand-column {
-  flex: 1.5;
-}
-
-.footer-logo {
-  height: 50px;
-  width: auto;
-  margin-bottom: 10px;
-}
-
-.brand-description {
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 15px;
-  max-width: 300px;
-  line-height: 1.4;
-  font-size: 14px;
-}
-
-.footer-column h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
-  font-weight: 500;
-  color: #fff;
-}
-
-.footer-links {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-links li {
-  margin-bottom: 8px;
-}
-
-.footer-links a {
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  transition: color 0.3s;
-  font-size: 14px;
-}
-
-.footer-links a:hover {
-  color: #fff;
-}
-
-.social-icons {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.IconLink {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  color: #fff;
-  transition: transform 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.IconLink:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-.footer-bottom {
-  text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 12px;
-  padding-top: 10px;
-}
 
 /* ----------------------------------------------- */
 /* -------------- Tombol Clear Form  ------------- */

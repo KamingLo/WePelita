@@ -5,10 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WePelita OrangTua</title>
     <link rel="icon" type="image/png" href="{{ asset('image/logo_pelita.png') }}">
-    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/default.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/login.css') }}" />
 </head>

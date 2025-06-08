@@ -5,10 +5,8 @@
         <div class="LayoutPelajaranForm">
             <h2>Pilih Pelajaran & Kelas</h2>
             
-            <!-- Form Filter Container -->
             <div class="KontainerFormNilai">
                 <div class="FilterRow">
-                    <!-- Pilih Pelajaran -->
                     <div class="GrupInput">
                         <label class="LabelInput">Pilih Pelajaran</label>
                         <select wire:model.live="pilihanPelajaran" class="DropdownPilihan">
@@ -19,7 +17,6 @@
                         </select>
                     </div>
 
-                    <!-- Pilih Kelas -->
                     <div class="GrupInput">
                         <label class="LabelInput">Pilih Kelas</label>
                         <select wire:model.live="pilihanKelasTahun" class="DropdownPilihan">
@@ -33,13 +30,12 @@
                     </div>
                 </div>
 
-                <!-- Action Buttons -->
                 @if($muridList && count($muridList) > 0)
                     <div class="KontainerTombol">
                         <button type="submit" form="formNilai" class="TombolSimpan">Simpan Nilai</button>
                         <form method="GET" action="{{ route('guru.nilai.download') }}" onsubmit="return copyKelasToExport()" style="display:inline;">
                             <input value="{{ $pilihanKelasTahun }}" type="hidden" name="kelas_tahun_id" id="export_kelas_id">
-                            <button type="submit" class="TombolOJT DownloadBtn">Export Excel</button>
+                            <button type="submit" class="TombolOJT DownloadBtn">Unduh Data Kelas Ini</button>
                         </form>
                     </div>
                 @endif
@@ -65,7 +61,6 @@
                 </div>
             </div>
 
-            <!-- Info Current Selection -->
             @if($pilihanPelajaran && $pilihanKelasTahun)
                 <div class="InfoSeleksi">
                     <span class="InfoTag">Pelajaran: <strong>{{ collect($pelajaranList)->firstWhere('pelajaran_id', $pilihanPelajaran)->namaPelajaran ?? 'Tidak dipilih' }}</strong></span>
@@ -73,10 +68,8 @@
                 </div>
             @endif
 
-            <!-- Table Container -->
             <div class="DisplayDataTable">
                 @if($pilihanPelajaran && $pilihanKelasTahun)
-                    <!-- Form untuk Input Nilai -->
                     <form id="formNilai" action="{{ route('guru.isinilai') }}" method="POST">
                         @csrf
                         <input type="hidden" name="pelajaran_id" value="{{ $pilihanPelajaran }}">
@@ -140,7 +133,6 @@
                         </table>
                     </form>
                 @else
-                    <!-- Tabel Kosong saat belum ada pilihan -->
                     <table class="table">
                         <thead>
                             <tr>
@@ -164,7 +156,6 @@
 </div>
 
 <script>
-    // Search functionality
     const searchInput = document.getElementById('searchInput');
 
     function filterTable() {
@@ -180,7 +171,6 @@
         });
     }
 
-    // Search event listeners
     searchInput?.addEventListener('input', filterTable);
     searchInput?.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {

@@ -359,6 +359,7 @@ input.SearchBarInput:focus {
 .ForFilterRoleOnly {
     display: flex;
     align-items: center;
+    
 }
 
 .TabelDataUser {
@@ -493,6 +494,7 @@ input.SearchBarInput:focus {
 
 .HeaderMuridMU {
     display: flex;
+    
 }
 
 .FilterHeaderMuridMu {
@@ -502,6 +504,40 @@ input.SearchBarInput:focus {
 /* ----------------------------------------------- */
 /* ---------------- Bagian Tombol ---------------- */
 /* ----------------------------------------------- */
+
+.TombolOJT {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 8px 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 6px;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.TombolOJTEdit {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 8px 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 6px;
+    transition: var(--transition);
+    cursor: pointer;
+    display: grid;
+}
 
 .TambahRegister {
     grid-column: 1 / -1;
@@ -538,8 +574,8 @@ input.SearchBarInput:focus {
     border-radius: 6px;
     line-height: 1.5;
     text-decoration: none;
-    width: 5.2rem;
-    height: 2rem;
+    width: 4rem;
+    height: 2.1rem;
     transition: var(--transition);
 }
 
@@ -580,6 +616,7 @@ input.SearchBarInput:focus {
     display: flex;
     min-width: 37rem;
     max-width: 50rem;
+    
 }
 
 .HanyaMaginAuto {
@@ -590,7 +627,43 @@ input.SearchBarInput:focus {
 .HanyaMaginAutoV2 {
     margin-left: auto;
     padding-right: 1rem;
-    transform: translateY(0.5rem);
+    
+    transform: translateY(0.3rem);
+}
+
+.DownloadJadwal {
+    color: white;
+    background-color: #25953f;;
+    padding: 6px 12px;
+    font-size: 13px;
+    text-decoration: none;
+    width: 100%;
+}
+
+.DownloadJadwal:hover {
+    background-color: #1c7430;
+}
+
+.TombolPelajaranBatal {
+    color: white;
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+    text-decoration: none;
+    min-width: 200px;
+}
+
+.TombolPelajaranBatal:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.KhususTombolSajah {
+
+    padding-top: 2rem;
+    margin-left: 8rem;
+    max-width: 10rem;
+    display: flex;
+    gap: 10px;
 }
 
 /* ----------------------------------------------- */

@@ -1,15 +1,14 @@
-<link rel="stylesheet" href="{{ asset('css/MuridCSS/SidebarMurid.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/OrtuCSS/SidebarOrtu.css') }}" />
 
 <body>
     <aside class="ContainerSideBar">
         <div class="ProfileSiUser">
             <div class="HeaderUser">
-                <a href="{{ route('orangtua.dashboard') }}">
-                    <img src="/image/logo_pelita.png"/>
+                    <img src="/image/logo_pelita.png" alt="Logo Pelita"/>
                 </a>
-                <h6 class="ohayo" id="Sapaan">Selamat Pagi</h6>
+                <h3 class="ohayo" id="Sapaan">Selamat Pagi</h3>
             </div>
-            <h6 class="UseridName">{{ auth()->user()->name }}</h6>
+            <h3 class="UseridName">{{ auth()->user()->name }}</h3>
         </div>
 
         <ul class="ListSideBar">
@@ -17,38 +16,38 @@
 
             <li>
                 <a href="{{ route('orangtua.dashboard') }}" class="{{ request()->is('orangtua/dashboard*') || request()->is('profile*') ? 'active-link' : '' }}">
-                    <i class='bx bx-home-alt IconSidebar'></i>Halaman Utama
+                    <i class="fa-solid fa-house IconSideBar"></i>Halaman Utama
                 </a>
             </li>
 
-            <h6>
-                <span style="font-size: 15px;">Parent Tools</span>
-            </h6>
+            <h5>
+                <span>Parent Tools</span>
+            </h5>
 
             <li>
                 <a href="{{ route('orangtua.jadwal') }}" class="{{ request()->is('orangtua/jadwal*') ? 'active-link' : '' }}">
-                    <i class='bx bx-table IconSidebar'></i>Jadwal Kelas
+                    <i class="fa-solid fa-calendar-days IconSideBar"></i>Jadwal Kelas
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('orangtua.nilai') }}" class="{{ request()->is('orangtua/nilai*') ? 'active-link' : '' }}">
-                    <i class='bx bx-table IconSidebar'></i>Nilai Anak
+                    <i class="fa-solid fa-scroll IconSideBar"></i>Nilai Anak
                 </a>
             </li>
 
             <li>
                 <a href="{{ route('orangtua.pengumuman') }}" class="{{ request()->is('orangtua/pengumuman*') ? 'active-link' : '' }}">
-                    <i class='bx bx-bell IconSidebar'></i>Pengumuman
+                    <i class="fa-solid fa-bullhorn IconSideBar"></i>Pengumuman
                 </a>
             </li>
         </ul>
-        
-        <div class="logout-container">
+
+        <div class="BagianBawahSideBar">
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="logout-button">
-                    <i class='bx bx-log-out IconSideBar'></i>
+                <button type="submit" class="TombolLogout">
+                    <i class="fa-solid fa-arrow-right-from-bracket IconSideBar"></i>
                     <span>Logout</span>
                 </button>
             </form>
@@ -56,3 +55,4 @@
     </aside>
 
     <script src="{{ asset('js/dashboard.js') }}"></script>
+</body>

@@ -1,7 +1,6 @@
 @include('admin.partials.header')
 @include('admin.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/TambahJadwal.css') }}" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
     <div class="ContainerJadwal">
@@ -83,7 +82,7 @@
             <div class="HeaderJadwalTable">
                 <h2>Jadwal Pembelajaran</h2>
                 <div class="KhususTombolUnduh">
-                    <a href="{{ route('admin.export') }}" class="TombolOJT DownloadJadwal">download jadwal</a>
+                    <a href="{{ route('admin.export') }}" class="TombolOJT DownloadJadwal"><i class="fa-solid fa-file-excel"></i>‎ ‎ ‎ unduh jadwal</a>
                 </div>
             </div>
 
@@ -113,7 +112,7 @@
                                     <div class="OptionJadwalTabel">
                                         <form action="{{ route('jadwal.update', $jadwal->jadwal_id) }}" method="GET">
                                             <a href="jadwal/edit/{{ $jadwal->jadwal_id }}" class="TombolOJT Tedit">
-                                                <i class='bx bx-edit-alt IconOJT'></i>Edit‎ ‎ ‎ ‎ ‎ 
+                                                ‎ ‎ ‎Edit‎ ‎ ‎
                                             </a> {{-- Jan diubah wa sengaja bikin cam tu 😂 --}}
                                         </form>
 
@@ -121,7 +120,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="TombolOJT TombolDelete">
-                                                <i class='bx bx-trash IconOJT'></i>Hapus
+                                                Hapus
                                             </button>
                                         </form>
                                     </div>

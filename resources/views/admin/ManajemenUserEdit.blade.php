@@ -1,7 +1,6 @@
 @include('admin.partials.header') 
 @include('admin.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/ManajemenUser.css') }}" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
     @if (session('role') == 'admin')
@@ -307,8 +306,12 @@
                                     </div>
                                 </div>
                             @endif
+                            </div>
 
-                            <button type="submit" class="TambahRegister">Update User</button>
+                            <div class="KhususTombolSajah">
+                                <button type="submit" class="TambahRegister">Update User</button>
+                                <a href="{{ route('admin.ManajemenUser') }}" class="TombolOJTEdit TombolPelajaranBatal">Batal</a>
+                            </div>
                         </form>
                     </div>
                 </div>

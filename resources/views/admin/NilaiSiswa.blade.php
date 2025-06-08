@@ -1,7 +1,6 @@
 @include('admin.partials.header')
 @include('admin.partials.sidebar')
 <link rel="stylesheet" href="{{ asset('css/AdminCSS/NilaiSiswa.css') }}" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
 <body>
     <div class="KontainerNilai">
@@ -142,7 +141,6 @@
             const filterForm = document.getElementById('filterForm');
             const searchInput = document.getElementById('searchInput');
 
-            // Auto-submit when both dropdowns are selected
             function checkAndSubmit() {
                 if (pelajaranSelect.value && kelasSelect.value) {
                     filterForm.submit();
@@ -152,7 +150,6 @@
             pelajaranSelect.addEventListener('change', checkAndSubmit);
             kelasSelect.addEventListener('change', checkAndSubmit);
 
-            // Client-side search filtering
             function filterTable() {
                 const keyword = searchInput.value.toLowerCase();
                 const rows = document.querySelectorAll('#tabelNilai tbody tr');

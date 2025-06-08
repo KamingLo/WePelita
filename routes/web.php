@@ -7,7 +7,6 @@ use App\Http\Controllers\GuruController;
 use App\Http\Controllers\MuridController;
 use App\Http\Controllers\PostinganController;
 use App\Http\Controllers\OrangTuaController;
-use App\Http\Controllers\AnnouncementController;
 use App\Models\Admin;
 use App\Models\Guru;
 use App\Exports\JadwalPelajaranExport;
@@ -112,9 +111,6 @@ Route::middleware([RoleMiddleware::class.':guru'])->group(function() {
     Route::get('/guru/ceknilai/download', [GuruController::class, 'downloadNilai'])->name('guru.nilai.download');
 });
 
-// Route::middleware([RoleMiddleware::class.':orangtua,murid'])->group(function () {
-//     Route::get('/announcement/{id}', [MuridController::class, 'getAnnouncement'])->name('announcement.show');
-// });
 
 Route::middleware([RoleMiddleware::class.':murid'])->group(function() {
     Route::get('murid/dashboard', [MuridController::class, 'dashboard'])->name('murid.dashboard');
