@@ -4,102 +4,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" />
 
-<style>
-    .hero-section {
-        position: relative;
-        width: 100%;
-        height: 70vh; /* Reduced height for lighter feel */
-        overflow: hidden;
-    }
-    .hero-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
-    .hero-image-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
-    .hero-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-    }
-    .hero-image.active {
-        opacity: 1;
-    }
-    .hero-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.3); /* Lighter overlay for less weight */
-        z-index: 1;
-    }
-    .hero-content {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        color: #fff;
-        z-index: 2;
-        padding: 20px;
-    }
-    .hero-content h1 {
-        font-size: 2.5rem; /* Slightly smaller for lighter feel */
-        margin-bottom: 1rem;
-    }
-    .hero-content p {
-        font-size: 1.2rem;
-        margin-bottom: 1.5rem;
-    }
-    .hero-btn {
-        display: inline-flex;
-        align-items: center;
-        padding: 10px 20px;
-        background: #007bff;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        transition: background 0.3s;
-    }
-    .hero-btn:hover {
-        background: #0056b3;
-    }
-    .hero-btn i {
-        margin-left: 5px;
-    }
-
-    /* Hide scrollbar globally for WebKit browsers */
-html::-webkit-scrollbar {
-    display: none;
-}
-
-/* Hide scrollbar globally for Firefox */
-html {
-    scrollbar-width: none; /* Firefox */
-}
-
-/* Ensure scrolling works globally */
-html {
-    -ms-overflow-style: none; /* IE and Edge */
-}
-</style>
-
 <section class="hero-section">
     <div class="hero-container">
         <div class="hero-image-container">
             <img src="/image/imageSekolah.png" alt="SMK Pelita IV Building" class="hero-image active">
-            <img src="/image/sekolah2.jpg" alt="SMK Pelita IV Event" class="hero-image">
+            <img src="/image/PPDB.png" alt="SMK Pelita IV Event" class="hero-image">
             <img src="/image/sekolah3.jpg" alt="SMK Pelita IV Classroom" class="hero-image">
             <div class="hero-overlay"></div>
         </div>
@@ -150,6 +59,16 @@ html {
                     <div class="details">
                         <h3>WePelita OrangTua</h3>
                         <p>Klik Disini Untuk Para Orangtua Murid</p>
+                    </div>
+                </div>
+
+                <div class="Layout Admin" data-aos="fade-up" data-aos-delay="400">
+                    <div class="IsiDalemanLayout">
+                        <img src="/image/WePelitaGuru.png">
+                    </div>
+                    <div class="details">
+                        <h3>WePelita Admin</h3>
+                        <p>Klik Disini Untuk Para Admin</p>
                     </div>
                 </div>
             </div>
@@ -348,10 +267,22 @@ html {
         const images = document.querySelectorAll('.hero-image');
         let currentImage = 0;
 
+        // Initialize: Hide all images except the active one
+        images.forEach((img, index) => {
+            img.style.opacity = index === currentImage ? '1' : '0';
+        });
+
         function changeImage() {
+            // Remove active class and fade out current image
             images[currentImage].classList.remove('active');
+            images[currentImage].style.opacity = '0';
+
+            // Move to next image
             currentImage = (currentImage + 1) % images.length;
+
+            // Add active class and fade in new image
             images[currentImage].classList.add('active');
+            images[currentImage].style.opacity = '1';
         }
 
         // Start slider

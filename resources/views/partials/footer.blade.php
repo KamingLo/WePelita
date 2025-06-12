@@ -51,6 +51,11 @@
             <p>&copy; 2025 Pelita Project. All rights reserved.</p>
         </div>
     </div>
+
+    <!-- petunjuk: jika ingin menggubah teks pesan templaate tambahkan %20 untuk spasi -->
+    <a href="https://wa.me/6285218826006?text=Halo,%20saya%20ingin%20bertanya%20tentang%20sekolah%20SMK%20Pelita%20IV." target="_blank" class="whatsapp-float">
+        <i class='bx bxl-whatsapp'></i>
+    </a>
 </footer>
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />

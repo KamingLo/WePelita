@@ -31,9 +31,6 @@
                                 <i class="bx bx-x"></i>
                             </button>
                         </div>
-                        @error('nama_kelas')
-                            <div class="UiPsnDis PsnError">{{ $message }}</div>
-                        @enderror
                     </div>
 
                     <div class="IsiData">
@@ -43,9 +40,6 @@
                             <option value="{{ (now()->year)-1 }}/{{ (now()->year)}}">{{ (now()->year)-1 }}/{{ (now()->year)}}</option>
                             <option value="{{ (now()->year)-2 }}/{{ (now()->year)}}">{{ (now()->year)-2 }}/{{ (now()->year)-1}}</option>
                         </select>
-                        @error('tahun_ajar')
-                            <div class="UiPsnDis PsnError">{{ $message }}</div>
-                        @enderror
                     </div>
 
                     <div class="IsiData">
@@ -54,14 +48,38 @@
                             <option value="Ganjil">Ganjil</option>
                             <option value="Genap">Genap</option>
                         </select>
-                        @error('semester')
-                            <div class="UiPsnDis PsnError">{{ $message }}</div>
-                        @enderror
                     </div>
 
                     <button type="submit" class="TombolOJT TambahKelasBaru">
                         Tambah Kelas Baru
                     </button>
+                    @error('nama_kelas')
+                        <div class="UiPsnDis PsnError">{{ $message }}</div>
+                    @enderror
+
+                    @error('tahun_ajar')
+                        <div class="UiPsnDis PsnError">{{ $message }}</div>
+                    @enderror
+
+                    @error('semester')
+                        <div class="UiPsnDis PsnError">{{ $message }}</div>
+                    @enderror
+
+                    @error('kelas_asal')
+                        <div class="UiPsnDis PsnError">{{ $message }}</div>
+                    @enderror
+
+                    @error('kelas_tujuan')
+                        <div class="UiPsnDis PsnError">{{ $message }}</div>
+                    @enderror
+
+                    @error('tahun_ajaran')
+                        <div class="UiPsnDis PsnError">{{ $message }}</div>
+                    @enderror
+
+                    @error('semester')
+                        <div class="UiPsnDis PsnError">{{ $message }}</div>
+                    @enderror
 
                     @if(session('success'))
                         <div class="UiPsnDis PsnBerhasil">
@@ -72,6 +90,22 @@
                     @if ($errors->has('jadwal'))
                         <div class="UiPsnDis PsnError">
                             {{ $errors->first('jadwal') }}
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="UiPsnDis PsnError">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="UiPsnDis PsnError">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
                         </div>
                     @endif
                 </form>
@@ -98,9 +132,6 @@
                                 <option value="" disabled>Tidak ada kelas aktif</option>
                             @endif
                         </select>
-                        @error('kelas_asal')
-                            <div class="UiPsnDis PsnError">{{ $message }}</div>
-                        @enderror
                     </div>
 
                     <div class="IsiData">
@@ -117,9 +148,6 @@
                                 <option value="" disabled>Tidak ada kelas tersedia</option>
                             @endif
                         </select>
-                        @error('kelas_tujuan')
-                            <div class="UiPsnDis PsnError">{{ $message }}</div>
-                        @enderror
                     </div>
 
                     <div class="IsiData">
@@ -132,9 +160,7 @@
                                 {{ now()->year - 1 }}/{{ now()->year }}
                             </option>
                         </select>
-                        @error('tahun_ajaran')
-                            <div class="UiPsnDis PsnError">{{ $message }}</div>
-                        @enderror
+
                     </div>
 
                     <div class="IsiData">
@@ -143,9 +169,6 @@
                             <option value="Ganjil" {{ old('semester') == 'Ganjil' ? 'selected' : '' }}>Ganjil</option>
                             <option value="Genap" {{ old('semester') == 'Genap' ? 'selected' : '' }}>Genap</option>
                         </select>
-                        @error('semester')
-                            <div class="UiPsnDis PsnError">{{ $message }}</div>
-                        @enderror
                     </div>
 
                     <div class="TombolKenaikanKelas">
@@ -154,29 +177,6 @@
                         </button>
                     </div>
                 </form>
-
-
-                @if(session('success'))
-                    <div class="UiPsnDis PsnBerhasil">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="UiPsnDis PsnError">
-                        {{ session('error') }}
-                    </div>
-                @endif
-
-                @if ($errors->any())
-                    <div class="UiPsnDis PsnError">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
             </div>
         </div>
 

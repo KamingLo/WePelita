@@ -37,6 +37,7 @@
                         <form method="POST" action="{{ route('postingan.profile.update') }}" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
+                            <input type="hidden" name="delete_avatar" id="delete_avatar" value="0">
                             <div class="BagianProfil">
                                 <h3 class="JudulBagian">Informasi Akun</h3>
                                 <div class="KisiProfil">
@@ -53,7 +54,6 @@
                                                 <span class="PesanError">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        
                                         <div class="IsiData">
                                             <label for="password">Kata Sandi (kosongkan jika tidak diubah):</label>
                                             <div style="position: relative;">
@@ -66,18 +66,37 @@
                                                 <span class="PesanError">{{ $message }}</span>
                                             @enderror
                                         </div>
+                                        <div class="IsiData">
+                                            <label for="password_confirmation">Konfirmasi Kata Sandi:</label>
+                                            <div style="position: relative;">
+                                                <input type="text" name="password_confirmation" id="password_confirmation" class="TampilanIsiData" placeholder="Konfirmasi kata sandi baru" style="padding-right: 40px;">
+                                                <button type="button" id="hapusKataSandiKonfirmasi" class="TombolHapus">
+                                                    <i class='bx bx-x'></i>
+                                                </button>
+                                            </div>
+                                            @error('password_confirmation')
+                                                <span class="PesanError">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
 
                                     <div class="KolomProfilAvatar">
                                         <div class="IsiData">
                                             <label for="avatar">Avatar:</label>
                                             <div class="KontainerAvatar">
-                                            <div class="KontainerAvatar">
                                                 <div class="PratinjauAvatar">
                                                     @if(auth()->user()->avatar && file_exists(public_path('storage/file/' . auth()->user()->avatar)))
                                                         <img id="pratinjauAvatar" src="{{ asset('storage/file/' . auth()->user()->avatar) }}">
                                                     @else
-                                                        <img id="pratinjauAvatar" src="{{ asset('images/profile.png') }}">
+                                                        @if(auth()->user()->admin)
+                                                            <div class="DefaultAvatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+                                                        @elseif(auth()->user()->guru)
+                                                            <div class="DefaultAvatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+                                                        @elseif(auth()->user()->murid)
+                                                            <div class="DefaultAvatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+                                                        @elseif(auth()->user()->orangTua)
+                                                            <div class="DefaultAvatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+                                                        @endif
                                                     @endif
                                                 </div>
                                                 <div style="position: relative;">
@@ -86,6 +105,7 @@
                                                         <i class='bx bx-x'></i>
                                                     </button>
                                                 </div>
+                                                <button type="button" id="hapusFoto" class="TombolHapusFoto">Hapus Foto <i class='bx bxs-trash'></i></button>
                                             </div>
                                             @error('avatar')
                                                 <span class="PesanError">{{ $message }}</span>
@@ -221,7 +241,6 @@
     <script src="{{ asset('js/CssAdmin.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
             const tombolHapus = document.querySelectorAll('.TombolHapus');
             tombolHapus.forEach(button => {
                 button.addEventListener('click', function() {
@@ -231,6 +250,9 @@
                         if (input.id === 'avatar') {
                             const pratinjau = document.getElementById('pratinjauAvatar');
                             pratinjau.src = "{{ asset('images/profile.png') }}";
+                        }
+                        if (input.id === 'password_confirmation') {
+                            input.value = '';
                         }
                     }
                 });
@@ -249,6 +271,18 @@
                     reader.readAsDataURL(file);
                 }
             });
+
+            const hapusFotoButton = document.getElementById('hapusFoto');
+            const deleteAvatarInput = document.getElementById('delete_avatar');
+            if (hapusFotoButton && deleteAvatarInput) {
+                hapusFotoButton.addEventListener('click', function() {
+                    const input = document.getElementById('avatar');
+                    const pratinjau = document.getElementById('pratinjauAvatar');
+                    input.value = '';
+                    pratinjau.src = "{{ asset('images/profile.png') }}";
+                    deleteAvatarInput.value = '1';
+                });
+            }
         });
     </script>
 </body>

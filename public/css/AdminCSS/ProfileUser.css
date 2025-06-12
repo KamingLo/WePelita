@@ -164,7 +164,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-top: 2.5rem;
 }
 
 .KolomProfilAvatar {
@@ -229,22 +228,6 @@ input.TampilanIsiData:focus {
     color: #495057;
 }
 
-.TombolHapus {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    color: #999;
-    cursor: pointer;
-    font-size: 18px;
-    padding: 5px;
-}
-
-.TombolHapus:hover {
-    color: var(--warna-bahaya);
-}
 
 /* ----------------------------------------------- */
 /* -------------- Bagian Avatar ------------------ */
@@ -254,7 +237,7 @@ input.TampilanIsiData:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 25px;
 }
 
 .PratinjauAvatar {
@@ -262,7 +245,7 @@ input.TampilanIsiData:focus {
     height: 120px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #e9ecef;
+    border: 2px solid var(--warna-utama);
     background: #f8f9fa;
     display: flex;
     align-items: center;
@@ -273,6 +256,13 @@ input.TampilanIsiData:focus {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.DefaultAvatar {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--warna-utama);
+    text-transform: uppercase;
 }
 
 /* ----------------------------------------------- */
@@ -326,6 +316,52 @@ input.TampilanIsiData:focus {
     background-color: #5a6268;
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+}
+
+.TombolHapusFoto {
+    padding: 8px 20px;
+    background-color: var(--warna-bahaya);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transisi);
+    width: 100%;
+    max-width: 150px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.TombolHapusFoto:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+}
+
+.TombolHapusFoto i {
+    font-size: 16px;
+}
+
+.TombolHapus {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.TombolHapus:hover {
+    color: var(--warna-bahaya);
 }
 
 /* ----------------------------------------------- */
@@ -429,4 +465,10 @@ input.TampilanIsiData:focus {
     .TombolBatal {
         width: 100%;
     }
+
+    .TombolHapusFoto {
+        max-width: 100%;
+    }
 }
+
+/* ----------------------- End -------------------- */

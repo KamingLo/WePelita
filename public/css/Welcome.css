@@ -16,7 +16,7 @@
 .LayoutWePelita {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 40px;
     width: 100%;
     max-width: 80rem;
@@ -27,7 +27,6 @@
     border-color: rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     border-radius: 20px;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.18);
     cursor: pointer;
     width: 100%;
     transition: transform 0.3s ease;
@@ -68,7 +67,8 @@
 
 .Murid::before,
 .Guru::before,
-.Orangtua::before {
+.Orangtua::before,
+.Admin::before {
     content: "";
     position: absolute;
     top: 0;
@@ -93,9 +93,14 @@
     background-image: linear-gradient(135deg, #ffab1d, #f8501c);
 }
 
+.Admin::before {
+    background-image: linear-gradient(135deg, #1dff68, #951cf8);
+}
+
 .Murid:hover::before,
 .Guru:hover::before,
-.Orangtua:hover::before {
+.Orangtua:hover::before,
+.Admin:hover::before {
     opacity: 0.7;
 }
 
@@ -163,8 +168,8 @@
 .hero-section {
     position: relative;
     width: 100%;
-    height: 80vh;
-    min-height: 600px;
+    height: 70vh;
+    min-height: 500px;
     overflow: hidden;
     margin-bottom: 4rem;
 }
@@ -181,12 +186,45 @@
     left: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 .hero-image {
+    width: 80%; /* Reduced image width to 80% of container */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 60vh; /* Limit maximum height */
+    object-fit: contain; /* Changed to contain to avoid stretching */
+    object-position: center;
+    transition: opacity 1s ease-in-out;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the image */
+    opacity: 0;
+    z-index: 1;
+}
+
+.hero-image.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.hero-image-container::before {
+    content: '';
+    position: absolute;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+    opacity: 0.3;
+    z-index: 0;
+    transition: all 0.5s ease;
+    display: none;
+}
+
+.hero-image-container.has-blur::before {
+    display: block;
 }
 
 .hero-overlay {
@@ -195,39 +233,40 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8));
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+    z-index: 3;
 }
 
 .hero-content {
     position: absolute;
     width: 100%;
-    max-width: 800px;
+    max-width: 900px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
     text-align: center;
-    z-index: 10;
-    padding: 0 20px;
+    z-index: 4;
+    padding: 20px;
 }
 
 .hero-content h1 {
     font-size: 3rem;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
     font-weight: 700;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hero-content p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .hero-btn {
     display: inline-flex;
     align-items: center;
-    padding: 12px 30px;
+    padding: 15px 35px;
     background-color: #2563EB;
     color: white;
     text-decoration: none;
@@ -282,7 +321,6 @@
 .kepala-sekolah-image {
     flex: 1;
     min-width: 300px;
-    
 }
 
 .kepala-sekolah-image img {
@@ -720,7 +758,6 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    
 }
 
 .video-overlay {
@@ -801,22 +838,6 @@
     color: rgba(255, 255, 255, 0.8);
 }
 
-/* Responsive fallback (untuk HP) */
-@media (max-width: 768px) {
-    .video-content h2 {
-        font-size: 2rem;
-    }
-
-    .video-content p {
-        font-size: 1rem;
-    }
-
-    .video-container {
-        max-width: 100%;
-        padding: 0 10px;
-    }
-}
-
 /* Responsive Adjustments */
 @media screen and (max-width: 992px) {
     .hero-content h1 {
@@ -838,6 +859,11 @@
 }
 
 @media screen and (max-width: 768px) {
+    .hero-section {
+        height: 50vh;
+        min-height: 400px;
+    }
+
     .hero-content h1 {
         font-size: 2rem;
     }
@@ -936,3 +962,17 @@
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
+/* Hide scrollbar globally for WebKit browsers */
+html::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar globally for Firefox */
+html {
+    scrollbar-width: none;
+}
+
+/* Ensure scrolling works globally */
+html {
+    -ms-overflow-style: none;
+}

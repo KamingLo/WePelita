@@ -21,9 +21,6 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('guru_id')
-                        <div class="UiPsnDis PsnError">{{ $message }}</div>
-                    @enderror
                 </div>
 
                 <div class="IsiData">
@@ -34,14 +31,19 @@
                             <i class="bx bx-x"></i>
                         </button>
                     </div>
-                    @error('namaPelajaran')
-                        <div class="UiPsnDis PsnError">{{ $message }}</div>
-                    @enderror
                 </div>
 
                 <button type="submit" class="TombolOJT TambahPelajaran">
                     Tambah Pelajaran
                 </button>
+
+                @error('guru_id')
+                    <div class="UiPsnDis PsnError">{{ $message }}</div>
+                @enderror
+
+                @error('namaPelajaran')
+                    <div class="UiPsnDis PsnError">{{ $message }}</div>
+                @enderror
 
                 @if(session('success'))
                     <div class="UiPsnDis PsnBerhasil">
