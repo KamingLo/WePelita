@@ -135,7 +135,7 @@
                                     @endif>
                                 </div>
                                 <div class="IsiCardPost">
-                                    <h3 class="JudulCardPost">{{ $pengumuman->judul }}</h3>
+                                    <h4 class="JudulCardPost">{{ $pengumuman->judul }}</h4>
                                     <p class="KontenCardPost">{{ Str::limit(strip_tags($pengumuman->isi), 210) }}</p>
                                     <div class="FooterCardPost">
                                         <div class="InfoUserCardPost">
@@ -193,7 +193,7 @@
                                     @endif>
                                 </div>
                                 <div class="IsiCardPost">
-                                    <h3 class="JudulCardPost">{{ $blog->judul }}</h3>
+                                    <h4 class="JudulCardPost">{{ $blog->judul }}</h4>
                                     <p class="KontenCardPost">{{ Str::limit(strip_tags($blog->isi), 210) }}</p>
                                     <div class="FooterCardPost">
                                         <div class="InfoUserCardPost">

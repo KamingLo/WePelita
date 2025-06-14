@@ -1,24 +1,43 @@
 @include('partials.header', ['NamaPage' => 'Halaman Utama'])
 
-<link rel="stylesheet" href="{{ asset('css/welcome.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/Welcome.css') }}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" />
 
 <section class="hero-section">
     <div class="hero-container">
         <div class="hero-image-container">
-            <img src="/image/imageSekolah.png" alt="SMK Pelita IV Building" class="hero-image active">
-            <img src="/image/PPDB.png" alt="SMK Pelita IV Event" class="hero-image">
-            <img src="/image/sekolah3.jpg" alt="SMK Pelita IV Classroom" class="hero-image">
-            <div class="hero-overlay"></div>
-        </div>
-        <div class="hero-content">
-            <h1 data-aos="fade-up" data-aos-delay="100">Selamat Datang di SMK Pelita IV Jakarta</h1>
-            <p data-aos="fade-up" data-aos-delay="200">Membangun Generasi Unggul, Berkarakter, dan Siap untuk Masa Depan</p>
-            <a href="#main-content" class="hero-btn" data-aos="fade-up" data-aos-delay="300">
-                Get Started
-                <i class='bx bx-chevron-down'></i>
-            </a>
+            <!-- Welcome Slide -->
+            <div class="hero-slide active" data-index="0">
+                <img src="/image/imageSekolah.png" alt="SMK Pelita IV Building" class="hero-image">
+                <div class="hero-content">
+                    <h1 data-aos="fade-up" data-aos-delay="100">Selamat Datang di SMK Pelita IV Jakarta</h1>
+                    <p data-aos="fade-up" data-aos-delay="200">Membangun Generasi Unggul, Berkarakter, dan Siap untuk Masa Depan</p>
+                    <a href="#main-content" class="hero-btn" data-aos="fade-up" data-aos-delay="300">
+                        Get Started
+                        <i class='bx bx-chevron-down'></i>
+                    </a>
+                </div>
+            </div>
+            <!-- Blog Slides -->
+            @foreach($blogs->take(5) as $index => $blog)
+                <div class="hero-slide" data-index="{{ $index + 1 }}">
+                    <img src="{{ $blog->lampiran ? asset('storage/' . $blog->lampiran) : 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' }}" alt="{{ $blog->judul }}" class="blog-hero-image">
+                    <div class="hero-content">
+                        <h1 data-aos="fade-up" data-aos-delay="100">{{ $blog->judul }}</h1>
+                        <a href="{{ route('blog.show', $blog->postingan_id) }}" class="hero-btn read-more-btn" data-aos="fade-up" data-aos-delay="200">
+                            Baca Selengkapnya
+                        </a>
+                    </div>
+                </div>
+            @endforeach
+            <!-- Navigation Buttons -->
+            <button class="hero-nav-btn prev-btn" aria-label="Previous Slide">
+                <i class='bx bx-chevron-left'></i>
+            </button>
+            <button class="hero-nav-btn next-btn" aria-label="Next Slide">
+                <i class='bx bx-chevron-right'></i>
+            </button>
         </div>
     </div>
 </section>
@@ -32,45 +51,53 @@
         
         <div class="ContainerWelcomePage">
             <div class="LayoutWePelita">
-                <div class="Layout Murid" data-aos="fade-up" data-aos-delay="100">
-                    <div class="IsiDalemanLayout">
-                        <img src="/image/WePelitaMurid.png">
+                <a href="{{ route('login') }}" style="text-decoration: none;">
+                    <div class="Layout Murid" data-aos="fade-up" data-aos-delay="100">
+                        <div class="IsiDalemanLayout">
+                            <img src="/image/WePelitaMurid.png">
+                        </div>
+                        <div class="details">
+                            <h3>WePelita Murid</h3>
+                            <p>Klik Disini Untuk Siswa/Siswi</p>
+                        </div>
                     </div>
-                    <div class="details">
-                        <h3>WePelita Murid</h3>
-                        <p>Klik Disini Untuk Siswa/Siswi</p>
-                    </div>
-                </div>
+                </a>
 
-                <div class="Layout Guru" data-aos="fade-up" data-aos-delay="200">
-                    <div class="IsiDalemanLayout">
-                        <img src="/image/WePelitaGuru.png">
+                <a href="{{ route('login') }}" style="text-decoration: none;">
+                    <div class="Layout Guru" data-aos="fade-up" data-aos-delay="200">
+                        <div class="IsiDalemanLayout">
+                            <img src="/image/WePelitaGuru.png">
+                        </div>
+                        <div class="details">
+                            <h3>WePelita Guru</h3>
+                            <p>Klik Disini Untuk Para Guru</p>
+                        </div>
                     </div>
-                    <div class="details">
-                        <h3>WePelita Guru</h3>
-                        <p>Klik Disini Untuk Para Guru</p>
-                    </div>
-                </div>
+                </a>
 
-                <div class="Layout Orangtua" data-aos="fade-up" data-aos-delay="300">
-                    <div class="IsiDalemanLayout">
-                        <img src="" alt="Soon">
+                <a href="{{ route('login') }}" style="text-decoration: none;">
+                    <div class="Layout Orangtua" data-aos="fade-up" data-aos-delay="300">
+                        <div class="IsiDalemanLayout">
+                            <img src="/image/.png" alt="Soon">
+                        </div>
+                        <div class="details">
+                            <h3>WePelita OrangTua</h3>
+                            <p>Klik Disini Untuk Para Orangtua Murid</p>
+                        </div>
                     </div>
-                    <div class="details">
-                        <h3>WePelita OrangTua</h3>
-                        <p>Klik Disini Untuk Para Orangtua Murid</p>
-                    </div>
-                </div>
+                </a>
 
-                <div class="Layout Admin" data-aos="fade-up" data-aos-delay="400">
-                    <div class="IsiDalemanLayout">
-                        <img src="/image/WePelitaGuru.png">
+                <a href="{{ route('login') }}" style="text-decoration: none;">
+                    <div class="Layout Admin" data-aos="fade-up" data-aos-delay="400">
+                        <div class="IsiDalemanLayout">
+                            <img src="/image/.png">
+                        </div>
+                        <div class="details">
+                            <h3>WePelita Admin</h3>
+                            <p>Klik Disini Untuk Para Admin</p>
+                        </div>
                     </div>
-                    <div class="details">
-                        <h3>WePelita Admin</h3>
-                        <p>Klik Disini Untuk Para Admin</p>
-                    </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
@@ -138,7 +165,7 @@
             <p>Pilihan Jurusan untuk Masa Depanmu</p>
         </div>
         <div class="program-container">
-            <div class="program-card" data-aos="flip-left" data-aos-delay="100">
+            <div class="program-card" data-aos="fade-up" data-aos-delay="100">
                 <div class="program-image">
                     <img src="/image/tkj.jpg" alt="Teknik Komputer dan Jaringan">
                     <div class="program-overlay"></div>
@@ -150,7 +177,7 @@
                 </div>
             </div>
             
-            <div class="program-card" data-aos="flip-left" data-aos-delay="200">
+            <div class="program-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="program-image">
                     <img src="/image/akuntansi.jpg" alt="Akuntansi">
                     <div class="program-overlay"></div>
@@ -162,7 +189,7 @@
                 </div>
             </div>
             
-            <div class="program-card" data-aos="flip-left" data-aos-delay="300">
+            <div class="program-card" data-aos="fade-up" data-aos-delay="300">
                 <div class="program-image">
                     <img src="/image/multimedia.jpg" alt="Multimedia">
                     <div class="program-overlay"></div>
@@ -264,38 +291,66 @@
         });
 
         // Hero Slider Functionality
-        const images = document.querySelectorAll('.hero-image');
-        let currentImage = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        let currentSlide = 0;
+        let slideInterval;
 
-        // Initialize: Hide all images except the active one
-        images.forEach((img, index) => {
-            img.style.opacity = index === currentImage ? '1' : '0';
-        });
-
-        function changeImage() {
-            // Remove active class and fade out current image
-            images[currentImage].classList.remove('active');
-            images[currentImage].style.opacity = '0';
-
-            // Move to next image
-            currentImage = (currentImage + 1) % images.length;
-
-            // Add active class and fade in new image
-            images[currentImage].classList.add('active');
-            images[currentImage].style.opacity = '1';
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+                slide.style.opacity = i === index ? '1' : '0';
+            });
+            currentSlide = index;
         }
 
-        // Start slider
-        setInterval(changeImage, 5000); // Change image every 5 seconds
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function startSlider() {
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        function stopSlider() {
+            clearInterval(slideInterval);
+        }
+
+        // Initialize slider
+        showSlide(0);
+        startSlider();
+
+        // Navigation button events
+        nextBtn.addEventListener('click', () => {
+            stopSlider();
+            nextSlide();
+            startSlider();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            stopSlider();
+            prevSlide();
+            startSlider();
+        });
 
         // Smooth scroll for hero button
-        document.querySelector('.hero-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            window.scrollTo({
-                top: targetElement.offsetTop - 100,
-                behavior: 'smooth'
+        document.querySelectorAll('.hero-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                if (this.classList.contains('read-more-btn')) return; // Skip for blog links
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
             });
         });
     });

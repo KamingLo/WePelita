@@ -20,24 +20,35 @@ body {
 }
 
 /* ----------------------------------------------- */
+/* ----------------- Main Layout ----------------- */
+/* ----------------------------------------------- */
+
+.blog-page-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 2:1 ratio for blog content and comments */
+    gap: 40px; /* Increased gap for more spacing */
+    max-width: 1200px; /* Wider max-width to reduce centered feel */
+    margin: -6rem auto;
+    padding: 40px 40px; /* Added side padding for better edge spacing */
+}
+
+/* ----------------------------------------------- */
 /* ----------------- Blog Detail Section --------- */
 /* ----------------------------------------------- */
 
 .blog-detail-section {
-    padding: 40px 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    padding: 0; /* Remove default padding since parent container handles it */
 }
 
 .blog-detail-container {
     background-color: white;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    padding: 30px;
+    padding: 20px; /* Reduced padding to make box smaller */
 }
 
 .blog-image {
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin for consistency */
 }
 
 .blog-image img {
@@ -47,51 +58,52 @@ body {
 }
 
 .blog-content h1 {
-    font-size: 28px;
+    font-size: 24px; /* Slightly reduced for smaller box */
     color: var(--dark-color);
-    margin-bottom: 15px;
+    margin-bottom: 10px; /* Reduced margin */
 }
 
 .blog-meta {
     display: flex;
-    gap: 20px;
-    font-size: 14px;
+    gap: 15px; /* Reduced gap */
+    font-size: 13px; /* Slightly reduced font size */
     color: #6c757d;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin */
 }
 
 .blog-meta i {
-    margin-right: 5px;
+    margin-right: 4px; /* Reduced margin */
 }
 
 .blog-body {
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: 15px; /* Slightly reduced font size */
+    line-height: 1.5; /* Adjusted line height */
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin */
 }
 
 .blog-body p {
-    margin-bottom: 15px;
+    margin-bottom: 10px; /* Reduced margin */
 }
 
 .blog-body img {
     max-width: 100%;
     height: auto;
     border-radius: var(--border-radius);
-    margin: 10px 0;
+    margin: 8px 0; /* Reduced margin */
 }
 
 .back-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 15px;
+    gap: 6px; /* Reduced gap */
+    padding: 6px 12px; /* Reduced padding */
     background-color: var(--primary-color);
     color: white;
     text-decoration: none;
     border-radius: 6px;
     transition: var(--transition);
+    font-size: 14px; /* Reduced font size */
 }
 
 .back-btn:hover {
@@ -104,69 +116,67 @@ body {
 /* ----------------------------------------------- */
 
 .comments-section {
-    margin-top: 40px;
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    padding: 0; /* Remove default padding */
+    margin-top: 0; /* Remove top margin since it's now a sidebar */
+}
+
+.comments-container {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 40px; /* Increased padding for larger box */
+    min-height: 625px;
+    max-height: 625px; /* Added min-height to enlarge the box */
 }
 
 .comments-section h2 {
-    font-size: 24px;
+    font-size: 22px; /* Slightly reduced for balance */
     color: var(--dark-color);
     margin-bottom: 20px;
 }
 
 .comments-list {
+    max-height: 350px; /* Reduced max-height to fit within larger container */
+    overflow-y: auto;
     margin-bottom: 20px;
 }
 
 .comment-card {
-    background-color: #ffffff;
+    background-color: #f9f9f9; /* Light gray to differentiate within container */
     border: 1px solid #ddd;
-    border-radius: var(--border-radius);
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: var(--shadow);
+    border-radius: 6px; /* Smaller radius for nested cards */
+    padding: 12px; /* Reduced padding */
+    margin-bottom: 12px; /* Reduced margin */
 }
 
 .comment-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 8px; /* Reduced margin */
 }
 
 .comment-author {
     font-weight: 600;
     color: #333;
+    font-size: 13px; /* Reduced font size */
 }
 
 .comment-date {
-    font-size: 12px;
+    font-size: 11px; /* Reduced font size */
     color: #777;
 }
 
 .comment-text {
-    font-size: 14px;
+    font-size: 13px; /* Reduced font size */
     color: #333;
-    line-height: 1.5;
+    line-height: 1.4; /* Adjusted line height */
 }
 
 .no-comments {
     font-size: 14px;
     color: #6c757d;
     text-align: center;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-}
-
-.comment-form-container {
-    background-color: #ffffff;
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow);
-    padding: 20px;
-    margin-top: 20px;
+    padding: 10px;
 }
 
 .comment-form {
@@ -176,7 +186,7 @@ body {
 }
 
 .form-label {
-    font-size: 16px;
+    font-size: 15px; /* Slightly reduced for balance */
     color: var(--dark-color);
     margin-bottom: 5px;
 }
@@ -188,7 +198,7 @@ body {
     border-radius: 4px;
     resize: vertical;
     font-size: 14px;
-    min-height: 100px;
+    min-height: 120px; /* Increased height for larger box */
 }
 
 .submit-btn {
@@ -201,6 +211,8 @@ body {
     cursor: pointer;
     transition: var(--transition);
     width: auto;
+    font-size: 14px; /* Reduced font size */
+    margin-top: 1.5rem;
 }
 
 .submit-btn:hover {
@@ -209,10 +221,10 @@ body {
 }
 
 .login-prompt {
-    font-size: 14px;
+    font-size: 13px; /* Reduced font size */
     color: #6c757d;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 15px; /* Reduced margin */
 }
 
 .login-link {
@@ -226,9 +238,9 @@ body {
 
 .success-message {
     color: #28a745;
-    font-size: 14px;
+    font-size: 13px; /* Reduced font size */
     margin-top: 10px;
-    padding: 10px;
+    padding: 8px; /* Reduced padding */
     background-color: #e9fce9;
     border-radius: 4px;
     text-align: center;
@@ -239,29 +251,42 @@ body {
 /* ----------------------------------------------- */
 
 @media (max-width: 768px) {
+    .blog-page-container {
+        grid-template-columns: 1fr; /* Stack vertically on smaller screens */
+        padding: 20px; /* Reduced padding for mobile */
+        gap: 20px; /* Smaller gap for mobile */
+    }
+
     .blog-detail-section {
-        padding: 20px;
+        padding: 0;
     }
 
     .blog-detail-container {
-        padding: 20px;
+        padding: 15px; /* Reduced further for mobile */
     }
 
     .blog-meta {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px; /* Reduced gap */
     }
 
     .comments-section {
-        padding: 10px;
+        padding: 0;
+        margin-top: 0;
     }
 
-    .comment-form-container {
-        padding: 15px;
+    .comments-container {
+        padding: 20px; /* Reduced padding for mobile */
+        min-height: auto; /* Remove min-height on mobile */
+    }
+
+    .comments-list {
+        max-height: 300px; /* Reduced max-height for mobile */
     }
 
     .form-textarea {
         font-size: 14px;
+        min-height: 100px; /* Reduced height for mobile */
     }
 
     .submit-btn {

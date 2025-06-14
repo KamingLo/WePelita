@@ -621,7 +621,7 @@ class AdminController extends Controller
                 'tipe' => 'required|in:pengumuman,blog',
                 'judul' => 'required|string|max:255',
                 'isi_trix' => 'required|string|min:10',
-                'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
+                'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:9999',
                 'tujuan' => 'nullable|exists:kelas_tahun,kelas_tahun_id',
             ]);
     
@@ -770,7 +770,7 @@ class AdminController extends Controller
         $validated = $request->validate([
             'judul_kegiatan' => 'required|string|max:255',
             'isi_kegiatan' => 'required|string',
-            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
         
         try {
