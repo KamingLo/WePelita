@@ -18,7 +18,6 @@
 
       <div class="navbtn">
         <a href="/blog">Blog</a>
-        <a href="#">List Guru</a>
 
         @auth
             @php
@@ -33,6 +32,8 @@
             @endphp
             <a class="sign-btn" href="{{ $dashboardRoute }}"><span>Kembali Ke Dashboard</span></a>
         @else
+          <a class="" href="{{ route('register') }}"><span>Register</span></a>
+          <a class="" href="{{ route('login') }}"><span>Login</span></a>
         @endauth
       </div>
     </div>

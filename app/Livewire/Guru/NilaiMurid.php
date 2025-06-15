@@ -6,7 +6,6 @@ use App\Models\MuridKelas;
 use App\Models\Nilai;
 use App\Models\Pelajaran;
 use App\Models\KelasTahun;
-use App\Models\JadwalPelajaran;
 use Livewire\Component;
 
 class NilaiMurid extends Component
@@ -61,38 +60,29 @@ class NilaiMurid extends Component
     }
 
     public function render()
-{
-    $pelajaranList = collect();
-    $kelasTahunList = collect();
-    $muridList = collect();
+    {
+        $pelajaranList = collect();
+        $kelasTahunList = collect();
+        $muridList = collect();
 
-    if ($this->guru) {
-        $pelajaranList = Pelajaran::where('guru_id', $this->guru->guru_id)->get();
+        if ($this->guru) {
+            $pelajaranList = Pelajaran::where('guru_id', $this->guru->guru_id)->get();
 
-        if ($this->pilihanPelajaran) {
-            $kelasTahunList = KelasTahun::with(['kelas', 'tahunajar'])
-                ->whereHas('tahunajar', function ($query) {
-                    $query->where('status', 'Aktif');
-                })
-                ->whereHas('jadwalpelajaran', function ($query) {
-                    $query->where('pelajaran_id', $this->pilihanPelajaran);
-                })
-                ->get();
+            if ($this->pilihanPelajaran) {
+                $kelasTahunList = KelasTahun::with('kelas')->get();
+            }
+
+            if ($this->pilihanKelasTahun) {
+                $muridList = MuridKelas::with(['murid.profile'])
+                    ->where('kelas_tahun_id', $this->pilihanKelasTahun)
+                    ->get();
+            }
         }
 
-        if ($this->pilihanKelasTahun) {
-            $muridList = MuridKelas::with(['murid.profile'])
-                ->where('kelas_tahun_id', $this->pilihanKelasTahun)
-                ->get();
-        }
+        return view('livewire.guru.nilai-murid', [
+            'pelajaranList' => $pelajaranList,
+            'kelasTahunList' => $kelasTahunList,
+            'muridList' => $muridList,
+        ]);
     }
-
-    return view('livewire.guru.nilai-murid', [
-        'kelasTahuns' => KelasTahun::all(),
-        'pelajaranList' => $pelajaranList,
-        'kelasTahunList' => $kelasTahunList,
-        'muridList' => $muridList,
-        'pilihanKelasTahun' => $this->pilihanKelasTahun,
-    ]);
-}
 }

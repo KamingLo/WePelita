@@ -17,20 +17,22 @@
                         </select>
                     </div>
 
-                    <div class="GrupInput">
-                        <label class="LabelInput">Pilih Kelas</label>
-                        <select wire:model.live="pilihanKelasTahun" class="DropdownPilihan">
-                            <option value="">-- Pilih Kelas --</option>
-                            @foreach($kelasTahuns as $kelasTahun)
-                                <option value="{{ $kelasTahun->kelas_tahun_id }}">
-                                    {{ $kelasTahun->kelas->nama_kelas }} - {{ $kelasTahun->tahunajar->tahun_ajaran }} ({{ $kelasTahun->tahunajar->semester }})
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                    @if($pilihanPelajaran)
+                        <div class="GrupInput">
+                            <label class="LabelInput">Pilih Kelas</label>
+                            <select wire:model.live="pilihanKelasTahun" class="DropdownPilihan">
+                                <option value="">-- Pilih Kelas --</option>
+                                @foreach($kelasTahunList as $kelasTahun)
+                                    <option value="{{ $kelasTahun->kelas_tahun_id }}">
+                                        {{ $kelasTahun->kelas->nama_kelas }} - {{ $kelasTahun->TahunAjar->tahun_ajaran }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
                 </div>
 
-                @if($muridList && count($muridList) > 0)
+                @if($pilihanKelasTahun && $muridList && count($muridList) > 0)
                     <div class="KontainerTombol">
                         <button type="submit" form="formNilai" class="TombolSimpan">Simpan Nilai</button>
                         <form method="GET" action="{{ route('guru.nilai.download') }}" onsubmit="return copyKelasToExport()" style="display:inline;">
@@ -45,7 +47,6 @@
                         {{ session('success') }}
                     </div>
                 @endif
-
             </div>
         </div>
 
@@ -64,7 +65,7 @@
             @if($pilihanPelajaran && $pilihanKelasTahun)
                 <div class="InfoSeleksi">
                     <span class="InfoTag">Pelajaran: <strong>{{ collect($pelajaranList)->firstWhere('pelajaran_id', $pilihanPelajaran)->namaPelajaran ?? 'Tidak dipilih' }}</strong></span>
-                    <span class="InfoTag">Kelas: <strong>{{ collect($kelasTahuns)->firstWhere('kelas_tahun_id', $pilihanKelasTahun)->kelas->nama_kelas ?? 'Tidak dipilih' }}</strong></span>
+                    <span class="InfoTag">Kelas: <strong>{{ collect($kelasTahunList)->firstWhere('kelas_tahun_id', $pilihanKelasTahun)->kelas->nama_kelas ?? 'Tidak dipilih' }}</strong></span>
                 </div>
             @endif
 
@@ -126,7 +127,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="PesanKosong">Silakan pilih pelajaran dan kelas untuk melihat daftar murid</td>
+                                        <td colspan="5" class="PesanKosong">Tidak ada murid dalam kelas ini</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -145,7 +146,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td colspan="7" class="PesanKosong">Silakan pilih pelajaran dan kelas untuk melihat daftar murid</td>
+                                <td colspan="5" class="PesanKosong">Silakan pilih pelajaran dan kelas untuk melihat daftar murid</td>
                             </tr>
                         </tbody>
                     </table>
@@ -178,4 +179,8 @@
             filterTable();
         }
     });
+
+    function copyKelasToExport() {
+        return true;
+    }
 </script>

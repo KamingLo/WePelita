@@ -1,13 +1,6 @@
 @include('partials.header', ['NamaPage' => 'Halaman Login'])
 <div class="ContainerLogin">
     <div class="LayoutLogin">
-        <div class="LayoutVideo">
-            <video autoplay loop muted>
-                <source src="/image/introRE.mp4" type="video/mp4">
-                Browser Anda tidak mendukung elemen video.
-            </video>
-        </div>
-
         <div class="LayoutFormLogin">
             <div class="ContainerFormLogin">
                 <h2>Login</h2>

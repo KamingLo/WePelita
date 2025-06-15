@@ -42,88 +42,10 @@
     </div>
 </section>
 
-<div id="main-content" class="main-content-container">
-    <section class="wepelita-section">
-        <div class="section-title" data-aos="fade-up">
-            <h2>Aplikasi WePelita</h2>
-            <p>Sistem Informasi Terintegrasi untuk Ekosistem Sekolah</p>
-        </div>
-        
-        <div class="ContainerWelcomePage">
-            <div class="LayoutWePelita">
-                <a href="{{ route('login') }}" style="text-decoration: none;">
-                    <div class="Layout Murid" data-aos="fade-up" data-aos-delay="100">
-                        <div class="IsiDalemanLayout">
-                            <img src="/image/WePelitaMurid.png">
-                        </div>
-                        <div class="details">
-                            <h3>WePelita Murid</h3>
-                            <p>Klik Disini Untuk Siswa/Siswi</p>
-                        </div>
-                    </div>
-                </a>
+        <div id="main-content" class="main-content-container">
+        <div class="section-title" data-aos="fade-up"></div>
 
-                <a href="{{ route('login') }}" style="text-decoration: none;">
-                    <div class="Layout Guru" data-aos="fade-up" data-aos-delay="200">
-                        <div class="IsiDalemanLayout">
-                            <img src="/image/WePelitaGuru.png">
-                        </div>
-                        <div class="details">
-                            <h3>WePelita Guru</h3>
-                            <p>Klik Disini Untuk Para Guru</p>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="{{ route('login') }}" style="text-decoration: none;">
-                    <div class="Layout Orangtua" data-aos="fade-up" data-aos-delay="300">
-                        <div class="IsiDalemanLayout">
-                            <img src="/image/.png" alt="Soon">
-                        </div>
-                        <div class="details">
-                            <h3>WePelita OrangTua</h3>
-                            <p>Klik Disini Untuk Para Orangtua Murid</p>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="{{ route('login') }}" style="text-decoration: none;">
-                    <div class="Layout Admin" data-aos="fade-up" data-aos-delay="400">
-                        <div class="IsiDalemanLayout">
-                            <img src="/image/.png">
-                        </div>
-                        <div class="details">
-                            <h3>WePelita Admin</h3>
-                            <p>Klik Disini Untuk Para Admin</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section class="kepala-sekolah-section">
-        <div class="section-title" data-aos="fade-up">
-            <h2>Sambutan Kepala Sekolah</h2>
-        </div>
-        <div class="kepala-sekolah-container">
-            <div class="kepala-sekolah-image" data-aos="fade-right">
-                <img src="/image/KepalaSekolah1.png" alt="Kepala Sekolah SMK Pelita IV">
-            </div>
-            <div class="kepala-sekolah-content" data-aos="fade-left">
-                <h3>Yohanes Sigit Widiatmaka, S.Pd</h3>
-                <p class="kepala-title">Kepala SMK Pelita IV Jakarta</p>
-                <div class="divider"></div>
-                <p>Assalamualaikum Wr. Wb.</p>
-                <p>Selamat datang di website resmi SMK Pelita IV Jakarta. Sebagai lembaga pendidikan kejuruan, kami berkomitmen untuk menyiapkan generasi muda yang unggul dalam keterampilan, berkarakter, dan siap menghadapi tantangan masa depan.</p>
-                <p>Dengan dukungan tenaga pendidik yang profesional dan fasilitas yang memadai, kami yakin dapat mencetak lulusan yang kompeten sesuai dengan kebutuhan dunia kerja.</p>
-                <p>Mari bersama-sama kita wujudkan SMK Pelita IV Jakarta menjadi sekolah kejuruan terbaik yang menghasilkan SDM berkualitas dan berdaya saing tinggi.</p>
-                <p>Wassalamualaikum Wr. Wb.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="profile-section">
+        <section class="profile-section">
         <div class="section-title" data-aos="fade-up">
             <h2>Profile SMK Pelita IV</h2>
         </div>
@@ -155,6 +77,27 @@
                     <source src="{{ asset('image/logo_pelita2.mp4') }}" type="video/mp4">
                     Browser Anda tidak mendukung tag video.
                 </video>
+            </div>
+        </div>
+    </section>
+
+    <section class="kepala-sekolah-section">
+        <div class="section-title" data-aos="fade-up">
+            <h2>Sambutan Kepala Sekolah</h2>
+        </div>
+        <div class="kepala-sekolah-container">
+            <div class="kepala-sekolah-image" data-aos="fade-right">
+                <img src="/image/KepalaSekolah1.png" alt="Kepala Sekolah SMK Pelita IV">
+            </div>
+            <div class="kepala-sekolah-content" data-aos="fade-left">
+                <h3>Yohanes Sigit Widiatmaka, S.Pd</h3>
+                <p class="kepala-title">Kepala SMK Pelita IV Jakarta</p>
+                <div class="divider"></div>
+                <p>Assalamualaikum Wr. Wb.</p>
+                <p>Selamat datang di website resmi SMK Pelita IV Jakarta. Sebagai lembaga pendidikan kejuruan, kami berkomitmen untuk menyiapkan generasi muda yang unggul dalam keterampilan, berkarakter, dan siap menghadapi tantangan masa depan.</p>
+                <p>Dengan dukungan tenaga pendidik yang profesional dan fasilitas yang memadai, kami yakin dapat mencetak lulusan yang kompeten sesuai dengan kebutuhan dunia kerja.</p>
+                <p>Mari bersama-sama kita wujudkan SMK Pelita IV Jakarta menjadi sekolah kejuruan terbaik yang menghasilkan SDM berkualitas dan berdaya saing tinggi.</p>
+                <p>Wassalamualaikum Wr. Wb.</p>
             </div>
         </div>
     </section>
@@ -234,51 +177,52 @@
     </section>
 
     <section class="berita-section">
-        <div class="section-title" data-aos="fade-up">
-            <h2>Berita Terbaru</h2>
-            <p>Informasi dan Kegiatan Terkini</p>
-        </div>
-        <div class="berita-container">
-            @forelse($blogs as $index => $blog)
-                <div class="berita-card" data-aos="zoom-in" data-aos-delay="{{ ($index % 2 + 1) * 100 }}">
-                    <div class="berita-image">
-                        @if($blog->lampiran)
-                            <img src="{{ asset('storage/' . $blog->lampiran) }}" alt="{{ $blog->judul }}">
-                        @else
-                            <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="{{ $blog->judul }}">
-                        @endif
-                        <div class="berita-date">
-                            <span class="day">{{ $blog->created_at->format('d') }}</span>
-                            <span class="month">{{ $blog->created_at->format('M') }}</span>
-                        </div>
-                    </div>
-                    <div class="berita-content">
-                        <h3>{{ $blog->judul }}</h3>
-                        <p>{{ Str::limit(strip_tags($blog->isi), 120) }}</p>
-                        <a href="#" class="berita-btn">Baca Selengkapnya</a>
+    <div class="section-title" data-aos="fade-up">
+        <h2>Berita Terbaru</h2>
+        <p>Informasi dan Kegiatan Terkini</p>
+    </div>
+    <div class="berita-container">
+        @forelse($blogs as $index => $blog)
+            <div class="berita-card" data-aos="zoom-in" data-aos-delay="{{ ($index % 2 + 1) * 100 }}">
+                <div class="berita-image">
+                    @if($blog->lampiran)
+                        <img src="{{ asset('storage/' . $blog->lampiran) }}" alt="{{ $blog->judul }}">
+                    @else
+                        <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="{{ $blog->judul }}">
+                    @endif
+                    <div class="berita-date">
+                        <span class="day">{{ $blog->created_at->format('d') }}</span>
+                        <span class="month">{{ $blog->created_at->format('M') }}</span>
                     </div>
                 </div>
-            @empty
-                <div class="berita-card" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="berita-image">
-                        <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tidak ada berita">
-                        <div class="berita-date">
-                            <span class="day">--</span>
-                            <span class="month">---</span>
-                        </div>
-                    </div>
-                    <div class="berita-content">
-                        <h3>Belum Ada Berita</h3>
-                        <p>Saat ini belum ada berita terbaru yang dapat ditampilkan. Silakan kembali lagi nanti untuk melihat update terbaru dari SMK Pelita IV Jakarta.</p>
-                        <a href="/blog" class="berita-btn">Lihat Blog</a>
+                <div class="berita-content">
+                    <h3>{{ $blog->judul }}</h3>
+                    <p>{{ Str::limit(strip_tags($blog->isi), 120) }}</p>
+                    <a href="{{ route('blog.show', $blog->postingan_id) }}" class="berita-btn">Baca Selengkapnya</a>
+                </div>
+            </div>
+        @empty
+            <div class="berita-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="berita-image">
+                    <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tidak ada berita">
+                    <div class="berita-date">
+                        <span class="day">--</span>
+                        <span class="month">---</span>
                     </div>
                 </div>
-            @endforelse
-        </div>
-        <div class="berita-more" data-aos="fade-up">
-            <a href="/blog" class="more-btn">Lihat Semua Berita</a>
-        </div>
-    </section>
+                <div class="berita-content">
+                    <h3>Belum Ada Berita</h3>
+                    <p>Saat ini belum ada berita terbaru yang dapat ditampilkan. Silakan kembali lagi nanti untuk melihat update terbaru dari SMK Pelita IV Jakarta.</p>
+                    <a href="/blog" class="berita-btn">Lihat Blog</a>
+                </div>
+            </div>
+        @endforelse
+    </div>
+    <div class="berita-more" data-aos="fade-up">
+        <a href="/blog" class="more-btn">Lihat Semua Berita</a>
+    </div>
+</section>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>

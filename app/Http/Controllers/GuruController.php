@@ -47,7 +47,7 @@ class GuruController extends Controller
             })->findOrFail($request->kelas_tahun_id);
 
             // Ambil pelajaran yang diajar guru ini di kelas tahun terpilih berdasarkan jadwal
-            $pelajaranList = Jadwal::with('pelajaran')
+            $pelajaranList = JadwalPelajaran::with('pelajaran')
                 ->where('guru_id', $guru->guru_id)
                 ->where('kelas_tahun_id', $pilihanKelasTahun->kelas_tahun_id)
                 ->get()
@@ -70,8 +70,6 @@ class GuruController extends Controller
         return view('guru.isinilai', compact('guru', 'kelasTahunList', 'pilihanKelasTahun', 'pelajaranList', 'pilihanPelajaran', 'muridList'));
     }
 
-
-    // Other methods (tampilkanManajemenPost, tambahPostingan, etc.) remain unchanged
     public function tampilkanManajemenPost()
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();

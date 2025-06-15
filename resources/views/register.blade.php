@@ -1,4 +1,3 @@
-<!-- resources/views/register.blade.php -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,9 +7,11 @@
     <title>Registrasi Murid & Orang Tua</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<button href="/" type="submit" class="btn btn-primary">Back</button>
 <body>
 <div class="container mt-5">
     <h2>Form Registrasi Murid & Orang Tua</h2>
+    <button href="/" type="submit" class="btn btn-primary">Back</button>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -149,6 +150,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Daftar</button>
+        
     </form>
 </div>
 </body>
