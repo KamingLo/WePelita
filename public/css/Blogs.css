@@ -1,0 +1,189 @@
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+}
+
+.blog-section {
+    flex: 3;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.CardPost {
+    background: #ffffff;
+    border: 1px solid #e1e8ed;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    min-height: 200px;
+}
+
+.ImagePostCard {
+    width: 200px;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    border: 1px solid #e1e8ed;
+    flex-shrink: 0;
+}
+
+.IsiCardPost {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: auto; /* Remove fixed height to prevent overlap */
+}
+
+.JudulCardPost {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1c1e21;
+    margin: 0;
+    line-height: 1.4;
+    position: static;
+}
+
+.KontenCardPost {
+    color: #4f4f4f;
+    font-size: 14px;
+    overflow: hidden;
+    text-align: justify;
+    min-height: 6.5rem;
+    margin: 0;
+    flex: 1;
+}
+
+.FooterCardPost {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px; /* Adjust spacing */
+}
+
+.InfoUserCardPost {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.FotoProfileCardPost {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+    border: 2px solid #e1e8ed;
+}
+
+.UserProfileCardPost {
+    display: flex;
+    flex-direction: column;
+}
+
+.NamaPengunaCP {
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+}
+
+.TanggalPublikasihCP {
+    color: #65676b;
+    font-size: 14px;
+}
+
+.TombolOJT {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 8px 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    background-color: #4a6cf7; /* Static color */
+}
+
+.TombolBacaSelengkapnya {
+    background-color: #4a6cf7;
+    border-color: #4a6cf7;
+    transition: all 0.3s ease;
+}
+
+.TombolBacaSelengkapnya:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+}
+
+.EditButtonFlex {
+    margin-left: auto;
+}
+
+.TombolKecilTDKP {
+    margin-left: 1rem;
+    padding-top: 0.5rem;
+}
+
+.TombolDirectKePengumuman {
+    color: white;
+    background-color: #4a6cf7;
+    border-color: #4a6cf7;
+    padding: 6px 12px;
+    font-size: 13px;
+    text-decoration: none;
+    width: 100%;
+}
+
+.no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .blog-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 20px;
+    }
+
+    .CardPost {
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    .ImagePostCard {
+        width: 100%;
+        height: 150px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        border-bottom-left-radius: 0;
+    }
+}

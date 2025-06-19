@@ -1,0 +1,474 @@
+/* ----------------------------------------------- */
+/* -------------- ProfileUser.css ---------------- */
+/* ----------------------------------------------- */
+
+:root {
+    --warna-utama: #4a6cf7;
+    --warna-sekunder: #6c757d;
+    --warna-sukses: #28a745;
+    --warna-bahaya: #dc3545;
+    --warna-peringatan: #ffc107;
+    --warna-terang: #f8f9fa;
+    --warna-gelap: #343a40;
+    --radius-batas: 10px;
+    --bayangan: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transisi: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* ----------------------------------------------- */
+/* -------------- Bagian Kontainer Utama --------- */
+/* ----------------------------------------------- */
+
+.KontainerUtamaProfilPengguna {
+    margin-left: 280px;
+    padding: 30px;
+    margin-top: -10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.KontainerUtamaProfilPengguna h1 {
+    width: 100%;
+    color: var(--warna-gelap);
+    margin-bottom: 20px;
+    font-size: 26px;
+    position: relative;
+    padding-bottom: 10px;
+    text-align: left;
+}
+
+.KontainerUtamaProfilPengguna h1:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background-color: var(--warna-utama);
+}
+
+/* ----------------------------------------------- */
+/* -------------- Bagian Formulir Profil --------- */
+/* ----------------------------------------------- */
+
+.BagianFormulirProfil {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: calc(100vh - 150px);
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.KotakRegistrasi {
+    flex: 0 0 45%;
+    background-color: white;
+    border-radius: var(--radius-batas);
+    box-shadow: var(--bayangan);
+    overflow-y: auto;
+    width: 100%;
+    max-width: 800px; /* Restrict maximum width for better centering */
+}
+
+.KotakRegistrasi .TataLetakFormulir {
+    margin-left: 0;
+    padding: 25px;
+}
+
+.KotakRegistrasi .TataLetakFormulir h2 {
+    color: var(--warna-gelap);
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.NotifikasiFormulirProfil {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.TataLetakFormulir {
+    padding: 10px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.TataLetakFormulir h2 {
+    color: var(--warna-gelap);
+    margin-top: 0;
+    font-size: 20px;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.TataLetakFormulir h2:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 60px;
+    background-color: var(--warna-utama);
+}
+
+.TataLetakFormulir form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.BagianProfil {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.JudulBagian {
+    margin: 0 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e9ecef;
+    color: #495057;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.KisiProfil {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.KolomProfil {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.KolomProfilInfoAkun {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.KolomProfilAvatar {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* ----------------------------------------------- */
+/* -------------- Bagian Isi Data ---------------- */
+/* ----------------------------------------------- */
+
+.IsiData {
+    margin-bottom: 20px;
+}
+
+.IsiData label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--warna-gelap);
+    font-size: 14px;
+}
+
+.TampilanIsiData {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd !important;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: var(--transisi);
+}
+
+.TampilanIsiData:focus {
+    border-color: var(--warna-utama);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2) !important;
+}
+
+input.TampilanIsiData {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd !important;
+    color: black !important;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: var(--transisi);
+    box-sizing: border-box;
+}
+
+input.TampilanIsiData:focus {
+    border-color: var(--warna-utama);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.2);
+}
+
+.TampilanIsiData.readonly {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    border-radius: 4px;
+    color: #495057;
+}
+
+
+/* ----------------------------------------------- */
+/* -------------- Bagian Avatar ------------------ */
+/* ----------------------------------------------- */
+
+.KontainerAvatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.PratinjauAvatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--warna-utama);
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.PratinjauAvatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.DefaultAvatar {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--warna-utama);
+    text-transform: uppercase;
+}
+
+/* ----------------------------------------------- */
+/* -------------- Bagian Tombol ------------------ */
+/* ----------------------------------------------- */
+
+.KontainerTombol {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.TombolTambah {
+    justify-self: center;
+    padding: 12px 30px;
+    background-color: var(--warna-utama);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transisi);
+    min-width: 200px;
+}
+
+.TombolTambah:hover {
+    background-color: #3959d9;
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(74, 108, 247, 0.3);
+}
+
+.TombolBatal {
+    padding: 12px 30px;
+    background-color: var(--warna-sekunder);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transisi);
+    text-decoration: none;
+    text-align: center;
+    min-width: 200px;
+    display: inline-block;
+}
+
+.TombolBatal:hover {
+    background-color: #5a6268;
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(108, 117, 125, 0.3);
+}
+
+.TombolHapusFoto {
+    padding: 8px 20px;
+    background-color: var(--warna-bahaya);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transisi);
+    width: 100%;
+    max-width: 150px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.TombolHapusFoto:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+}
+
+.TombolHapusFoto i {
+    font-size: 16px;
+}
+
+.TombolHapus {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.TombolHapus:hover {
+    color: var(--warna-bahaya);
+}
+
+/* ----------------------------------------------- */
+/* -------------- Pesan Error/Sukses ------------- */
+/* ----------------------------------------------- */
+
+.TampilanPesan {
+    padding: 15px;
+    border-radius: var(--radius-batas);
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.PesanBerhasil {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    max-width: 400px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.PesanError {
+    color: var(--warna-bahaya);
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+    margin-left: auto;
+}
+
+/* ----------------------------------------------- */
+/* -------------- Desain Responsif -------------- */
+/* ----------------------------------------------- */
+
+@media (max-width: 1400px) {
+    .KontainerUtamaProfilPengguna {
+        margin-left: 0;
+    }
+    
+    .BagianFormulirProfil {
+        margin-left: 0;
+    }
+    
+    .KotakRegistrasi {
+        flex: 0 0 50%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .KontainerUtamaProfilPengguna {
+        padding: 20px;
+    }
+    
+    .KotakRegistrasi .TataLetakFormulir {
+        padding: 20px;
+    }
+    
+    .KisiProfil {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .BagianFormulirProfil {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .KotakRegistrasi {
+        flex: none;
+        max-height: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .KontainerUtamaProfilPengguna {
+        margin-left: 0;
+        padding: 15px;
+    }
+    
+    .KotakRegistrasi .TataLetakFormulir {
+        padding: 15px;
+    }
+    
+    .KisiProfil {
+        gap: 15px;
+    }
+    
+    .PratinjauAvatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .KontainerTombol {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .TombolTambah,
+    .TombolBatal {
+        width: 100%;
+    }
+
+    .TombolHapusFoto {
+        max-width: 100%;
+    }
+}
+
+/* ----------------------- End -------------------- */

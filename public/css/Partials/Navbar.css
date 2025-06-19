@@ -1,0 +1,212 @@
+/* ----------------------------------------------- */
+/* ------------- Flat Navbar Design ------------- */
+/* ----------------------------------------------- */
+
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 80px;
+}
+
+.navbar-container {
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  position: relative;
+}
+
+.logo {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.navbar .GambarLogo {
+  width: 250px; /* Diperbesar dari 160px */
+  height: auto;
+  transition: transform 0.2s ease;
+  margin-left: 1rem;
+}
+
+.navbtn {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.navbtn a {
+  color: #333333;
+  text-decoration: none;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  padding: 12px 20px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.navbtn a:hover {
+  color: #0066cc;
+  background-color: #f8f9fa;
+}
+
+.sign-btn span {
+  display: inline-block;
+  padding: 14px 24px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.sign-btn.secondary span {
+  background-color: transparent;
+  color: #333333;
+  border-color: #333333;
+}
+
+.sign-btn.secondary span:hover {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.sign-btn.primary span {
+  background-color: #0066cc;
+  color: #ffffff;
+}
+
+.sign-btn.primary span:hover {
+  background-color: #0052a3;
+  transform: translateY(-1px);
+}
+
+/* Mobile menu button */
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 5px;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mobile-menu-btn span {
+  width: 25px;
+  height: 3px;
+  background-color: #333333;
+  margin: 3px 0;
+  transition: 0.2s;
+  border-radius: 2px;
+}
+
+.mobile-menu-btn.active span:nth-child(1) {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.mobile-menu-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-btn.active span:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .navbar-container {
+    padding: 0 15px;
+  }
+  
+  .logo {
+    left: 15px;
+  }
+  
+  .navbar .GambarLogo {
+    width: 140px; /* Diperbesar untuk mobile juga */
+  }
+  
+  .mobile-menu-btn {
+    display: flex;
+    right: 15px;
+  }
+  
+  .navbtn {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    padding: 20px;
+    gap: 15px;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    margin-left: 0; /* Reset margin untuk mobile menu */
+  }
+  
+  .navbtn.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .navbtn a {
+    width: 100%;
+    text-align: center;
+    padding: 12px 16px;
+  }
+  
+  .sign-btn span {
+    display: block;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navbar-container {
+    padding: 0 10px;
+  }
+  
+  .logo {
+    left: 10px;
+  }
+  
+  .navbar .GambarLogo {
+    width: 110px; /* Diperbesar untuk mobile kecil juga */
+  }
+  
+  .mobile-menu-btn {
+    right: 10px;
+  }
+  
+  .navbtn {
+    padding: 15px;
+    gap: 10px;
+  }
+}
+
+/* Add padding to body to prevent content from hiding behind fixed navbar */
+body {
+  padding-top: 70px;
+}

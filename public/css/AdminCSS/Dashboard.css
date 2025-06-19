@@ -1,0 +1,209 @@
+/* ----------------------------------------------- */
+/* ----------------- dashboard.css --------------- */
+/* ----------------------------------------------- */
+
+:root {
+    --primary-color: #4a6cf7;
+    --danger-color: #dc3545;
+    --dark-color: #343a40;
+    --border-radius: 10px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Bagian Header --------------- */
+/* ----------------------------------------------- */
+
+.ContainerDashboard {
+    margin-left: 280px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    transform: translateY(-10rem)
+}
+
+h1 {
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 26px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+h1:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100px;
+    background-color: var(--primary-color);
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Bagian Profile -------------- */
+/* ----------------------------------------------- */
+
+.ProfileAdmin {
+    width: 100%;
+}
+
+.LayoutProfileAdmin {
+    background-color: white;
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 500px;
+}
+
+.ProfileAvatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f3f5;
+    border: 2px solid var(--primary-color);
+}
+
+.ProfileAvatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.DefaultAvatar {
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--primary-color);
+    text-transform: uppercase;
+}
+
+/* ----------------------------------------------- */
+/* -------------- Bagian Shortcut ---------------- */
+/* ----------------------------------------------- */
+
+.ShotcutSidebar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.DetailProfile {
+    display: flex;
+    width: 70%;
+}
+
+.EditButtonFlex {
+    margin-left: auto;
+    transform: translateY(0.5rem);
+}
+
+.IconFA {
+    font-size: 40px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.TombolNya h3 {
+    font-size: 18px;
+    color: var(--dark-color);
+    margin: 0 0 10px;
+}
+
+.TombolNya p {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 0;
+}
+
+/* ----------------------------------------------- */
+/* ---------------- Bagian Tombol ---------------- */
+/* ----------------------------------------------- */
+
+.TombolNya {
+    background-color: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    transition: var(--transition);
+}
+
+.TombolNya:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.EditButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    font-size: 14px;
+    color: white;
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.EditButton:hover {
+    background-color: #3959d9;
+    border-color: #3959d9;
+    box-shadow: 0 5px 15px rgba(74, 108, 247, 0.3);
+}
+
+/* ----------------------------------------------- */
+/* ----------------- Responsive Design ----------- */
+/* ----------------------------------------------- */
+
+@media (max-width: 1200px) {
+    .ContainerDashboard {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .LayoutProfileAdmin {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        overflow-y: visible;
+    }
+
+    .LayoutProfileAdmin {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .ProfileAvatar {
+        margin-bottom: 15px;
+    }
+
+    .ShotcutSidebar {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------------------- End ---------------------- */
