@@ -18,7 +18,8 @@ class CreateNewUser implements CreatesNewUsers
      * @param  array<string, string>  $input
      */
     public function create(array $input): User
-    {
+    {   
+        // Validasi input registrasi user baru
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
@@ -30,7 +31,8 @@ class CreateNewUser implements CreatesNewUsers
             ],
             'password' => $this->passwordRules(),
         ])->validate();
-
+        
+        // Simpan data user ke database setelah validasi
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],

@@ -4,6 +4,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// Model untuk menyimpan data kelas 
 class Kelas extends Model
 {
     use HasFactory;

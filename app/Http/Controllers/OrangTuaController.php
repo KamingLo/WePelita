@@ -13,7 +13,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrangTuaController extends Controller
-{
+{   
+    /**
+     * Tampilkan dashboard orang tua dan pengumuman untuk anaknya
+     */
     public function dashboard()
     {
         $orangtua = Auth::user()->orangtua;
@@ -41,6 +44,9 @@ class OrangTuaController extends Controller
         return view('orangtua.dashboard', compact('orangtua', 'muridKelas', 'announcements'));
     }
 
+    /**
+     * Tampilkan jadwal pelajaran anak berdasarkan kelas aktif
+     */
     public function jadwalKelas(Request $request)
     {
         $orangtua = Auth::user()->orangtua;
@@ -70,11 +76,17 @@ class OrangTuaController extends Controller
         return view('orangtua.JadwalKelas', compact('orangtua', 'muridKelas', 'jadwals'));
     }
 
+    /**
+     * Export jadwal kelas anak ke dalam file Excel
+     */
     public function exportJadwal()
     {
         return Excel::download(new OrtuJadwalExport(), 'jadwal-kelas.xlsx');
     }
 
+    /**
+     * Tampilkan nilai anak berdasarkan kelas tahun aktif
+     */
     public function nilaiKelas()
     {
         $orangtua = Auth::user()->orangtua;
@@ -97,6 +109,9 @@ class OrangTuaController extends Controller
         return view('orangtua.NilaiMurid', compact('orangtua', 'muridKelas', 'nilais'));
     }
 
+    /**
+     * Tampilkan daftar pengumuman yang berkaitan dengan anak
+     */
     public function pengumuman()
     {
         $orangtua = Auth::user()->orangtua;
@@ -124,6 +139,9 @@ class OrangTuaController extends Controller
         return view('orangtua.Pengumuman', compact('orangtua', 'muridKelas', 'announcements'));
     }
 
+    /**
+     * Ambil detail pengumuman tertentu dalam format JSON
+     */
     public function getAnnouncement($id)
     {
         $announcement = Postingan::with('profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')->findOrFail($id);

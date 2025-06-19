@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+// Model untuk menyimpan data relasi murid dengan kelas tahun ajaran tertentu
 class MuridKelas extends Model
 {
     protected $table = 'murid_kelas';

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// Model untuk menyimpan data jadwal pelajaran berdasarkan kelas, hari, dan waktu
 class JadwalPelajaran extends Model
 {
     use HasFactory;

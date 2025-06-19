@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use BeyondCode\Comments\Traits\HasComments;
 use BeyondCode\Comments\Contracts\Commentator;
 
+// Model untuk menyimpan data akun pengguna (admin, guru, murid, atau orang tua)
 class Profile extends Authenticatable implements Commentator
 {
     use Notifiable, HasFactory, HasComments;

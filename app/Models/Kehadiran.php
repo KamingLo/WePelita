@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+// Model untuk menyimpan detail kehadiran murid berdasarkan absensi harian
 class Kehadiran extends Model
 {
     use HasFactory;

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// Model untuk menyimpan data guru beserta informasi profil
 class Guru extends Model
 {
     use HasFactory;

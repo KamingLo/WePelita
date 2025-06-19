@@ -26,6 +26,9 @@ use Illuminate\Support\Facades\Log;
 
 class GuruController extends Controller
 {
+    /**
+     * Tampilkan halaman input nilai berdasarkan pelajaran dan kelas yang diajar guru
+     */
     public function tampilkanMenuNilai(Request $request)
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
@@ -70,6 +73,9 @@ class GuruController extends Controller
         return view('guru.isinilai', compact('guru', 'kelasTahunList', 'pilihanKelasTahun', 'pelajaranList', 'pilihanPelajaran', 'muridList'));
     }
 
+     /**
+     * Tampilkan halaman manajemen postingan milik guru (pengumuman & blog)
+     */
     public function tampilkanManajemenPost()
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
@@ -90,6 +96,9 @@ class GuruController extends Controller
         return view('guru.ManajemenPost', compact('guru', 'pengumumans', 'blogs', 'kelasTahuns'));
     }
 
+    /**
+     * Simpan postingan baru (pengumuman atau blog)
+     */
     public function tambahPostingan(Request $request)
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
@@ -135,6 +144,9 @@ class GuruController extends Controller
         }
     }
 
+    /**
+     * Perbarui data postingan yang telah dibuat guru
+     */
     public function updatePostingan(Request $request, $id)
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
@@ -181,24 +193,36 @@ class GuruController extends Controller
         }
     }
 
+    /**
+     * Tampilkan halaman dashboard guru
+     */
     public function tampilkanDashboardGuru()
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
         return view('guru.dashboard', compact('guru'));
     }
 
+    /**
+     * Tampilkan halaman jadwal pelajaran seluruh kelas
+     */
     public function tampilkanJadwalPelajaran()
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
         return view('guru.jadwalpelajaran', compact('guru'));
     }
     
+    /**
+     * Tampilkan halaman jadwal mengajar guru saat ini
+     */
     public function tampilkanJadwalAnda()
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
         return view('guru.jadwalajaranda', compact('guru'));
     }
 
+    /**
+     * Simpan atau perbarui nilai murid pada pelajaran dan kelas tertentu
+     */
     public function simpanNilai(Request $request)
     {
         $request->validate([
@@ -227,6 +251,9 @@ class GuruController extends Controller
         return back()->with('success', 'Nilai berhasil disimpan.');
     }
 
+    /**
+     * Tampilkan form edit postingan guru
+     */
     public function editPostingan($id)
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
@@ -238,6 +265,9 @@ class GuruController extends Controller
         return view('guru.ManajemenPostEdit', compact('postingan', 'guru', 'kelasTahuns'));
     }
 
+    /**
+     * Hapus postingan milik guru, termasuk file lampiran jika ada
+     */
     public function hapusPostingan($id, Request $request)
     {
         $guru = Guru::where('profile_id', auth()->id())->firstOrFail();
@@ -259,6 +289,9 @@ class GuruController extends Controller
         }
     }
 
+    /**
+     * Export nilai murid ke format Excel berdasarkan kelas yang dipilih
+     */
     public function downloadNilai(Request $request)
     {
         $selectedKelas = $request->input('kelas_tahun_id');

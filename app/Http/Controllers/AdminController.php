@@ -29,14 +29,16 @@ use Illuminate\Support\Str;
 use App\Services\BrevoMailer;
 
 class AdminController extends Controller
-{
+{   
+    // Menampilkan form tambah user 
     public function formUser()
     {
         $kelasList = KelasTahun::all();
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.register', compact('kelasList', 'admin'));
     }
-    
+
+    // Menangani logika penambahan user baru 
     public function tambahkanUser(Request $request)
     {
         try {
@@ -187,6 +189,7 @@ class AdminController extends Controller
         }
     }
 
+    // Menampilkan halaman manajemen kelas beserta daftar kelas aktif & semua kelas
     public function tampilkanManajemenKelas()
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -202,6 +205,7 @@ class AdminController extends Controller
         return view('admin.ManajemenKelas', compact('admin', 'kelastahuns', 'kelasSekarang', 'semuaKelas'));
     }
 
+    // Menambahkan kelas baru beserta tahun ajaran dan semester-nya
     public function tambahKelas(Request $request)
     {
         $request->validate([
@@ -229,6 +233,7 @@ class AdminController extends Controller
         return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas baru berhasil dibuat.');
     }
 
+    // Menampilkan form update kelas berdasarkan ID
     public function tampilkanUpdateKelas($id)
     {
         $kelastahun = KelasTahun::findOrFail($id);
@@ -236,6 +241,7 @@ class AdminController extends Controller
         return view('admin.ManajemenKelasEdit', compact('kelastahun', 'admin'));
     }
 
+    // Memperbarui data kelas dan relasi ke tahun ajaran
     public function updateKelas(Request $request, $id)
     {
         $kelastahun = KelasTahun::findOrFail($id);
@@ -272,6 +278,7 @@ class AdminController extends Controller
         return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas berhasil diperbarui.');
     }
 
+    // Menghapus kelas berdasarkan ID dari tabel kelas_tahun
     public function hapusKelas($id)
     {
         $kelastahun = KelasTahun::findOrFail($id);
@@ -280,6 +287,7 @@ class AdminController extends Controller
         return redirect()->route('admin.manajemenKelas')->with('success', 'Kelas berhasil dihapus.');
     }
 
+    // Menampilkan form kenaikan kelas siswa
     public function tampilkanFormKenaikanKelas()
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -298,6 +306,7 @@ class AdminController extends Controller
         return view('admin.kenaikanKelas', compact('kelasSekarang', 'semuaKelas', 'admin'));
     }
 
+    // Memproses perpindahan siswa dari kelas asal ke kelas tujuan untuk tahun ajaran baru
     public function prosesKenaikanKelas(Request $request)
     {
         $validated = $request->validate([
@@ -373,6 +382,7 @@ class AdminController extends Controller
             ->with('success', 'Kenaikan kelas berhasil diproses.');
     }
 
+    // Menampilkan jadwal pelajaran untuk seluruh kelas aktif
     public function tampilkanJadwal()
     {
         $pelajaran = Pelajaran::all();
@@ -392,6 +402,7 @@ class AdminController extends Controller
         return view('admin.TambahJadwal', compact('pelajaran', 'kelasTahun', 'jadwals', 'admin'));
     }
 
+    // Menampilkan form update jadwal pelajaran berdasarkan ID
     public function tampilkanUpdateJadwal($id)
     {
         $pelajaran = Pelajaran::all();
@@ -403,6 +414,7 @@ class AdminController extends Controller
         return view('admin.TambahJadwalEdit', compact('pelajaran', 'kelas', 'jadwal', 'admin'));
     }
 
+    // Menyimpan jadwal pelajaran baru jika tidak terjadi bentrok waktu
     public function simpanJadwal(Request $request)
     {
         $validated = $request->validate([
@@ -462,6 +474,7 @@ class AdminController extends Controller
             ->with('success', 'Jadwal berhasil ditambahkan.');
     }
 
+    // Memperbarui data jadwal pelajaran dan validasi bentrok dengan jadwal lain
     public function updateJadwal(Request $request, $id)
     {
         $validated = $request->validate([
@@ -524,6 +537,7 @@ class AdminController extends Controller
         return redirect()->route('admin.TambahJadwal')->with('success', 'Jadwal berhasil diperbarui.');
     }
 
+    // Menghapus jadwal pelajaran berdasarkan ID
     public function hapusJadwal($id)
     {
         $jadwal = JadwalPelajaran::findOrFail($id);
@@ -532,6 +546,7 @@ class AdminController extends Controller
         return redirect()->route('admin.TambahJadwal')->with('success', 'Jadwal berhasil dihapus.');
     }
 
+    // Menampilkan form tambah pelajaran 
     public function tampilkanPelajaran()
     {
         $gurus = Guru::all();
@@ -540,6 +555,7 @@ class AdminController extends Controller
         return view('admin.TambahPelajaran', compact('gurus', 'pelajarans', 'admin'));
     }
 
+    // Menyimpan pelajaran baru ke database setelah validasi
     public function simpanPelajaran(Request $request)
     {
         $validated = $request->validate([
@@ -555,6 +571,7 @@ class AdminController extends Controller
         return redirect()->route('admin.TambahPelajaran')->with('success', 'Pelajaran berhasil ditambahkan.');
     }
 
+    // Menampilkan form edit pelajaran berdasarkan ID
     public function tampilkanUpdatePelajaran($id)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -564,6 +581,7 @@ class AdminController extends Controller
         return view('admin.TambahPelajaranEdit', compact('gurus', 'pelajaran', 'admin'));
     }
 
+    // Memperbarui data pelajaran berdasarkan ID setelah validasi
     public function updatePelajaran(Request $request, $id)
     {
         $validated = $request->validate([
@@ -580,6 +598,7 @@ class AdminController extends Controller
         return redirect()->route('admin.TambahPelajaran')->with('success', 'Pelajaran berhasil diperbarui.');
     }
 
+    // Menghapus pelajaran berdasarkan ID
     public function hapusPelajaran($id)
     {
         $pelajaran = Pelajaran::findOrFail($id);
@@ -588,6 +607,7 @@ class AdminController extends Controller
         return redirect()->route('admin.TambahPelajaran')->with('success', 'Pelajaran berhasil dihapus.');
     }
 
+    // Menampilkan halaman manajemen postingan admin: pengumuman, blog, dan data kelas tahun aktif.
     public function tampilkanManajemenPost()
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -609,6 +629,7 @@ class AdminController extends Controller
         return view('admin.manajemenPost', compact('admin', 'pengumumans', 'blogs', 'kelasTahuns'));
     }
 
+    // Menambah postingan baru dengan validasi, upload lampiran, dan logging error jika gagal.
     public function tambahPostingan(Request $request)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -685,6 +706,7 @@ class AdminController extends Controller
         }
     }
 
+    // Menampilkan form edit postingan milik admin berdasarkan ID, termasuk data kelas tahun aktif.
     public function editPostingan($id)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -699,6 +721,7 @@ class AdminController extends Controller
         return view('admin.ManajemenPostEdit', compact('postingan', 'admin', 'kelasTahuns'));
     }
 
+    // Memperbarui postingan dengan validasi, update lampiran baru jika ada, dan handling error.
     public function updatePostingan(Request $request, $id)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -744,6 +767,7 @@ class AdminController extends Controller
         }
     }
 
+    // Menghapus postingan beserta lampiran terkait, dengan handling error.
     public function hapusPostingan($id, Request $request)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -763,55 +787,7 @@ class AdminController extends Controller
         }
     }
 
-    public function updateKegiatan(Request $request, $id)
-    {
-        $kegiatan = Kegiatan::findOrFail($id);
-        
-        $validated = $request->validate([
-            'judul_kegiatan' => 'required|string|max:255',
-            'isi_kegiatan' => 'required|string',
-            'lampiran' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
-        ]);
-        
-        try {
-            $lampiranPath = $kegiatan->lampiran;
-            if ($request->hasFile('lampiran')) {
-                if ($lampiranPath && Storage::disk('public')->exists($lampiranPath)) {
-                    Storage::disk('public')->delete($lampiranPath);
-                }
-                $lampiranPath = $request->file('lampiran')->store('uploads', 'public');
-            }
-            
-            $kegiatan->update([
-                'judul_kegiatan' => $validated['judul_kegiatan'],
-                'isi_kegiatan' => $validated['isi_kegiatan'],
-                'lampiran' => $lampiranPath,
-            ]);
-            
-            return redirect()->route('admin.manajemenPost', ['TipePost' => 'kegiatan'])
-                ->with('success', 'Kegiatan berhasil diupdate!');
-        } catch (\Exception $e) {
-            return back()->withInput()->withErrors(['error' => 'Gagal mengupdate kegiatan: ' . $e->getMessage()]);
-        }
-    }
-
-    public function destroyKegiatan($id)
-    {
-        $kegiatan = Kegiatan::findOrFail($id);
-        
-        try {
-            if ($kegiatan->lampiran && Storage::disk('public')->exists($kegiatan->lampiran)) {
-                Storage::disk('public')->delete($kegiatan->lampiran);
-            }
-            $kegiatan->delete();
-            
-            return redirect()->route('admin.manajemenPost', ['TipePost' => 'kegiatan'])
-                ->with('success', 'Kegiatan berhasil dihapus!');
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Gagal menghapus kegiatan: ' . $e->getMessage()]);
-        }
-    }
-
+    // Menampilkan 4 postingan blog terbaru untuk halaman depan.
     public function index()
     {
         $blogs = Postingan::with(['profile'])
@@ -823,6 +799,7 @@ class AdminController extends Controller
         return view('welcome', compact('blogs'));
     }
 
+    // Menampilkan daftar blog dengan filter waktu (hari ini, minggu, bulan, tahun) bila ada.
     public function tampilkanBlog(Request $request)
     {
         $query = Postingan::with(['profile'])
@@ -855,12 +832,14 @@ class AdminController extends Controller
         return view('blog', compact('blogs'));
     }
 
+    // Menampilkan detail postingan blog lengkap dengan komentar dan profil komentator.
     public function tampilkanBlogDetail($id)
     {
         $postingan = Postingan::with('comments.commentator', 'profile')->findOrFail($id);
         return view('blogFull', compact('postingan'));
     }
 
+    // Menampilkan halaman manajemen user berdasarkan role, search, dan filter kelas tahun aktif.
     public function tampilkanManajemenUser(Request $request)
     {
         try {
@@ -950,6 +929,7 @@ class AdminController extends Controller
         }
     }
 
+    // Menampilkan form edit user berdasarkan role dan ID. Jika murid, juga memuat kelas tahun aktif.
     public function editUser($id, Request $request)
     {
         $role = $request->query('role');
@@ -972,6 +952,8 @@ class AdminController extends Controller
         return view('admin.ManajemenUserEdit', compact('user', 'role', 'kelasList', 'admin'))->with('id', $id);
     }
 
+    // Memperbarui data user (admin/guru/orang tua/murid) beserta profil terkait dan upload foto jika ada.
+    // Untuk murid, juga mengupdate data Murid dan MuridKelas.
     public function updateUser(Request $request, $id)
     {
         $role = $request->input('role');
@@ -1045,6 +1027,7 @@ class AdminController extends Controller
         return redirect()->route('admin.ManajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
     }
 
+    // Menghapus user berdasarkan role dan ID, sekaligus menghapus relasi profil-nya.
     public function destroyUser($id, Request $request)
     {
         $role = $request->query('role');
@@ -1056,6 +1039,7 @@ class AdminController extends Controller
         return back()->with('success', 'User berhasil dihapus.');
     }
 
+    // Mendapatkan model class yang sesuai dengan role (admin, guru, murid, orang_tua).
     private function getModelByRole($role)
     {
         return match ($role) {
@@ -1067,6 +1051,8 @@ class AdminController extends Controller
         };
     }
 
+    // Menangani pendaftaran murid dan orang tua secara bersamaan, lengkap dengan pembuatan akun profil,
+    // murid, kelas, dan relasi orang tua. Juga mengirimkan kredensial login via email menggunakan Brevo.
     public function register(Request $request)
     {
         $request->validate([
@@ -1155,12 +1141,14 @@ class AdminController extends Controller
         return redirect()->route('home');
     }
 
+    // Menampilkan form pendaftaran dengan daftar kelas tahun.
     public function showRegisterForm()
     {
         $kelasTahunList = KelasTahun::all();
         return view('register', compact('kelasTahunList'));
     }
 
+    // Mengekspor data user berdasarkan role tertentu ke file Excel.
     public function exportUser($role)
     {
         $validRoles = ['admin', 'guru', 'murid', 'orang_tua'];
@@ -1172,6 +1160,7 @@ class AdminController extends Controller
         return Excel::download(new DownloadUser($role), $role . '.xlsx');
     }
 
+    // Menampilkan nilai siswa berdasarkan pelajaran, kelas_tahun, dan keyword pencarian nama.
     public function tampilkanNilai(Request $request)
     {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
@@ -1201,6 +1190,8 @@ class AdminController extends Controller
         return view('admin.NilaiSiswa', compact('admin', 'pelajaranList', 'kelasTahuns', 'muridList', 'pilihanPelajaran', 'pilihanKelasTahun'));
     }
 
+    
+    // Mengekspor nilai siswa ke file Excel berdasarkan kelas_tahun dan pelajaran.
     public function exportNilai($kelas_tahun_id, $pelajaran_id)
     {
         return Excel::download(new AdminExcelNilai($kelas_tahun_id, $pelajaran_id), 'nilai-murid-' . $kelas_tahun_id . '-' . $pelajaran_id . '-' . date('Ymd_His') . '.xlsx');

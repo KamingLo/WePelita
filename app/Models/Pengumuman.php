@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// Model untuk menyimpan data pengumuman yang dibuat oleh admin
 class Pengumuman extends Model
 {
     use HasFactory;

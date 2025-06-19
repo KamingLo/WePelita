@@ -18,6 +18,7 @@ class LoginResponse implements LoginResponseContract
             return response()->json(['message' => 'Authenticated', 'role' => $role]);
         }
 
+        // Redirect pengguna ke dashboard berdasarkan role
         switch ($role) {
             case 'admin':
                 return redirect()->route('admin.dashboard');
@@ -28,6 +29,7 @@ class LoginResponse implements LoginResponseContract
             case 'orangtua':
                 return redirect()->route('orangtua.dashboard');
             default:
+                // Redirect ke halaman utama jika role tidak dikenali
                 Log::warning('Fallback redirect triggered', ['role' => $role]);
                 return redirect('/');
         }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+// Model untuk menyimpan data absensi murid 
 class Absensi extends Model
 {
     use HasFactory;

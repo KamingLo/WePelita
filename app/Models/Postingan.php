@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use BeyondCode\Comments\Traits\HasComments;
 use Illuminate\Database\Eloquent\Model;
 
+// Model untuk menyimpan data postingan yang dibuat oleh pengguna 
 class Postingan extends Model
 {
     use HasFactory, HasComments;

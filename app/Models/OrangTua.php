@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// Model untuk menyimpan data orang tua dengan murid
 class OrangTua extends Model
 {
     use HasFactory;

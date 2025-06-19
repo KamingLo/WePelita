@@ -11,13 +11,19 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class PostinganController extends Controller
-{
+{   
+    /**
+     * Tampilkan detail postingan beserta komentar.
+     */
     public function show($id)
     {
         $postingan = Postingan::with('comments.commentator')->findOrFail($id);
         return view('postingan.show', compact('postingan'));
     }
 
+    /**
+     * Simpan komentar pengguna pada sebuah postingan.
+     */
     public function storeComment(Request $request, $id)
     {
         $request->validate([
@@ -31,11 +37,17 @@ class PostinganController extends Controller
         return back()->with('success', 'Komentar berhasil ditambahkan.');
     }
 
+    /**
+     * Tampilkan halaman profil pengguna yang sedang login.
+     */
     public function showProfile()
     {
         return view('ProfileUser', ['profile' => Auth::user()]);
     }
 
+    /**
+     * Update informasi profil pengguna, termasuk email, password, dan avatar.
+     */
     public function updateProfile(ProfileUpdateRequest $request)
     {
         try {

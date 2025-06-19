@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// Model untuk menyimpan komentar pengguna pada sebuah postingan
 class Komentar extends Model
 {
     use HasFactory;

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+// Model untuk menyimpan relasi antara guru, pelajaran, dan kelas 
 class GuruPelajaranKelas extends Model
 {
     protected $table = 'guru_pelajaran_kelas';

@@ -4,12 +4,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// Model untuk menyimpan nilai siswa berdasarkan pelajaran dan kelas
 class Nilai extends Model
 {
     use HasFactory;
-    protected $table = 'nilai';  // ini penting, supaya pakai tabel 'nilai' yang sudah ada
-    protected $primaryKey = 'nilai_id'; // kalau primary key bukan 'id', set juga ini
-    public $timestamps = false;  // kalau kamu tidak memakai timestamps
+    protected $table = 'nilai';  
+    protected $primaryKey = 'nilai_id'; 
+    public $timestamps = false;  
     protected $fillable = ['murid_kelas_id', 'pelajaran_id','nilai_tugas', 'nilai_uts', 'nilai_uas'];
 
     public function muridkelas()

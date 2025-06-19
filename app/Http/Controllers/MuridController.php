@@ -13,7 +13,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MuridController extends Controller
-{
+{   
+    /**
+     * Tampilkan dashboard murid beserta pengumuman yang relevan
+     */
     public function dashboard()
     {
         $murid = Auth::user()->murid;
@@ -42,6 +45,9 @@ class MuridController extends Controller
         return view('murid.dashboard', compact('murid', 'announcements'));
     }
 
+    /**
+     * Tampilkan jadwal pelajaran untuk murid berdasarkan kelas aktif
+     */
     public function jadwalKelas(Request $request)
     {
         $murid = Auth::user()->murid;
@@ -68,11 +74,17 @@ class MuridController extends Controller
         return view('murid.JadwalKelas', compact('murid', 'jadwals'));
     }
 
+    /**
+     * Export jadwal kelas murid ke dalam file Excel
+     */
     public function exportJadwal()
     {
         return Excel::download(new MuridJadwalExport(), 'jadwal-kelas.xlsx');
     }
 
+    /**
+     * Tampilkan nilai murid berdasarkan kelas tahun aktif
+     */
     public function nilaiKelas()
     {
         $murid = Auth::user()->murid;
@@ -92,7 +104,9 @@ class MuridController extends Controller
         return view('murid.NilaiMurid', compact('murid', 'nilais'));
     }
 
-
+    /**
+     * Tampilkan daftar pengumuman untuk murid
+     */
     public function pengumuman()
     {
         $murid = Auth::user()->murid;
@@ -116,7 +130,10 @@ class MuridController extends Controller
 
         return view('murid.Pengumuman', compact('murid', 'announcements'));
     }
-
+    
+    /**
+     * Ambil detail pengumuman tertentu dalam format JSON
+     */
     public function getAnnouncement($id)
     {
         $announcement = Postingan::with('profile', 'kelasTahun.kelas', 'kelasTahun.tahunajar')->findOrFail($id);
