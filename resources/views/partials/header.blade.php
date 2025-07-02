@@ -9,10 +9,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/default.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}" />
 </head>
+
+<style>
+    body {
+        background: #F0F4FF;
+    }
+
+    .BgPelita {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/image/PatternLogo2.png');
+        background-repeat: repeat;
+        background-position: center;
+        background-size: 180px 180px;
+        opacity: 0.05;
+        z-index: -1;
+    }
+</style>
+
 <body>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <div class="BgPelita"></div>
     @include('partials.navbar')
 </body>

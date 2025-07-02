@@ -16,6 +16,10 @@ use Maatwebsite\Excel\Facades\Excel;
 // Halaman home
 Route::get('/', [AdminController::class, 'index'])->name('home');
 
+Route::get('/testpage', function(){
+   return view('testhalaman'); 
+});
+
 // Menampilkan blog dan detailnya
 Route::get('/blog', [AdminController::class, 'tampilkanBlog'])->name('blog');
 Route::get('/blog/{postingan}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.show');

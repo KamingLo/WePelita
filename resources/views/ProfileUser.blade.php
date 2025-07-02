@@ -1,6 +1,4 @@
-<link rel="stylesheet" href="{{ asset('css/AdminCSS/ProfileUser.css') }}" />
-
-<body>
+<body class="font-sans text-gray-700 m-0 p-0 overflow-x-hidden">
     @if (auth()->check())
         @if (auth()->user()->admin)
             @include('admin.partials.header')
@@ -15,18 +13,21 @@
             @include('orangtua.partials.header')
             @include('orangtua.partials.sidebar')
         @endif
-    
-        <div class="KontainerUtamaProfilPengguna">
-            <h1>Data Profil</h1>
-            <div class="BagianFormulirProfil">
-                <div class="KotakRegistrasi">
-                    <div class="TataLetakFormulir">
-                        <div class="NotifikasiFormulirProfil">
-                            <div class="KepalaRegistrasi">
-                                <h2>Data Profil</h2>
-                                <div class="PesanKhususBerhasil">
+
+        <div class="ml-0 md:ml-64 lg:ml-64 xl:ml-64 p-5 md:p-8 lg:p-8 xl:p-8 flex flex-col items-center">
+            <h1 class="w-full text-gray-800 mb-5 text-2xl font-semibold relative pb-2 text-left
+                       before:content-[''] before:absolute before:left-0 before:bottom-0 before:h-1 before:w-full before:bg-blue-600">
+                Data Profil
+            </h1>
+            <div class="flex flex-col md:flex-row justify-center w-full h-auto md:h-[calc(100vh-150px)] gap-5 box-border">
+                <div class="flex-none w-full md:w-1/2 bg-white rounded-lg shadow-md overflow-y-auto max-w-4xl">
+                    <div class="p-5">
+                        <div class="flex items-center gap-2">
+                            <div class="w-full">
+                                <div class="w-full">
                                     @if(session('success'))
-                                    <div class="TampilanPesan PesanBerhasil">
+                                    <div class="p-4 rounded-lg mb-5 text-center font-medium
+                                                bg-green-100 text-green-700 border border-green-300 max-w-md text-left text-sm mx-auto">
                                         {{ session('success') }}
                                     </div>
                                     @endif
@@ -38,185 +39,196 @@
                             @csrf
                             @method('PUT')
                             <input type="hidden" name="delete_avatar" id="delete_avatar" value="0">
-                            <div class="BagianProfil">
-                                <h3 class="JudulBagian">Informasi Akun</h3>
-                                <div class="KisiProfil">
-                                    <div class="KolomProfilInfoAkun">
-                                        <div class="IsiData">
-                                            <label for="email">Email:</label>
-                                            <div style="position: relative;">
-                                                <input type="email" name="email" id="email" class="TampilanIsiData" value="{{ old('email', auth()->user()->email) }}" placeholder="Masukkan email" style="padding-right: 40px;" required>
-                                                <button type="button" id="hapusEmail" class="TombolHapus">
+                            <div class="mb-8 p-5 bg-white rounded-lg shadow-sm">
+                                <h3 class="m-0 mb-5 pb-2 border-b-2 border-gray-200 text-gray-700 text-lg font-semibold">Informasi Akun</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <div class="flex flex-col gap-4">
+                                        <div class="mb-4">
+                                            <label for="email" class="block mb-2 font-medium text-gray-800 text-sm">Email:</label>
+                                            <div class="relative">
+                                                <input type="email" name="email" id="email" class="w-full p-3 border border-gray-300 rounded-md text-sm transition-all duration-300
+                                                           focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200 pr-10"
+                                                       value="{{ old('email', auth()->user()->email) }}" placeholder="Masukkan email" required>
+                                                <button type="button" id="hapusEmail" class="absolute right-3 top-1/2 -translate-y-1/2 bg-none border-none text-gray-400 cursor-pointer text-lg p-1">
                                                     <i class='bx bx-x'></i>
                                                 </button>
                                             </div>
                                             @error('email')
-                                                <span class="PesanError">{{ $message }}</span>
+                                                <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <div class="IsiData">
-                                            <label for="password">Kata Sandi (kosongkan jika tidak diubah):</label>
-                                            <div style="position: relative;">
-                                                <input type="text" name="password" id="password" class="TampilanIsiData" placeholder="Masukkan kata sandi baru" style="padding-right: 40px;">
-                                                <button type="button" id="hapusKataSandi" class="TombolHapus">
+                                        <div class="mb-4">
+                                            <label for="password" class="block mb-2 font-medium text-gray-800 text-sm">Kata Sandi (kosongkan jika tidak diubah):</label>
+                                            <div class="relative">
+                                                <input type="password" name="password" id="password" class="w-full p-3 border border-gray-300 rounded-md text-sm transition-all duration-300
+                                                           focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200 pr-10"
+                                                       placeholder="Masukkan kata sandi baru">
+                                                <button type="button" id="hapusKataSandi" class="absolute right-3 top-1/2 -translate-y-1/2 bg-none border-none text-gray-400 cursor-pointer text-lg p-1">
                                                     <i class='bx bx-x'></i>
                                                 </button>
                                             </div>
                                             @error('password')
-                                                <span class="PesanError">{{ $message }}</span>
+                                                <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span>
                                             @enderror
                                         </div>
-                                        <div class="IsiData">
-                                            <label for="password_confirmation">Konfirmasi Kata Sandi:</label>
-                                            <div style="position: relative;">
-                                                <input type="text" name="password_confirmation" id="password_confirmation" class="TampilanIsiData" placeholder="Konfirmasi kata sandi baru" style="padding-right: 40px;">
-                                                <button type="button" id="hapusKataSandiKonfirmasi" class="TombolHapus">
+                                        <div class="mb-4">
+                                            <label for="password_confirmation" class="block mb-2 font-medium text-gray-800 text-sm">Konfirmasi Kata Sandi:</label>
+                                            <div class="relative">
+                                                <input type="password" name="password_confirmation" id="password_confirmation" class="w-full p-3 border border-gray-300 rounded-md text-sm transition-all duration-300
+                                                           focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200 pr-10"
+                                                       placeholder="Konfirmasi kata sandi baru">
+                                                <button type="button" id="hapusKataSandiKonfirmasi" class="absolute right-3 top-1/2 -translate-y-1/2 bg-none border-none text-gray-400 cursor-pointer text-lg p-1">
                                                     <i class='bx bx-x'></i>
                                                 </button>
                                             </div>
                                             @error('password_confirmation')
-                                                <span class="PesanError">{{ $message }}</span>
+                                                <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
 
-                                    <div class="KolomProfilAvatar">
-                                        <div class="IsiData">
-                                            <label for="avatar">Avatar:</label>
-                                            <div class="KontainerAvatar">
-                                                <div class="PratinjauAvatar">
+                                    <div class="flex flex-col gap-4">
+                                        <div class="mb-4">
+                                            <label for="avatar" class="block mb-2 font-medium text-gray-800 text-sm">Avatar:</label>
+                                            <div class="flex flex-col items-center gap-5">
+                                                <div class="w-32 h-32 rounded-full overflow-hidden border-2 border-blue-600 bg-gray-50 flex items-center justify-center">
                                                     @if(auth()->user()->avatar && file_exists(public_path('storage/file/' . auth()->user()->avatar)))
-                                                        <img id="pratinjauAvatar" src="{{ asset('storage/file/' . auth()->user()->avatar) }}">
+                                                        <img id="pratinjauAvatar" src="{{ asset('storage/file/' . auth()->user()->avatar) }}" class="w-full h-full object-cover">
                                                     @else
                                                         @if(auth()->user()->admin)
-                                                            <div class="DefaultAvatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+                                                            <div class="text-3xl font-semibold text-blue-600 uppercase">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
                                                         @elseif(auth()->user()->guru)
-                                                            <div class="DefaultAvatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+                                                            <div class="text-3xl font-semibold text-blue-600 uppercase">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
                                                         @elseif(auth()->user()->murid)
-                                                            <div class="DefaultAvatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+                                                            <div class="text-3xl font-semibold text-blue-600 uppercase">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
                                                         @elseif(auth()->user()->orangTua)
-                                                            <div class="DefaultAvatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
+                                                            <div class="text-3xl font-semibold text-blue-600 uppercase">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
                                                         @endif
                                                     @endif
                                                 </div>
-                                                <div style="position: relative;">
-                                                    <input type="file" name="avatar" id="avatar" class="TampilanIsiData" accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml" style="padding-right: 40px;">
-                                                    <button type="button" id="hapusAvatar" class="TombolHapus">
+                                                <div class="relative w-full">
+                                                    <input type="file" name="avatar" id="avatar" class="w-full p-3 border border-gray-300 rounded-md text-sm transition-all duration-300
+                                                               focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-200 pr-10"
+                                                           accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml">
+                                                    <button type="button" id="hapusAvatar" class="absolute right-3 top-1/2 -translate-y-1/2 bg-none border-none text-gray-400 cursor-pointer text-lg p-1">
                                                         <i class='bx bx-x'></i>
                                                     </button>
                                                 </div>
-                                                <button type="button" id="hapusFoto" class="TombolHapusFoto">Hapus Foto <i class='bx bxs-trash'></i></button>
+                                                <button type="button" id="hapusFoto" class="p-2 px-5 bg-red-600 text-white border-none rounded-md text-sm font-medium cursor-pointer transition-all duration-300
+                                                            w-full max-w-[150px] text-center flex items-center justify-center gap-2 hover:bg-red-700 hover:scale-105 hover:shadow-lg">
+                                                    Hapus Foto <i class='bx bxs-trash'></i>
+                                                </button>
                                             </div>
                                             @error('avatar')
-                                                <span class="PesanError">{{ $message }}</span>
+                                                <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="BagianProfil">
-                                <h3 class="JudulBagian">Informasi Personal</h3>
-                                <div class="KisiProfil">
-                                    <div class="KolomProfil">
-                                        <div class="IsiData">
-                                            <label>Nama:</label>
-                                            <div class="TampilanIsiData readonly">{{ auth()->user()->name }}</div>
+                            <div class="mb-8 p-5 bg-white rounded-lg shadow-sm">
+                                <h3 class="m-0 mb-5 pb-2 border-b-2 border-gray-200 text-gray-700 text-lg font-semibold">Informasi Personal</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <div class="flex flex-col gap-4">
+                                        <div class="mb-4">
+                                            <label class="block mb-2 font-medium text-gray-800 text-sm">Nama:</label>
+                                            <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->name }}</div>
                                         </div>
-                                        <div class="IsiData">
-                                            <label>Jenis Kelamin:</label>
-                                            <div class="TampilanIsiData readonly">{{ auth()->user()->jenis_kelamin }}</div>
+                                        <div class="mb-4">
+                                            <label class="block mb-2 font-medium text-gray-800 text-sm">Jenis Kelamin:</label>
+                                            <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->jenis_kelamin }}</div>
                                         </div>
-                                        <div class="IsiData">
-                                            <label>Tempat Lahir:</label>
-                                            <div class="TampilanIsiData readonly">{{ auth()->user()->tempat_lahir }}</div>
+                                        <div class="mb-4">
+                                            <label class="block mb-2 font-medium text-gray-800 text-sm">Tempat Lahir:</label>
+                                            <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->tempat_lahir }}</div>
                                         </div>
-                                        <div class="IsiData">
-                                            <label>No. Telepon:</label>
-                                            <div class="TampilanIsiData readonly">{{ auth()->user()->no_telp }}</div>
+                                        <div class="mb-4">
+                                            <label class="block mb-2 font-medium text-gray-800 text-sm">No. Telepon:</label>
+                                            <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->no_telp }}</div>
                                         </div>
                                     </div>
 
-                                    <div class="KolomProfil">
-                                        <div class="IsiData">
-                                            <label>Alamat:</label>
-                                            <div class="TampilanIsiData readonly">{{ auth()->user()->alamat }}</div>
+                                    <div class="flex flex-col gap-4">
+                                        <div class="mb-4">
+                                            <label class="block mb-2 font-medium text-gray-800 text-sm">Alamat:</label>
+                                            <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->alamat }}</div>
                                         </div>
-                                        <div class="IsiData">
-                                            <label>Tanggal Lahir:</label>
-                                            <div class="TampilanIsiData readonly">{{ \Carbon\Carbon::parse(auth()->user()->tanggal_lahir)->format('d-m-Y') }}</div>
+                                        <div class="mb-4">
+                                            <label class="block mb-2 font-medium text-gray-800 text-sm">Tanggal Lahir:</label>
+                                            <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ \Carbon\Carbon::parse(auth()->user()->tanggal_lahir)->format('d-m-Y') }}</div>
                                         </div>
-                                        <div class="IsiData">
-                                            <label>Pendidikan:</label>
-                                            <div class="TampilanIsiData readonly">{{ auth()->user()->pendidikan }}</div>
+                                        <div class="mb-4">
+                                            <label class="block mb-2 font-medium text-gray-800 text-sm">Pendidikan:</label>
+                                            <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->pendidikan }}</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             @if(auth()->user()->admin || auth()->user()->guru || auth()->user()->murid || auth()->user()->orangTua)
-                            <div class="BagianProfil">
-                                <h3 class="JudulBagian">Informasi Peran</h3>
-                                <div class="KisiProfil">
-                                    <div class="KolomProfil">
+                            <div class="mb-8 p-5 bg-white rounded-lg shadow-sm">
+                                <h3 class="m-0 mb-5 pb-2 border-b-2 border-gray-200 text-gray-700 text-lg font-semibold">Informasi Peran</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                    <div class="flex flex-col gap-4">
                                         @if(auth()->user()->admin)
-                                            <div class="IsiData">
-                                                <label>Peran:</label>
-                                                <div class="TampilanIsiData readonly">Admin</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">Peran:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">Admin</div>
                                             </div>
                                         @elseif(auth()->user()->guru)
-                                            <div class="IsiData">
-                                                <label>Peran:</label>
-                                                <div class="TampilanIsiData readonly">Guru</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">Peran:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">Guru</div>
                                             </div>
-                                            <div class="IsiData">
-                                                <label>Gelar:</label>
-                                                <div class="TampilanIsiData readonly">{{ auth()->user()->guru->gelar }}</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">Gelar:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->guru->gelar ?? '-' }}</div>
                                             </div>
-                                            <div class="IsiData">
-                                                <label>NUPTK:</label>
-                                                <div class="TampilanIsiData readonly">{{ auth()->user()->guru->nuptk }}</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">NUPTK:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->guru->nuptk ?? '-' }}</div>
                                             </div>
                                         @elseif(auth()->user()->murid)
-                                            <div class="IsiData">
-                                                <label>Peran:</label>
-                                                <div class="TampilanIsiData readonly">Murid</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">Peran:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">Murid</div>
                                             </div>
-                                            <div class="IsiData">
-                                                <label>NIS:</label>
-                                                <div class="TampilanIsiData readonly">{{ auth()->user()->murid->nis }}</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">NIS:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->murid->nis ?? '-' }}</div>
                                             </div>
                                         @elseif(auth()->user()->orangTua)
-                                            <div class="IsiData">
-                                                <label>Peran:</label>
-                                                <div class="TampilanIsiData readonly">Orang Tua</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">Peran:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">Orang Tua</div>
                                             </div>
                                         @endif
                                     </div>
 
-                                    <div class="KolomProfil">
+                                    <div class="flex flex-col gap-4">
                                         @if(auth()->user()->guru)
-                                            <div class="IsiData">
-                                                <label>Status Menikah:</label>
-                                                <div class="TampilanIsiData readonly">{{ auth()->user()->guru->statusMenikah }}</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">Status Menikah:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->guru->statusMenikah ?? '-' }}</div>
                                             </div>
-                                            <div class="IsiData">
-                                                <label>Status Kerja:</label>
-                                                <div class="TampilanIsiData readonly">{{ auth()->user()->guru->statusKerja }}</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">Status Kerja:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->guru->statusKerja ?? '-' }}</div>
                                             </div>
                                         @elseif(auth()->user()->murid)
-                                            <div class="IsiData">
-                                                <label>Asal Sekolah:</label>
-                                                <div class="TampilanIsiData readonly">{{ auth()->user()->murid->asal_sekolah }}</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">Asal Sekolah:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->murid->asal_sekolah ?? '-' }}</div>
                                             </div>
-                                            <div class="IsiData">
-                                                <label>NISN:</label>
-                                                <div class="TampilanIsiData readonly">{{ auth()->user()->murid->nisn }}</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">NISN:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->murid->nisn ?? '-' }}</div>
                                             </div>
                                         @elseif(auth()->user()->orangTua)
-                                            <div class="IsiData">
-                                                <label>Profesi:</label>
-                                                <div class="TampilanIsiData readonly">{{ auth()->user()->orangTua->profesi }}</div>
+                                            <div class="mb-4">
+                                                <label class="block mb-2 font-medium text-gray-800 text-sm">Profesi:</label>
+                                                <div class="w-full p-3 bg-gray-50 border border-gray-300 rounded-md text-gray-700 text-sm">{{ auth()->user()->orangTua->profesi ?? '-' }}</div>
                                             </div>
                                         @endif
                                     </div>
@@ -224,9 +236,14 @@
                             </div>
                             @endif
 
-                            <div class="KontainerTombol">
-                                <button type="submit" class="TombolTambah">Update Profil</button>
-                                <a href="{{ auth()->user()->admin ? route('admin.dashboard') : (auth()->user()->guru ? route('guru.dashboard') : (auth()->user()->murid ? route('murid.dashboard') : route('orangtua.dashboard'))) }}" class="TombolBatal">Batal</a>
+                            <div class="flex flex-col md:flex-row justify-center gap-5 mt-5">
+                                <button type="submit" class="w-full md:w-auto p-3 px-8 bg-blue-600 text-white border-none rounded-md text-base font-medium cursor-pointer transition-all duration-300 min-w-[200px] hover:bg-blue-700 hover:scale-105 hover:shadow-lg">
+                                    Update Profil
+                                </button>
+                                <a href="{{ auth()->user()->admin ? route('admin.dashboard') : (auth()->user()->guru ? route('guru.dashboard') : (auth()->user()->murid ? route('murid.dashboard') : route('orangtua.dashboard'))) }}"
+                                   class="w-full md:w-auto p-3 px-8 bg-gray-500 text-white border-none rounded-md text-base font-medium cursor-pointer transition-all duration-300 text-center inline-block min-w-[200px] hover:bg-gray-600 hover:scale-105 hover:shadow-lg">
+                                    Batal
+                                </a>
                             </div>
                         </form>
                     </div>
@@ -234,8 +251,8 @@
             </div>
         </div>
     @else
-        <p>Anda tidak memiliki akses ke halaman ini</p>
-        <a href="/login">Login kembali disini</a>
+        <p class="text-center text-xl mt-20">Anda tidak memiliki akses ke halaman ini</p>
+        <a href="/login" class="block text-center text-blue-600 hover:underline mt-4">Login kembali disini</a>
     @endif
 
     <script src="{{ asset('js/CssAdmin.js') }}"></script>
@@ -262,13 +279,19 @@
             const pratinjauAvatar = document.getElementById('pratinjauAvatar');
 
             inputAvatar.addEventListener('change', function(e) {
-                const file = e.target.files[0];
+                const file = e.target.files.length > 0 ? e.target.files.item(0) : null;
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = function(e) {
-                        pratinjauAvatar.src = e.target.result;
+                    reader.onload = function(event) {
+                        pratinjauAvatar.src = event.target.result;
                     };
                     reader.readAsDataURL(file);
+                } else {
+                    @if(auth()->user()->avatar && file_exists(public_path('storage/file/' . auth()->user()->avatar)))
+                        pratinjauAvatar.src = "{{ asset('storage/file/' . auth()->user()->avatar) }}";
+                    @else
+                        pratinjauAvatar.src = "{{ asset('images/profile.png') }}";
+                    @endif
                 }
             });
 

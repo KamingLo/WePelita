@@ -1,109 +1,109 @@
 @include('admin.partials.header')
 @include('admin.partials.sidebar')
-<link rel="stylesheet" href="{{ asset('css/AdminCSS/TambahJadwal.css') }}" />
 
-<body>
-    <div class="ContainerJadwal">
-        <h1>Edit Jadwal Pembelajaran</h1>
+<body class="font-sans text-gray-800 bg-blue-50">
+    <div class="p-4 md:ml-64 md:p-6 flex flex-col min-h-screen">
+        <h1 class="text-xl md:text-2xl font-semibold text-gray-800 mb-4 md:mb-6 relative pb-2 border-b-2 border-blue-500 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-blue-500">Edit Jadwal Pembelajaran</h1>
 
-        <div class="LayoutJadwalForm">
-            <h2>Edit Jadwal</h2>
-            <form action="{{ route('jadwal.update', ['id' => $jadwal->jadwal_id]) }}" method="POST">
-                @csrf
-                @method('PUT')
+        <div class="flex flex-col md:flex-row md:gap-6 flex-1">
+            <div class="bg-white p-4 rounded-lg shadow-md w-full md:w-1/4 flex flex-col mb-6 md:mb-0">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-10 after:bg-blue-500">Edit Jadwal</h2>
+                <form action="{{ route('jadwal.update', ['id' => $jadwal->jadwal_id]) }}" method="POST" class="space-y-4 flex-1">
+                    @csrf
+                    @method('PUT')
 
-                <div class="IsiData">
-                    <label for="pelajaran_id">Pelajaran</label>
-                    <select name="pelajaran_id" id="pelajaran_id" class="TampilanIsiData" required>
-                        <option value="" disabled selected>-- Pilih Pelajaran --</option>
-                        @foreach($pelajaran as $item)
-                            <option value="{{ $item->pelajaran_id }}"
-                                {{ old('pelajaran_id', $jadwal->pelajaran_id) == $item->pelajaran_id ? 'selected' : '' }}>
-                                {{ $item->namaPelajaran }}
-                            </option>
+                    <div>
+                        <label for="pelajaran_id" class="block text-sm font-medium text-gray-700">Pelajaran</label>
+                        <select name="pelajaran_id" id="pelajaran_id" class="w-full p-2 border border-gray-300 rounded-md" required>
+                            <option value="" disabled selected>-- Pilih Pelajaran --</option>
+                            @foreach($pelajaran as $item)
+                                <option value="{{ $item->pelajaran_id }}"
+                                    {{ old('pelajaran_id', $jadwal->pelajaran_id) == $item->pelajaran_id ? 'selected' : '' }}>
+                                    {{ $item->namaPelajaran }} ({{ $item->guru->profile->name }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="kelas_tahun_id" class="block text-sm font-medium text-gray-700">Kelas</label>
+                        <select name="kelas_tahun_id" id="kelas_tahun_id" class="w-full p-2 border border-gray-300 rounded-md" required>
+                            <option value="" disabled selected>-- Pilih Kelas --</option>
+                            @foreach($kelas as $item)
+                                <option value="{{ $item->kelas_tahun_id }}"
+                                    {{ old('kelas_tahun_id', $jadwal->kelasTahun->kelas_tahun_id) == $item->kelas_tahun_id ? 'selected' : '' }}>
+                                    {{ $item->kelas->nama_kelas }} ({{ $item->TahunAjar->tahun_ajaran }}) {{ $item->TahunAjar->status }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="hari" class="block text-sm font-medium text-gray-700">Hari</label>
+                        <select name="hari" id="hari" class="w-full p-2 border border-gray-300 rounded-md" required>
+                            <option value="" disabled selected>-- Pilih Hari --</option>
+                            @foreach(['Senin','Selasa','Rabu','Kamis','Jumat'] as $day)
+                                <option value="{{ $day }}"
+                                    {{ old('hari', $jadwal->hari) == $day ? 'selected' : '' }}>
+                                    {{ $day }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="waktu_mulai" class="block text-sm font-medium text-gray-700">Waktu Mulai</label>
+                        <input type="time" name="waktu_mulai" id="waktu_mulai" class="w-full p-2 border border-gray-300 rounded-md" value="{{ old('waktu_mulai', $jadwal->waktu_mulai) }}" required>
+                    </div>
+
+                    <div>
+                        <label for="waktu_selesai" class="block text-sm font-medium text-gray-700">Waktu Selesai</label>
+                        <input type="time" name="waktu_selesai" id="waktu_selesai" class="w-full p-2 border border-gray-300 rounded-md" value="{{ old('waktu_selesai', $jadwal->waktu_selesai) }}" required>
+                    </div>
+
+                    <div class="flex gap-4 mt-auto">
+                        <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 flex-1">
+                            Simpan Jadwal
+                        </button>
+                        <a href="{{ route('admin.TambahJadwal') }}" class="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600 flex-1 text-center">Batal</a>
+                    </div>
+                </form>
+
+                @if ($errors->any())
+                    <div class="mt-2 p-2 bg-red-100 text-red-700 text-sm rounded-md">
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
                         @endforeach
-                    </select>
+                    </div>
+                @endif
+            </div>
+
+            <div class="bg-white p-4 rounded-lg shadow-md w-full md:w-3/4 flex flex-col">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4 relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-10 after:bg-blue-500">Detail Jadwal</h2>
+                <div class="flex-1 overflow-x-auto">
+                    <table class="w-full text-sm text-gray-700">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="p-2 border-b text-center">Pelajaran</th>
+                                <th class="p-2 border-b text-center">Kelas</th>
+                                <th class="p-2 border-b text-center">Hari</th>
+                                <th class="p-2 border-b text-center">Waktu Mulai</th>
+                                <th class="p-2 border-b text-center">Waktu Selesai</th>
+                                <th class="p-2 border-b text-center">Guru Pengajar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white">
+                                <td class="p-2 border-b text-center">{{ $jadwal->pelajaran->namaPelajaran }}</td>
+                                <td class="p-2 border-b text-center">{{ $jadwal->kelasTahun->kelas->nama_kelas }}</td>
+                                <td class="p-2 border-b text-center">{{ $jadwal->hari }}</td>
+                                <td class="p-2 border-b text-center">{{ $jadwal->waktu_mulai }}</td>
+                                <td class="p-2 border-b text-center">{{ $jadwal->waktu_selesai }}</td>
+                                <td class="p-2 border-b text-center">{{ $jadwal->pelajaran->guru->profile->name }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <div class="IsiData">
-                    <label for="kelas_id">Kelas</label>
-                    <select name="kelas_tahun_id" id="kelas_id" class="TampilanIsiData" required>
-                        <option value="" disabled selected>-- Pilih Kelas --</option>
-                        @foreach($kelas as $item)
-                            <option value="{{ $item->kelas_tahun_id }}"
-                                {{ old('kelas_tahun_id', $jadwal->kelasTahun->kelas_tahun_id) == $item->kelas_tahun_id ? 'selected' : '' }}>
-                                {{ $item->kelas->nama_kelas }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="IsiData">
-                    <label for="hari">Hari</label>
-                    <select name="hari" id="hari" class="TampilanIsiData" required>
-                        <option value="" disabled selected>-- Pilih Hari --</option>
-                        @foreach(['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'] as $day)
-                            <option value="{{ $day }}"
-                                {{ old('hari', $jadwal->hari) == $day ? 'selected' : '' }}>
-                                {{ $day }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="IsiData">
-                    <label for="waktu_mulai">Waktu Mulai</label>
-                    <input type="time" name="waktu_mulai" id="waktu_mulai" class="TampilanIsiData" value="{{ old('waktu_mulai', $jadwal->waktu_mulai) }}" required>
-                </div>
-
-                <div class="IsiData">
-                    <label for="waktu_selesai">Waktu Selesai</label>
-                    <input type="time" name="waktu_selesai" id="waktu_selesai" class="TampilanIsiData" value="{{ old('waktu_selesai', $jadwal->waktu_selesai) }}" required>
-                </div>
-
-                <div class="OptionPelajaranTabelEdit">
-                    <button type="submit" class="TombolOJTEdit TambahJadwalEdit">
-                        Simpan Jadwal
-                    </button>
-
-                    <a href="{{ route('admin.TambahJadwal') }}" class="TombolOJTEdit TombolJadwalBatal">Batal</a>
-                </div>
-
-            </form>
-
-            @if ($errors->has('jadwal'))
-                <div class="UiPsnDis PsnError">
-                    {{ $errors->first('jadwal') }}
-                </div>
-            @endif
-
-        </div>
-
-        <div class="LayoutJadwalTable">
-            <h2>Jadwal Pembelajaran</h2>
-            <div class="DisplayDataTable">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Pelajaran</th>
-                            <th>Kelas</th>
-                            <th>Hari</th>
-                            <th>Waktu Mulai</th>
-                            <th>Waktu Selesai</th>
-                            <th>Guru Pengajar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ $jadwal->pelajaran->namaPelajaran }}</td>
-                            <td>{{ $jadwal->kelasTahun->kelas->nama_kelas }}</td>
-                            <td>{{ $jadwal->hari }}</td>
-                            <td>{{ $jadwal->waktu_mulai }}</td>
-                            <td>{{ $jadwal->waktu_selesai }}</td>
-                            <td>{{ $jadwal->pelajaran->guru->profile->name }}</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
