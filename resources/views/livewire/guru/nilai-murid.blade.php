@@ -1,5 +1,5 @@
 <div>
-    <div class="md:ml-64 px-4 md:px-8 py-8">
+    <div id="main-content" class="md:ml-64 px-4 md:px-8 py-8 transition-all duration-400 ease-in-out">
         <h1 class="w-full text-[#343a40] mb-5 text-2xl font-bold relative pb-2 transform translate-y-0 -lg:-translate-y-[2rem]">
             Cek dan Input Nilai Murid
             <span class="absolute left-0 bottom-0 h-1 w-24 bg-[#4a6cf7]"></span>

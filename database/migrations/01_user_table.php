@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('statusMenikah');
             $table->string('statusKerja');
             $table->string('nuptk');
+            $table->string('jabatan')->nullable();
             $table->foreignId('profile_id')->constrained('profiles', 'profile_id')->onDelete('cascade');
         });    
         

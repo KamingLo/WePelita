@@ -20,6 +20,8 @@ Route::get('/testpage', function(){
    return view('testhalaman'); 
 });
 
+Route::get('/DaftarGuru', [AdminController::class, 'tampilkanListGuru'])->name('daftar.guru');
+
 // Menampilkan blog dan detailnya
 Route::get('/blog', [AdminController::class, 'tampilkanBlog'])->name('blog');
 Route::get('/blog/{postingan}', [AdminController::class, 'tampilkanBlogDetail'])->name('blog.show');
@@ -46,6 +48,8 @@ Route::middleware([RoleMiddleware::class.':admin'])->group(function () {
         $admin = Admin::where('profile_id', auth()->id())->firstOrFail();
         return view('admin.dashboard', compact('admin'));
     })->name('admin.dashboard');
+
+    Route::put('admin/guru/{id}/status', [AdminController::class, 'updateGuruStatus'])->name('admin.updateGuruStatus');
 
     // Export data user berdasarkan role
     Route::get('admin/downloaduser/{role}', [AdminController::class, 'exportUser'])->name('admin.downloaduser');

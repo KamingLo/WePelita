@@ -2,80 +2,70 @@
 @include('murid.partials.sidebar')
 
 <body class="font-sans text-gray-700 m-0 p-0 overflow-x-hidden md:overflow-x-auto">
-    <div class="md:ml-[256px] px-4 md:px-8 py-8 flex flex-col gap-8">
-        <h2 class="w-full text-gray-800 mb-2 text-2xl font-bold relative pb-2 md:mt-0">
+    <div id="main-content" class="px-10 md:px-8 py-8 flex flex-col gap-8 min-h-screen transition-all duration-400 ease-in-out">
+        <h1 class="w-full text-gray-800 mb-2 text-2xl font-bold relative pb-2 md:mt-0">
             Daftar Pengumuman
             <span class="absolute left-0 bottom-0 h-1 w-24 bg-blue-600"></span>
-        </h2>
+        </h1>
 
         <div class="w-full">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 pb-2 rounded-xl overflow-y-auto max-h-[calc(100vh-250px)]">
-                @if($announcements->isNotEmpty())
+            @if($announcements->isNotEmpty())
+                <div class="flex flex-col gap-6">
                     @foreach($announcements as $announcement)
-                        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-md transition-all duration-300 ease-in-out flex flex-col md:flex-row gap-5 items-center min-h-[200px] hover:shadow-lg hover:-translate-y-0.5">
-                            <div class="w-[200px] h-[200px] md:w-[200px] md:h-[200px] flex-shrink-0 rounded-lg border border-gray-200 overflow-hidden">
-                                <img src="{{ $announcement->lampiran ? asset('storage/' . $announcement->lampiran) : 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' }}"
-                                     alt="{{ $announcement->judul }}"
-                                     class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1 flex flex-col gap-2 mt-0 h-auto">
-                                <h3 class="text-xl font-semibold text-gray-900 leading-tight">
-                                    {{ $announcement->judul }}
-                                </h3>
-                                <p class="text-gray-600 text-sm overflow-hidden min-h-[5rem] text-justify">
-                                    {{ Str::limit(strip_tags($announcement->isi), 210) }}
-                                </p>
-                                <div class="flex justify-between items-center gap-2 mt-4">
+                        <div class="bg-white border border-gray-100 rounded-xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row gap-6 max-w-full w-full" style="max-width: 700px;">
+                            <div class="w-full h-32 sm:w-48 sm:h-48 bg-cover bg-center rounded-lg border border-gray-100 overflow-hidden flex-shrink-0"
+                                @if($announcement->lampiran)
+                                    style="background-image: url('{{ asset('storage/' . $announcement->lampiran) }}');"
+                                @else
+                                    style="background-image: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');"
+                                @endif
+                            ></div>
+                            <div class="flex-1 flex flex-col gap-4 w-full overflow-hidden">
+                                <h3 class="text-xl font-semibold text-gray-900 overflow-hidden text-ellipsis whitespace-nowrap max-w-full">{{ $announcement->judul }}</h3>
+                                <p class="text-sm text-gray-600 overflow-hidden line-clamp-3 max-w-full" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">{{ Str::limit(strip_tags($announcement->isi), 150) }}</p>
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mt-auto">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center font-semibold text-gray-700 text-base border-2 border-gray-200">
-                                            @if($announcement->profile)
-                                                {{ strtoupper(substr($announcement->profile->name, 0, 2)) }}
-                                            @else
-                                                ??
-                                            @endif
+                                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gray-50 flex items-center justify-center font-medium text-gray-700 border border-gray-200">
+                                            {{ $announcement->profile ? strtoupper(substr($announcement->profile->name, 0, 2)) : '??' }}
                                         </div>
-                                        <div class="flex flex-col">
-                                            <span class="font-semibold text-gray-800 text-sm">
-                                                @if($announcement->profile)
-                                                    {{ $announcement->profile->name }}
-                                                @else
-                                                    Unknown Author
-                                                @endif
-                                            </span>
-                                            <span class="text-gray-500 text-xs">{{ $announcement->created_at->format('M d, Y') }}</span>
-                                            <span class="text-gray-500 text-xs">
-                                                Tujuan: {{ $announcement->kelasTahun ? $announcement->kelasTahun->kelas->nama_kelas . ' - ' . $announcement->kelasTahun->tahunajar->tahun_ajaran : 'Publik' }}
+                                        <div class="flex flex-col text-sm">
+                                            <span class="font-medium text-gray-800 overflow-hidden text-ellipsis whitespace-nowrap">{{ $announcement->profile->name ?? 'Unknown Author' }}</span>
+                                            <span class="text-gray-500 text-xs overflow-hidden text-ellipsis whitespace-nowrap">{{ $announcement->created_at->format('M d, Y') }}</span>
+                                            <span class="text-gray-500 text-xs overflow-hidden text-ellipsis whitespace-nowrap">
+                                                Tujuan: {{ $announcement->kelasTahun
+                                                    ? Str::limit("{$announcement->kelasTahun->kelas->nama_kelas} - {$announcement->kelasTahun->tahunajar->tahun_ajaran}", 30, '...')
+                                                    : 'Publik' }}
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="flex-shrink-0">
-                                        <a href="#" class="TombolBacaSelengkapnya inline-flex items-center font-medium select-none border border-blue-600 px-4 py-2 text-sm leading-normal rounded-md transition-all duration-300 ease-in-out cursor-pointer no-underline text-white bg-blue-600 hover:bg-blue-700 hover:border-blue-700 hover:shadow-lg hover:shadow-blue-600/30" data-id="{{ $announcement->postingan_id }}">
-                                            Baca Selengkapnya
-                                        </a>
-                                    </div>
+                                    <a href="#" class="TombolBacaSelengkapnya px-5 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-300 flex-shrink-0" data-id="{{ $announcement->postingan_id }}">
+                                        Baca Selengkapnya
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     @endforeach
-                @else
-                    <p class="p-4 text-gray-600 col-span-full">Tidak ada pengumuman tersedia.</p>
-                @endif
-            </div>
+                </div>
+            @else
+                <div class="bg-white border border-gray-100 rounded-xl p-6 sm:p-8 shadow-sm text-center text-gray-500 text-base">
+                    Tidak ada pengumuman tersedia.
+                </div>
+            @endif
         </div>
     </div>
 
-    <div id="announcementPopup" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[1000] flex items-center justify-center">
-        <div class="relative bg-white m-auto p-5 rounded-lg w-11/12 max-w-4xl shadow-lg max-h-[90vh] overflow-y-auto">
+    <div id="announcementPopup" class="popup hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="relative bg-white p-5 rounded-lg shadow-lg w-full max-w-3xl max-h-[90vh] overflow-y-auto mx-auto">
             <div class="flex flex-col gap-5">
-                <div class="blog-image w-full h-auto rounded-lg object-cover" data-aos="fade-up"></div>
-                <div class="blog-content px-0 md:px-5" data-aos="fade-up" data-aos-delay="100">
-                    <h1 class="popup-title text-2xl md:text-3xl font-bold text-gray-800 mb-3"></h1>
-                    <div class="blog-meta flex gap-5 text-gray-500 text-sm mb-4">
-                        <span class="author flex items-center gap-1"><i class='bx bx-user'></i> <span class="popup-author"></span></span>
-                        <span class="date flex items-center gap-1"><i class='bx bx-calendar'></i> <span class="popup-date"></span></span>
+                <div class="blog-image" data-aos="fade-up"></div>
+                <div class="blog-content px-0 sm:px-5" data-aos="fade-up" data-aos-delay="100">
+                    <h1 class="popup-title text-2xl text-gray-800 font-semibold mb-3"></h1>
+                    <div class="flex flex-wrap gap-5 text-gray-500 text-sm mb-4">
+                        <span class="author flex items-center gap-2"><i class='bx bx-user'></i> <span class="popup-author"></span></span>
+                        <span class="date flex items-center gap-2"><i class='bx bx-calendar'></i> <span class="popup-date"></span></span>
                     </div>
-                    <div class="blog-body text-gray-700 text-base leading-relaxed"></div>
-                    <a href="#" class="back-btn inline-flex items-center gap-2 px-4 py-2 text-sm text-white bg-blue-600 border border-blue-600 rounded-md no-underline transition-all duration-300 ease-in-out w-fit mt-5 hover:bg-blue-700 hover:border-blue-700 hover:shadow-lg hover:shadow-blue-600/30" data-aos="fade-up" data-aos-delay="200">
+                    <div class="blog-body text-gray-800 text-base leading-relaxed"></div>
+                    <a href="#" class="back-btn flex items-center gap-2 px-4 py-2 text-sm text-white bg-blue-600 border border-blue-600 rounded-md hover:bg-blue-700 hover:border-blue-700 hover:shadow-lg transition-all duration-300 w-fit mt-5">
                         <i class='bx bx-arrow-back'></i> Kembali
                     </a>
                 </div>
@@ -160,4 +150,4 @@
             });
         });
     </script>
-</body>
+</body> 

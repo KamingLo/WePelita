@@ -2,7 +2,7 @@
 @include('murid.partials.sidebar')
 
 <body class="font-sans text-gray-700 m-0 p-0 overflow-x-hidden md:overflow-x-auto">
-    <div class="md:ml-[256px] px-4 md:px-8 py-8 flex flex-wrap gap-8">
+    <div id="main-content" class="px-4 md:px-8 py-8 flex flex-wrap gap-8 transition-all duration-400 ease-in-out">
         <h1 class="w-full text-gray-800 mb-2 text-2xl font-bold relative pb-2 md:mt-0">
             Cek Nilai
             <span class="absolute left-0 bottom-0 h-1 w-24 bg-blue-600"></span>
@@ -20,10 +20,10 @@
 
         <div class="w-full bg-white p-4 md:p-6 rounded-lg shadow-md max-h-[600px] flex flex-col md:min-h-[80vh]">
             <div class="flex flex-col md:flex-row md:items-center mb-5">
-                <h2 class="text-gray-800 text-xl relative pb-2 mb-4 md:mb-0 md:mr-auto">
-                    Nilai Kelas: {{ $kelasName }}
+                <h3 class="text-gray-800 text-xl relative pb-2 mb-4 md:mb-0 md:mr-auto">
+                    Hasil Nilai: {{ $murid->profile->name }}
                     <span class="absolute left-0 bottom-0 h-0.5 w-10 bg-blue-600"></span>
-                </h2>
+                </h3>
             </div>
             <div class="overflow-y-auto overflow-x-auto flex-1">
                 @if($nilais->isNotEmpty())

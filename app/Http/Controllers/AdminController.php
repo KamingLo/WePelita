@@ -30,6 +30,38 @@ use App\Services\BrevoMailer;
 
 class AdminController extends Controller
 {   
+    public function tampilkanListGuru()
+    {
+        Log::info('Accessing tampilkanListGuru', [
+            'user_id' => auth()->id(),
+            'session_role' => session('role'),
+            'is_authenticated' => auth()->check(),
+        ]);
+        $gurus = Guru::with('profile')->get();
+        return view('ListGuru', compact('gurus'));
+    }
+
+    // Memperbarui status kerja guru
+    public function updateGuruStatus(Request $request, $id)
+    {
+        \Log::info('updateGuruStatus called', [
+            'user_id' => auth()->id(),
+            'session_role' => session('role'),
+            'guru_id' => $id,
+            'jabatan' => $request->jabatan,
+        ]);
+
+        $request->validate([
+            'jabatan' => 'nullable|string|max:255',
+        ]);
+
+        $guru = Guru::findOrFail($id);
+        $guru->jabatan = $request->jabatan;
+        $guru->save();
+
+        return redirect()->route('daftar.guru')->with('success', 'Jabatan guru berhasil diperbarui.');
+    }
+
     // Menampilkan form tambah user 
     public function formUser()
     {
@@ -970,7 +1002,7 @@ class AdminController extends Controller
             $profile->tanggal_lahir = $request->tanggal_lahir;
             $profile->tempat_lahir = $request->tempat_lahir;
             $profile->pendidikan = $request->pendidikan;
-            $profile->foto = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $profile->foto;
+            $profile->avatar = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $profile->avatar;
             $profile->no_telp = $request->no_telp;
 
             if ($request->filled('password')) {
@@ -996,7 +1028,7 @@ class AdminController extends Controller
             $profile->tanggal_lahir = $request->tanggal_lahir;
             $profile->tempat_lahir = $request->tempat_lahir;
             $profile->pendidikan = $request->pendidikan;
-            $profile->foto = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $profile->foto;
+            $profile->avatar = $request->file('foto') ? $request->file('foto')->store('avatar', 'public') : $profile->avatar;
             $profile->no_telp = $request->no_telp;
 
             if ($request->filled('password')) {

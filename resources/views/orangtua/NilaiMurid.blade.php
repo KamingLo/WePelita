@@ -2,7 +2,7 @@
 @include('orangtua.partials.sidebar')
 
 <body class="font-sans text-gray-700 m-0 p-0 overflow-x-hidden md:overflow-x-auto">
-    <div class="md:ml-64 px-4 md:px-8 py-8 flex flex-wrap gap-8">
+    <div id="main-content" class="px-4 md:px-8 py-8 flex flex-wrap gap-8 min-h-screen transition-all duration-400 ease-in-out">
         <h1 class="w-full text-gray-800 mb-2 text-2xl font-bold relative pb-2 md:mt-0">
             Cek Nilai Anak
             <span class="absolute left-0 bottom-0 h-1 w-24 bg-blue-600"></span>

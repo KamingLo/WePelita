@@ -5,7 +5,7 @@ function OhayooUser() {
   let Sapaan = " ";
 
   if (jamIRL >= 3 && jamIRL < 6) {
-    Sapaan = "Waktu Tenang";
+    Sapaan = "Selamat Pagi";
   } else if (jamIRL >= 6 && jamIRL < 11) {
     Sapaan = "Selamat Pagi";
   } else if (jamIRL >= 11 && jamIRL < 15) {

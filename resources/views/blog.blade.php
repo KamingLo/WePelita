@@ -50,7 +50,7 @@
                             </div>
                         </div>
                         @empty
-                        <div class="col-span-full text-center py-10 text-gray-600">
+                        <div class="col-span-full text-center py-10 text-gray-600" style="margin-bottom: 5rem;">
                             <p>Belum ada artikel blog yang tersedia.</p>
                         </div>
                         @endforelse

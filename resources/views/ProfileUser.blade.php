@@ -14,13 +14,13 @@
             @include('orangtua.partials.sidebar')
         @endif
 
-        <div class="ml-0 md:ml-64 lg:ml-64 xl:ml-64 p-5 md:p-8 lg:p-8 xl:p-8 flex flex-col items-center">
+        <div id="main-content" class="p-5 md:p-8 lg:p-8 xl:p-8 flex flex-col items-center min-h-screen transition-all duration-400 ease-in-out">
             <h1 class="w-full text-gray-800 mb-5 text-2xl font-semibold relative pb-2 text-left
                        before:content-[''] before:absolute before:left-0 before:bottom-0 before:h-1 before:w-full before:bg-blue-600">
                 Data Profil
             </h1>
             <div class="flex flex-col md:flex-row justify-center w-full h-auto md:h-[calc(100vh-150px)] gap-5 box-border">
-                <div class="flex-none w-full md:w-1/2 bg-white rounded-lg shadow-md overflow-y-auto max-w-4xl">
+                <div class="flex-none w-full xl:max-w-4xl bg-white rounded-lg shadow-md overflow-y-auto">
                     <div class="p-5">
                         <div class="flex items-center gap-2">
                             <div class="w-full">

@@ -1,11 +1,11 @@
 @include('admin.partials.header')
 @include('admin.partials.sidebar')
-
-<body>
+<body class="font-sans text-gray-700 m-0 p-0 overflow-x-hidden md:overflow-x-auto">
     @if (session('role') == 'admin')
-    <div class="ml-0 lg:ml-64 p-4 lg:p-8">
-        <h1 class="w-full text-gray-800 mb-5 text-xl lg:text-2xl relative pb-2 text-left font-semibold border-b-4 border-blue-600">
+    <div id="main-content" class="px-4 md:px-8 py-8 flex flex-col gap-8 transition-all duration-400 ease-in-out lg:ml-72 sidebar-minimized:lg:ml-20">
+        <h1 class="text-gray-800 mb-2 text-2xl font-bold relative pb-2">
             Registrasi Pengguna Baru
+            <span class="absolute left-0 bottom-0 h-1 w-24 bg-blue-600"></span>
         </h1>
         <div class="flex flex-col lg:flex-row h-auto lg:h-[calc(100vh-150px)] gap-5 box-border">
             <div class="flex-none lg:flex-[0_0_45%] bg-white rounded-lg shadow-md overflow-y-auto w-full mb-5 lg:mb-0">
@@ -32,12 +32,6 @@
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
-                            </div>
-                        @endif
-
-                        @if (session('success'))
-                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 text-sm" role="alert">
-                                {{ session('success') }}
                             </div>
                         @endif
 
@@ -121,7 +115,9 @@
                                         <option value="SD atau Setaranya" {{ old('pendidikan') == 'SD atau Setaranya' ? 'selected' : '' }}>SD atau setaranya</option>
                                         <option value="SMP atau Setaranya" {{ old('pendidikan') == 'SMP atau Setaranya' ? 'selected' : '' }}>SMP atau Setaranya</option>
                                         <option value="SMA atau Setaranya" {{ old('pendidikan') == 'SMA atau Setaranya' ? 'selected' : '' }}>SMA atau Setaranya</option>
-                                        <option value="S1 atau Setaranya" {{ old('pendidikan') == 'S1 atau Setaranya' ? 'selected' : '' }}>S1 atau Setaranya</option>
+                                        <option value="S1 atau Setaranya" {{ old('pendidikan') == 'S1 atau Setaranya' ? 'selected' : '' }}>
+
+S1 atau Setaranya</option>
                                         <option value="S2 atau Setaranya" {{ old('pendidikan') == 'S2 atau Setaranya' ? 'selected' : '' }}>S2 atau Setaranya</option>
                                         <option value="S3 atau Setaranya" {{ old('pendidikan') == 'S3 atau Setaranya' ? 'selected' : '' }}>S3 atau Setaranya</option>
                                     </select>
@@ -374,10 +370,10 @@
             </div>
 
             <div class="flex-1 bg-white rounded-lg shadow-md overflow-y-auto w-full flex flex-col mt-5 lg:mt-0">
-                <div class="p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 flex-wrap">
-                    <form method="GET" action="{{ route('admin.ManajemenUser') }}" class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
-                        <label for="role" class="inline-block mr-2 font-medium text-gray-800 text-sm">Filter berdasarkan peran:</label>
-                        <select name="role" id="role_select" onchange="this.form.submit()" class="px-3 py-2 border border-gray-300 rounded-md text-sm transition duration-300 ease-in-out appearance-none bg-white bg-no-repeat bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' fill=\'%23333\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M8 9.5a.5.5 0 01-.354-.146l-4-4a.5.5 0 01.708-.708L8 8.293l3.646-3.647a.5.5 0 01.708.708l-4 4A.5.5 0 018 9.5z\'/%3E%3C/svg%3E')] bg-[right_0.9375rem_center] w-full min-w-0 sm:min-w-[200px] focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-20">
+                <div class="p-4 border-b border-gray-200 bg-gray-50 rounded-t-lg items-start sm:items-center gap-3 sm:gap-4 flex-wrap">
+                    <form method="GET" action="{{ route('admin.ManajemenUser') }}" class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                        <label for="role_select" class="inline-block mr-2 font-medium text-gray-800 text-sm min-w-[170px]">Filter berdasarkan peran:</label>
+                        <select name="role" id="role_select" onchange="this.form.submit()" class="px-3 py-2 border border-gray-300 rounded-md text-sm transition duration-300 ease-in-out appearance-none bg-white bg-no-repeat bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' fill=\'%23333\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M8 9.5a.5.5 0 01-.354-.146l-4-4a.5.5 0 01.708-.708L8 8.293l3.646-3.647a.5.5 0 01.708.708l-4 4A.5.5 0 018 9.5z\'/%3E%3C/svg%3E')] bg-[right_0.9375rem_center] w-full focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-20">
                             <option value="">-- Pilih Role --</option>
                             <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                             <option value="guru" {{ request('role') == 'guru' ? 'selected' : '' }}>Guru</option>
@@ -386,11 +382,12 @@
                         </select>
                     </form>
 
-                    <div class="ml-auto w-full sm:w-auto mt-3 sm:mt-0 translate-y-0 lg:translate-y-2.5">
-                        <form method="GET" action="{{ route('admin.ManajemenUser') }}" class="flex gap-2 mb-0 px-0">
+                    <div>
+                        <form method="GET" action="{{ route('admin.ManajemenUser') }}" class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full">
+                            <label for="nameSearchBar" class="inline-block mr-2 font-medium text-gray-800 text-sm min-w-[170px]">Mencari:</label>
                             <div class="flex-1 relative bg-white border border-gray-300 rounded-lg transition duration-300 ease-in-out focus-within:border-blue-600 focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-opacity-20 w-full">
-                                <input type="text" placeholder="Masukan nama user" class="w-full px-3 py-2 pl-10 border-none outline-none text-sm bg-transparent rounded-lg text-gray-800" name="search" id="nameSearchBar" value="{{ request('search') }}">
-                                <i class='bx bx-search absolute left-3 top-1/2 -translate-y-1/2'></i>
+                                <input type="text" placeholder="Masukan nama user" class="w-full px-3 py-2 pl-3 border-none outline-none text-sm bg-transparent rounded-lg text-gray-800" name="search" id="nameSearchBar" value="{{ request('search') }}">
+                                <i class='bx bx-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-500'></i>
                             </div>
                             <input type="hidden" name="role" value="{{ request('role') }}">
                             <input type="hidden" name="additional_filter" value="{{ request('additional_filter') }}">
@@ -532,7 +529,7 @@
                                 <form method="GET" action="{{ route('admin.ManajemenUser') }}" class="filter-form w-full sm:w-auto">
                                     <div class="flex items-center w-full">
                                         <label for="additional_filter" class="sr-only">Filter Tambahan</label>
-                                        <select name="additional_filter" id="additional_filter" onchange="this.form.submit()" class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm transition duration-300 ease-in-out focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-20 bg-white appearance-none bg-no-repeat bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' fill=\'%23333\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M8 9.5a.5.5 0 01-.354-.146l-4-4a.5.5 0 01.708-.708L8 8.293l3.646-3.647a.5.5 0 01.708.708l-4 4A.5.5 0 018 9.5z\'/%3E%3C/svg%3E')] bg-[right_0.9375rem_center] min-w-0 sm:min-w-[150px]">
+                                        <select name="additional_filter" id="additional_filter" onchange="this.form.submit()" class="mt-4 w-full px-3 py-2 border border-gray-300 rounded-md text-sm transition duration-300 ease-in-out focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-20 bg-white appearance-none bg-no-repeat bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' fill=\'%23333\' viewBox=\'0 0 16 16\'%3E%3Cpath d=\'M8 9.5a.5.5 0 01-.354-.146l-4-4a.5.5 0 01.708-.708L8 8.293l3.646-3.647a.5.5 0 01.708.708l-4 4A.5.5 0 018 9.5z\'/%3E%3C/svg%3E')] bg-[right_0.9375rem_center] min-w-0 sm:min-w-[150px]">
                                             <option value="" {{ request('additional_filter') == '' ? 'selected' : '' }}>-- Pilih Kelas --</option>
                                             @foreach ($kelasList as $kelas)
                                                 <option value="{{ $kelas->kelas_tahun_id }}" {{ request('additional_filter') == $kelas->kelas_tahun_id ? 'selected' : '' }}>
@@ -665,7 +662,6 @@
             <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login kembali di sini</a>
         </div>
     @endif
-</body>
 
     <script src="{{ asset('js/CssAdmin.js') }}"></script>
     <script>
@@ -790,4 +786,5 @@
             };
         }
     });
-</script>
+    </script>
+</body>

@@ -2,13 +2,16 @@
 @include('admin.partials.sidebar')
 
 <body class="font-sans text-gray-800 bg-blue-50">
-    <div class="p-4 md:ml-64 md:p-6 flex flex-col min-h-screen">
-        <h1 class="text-xl md:text-2xl font-semibold text-gray-800 mb-4 md:mb-6 relative pb-2 border-b-2 border-blue-500 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[2px] after:w-full after:bg-blue-500">Edit Jadwal Pembelajaran</h1>
-
-        <div class="flex flex-col md:flex-row md:gap-6 flex-1">
-            <div class="bg-white p-4 rounded-lg shadow-md w-full md:w-1/4 flex flex-col mb-6 md:mb-0">
+    <div id="main-content" class="p-4 md:ml-64 md:p-6 flex flex-col min-h-screen transition-all duration-400 ease-in-out">
+        <h1 class="text-gray-800 mb-2 text-2xl font-bold relative pb-2">
+            Edit Jadwal Pembelajaran
+            <span class="absolute left-0 bottom-0 h-1 w-24 bg-blue-600"></span>
+        </h1>
+        
+        <div class="flex flex-col md:flex-row md:gap-6 flex-1 mt-5">
+            <div class="bg-white p-4 rounded-lg shadow-md w-full md:w-1/3 flex flex-col mb-6 md:mb-0 md:h-[calc(100vh-7rem)]">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4 relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-10 after:bg-blue-500">Edit Jadwal</h2>
-                <form action="{{ route('jadwal.update', ['id' => $jadwal->jadwal_id]) }}" method="POST" class="space-y-4 flex-1">
+                <form action="{{ route('jadwal.update', ['id' => $jadwal->jadwal_id]) }}" method="POST" class="space-y-4 flex-1 overflow-y-auto">
                     @csrf
                     @method('PUT')
 
@@ -78,7 +81,7 @@
                 @endif
             </div>
 
-            <div class="bg-white p-4 rounded-lg shadow-md w-full md:w-3/4 flex flex-col">
+            <div class="bg-white p-4 rounded-lg shadow-md w-full md:w-2/3 flex flex-col">
                 <h2 class="text-lg font-semibold text-gray-800 mb-4 relative pb-2 after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-10 after:bg-blue-500">Detail Jadwal</h2>
                 <div class="flex-1 overflow-x-auto">
                     <table class="w-full text-sm text-gray-700">
