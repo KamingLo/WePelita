@@ -1,4 +1,3 @@
-
 @include('partials.header', ['NamaPage' => 'SMK Pelita IV'])
 
 <head>
@@ -6,7 +5,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-
 
 <style>
     body, html {
@@ -118,6 +116,54 @@
         text-align: center;
         border-radius: 0 0 8px 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Styles for Testimonial Slider */
+    .testimonial-slide {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        pointer-events: none;
+    }
+    .testimonial-slide.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .testimonial-slide.inactive {
+        opacity: 0;
+    }
+    .testimonial-content {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+    .testimonial-content.active {
+        opacity: 1;
+    }
+    .testimonial-indicator {
+        width: 10px;
+        height: 10px;
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .testimonial-indicator.active {
+        background-color: #1E40AF;
+        transform: scale(1.2);
+    }
+    .testimonial-indicators {
+        text-align: center;
+        margin-top: 1.5rem;
+        z-index: 20;
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
 </style>
 
@@ -313,25 +359,26 @@
             </div>
         </section>
 
-<section class="py-12 md:py-20 bg-gray-50">
-    <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
-        <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Sambutan Kepala Sekolah</h2>
-    </div>
-    <div class="flex flex-col md:flex-row flex-wrap items-center gap-8 md:gap-10">
-        <div class="flex-1 min-w-[280px] md:min-w-[300px]" data-aos="fade-right">
-            <img src="{{ asset('image/KepalaSekolah1.png') }}" alt="Kepala Sekolah SMK Pelita IV" class="w-full max-w-xs sm:max-w-sm rounded-lg mx-auto">
-        </div>
-        <div class="flex-1 min-w-[280px] md:min-w-[300px] px-4 md:pr-10"> <h3 class="text-xl sm:text-2xl font-bold text-blue-600 mb-2">Yohanes Sigit Widiatmaka, S.Pd</h3>
-            <p class="text-gray-600 font-medium mb-3 sm:mb-4 text-sm sm:text-base">Kepala SMK Pelita IV Jakarta</p>
-            <div class="w-10 h-1 bg-blue-600 mb-5 sm:mb-6"></div>
-            <p class="mb-3 text-gray-600 leading-relaxed text-sm sm:text-base text-justify">Assalamualaikum Wr. Wb.</p>
-            <p class="mb-3 text-gray-600 leading-relaxed text-sm sm:text-base text-justify">Selamat datang di website resmi SMK Pelita IV Jakarta. Sebagai lembaga pendidikan kejuruan, kami berkomitmen untuk menyiapkan generasi muda yang unggul dalam keterampilan, berkarakter, dan siap menghadapi tantangan masa depan.</p>
-            <p class="mb-3 text-gray-600 leading-relaxed text-sm sm:text-base text-justify">Dengan dukungan tenaga pendidik yang profesional dan fasilitas yang memadai, kami yakin dapat mencetak lulusan yang kompeten sesuai dengan kebutuhan dunia kerja.</p>
-            <p class="mb-3 text-gray-600 leading-relaxed text-sm sm:text-base text-justify">Mari bersama-sama kita wujudkan SMK Pelita IV Jakarta menjadi sekolah kejuruan terbaik yang menghasilkan SDM berkualitas dan berdaya saing tinggi.</p>
-            <p class="text-gray-600 leading-relaxed text-sm sm:text-base text-justify">Wassalamualaikum Wr. Wb.</p>
-        </div>
-    </div>
-</section>
+        <section class="py-12 md:py-20 bg-gray-50">
+            <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Sambutan Kepala Sekolah</h2>
+            </div>
+            <div class="flex flex-col md:flex-row flex-wrap items-center gap-8 md:gap-10">
+                <div class="flex-1 min-w-[280px] md:min-w-[300px]" data-aos="fade-right">
+                    <img src="{{ asset('image/KepalaSekolah1.png') }}" alt="Kepala Sekolah SMK Pelita IV" class="w-full max-w-xs sm:max-w-sm rounded-lg mx-auto">
+                </div>
+                <div class="flex-1 min-w-[280px] md:min-w-[300px] px-4 md:pr-10">
+                    <h3 class="text-xl sm:text-2xl font-bold text-blue-600 mb-2">Yohanes Sigit Widiatmaka, S.Pd</h3>
+                    <p class="text-gray-600 font-medium mb-3 sm:mb-4 text-sm sm:text-base">Kepala SMK Pelita IV Jakarta</p>
+                    <div class="w-10 h-1 bg-blue-600 mb-5 sm:mb-6"></div>
+                    <p class="mb-3 text-gray-600 leading-relaxed text-sm sm:text-base text-justify">Assalamualaikum Wr. Wb.</p>
+                    <p class="mb-3 text-gray-600 leading-relaxed text-sm sm:text-base text-justify">Selamat datang di website resmi SMK Pelita IV Jakarta. Sebagai lembaga pendidikan kejuruan, kami berkomitmen untuk menyiapkan generasi muda yang unggul dalam keterampilan, berkarakter, dan siap menghadapi tantangan masa depan.</p>
+                    <p class="mb-3 text-gray-600 leading-relaxed text-sm sm:text-base text-justify">Dengan dukungan tenaga pendidik yang profesional dan fasilitas yang memadai, kami yakin dapat mencetak lulusan yang kompeten sesuai dengan kebutuhan dunia kerja.</p>
+                    <p class="mb-3 text-gray-600 leading-relaxed text-sm sm:text-base text-justify">Mari bersama-sama kita wujudkan SMK Pelita IV Jakarta menjadi sekolah kejuruan terbaik yang menghasilkan SDM berkualitas dan berdaya saing tinggi.</p>
+                    <p class="text-gray-600 leading-relaxed text-sm sm:text-base text-justify">Wassalamualaikum Wr. Wb.</p>
+                </div>
+            </div>
+        </section>
 
         <section class="py-12 md:py-20">
             <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
@@ -395,6 +442,69 @@
                             <li>Menjalin kerjasama dengan dunia usaha dan industri.</li>
                         </ul>
                         <i class='bx bx-target-lock absolute right-3 bottom-3 text-7xl sm:text-8xl opacity-20'></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-12 md:py-20 bg-gray-50">
+            <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Testimoni & Prestasi Siswa</h2>
+                <p class="text-gray-600 text-sm sm:text-base">Kisah Sukses dan Prestasi Siswa Kami</p>
+            </div>
+            <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="relative flex flex-col md:flex-row gap-6 md:gap-8 overflow-hidden">
+                    <div class="relative flex-1 min-w-[280px] h-64 md:h-80">
+                        <div class="testimonial-slide absolute inset-0 active" data-slide="0">
+                            <img src="{{ asset('image/testimoni1.jpg') }}" alt="Testimoni 1" class="w-full h-full object-cover rounded-xl shadow-lg">
+                        </div>
+                        <div class="testimonial-slide absolute inset-0 inactive" data-slide="1">
+                            <img src="{{ asset('image/testimoni2.jpeg') }}" alt="Testimoni 2" class="w-full h-full object-cover rounded-xl shadow-lg">
+                        </div>
+                        <div class="testimonial-slide absolute inset-0 inactive" data-slide="2">
+                            <img src="{{ asset('image/testimoni3.jpg') }}" alt="Testimoni 3" class="w-full h-full object-cover rounded-xl shadow-lg">
+                        </div>
+                        <div class="testimonial-slide absolute inset-0 inactive" data-slide="3">
+                            <img src="{{ asset('image/testimoni4.jpg') }}" alt="Testimoni 4" class="w-full h-full object-cover rounded-xl shadow-lg">
+                        </div>
+                        <div class="testimonial-slide absolute inset-0 inactive" data-slide="4">
+                            <img src="{{ asset('image/testimoni5.jpg') }}" alt="Testimoni 5" class="w-full h-full object-cover rounded-xl shadow-lg">
+                        </div>
+                        <button id="testimonialPrevBtn" class="absolute top-1/2 left-2 -translate-y-1/2 bg-black/50 hover:bg-blue-600 text-white rounded-full p-2 text-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 z-30" aria-label="Previous Testimonial">
+                            <i class='bx bx-chevron-left'></i>
+                        </button>
+                        <button id="testimonialNextBtn" class="absolute top-1/2 right-2 -translate-y-1/2 bg-black/50 hover:bg-blue-600 text-white rounded-full p-2 text-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 z-30" aria-label="Next Testimonial">
+                            <i class='bx bx-chevron-right'></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 min-w-[280px] p-4 md:p-6 bg-white rounded-xl shadow-lg">
+                        <div class="testimonial-content active" data-slide="0">
+                            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Berkat pembelajaran di SMK Pelita IV, saya berhasil meraih juara 1 lomba desain grafis tingkat nasional!"</p>
+                            <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni1, Alumni DKV</p>
+                        </div>
+                        <div class="testimonial-content hidden" data-slide="1">
+                            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Program di SMK Pelita IV membuka peluang saya bekerja di perusahaan teknologi ternama."</p>
+                            <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni2, Alumni OTKP</p>
+                        </div>
+                        <div class="testimonial-content hidden" data-slide="2">
+                            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Fasilitas dan guru yang mendukung membuat saya percaya diri mengikuti kompetisi akuntansi."</p>
+                            <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni3, Alumni Akuntansi</p>
+                        </div>
+                        <div class="testimonial-content hidden" data-slide="3">
+                            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Saya belajar banyak tentang multimedia dan berhasil membuat proyek animasi yang diakui industri."</p>
+                            <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni4, Alumni Multimedia</p>
+                        </div>
+                        <div class="testimonial-content hidden" data-slide="4">
+                            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"SMK Pelita IV membantu saya mengembangkan keterampilan administrasi yang sangat dibutuhkan dunia kerja."</p>
+                            <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni5, Alumni OTKP</p>
+                        </div>
+                        <div class="testimonial-indicators" style="z-index: 999;">
+                            <div class="testimonial-indicator active" data-slide="0"></div>
+                            <div class="testimonial-indicator" data-slide="1"></div>
+                            <div class="testimonial-indicator" data-slide="2"></div>
+                            <div class="testimonial-indicator" data-slide="3"></div>
+                            <div class="testimonial-indicator" data-slide="4"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -482,7 +592,7 @@
             const content = slides[index].querySelector('.slide-content');
             if (content) {
                 content.style.animation = 'none';
-                content.offsetHeight; // Trigger reflow
+                content.offsetHeight;
                 content.style.animation = 'slideInRight 0.8s ease-out forwards';
             }
 
@@ -583,7 +693,7 @@
             const content = mobileContentSlides[index];
             if (content) {
                 content.style.animation = 'none';
-                content.offsetHeight; // Trigger reflow
+                content.offsetHeight;
                 content.style.animation = 'fadeInUp 0.6s ease-out forwards';
             }
 
@@ -646,6 +756,127 @@
             mobileHeroSection.addEventListener('touchend', startMobileAutoSlide, { passive: true });
         }
 
+        const testimonialSlides = document.querySelectorAll('.testimonial-slide');
+        const testimonialIndicators = document.querySelectorAll('.testimonial-indicator');
+        const testimonialPrevBtn = document.getElementById('testimonialPrevBtn');
+        const testimonialNextBtn = document.getElementById('testimonialNextBtn');
+        const testimonialContents = document.querySelectorAll('.testimonial-content');
+        const testimonialSection = document.querySelector('section.bg-gray-50');
+
+        let currentTestimonialSlide = 0;
+        let testimonialSlideInterval = null;
+        const testimonialSlideDelay = 5000;
+
+        function showTestimonialSlide(index) {
+            if (index >= testimonialSlides.length || index < 0) {
+                index = 0;
+            }
+
+            testimonialSlides.forEach(slide => {
+                slide.classList.remove('active');
+                slide.classList.add('inactive');
+            });
+
+            testimonialIndicators.forEach(indicator => {
+                indicator.classList.remove('active');
+            });
+
+            testimonialContents.forEach(content => {
+                content.classList.remove('active');
+                content.classList.add('hidden');
+            });
+
+            testimonialSlides[index].classList.remove('inactive');
+            testimonialSlides[index].classList.add('active');
+            testimonialIndicators[index]?.classList.add('active');
+            testimonialContents[index].classList.remove('hidden');
+            testimonialContents[index].classList.add('active');
+
+            const content = testimonialContents[index];
+            if (content) {
+                content.style.animation = 'none';
+                content.offsetHeight;
+                content.style.animation = 'fadeIn 0.5s ease-out forwards';
+            }
+
+            currentTestimonialSlide = index;
+        }
+
+        function nextTestimonialSlide() {
+            showTestimonialSlide((currentTestimonialSlide + 1) % testimonialSlides.length);
+        }
+
+        function prevTestimonialSlide() {
+            showTestimonialSlide((currentTestimonialSlide - 1 + testimonialSlides.length) % testimonialSlides.length);
+        }
+
+        function startTestimonialAutoSlide() {
+            if (testimonialSlideInterval) {
+                clearInterval(testimonialSlideInterval);
+            }
+            testimonialSlideInterval = setInterval(nextTestimonialSlide, testimonialSlideDelay);
+        }
+
+        function stopTestimonialAutoSlide() {
+            if (testimonialSlideInterval) {
+                clearInterval(testimonialSlideInterval);
+                testimonialSlideInterval = null;
+            }
+        }
+
+        if (testimonialSlides.length > 0) {
+            showTestimonialSlide(0);
+            if (testimonialSlides.length > 1) {
+                startTestimonialAutoSlide();
+            }
+        }
+
+        testimonialPrevBtn?.addEventListener('click', () => {
+            stopTestimonialAutoSlide();
+            prevTestimonialSlide();
+            startTestimonialAutoSlide();
+        });
+
+        testimonialNextBtn?.addEventListener('click', () => {
+            stopTestimonialAutoSlide();
+            nextTestimonialSlide();
+            startTestimonialAutoSlide();
+        });
+
+        testimonialIndicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                stopTestimonialAutoSlide();
+                showTestimonialSlide(index);
+                startTestimonialAutoSlide();
+            });
+        });
+
+        if (testimonialSection) {
+            testimonialSection.addEventListener('mouseenter', stopTestimonialAutoSlide);
+            testimonialSection.addEventListener('mouseleave', startTestimonialAutoSlide);
+            
+            let touchStartX = 0;
+            testimonialSection.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+                stopTestimonialAutoSlide();
+            }, { passive: true });
+            
+            testimonialSection.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const diff = touchStartX - touchEndX;
+                const swipeThreshold = 50;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        nextTestimonialSlide();
+                    } else {
+                        prevTestimonialSlide();
+                    }
+                }
+                startTestimonialAutoSlide();
+            }, { passive: true });
+        }
+
         document.querySelectorAll('a[href="#main-content-wrapper"]').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -663,85 +894,45 @@
             });
         });
 
+
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') {
                 stopAutoSlide();
                 stopMobileAutoSlide();
+                stopTestimonialAutoSlide();
                 prevSlide();
                 prevMobileSlide();
+                prevTestimonialSlide();
                 startAutoSlide();
                 startMobileAutoSlide();
+                startTestimonialAutoSlide();
             } else if (e.key === 'ArrowRight') {
                 stopAutoSlide();
                 stopMobileAutoSlide();
+                stopTestimonialAutoSlide();
                 nextSlide();
                 nextMobileSlide();
+                nextTestimonialSlide();
                 startAutoSlide();
                 startMobileAutoSlide();
+                startTestimonialAutoSlide();
             }
         });
-
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        heroSection?.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        heroSection?.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-
-        mobileHeroSection?.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        mobileHeroSection?.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleMobileSwipe();
-        }, { passive: true });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-
-            if (Math.abs(diff) > swipeThreshold) {
-                stopAutoSlide();
-                if (diff > 0) {
-                    nextSlide();
-                } else {
-                    prevSlide();
-                }
-                startAutoSlide();
-            }
-        }
-
-        function handleMobileSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-
-            if (Math.abs(diff) > swipeThreshold) {
-                stopMobileAutoSlide();
-                if (diff > 0) {
-                    nextMobileSlide();
-                } else {
-                    prevMobileSlide();
-                }
-                startMobileAutoSlide();
-            }
-        }
 
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 stopAutoSlide();
                 stopMobileAutoSlide();
+                stopTestimonialAutoSlide();
             } else {
                 if (slides.length > 1) {
                     startAutoSlide();
                 }
                 if (mobileSlides.length > 1) {
                     startMobileAutoSlide();
+                }
+                if (testimonialSlides.length > 1) {
+                    startTestimonialAutoSlide();
                 }
             }
         });
