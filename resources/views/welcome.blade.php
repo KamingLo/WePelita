@@ -351,7 +351,7 @@
                     </div>
                 </div>
                 <div class="flex-1 min-w-[280px] md:min-w-[300px] profile-video-wrapper">
-                    <video id="introVideo" autoplay muted loop class="w-full rounded-lg shadow-lg" style="pointer-events: none;">
+                    <video id="introVideo" autoplay muted class="w-full rounded-lg shadow-lg" style="pointer-events: none;">
                         <source src="{{ asset('image/logo_pelita2.mp4') }}" type="video/mp4">
                         Browser Anda tidak mendukung tag video.
                     </video>
