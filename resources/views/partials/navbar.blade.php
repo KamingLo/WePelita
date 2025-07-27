@@ -4,7 +4,7 @@
 
             <div class="flex">
                 <a href="/" class="block">
-                    <img class="h-8 sm:h-10 md:h-10 lg:h-10 w-auto" src="/image/LogoPelitaProject.png" alt="Logo Pelita Project">
+                    <img class="h-8 sm:h-10 md:h-10 lg:h-10 w-auto" src="/image/LogoPelitaProject2.png" alt="Logo Pelita Project">
                 </a>
             </div>
 
@@ -18,6 +18,8 @@
 
             <div class="navbtn hidden md:flex items-center space-x-6">
                 <a href="/DaftarGuru" class="text-gray-700 hover:mr-2 hover:ml-2 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ease-in-out">Daftar Guru</a>
+                <a href="/profile-sekolah" class="text-gray-700 hover:mr-2 hover:ml-2 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ease-in-out">Profil kami</a>
+                <a href="/program" class="text-gray-700 hover:mr-2 hover:ml-2 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ease-in-out">Program Keahlian</a>
                 <a href="/blog" class="text-gray-700 hover:mr-2 hover:ml-2 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ease-in-out">Blog</a>
 
                 @auth

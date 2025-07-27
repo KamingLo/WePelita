@@ -20,6 +20,14 @@ Route::get('/testpage', function(){
    return view('testhalaman'); 
 });
 
+Route::get('/profile-sekolah', function(){
+    return view('schoolprofile');
+});
+
+Route::get('/program', function(){
+    return view('program');
+});
+
 Route::get('/DaftarGuru', [AdminController::class, 'tampilkanListGuru'])->name('daftar.guru');
 
 // Menampilkan blog dan detailnya
