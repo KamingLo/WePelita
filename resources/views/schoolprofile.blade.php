@@ -85,28 +85,6 @@
             </div>
         </section>
 
-        {{-- Struktur Organisasi --}}
-        <section class="py-12 bg-gray-50">
-            <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Struktur Organisasi</h2>
-                <p class="text-gray-600 text-sm sm:text-base">Struktur Kepemimpinan dan Staf Sekolah</p>
-            </div>
-            <div class="flex justify-center" data-aos="zoom-in">
-                <img src="{{ asset('image/struktur-organisasi.png') }}" alt="Struktur Organisasi SMK Pelita IV" class="w-full md:max-w-3xl rounded-lg shadow-lg">
-            </div>
-        </section>
-
-        {{-- Struktur OSIS --}}
-        <section class="py-12 bg-gray-50">
-            <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Struktur OSIS</h2>
-                <p class="text-gray-600 text-sm sm:text-base">Struktur Organisasi Siswa Intra Sekolah</p>
-            </div>
-            <div class="flex justify-center" data-aos="zoom-in">
-                <img src="{{ asset('image/struktur-osis.png') }}" alt="Struktur OSIS SMK Pelita IV" class="w-full md:max-w-3xl rounded-lg shadow-lg">
-            </div>
-        </section>
-
         {{-- Fasilitas Sekolah --}}
         <section class="py-12">
             <div class="text-center mb-10 md:mb-12" data-aos="fade-up">

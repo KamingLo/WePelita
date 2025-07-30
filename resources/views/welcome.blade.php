@@ -380,42 +380,47 @@
             </div>
         </section>
 
+        @php
+            $programKeahlian = [
+                [
+                    'nama' => 'Desain Komunikasi Visual (DKV)',
+                    'gambar' => asset('image/DKV.jpg'),
+                    'deskripsi' => 'Program keahlian yang mempelajari desain grafis, ilustrasi, animasi, fotografi, dan media komunikasi visual lainnya untuk kebutuhan industri kreatif.',
+                    'link' => '#',
+                ],
+                [
+                    'nama' => 'Akuntansi dan Keuangan Lembaga',
+                    'gambar' => asset('image/AKUNTANSI.png'),
+                    'deskripsi' => 'Program keahlian yang mempelajari pencatatan, pengelolaan, dan pelaporan keuangan serta akuntansi untuk dunia usaha dan industri.',
+                    'link' => '#',
+                ],
+                [
+                    'nama' => 'Otomatisasi dan Tata Kelola Perkantoran (OTKP)',
+                    'gambar' => asset('image/OTKP.png'),
+                    'deskripsi' => 'Program keahlian yang mempelajari administrasi perkantoran, pengelolaan dokumen, layanan bisnis, serta teknologi perkantoran modern.',
+                    'link' => '#',
+                ],
+            ];
+        @endphp
+
         <section class="py-12 md:py-20">
             <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Program Keahlian</h2>
                 <p class="text-gray-600 text-sm sm:text-base">Pilihan Jurusan untuk Masa Depanmu</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-center">
-                <div class="bg-white rounded-xl shadow-lg hover:-translate-y-4 hover:shadow-xl transition-all" data-aos="fade-up" data-aos-delay="100">
-                    <div class="relative h-48 overflow-hidden rounded-t-xl">
-                        <img src="{{ asset('image/DKV.jpg') }}" alt="Desain Komunikasi Visual" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                @foreach($programKeahlian as $index => $program)
+                    <div class="bg-white rounded-xl shadow-lg hover:-translate-y-4 hover:shadow-xl transition-all" data-aos="fade-up" data-aos-delay="{{ ($index + 1) * 100 }}">
+                        <div class="relative h-48 overflow-hidden rounded-t-xl">
+                            <img src="{{ $program['gambar'] }}" alt="{{ $program['nama'] }}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-5 md:p-6">
+                            <h3 class="text-lg sm:text-xl font-bold text-blue-600 mb-3">{{ $program['nama'] }}</h3>
+                            <p class="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base">{{ $program['deskripsi'] }}</p>
+                            <a href="{{ $program['link'] }}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md font-medium text-sm hover:bg-blue-700 transition-all">Pelajari Lebih Lanjut</a>
+                        </div>
                     </div>
-                    <div class="p-5 md:p-6">
-                        <h3 class="text-lg sm:text-xl font-bold text-blue-600 mb-3">Desain Komunikasi Visual</h3>
-                        <p class="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base">Program keahlian yang mempelajari tentang perakitan komputer, instalasi jaringan, dan pemrograman dasar.</p>
-                        <a href="#" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md font-medium text-sm hover:bg-blue-700 transition-all">Pelajari Lebih Lanjut</a>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl shadow-lg hover:-translate-y-4 hover:shadow-xl transition-all" data-aos="fade-up" data-aos-delay="200">
-                    <div class="relative h-48 overflow-hidden rounded-t-xl">
-                        <img src="{{ asset('image/AKUNTANSI.png') }}" alt="Akuntansi" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="p-5 md:p-6">
-                        <h3 class="text-lg sm:text-xl font-bold text-blue-600 mb-3">Akuntansi</h3>
-                        <p class="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base">Program keahlian yang mempelajari tentang pencatatan, pengikhtisaran, dan pelaporan keuangan.</p>
-                        <a href="#" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md font-medium text-sm hover:bg-blue-700 transition-all">Pelajari Lebih Lanjut</a>
-                    </div>
-                </div>
-                <div class="bg-white rounded-xl shadow-lg hover:-translate-y-4 hover:shadow-xl transition-all" data-aos="fade-up" data-aos-delay="300">
-                    <div class="relative h-48 overflow-hidden rounded-t-xl">
-                        <img src="{{ asset('image/OTKP.png') }}" alt="Multimedia" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"> 
-                    </div>
-                    <div class="p-5 md:p-6">
-                        <h3 class="text-lg sm:text-xl font-bold text-blue-600 mb-3">OTKP</h3>
-                        <p class="text-gray-600 mb-4 leading-relaxed text-sm sm:text-base">Comingsonn</p>
-                        <a href="#" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md font-medium text-sm hover:bg-blue-700 transition-all">Pelajari Lebih Lanjut</a>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </section>
 
