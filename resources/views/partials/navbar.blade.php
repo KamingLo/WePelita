@@ -21,9 +21,9 @@
                 <a href="/profile-sekolah" class="text-gray-700 hover:mr-2 hover:ml-2 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ease-in-out">Profil kami</a>
                 <a href="/program" class="text-gray-700 hover:mr-2 hover:ml-2 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ease-in-out">Program Keahlian</a>
                 <a href="/blog" class="text-gray-700 hover:mr-2 hover:ml-2 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ease-in-out">Blog</a>
-
+                
                 @auth
-                    @php
+                @php
                         $role = session('role');
                         $dashboardRoute = match($role) {
                             'admin' => route('admin.dashboard'),
@@ -32,23 +32,25 @@
                             'orangtua' => route('orangtua.dashboard'),
                             default => '/',
                         };
-                    @endphp
+                        @endphp
                     <a class="hover:translate-x-1 transition-all duration-300 ease-in-out px-5 py-2 border border-blue-600 text-blue-600 rounded-md text-base font-semibold hover:bg-blue-600 hover:text-white" href="{{ $dashboardRoute }}">
                         <span>Dashboard</span>
                     </a>
-                @else
+                    @else
                     <a class="px-5 py-2 text-gray-700 border border-gray-300 rounded-md text-base font-semibold hover:bg-gray-100 transition-all duration-200 ease-in-out" href="{{ route('register') }}"><span>Register</span></a>
                     <a class="px-5 py-2 bg-blue-600 text-white rounded-md text-base font-semibold hover:bg-blue-700 transition-all duration-200 ease-in-out" href="{{ route('login') }}"><span>Login</span></a>
-                @endauth
+                    @endauth
+                </div>
             </div>
-        </div>
-
-        <div class="navbtn-mobile md:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 transition-all duration-300 ease-in-out transform -translate-y-full opacity-0 invisible">
-            <div class="flex flex-col items-center space-y-4 px-4">
-                <a href="/DaftarGuru" class="block w-full text-center text-gray-700 hover:text-blue-600 py-2 rounded-md text-base font-medium transition-colors duration-200 ease-in-out">Daftar Guru</a>
-                <a href="/blog" class="block w-full text-center text-gray-700 hover:text-blue-600 py-2 rounded-md text-base font-medium transition-colors duration-200 ease-in-out">Blog</a>
-
-                @auth
+            
+            <div class="navbtn-mobile md:hidden absolute top-full left-0 right-0 bg-white shadow-lg py-4 transition-all duration-300 ease-in-out transform -translate-y-full opacity-0 invisible">
+                <div class="flex flex-col items-center space-y-4 px-4">
+                    <a href="/DaftarGuru" class="block w-full text-center text-gray-700 hover:text-blue-600 py-2 rounded-md text-base font-medium transition-colors duration-200 ease-in-out">Daftar Guru</a>
+                    <a href="/blog" class="block w-full text-center text-gray-700 hover:text-blue-600 py-2 rounded-md text-base font-medium transition-colors duration-200 ease-in-out">Blog</a>
+                    <a href="/program" class="text-gray-700 hover:mr-2 hover:ml-2 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ease-in-out">Program Keahlian</a>
+                    <a href="/blog" class="text-gray-700 hover:mr-2 hover:ml-2 hover:text-blue-600 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ease-in-out">Blog</a>
+                    
+                    @auth
                     @php
                         $role = session('role');
                         $dashboardRoute = match($role) {
