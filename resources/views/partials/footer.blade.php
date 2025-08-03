@@ -3,7 +3,7 @@
         <div class="container mx-auto px-4 max-w-7xl">
             <div class="flex flex-wrap justify-between mb-5 items-start">
                 <div class="w-full md:w-1/3 lg:w-1/4 mb-6 pr-5">
-                    <img class="h-12 w-auto mb-3" src="/image/LogoPelitaFooter.png" alt="Logo Pelita Project">
+                    <img class="h-12 w-auto mb-3" src="/image/LogoPelitaFooter.webp" alt="Logo Pelita Project">
                     <p class="text-white text-opacity-80 mb-4 max-w-xs leading-tight text-sm">
                         <strong>Alamat:</strong><br>
                         Jl. Duri Utara No.23-29, RT.3/RW.6, Duri Utara, Kec. Tambora, Kota Jakarta Barat, DKI Jakarta 11270

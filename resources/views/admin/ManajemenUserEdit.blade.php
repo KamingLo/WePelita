@@ -90,9 +90,6 @@
                         <label for="tanggal_lahir" class="block mb-2 font-medium text-gray-800 text-sm">Tanggal lahir:</label>
                         <div class="relative">
                             <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20" value="{{ old('tanggal_lahir', $profile->tanggal_lahir ? \Carbon\Carbon::parse($profile->tanggal_lahir)->format('Y-m-d') : '') }}" placeholder="Masukkan tanggal lahir" required>
-                            <button type="button" id="clearTanggalLahir" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500">
-                                <i class='bx bx-x text-base'></i>
-                            </button>
                         </div>
                         @error('tanggal_lahir')
                             <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span>
@@ -124,9 +121,6 @@
                                 <option value="S2 atau Setaranya" {{ old('pendidikan', $profile->pendidikan ?? '') === 'S2 atau Setaranya' ? 'selected' : '' }}>S2 atau Setaranya</option>
                                 <option value="S3 atau Setaranya" {{ old('pendidikan', $profile->pendidikan ?? '') === 'S3 atau Setaranya' ? 'selected' : '' }}>S3 atau Setaranya</option>
                             </select>
-                            <button type="button" id="clearPendidikan" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500">
-                                <i class='bx bx-x text-base'></i>
-                            </button>
                         </div>
                         @error('pendidikan')
                             <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span>
@@ -209,14 +203,11 @@
                                         <select name="kelas_tahun_id" id="kelas_tahun_id" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%2712%27%20height%3D%2712%27%20fill%3D%27%23333%27%20viewBox%3D%270%200%2016%2016%27%3E%3Cpath%20d%3D%27M8%209.5a.5.5%200%2001-.354-.146l-4-4a.5.5%200%2001.708-.708L8%208.293l3.646-3.647a.5.5%200%2001.708.708l-4%204A.5.5%200%20018%209.5z%27/%3E%3C/svg%3E')] bg-no-repeat bg-[right_0.75rem_center]" required>
                                             <option value="" disabled {{ old('kelas_tahun_id') ? '' : 'selected' }}>-- Pilih Kelas --</option>
                                             @foreach ($kelasList as $kelas)
-                                                <option value="{{ $kelas->kelas_tahun_id }}" {{ old('kelas_tahun_id', $user->murid->kelas_tahun_id ?? '') == $kelas->kelas_tahun_id ? 'selected' : '' }}>
+                                                <option value="{{ $kelas->kelas_tahun_id }}" {{ old('kelas_tahun_id', $user->kelas_tahun_id ?? '') == $kelas->kelas_tahun_id ? 'selected' : '' }}>
                                                     {{ $kelas->kelas->nama_kelas }} - {{ $kelas->tahunajar->tahun_ajaran }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <button type="button" id="clearKelasId" class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-500">
-                                            <i class='bx bx-x text-base'></i>
-                                        </button>
                                     </div>
                                     @error('kelas_tahun_id')
                                         <span class="text-red-600 text-xs mt-1 block">{{ $message }}</span>

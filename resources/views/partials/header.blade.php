@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <style>
@@ -22,7 +23,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: url('/image/PatternLogo2.png');
+        background-image: url('/image/PatternLogo2.webp');
         background-repeat: repeat;
         background-position: center;
         background-size: 180px 180px;
@@ -36,4 +37,9 @@
     <div class="BgPelita"></div>
     @include('partials.navbar')
 </body>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
 </html>

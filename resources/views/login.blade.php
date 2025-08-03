@@ -1,7 +1,7 @@
 @include('partials.header', ['NamaPage' => 'Login'])
 
 <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0" style="background-image: url('/image/imageSekolah.png');">
+    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0" style="background-image: url('/image/Welcome/imageSekolah.webp');">
         <div class="absolute inset-0 bg-black opacity-50"></div>
     </div>
 

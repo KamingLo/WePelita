@@ -149,7 +149,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('/image/PatternLogo2.png');
+            background-image: url('/image/PatternLogo2.webp');
             background-repeat: repeat;
             background-position: center;
             background-size: 180px 180px;
@@ -164,7 +164,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('/image/PatternLogo2.png');
+            background-image: url('/image/PatternLogo2.webp');
             background-repeat: repeat;
             background-position: center;
             background-size: 180px 180px;
@@ -209,7 +209,7 @@
                 </div>
             </button>
             <div class="flex items-center space-x-3">
-                <img src="/image/logo_pelita.png" alt="Logo Pelita" class="w-10 h-10">
+                <img src="/image/logo_pelita.webp" alt="Logo Pelita" class="w-10 h-10">
             </div>
         </div>
         <div id="mobile-menu" class="absolute top-full left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-white/10 transform -translate-y-full opacity-0 transition-all duration-300 pointer-events-none">
@@ -258,7 +258,7 @@
             <div class="flex items-center justify-between mb-6">
                 <div class="flex items-center space-x-4">
                     <div class="relative sidebar-logo">
-                        <img src="/image/logo_pelita.png" alt="Logo Pelita" class="w-12 h-12">
+                        <img src="/image/logo_pelita.webp" alt="Logo Pelita" class="w-12 h-12">
                     </div>
                     <div class="sidebar-text">
                         <h3 class="text-white font-bold text-xl gradient-text">{{ auth()->user()->name }}</h3>

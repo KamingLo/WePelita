@@ -2,7 +2,7 @@
 
 <body class="bg-gray-100 font-sans leading-normal tracking-normal">
 
-    <div class="relative bg-cover bg-center" style="background-image: url('/image/imageSekolah.png');">
+    <div class="relative bg-cover bg-center" style="background-image: url('/image/Welcome/imageSekolah.webp');">
         <div class="absolute inset-0 bg-white opacity-80 z-0"></div>
 
         <div class="relative z-10 container mx-auto px-4 py-8 md:py-12 lg:py-16">

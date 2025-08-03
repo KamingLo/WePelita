@@ -123,13 +123,12 @@
         opacity: 0;
         transition: opacity 0.5s ease-in-out;
         pointer-events: none;
+        position: absolute;
+        inset: 0;
     }
     .testimonial-slide.active {
         opacity: 1;
         pointer-events: auto;
-    }
-    .testimonial-slide.inactive {
-        opacity: 0;
     }
     .testimonial-content {
         opacity: 0;
@@ -154,7 +153,7 @@
     }
     .testimonial-indicators {
         text-align: center;
-        margin-top: 1.5rem;
+        margin-top: 1rem;
         z-index: 20;
     }
     @keyframes fadeIn {
@@ -165,6 +164,69 @@
             opacity: 1;
         }
     }
+    /* Desktop-specific styles for Testimonial */
+    @media (min-width: 768px) {
+        .testimonial-container {
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+            align-items: center;
+        }
+        .testimonial-image-container {
+            flex: 1;
+            position: relative;
+            height: 300px;
+            min-width: 280px;
+        }
+        .testimonial-content-container {
+            flex: 1;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            min-width: 280px;
+            height: 300px; /* Match image container height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    }
+    /* Mobile-specific styles for Testimonial */
+    @media (max-width: 767px) {
+        .testimonial-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .testimonial-image-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+        }
+        .testimonial-content-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            text-align: center;
+            height: 200px; /* Match image container height */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .testimonial-prev-btn, .testimonial-next-btn {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .testimonial-prev-btn {
+            left: 0.5rem;
+        }
+        .testimonial-next-btn {
+            right: 0.5rem;
+        }
+    }
 </style>
 
 <!-- Desktop -->
@@ -172,8 +234,9 @@
     <div class="absolute top-0 bottom-0 left-0 right-0 overflow-hidden z-0 rounded-xl shadow-xl">
         <div class="hero-slide absolute inset-0 active" data-slide="0">
             <div class="absolute inset-0 bg-blue-800 rounded-xl"></div>
-            <img src="{{ asset('image/imageSekolah.png') }}"
+            <img src="{{ asset('image/Welcome/imageSekolah.webp') }}"
                  alt="SMK Pelita IV Jakarta"
+                 loading="lazy"
                  class="absolute inset-0 w-full h-full object-cover rounded-xl">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 rounded-xl
                         md:bg-gradient-to-r md:from-black/20 md:to-black/70"></div>
@@ -202,11 +265,9 @@
                     <div class="absolute inset-0 bg-gray-800 rounded-xl"></div>
                     <img src="{{ $blog->lampiran ? asset('storage/' . $blog->lampiran) : 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' }}"
                          alt="{{ $blog->judul }}"
+                         loading="lazy"
                          class="absolute inset-0 w-full h-full object-cover rounded-xl"
                          onerror="this.src='https://via.placeholder.com/1200x800/1E40AF/FFFFFF?text=Blog+Post'">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 rounded-xl
-                                md:bg-gradient-to-r md:from-black/30 md:to-black/80"></div>
-
                     <div class="absolute bottom-10 left-0 right-0 mx-auto text-center text-white z-20 w-[calc(100%-2rem)] max-w-xl p-4
                                 md:bottom-10 md:right-20 md:left-auto md:transform-none md:text-right md:p-6">
                         <div class="slide-content">
@@ -249,8 +310,9 @@
 <section class="relative mx-auto px-4 max-w-full block md:hidden" style="height: 30vh;">
     <div class="absolute top-0 bottom-0 left-0 right-0 overflow-hidden z-0 shadow-lg">
         <div class="mobile-hero-slide absolute inset-0 active" data-slide="0" style="height: 100%;">
-            <img src="{{ asset('image/imageSekolah.png') }}"
+            <img src="{{ asset('image/Welcome/imageSekolah.webp') }}"
                  alt="SMK Pelita IV Jakarta"
+                 loading="lazy"
                  class="absolute inset-0 w-full h-full object-cover"
                  style="object-position: center;">
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -261,6 +323,7 @@
                 <div class="mobile-hero-slide absolute inset-0 inactive" data-slide="{{ $index + 1 }}" style="height: 100%;">
                     <img src="{{ $blog->lampiran ? asset('storage/' . $blog->lampiran) : 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80' }}"
                          alt="{{ $blog->judul }}"
+                         loading="lazy"
                          class="absolute inset-0 w-full h-full object-cover"
                          onerror="this.src='https://via.placeholder.com/1200x800/1E40AF/FFFFFF?text=Blog+Post'"
                          style="object-position: center;">
@@ -351,8 +414,8 @@
                     </div>
                 </div>
                 <div class="flex-1 min-w-[280px] md:min-w-[300px] profile-video-wrapper">
-                    <video id="introVideo" autoplay muted loop class="w-full rounded-lg shadow-lg" style="pointer-events: none;">
-                        <source src="{{ asset('image/logo_pelita2.mp4') }}" type="video/mp4">
+                    <video id="introVideo" autoplay muted class="w-full rounded-lg shadow-lg" style="pointer-events: none;">
+                        <source src="{{ asset('image/Welcome/logo_pelita2.mp4') }}" type="video/mp4">
                         Browser Anda tidak mendukung tag video.
                     </video>
                 </div>
@@ -365,7 +428,7 @@
             </div>
             <div class="flex flex-col md:flex-row flex-wrap items-center gap-8 md:gap-10">
                 <div class="flex-1 min-w-[280px] md:min-w-[300px]" data-aos="fade-right">
-                    <img src="{{ asset('image/KepalaSekolah1.png') }}" alt="Kepala Sekolah SMK Pelita IV" class="w-full max-w-xs sm:max-w-sm rounded-lg mx-auto">
+                    <img src="{{ asset('image/Welcome/KepalaSekolah1.webp') }}" alt="Kepala Sekolah SMK Pelita IV" loading="lazy" class="w-full max-w-xs sm:max-w-sm rounded-lg mx-auto">
                 </div>
                 <div class="flex-1 min-w-[280px] md:min-w-[300px] px-4 md:pr-10">
                     <h3 class="text-xl sm:text-2xl font-bold text-blue-600 mb-2">Yohanes Sigit Widiatmaka, S.Pd</h3>
@@ -388,7 +451,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 justify-center">
                 <div class="bg-white rounded-xl shadow-lg hover:-translate-y-4 hover:shadow-xl transition-all" data-aos="fade-up" data-aos-delay="100">
                     <div class="relative h-48 overflow-hidden rounded-t-xl">
-                        <img src="{{ asset('image/DKV.jpg') }}" alt="Desain Komunikasi Visual" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        <img src="{{ asset('image/Welcome/DKV.webp') }}" alt="Desain Komunikasi Visual" loading="lazy" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-5 md:p-6">
                         <h3 class="text-lg sm:text-xl font-bold text-blue-600 mb-3">Desain Komunikasi Visual</h3>
@@ -398,7 +461,7 @@
                 </div>
                 <div class="bg-white rounded-xl shadow-lg hover:-translate-y-4 hover:shadow-xl transition-all" data-aos="fade-up" data-aos-delay="200">
                     <div class="relative h-48 overflow-hidden rounded-t-xl">
-                        <img src="{{ asset('image/AKUNTANSI.png') }}" alt="Akuntansi" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        <img src="{{ asset('image/Welcome/AKUNTANSI.webp') }}" alt="Akuntansi" loading="lazy" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="p-5 md:p-6">
                         <h3 class="text-lg sm:text-xl font-bold text-blue-600 mb-3">Akuntansi</h3>
@@ -408,7 +471,7 @@
                 </div>
                 <div class="bg-white rounded-xl shadow-lg hover:-translate-y-4 hover:shadow-xl transition-all" data-aos="fade-up" data-aos-delay="300">
                     <div class="relative h-48 overflow-hidden rounded-t-xl">
-                        <img src="{{ asset('image/OTKP.png') }}" alt="Multimedia" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"> 
+                        <img src="{{ asset('image/Welcome/OTKP.webp') }}" alt="OTKP" loading="lazy" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"> 
                     </div>
                     <div class="p-5 md:p-6">
                         <h3 class="text-lg sm:text-xl font-bold text-blue-600 mb-3">OTKP</h3>
@@ -449,59 +512,57 @@
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Testimoni & Prestasi Siswa</h2>
                 <p class="text-gray-600 text-sm sm:text-base">Kisah Sukses dan Prestasi Siswa Kami</p>
             </div>
-            <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="relative flex flex-col md:flex-row gap-6 md:gap-8 overflow-hidden">
-                    <div class="relative flex-1 min-w-[280px] h-64 md:h-80">
-                        <div class="testimonial-slide absolute inset-0 active" data-slide="0">
-                            <img src="{{ asset('image/testimoni1.jpg') }}" alt="Testimoni 1" class="w-full h-full object-cover rounded-xl shadow-lg">
-                        </div>
-                        <div class="testimonial-slide absolute inset-0 inactive" data-slide="1">
-                            <img src="{{ asset('image/testimoni2.jpeg') }}" alt="Testimoni 2" class="w-full h-full object-cover rounded-xl shadow-lg">
-                        </div>
-                        <div class="testimonial-slide absolute inset-0 inactive" data-slide="2">
-                            <img src="{{ asset('image/testimoni3.jpg') }}" alt="Testimoni 3" class="w-full h-full object-cover rounded-xl shadow-lg">
-                        </div>
-                        <div class="testimonial-slide absolute inset-0 inactive" data-slide="3">
-                            <img src="{{ asset('image/testimoni4.jpg') }}" alt="Testimoni 4" class="w-full h-full object-cover rounded-xl shadow-lg">
-                        </div>
-                        <div class="testimonial-slide absolute inset-0 inactive" data-slide="4">
-                            <img src="{{ asset('image/testimoni5.jpg') }}" alt="Testimoni 5" class="w-full h-full object-cover rounded-xl shadow-lg">
-                        </div>
-                        <button id="testimonialPrevBtn" class="absolute top-1/2 left-2 -translate-y-1/2 bg-black/50 hover:bg-blue-600 text-white rounded-full p-2 text-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 z-30" aria-label="Previous Testimonial">
-                            <i class='bx bx-chevron-left'></i>
-                        </button>
-                        <button id="testimonialNextBtn" class="absolute top-1/2 right-2 -translate-y-1/2 bg-black/50 hover:bg-blue-600 text-white rounded-full p-2 text-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 z-30" aria-label="Next Testimonial">
-                            <i class='bx bx-chevron-right'></i>
-                        </button>
+            <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 testimonial-container">
+                <div class="testimonial-image-container">
+                    <div class="testimonial-slide active" data-slide="0">
+                        <img src="{{ asset('image/Welcome/testimoni1.png') }}" alt="Testimoni 1" loading="lazy" class="w-full h-full object-cover rounded-xl shadow-lg">
                     </div>
-                    <div class="flex-1 min-w-[280px] p-4 md:p-6 bg-white rounded-xl shadow-lg">
-                        <div class="testimonial-content active" data-slide="0">
-                            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Berkat pembelajaran di SMK Pelita IV, saya berhasil meraih juara 1 lomba desain grafis tingkat nasional!"</p>
-                            <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni1, Alumni DKV</p>
-                        </div>
-                        <div class="testimonial-content hidden" data-slide="1">
-                            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Program di SMK Pelita IV membuka peluang saya bekerja di perusahaan teknologi ternama."</p>
-                            <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni2, Alumni OTKP</p>
-                        </div>
-                        <div class="testimonial-content hidden" data-slide="2">
-                            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Fasilitas dan guru yang mendukung membuat saya percaya diri mengikuti kompetisi akuntansi."</p>
-                            <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni3, Alumni Akuntansi</p>
-                        </div>
-                        <div class="testimonial-content hidden" data-slide="3">
-                            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Saya belajar banyak tentang multimedia dan berhasil membuat proyek animasi yang diakui industri."</p>
-                            <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni4, Alumni Multimedia</p>
-                        </div>
-                        <div class="testimonial-content hidden" data-slide="4">
-                            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"SMK Pelita IV membantu saya mengembangkan keterampilan administrasi yang sangat dibutuhkan dunia kerja."</p>
-                            <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni5, Alumni OTKP</p>
-                        </div>
-                        <div class="testimonial-indicators" style="z-index: 999;">
-                            <div class="testimonial-indicator active" data-slide="0"></div>
-                            <div class="testimonial-indicator" data-slide="1"></div>
-                            <div class="testimonial-indicator" data-slide="2"></div>
-                            <div class="testimonial-indicator" data-slide="3"></div>
-                            <div class="testimonial-indicator" data-slide="4"></div>
-                        </div>
+                    <div class="testimonial-slide inactive" data-slide="1">
+                        <img src="{{ asset('image/Welcome/testimoni2.webp') }}" alt="Testimoni 2" loading="lazy" class="w-full h-full object-cover rounded-xl shadow-lg">
+                    </div>
+                    <div class="testimonial-slide inactive" data-slide="2">
+                        <img src="{{ asset('image/Welcome/testimoni3.webp') }}" alt="Testimoni 3" loading="lazy" class="w-full h-full object-cover rounded-xl shadow-lg">
+                    </div>
+                    <div class="testimonial-slide inactive" data-slide="3">
+                        <img src="{{ asset('image/Welcome/testimoni4.webp') }}" alt="Testimoni 4" loading="lazy" class="w-full h-full object-cover rounded-xl shadow-lg">
+                    </div>
+                    <div class="testimonial-slide inactive" data-slide="4">
+                        <img src="{{ asset('image/Welcome/testimoni5.webp') }}" alt="Testimoni 5" loading="lazy" class="w-full h-full object-cover rounded-xl shadow-lg">
+                    </div>
+                    <button class="testimonial-prev-btn absolute top-1/2 left-2 -translate-y-1/2 bg-black/50 hover:bg-blue-600 text-white rounded-full p-2 text-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 z-30" aria-label="Previous Testimonial">
+                        <i class='bx bx-chevron-left'></i>
+                    </button>
+                    <button class="testimonial-next-btn absolute top-1/2 right-2 -translate-y-1/2 bg-black/50 hover:bg-blue-600 text-white rounded-full p-2 text-lg backdrop-blur-sm transition-all duration-300 hover:scale-110 z-30" aria-label="Next Testimonial">
+                        <i class='bx bx-chevron-right'></i>
+                    </button>
+                </div>
+                <div class="testimonial-content-container">
+                    <div class="testimonial-content active" data-slide="0">
+                        <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Berkat pembelajaran di SMK Pelita IV, saya berhasil meraih juara 1 lomba desain grafis tingkat nasional!"</p>
+                        <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni1, Alumni DKV</p>
+                    </div>
+                    <div class="testimonial-content hidden" data-slide="1">
+                        <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Program di SMK Pelita IV membuka peluang saya bekerja di perusahaan teknologi ternama."</p>
+                        <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni2, Alumni OTKP</p>
+                    </div>
+                    <div class="testimonial-content hidden" data-slide="2">
+                        <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Fasilitas dan guru yang mendukung membuat saya percaya diri mengikuti kompetisi akuntansi."</p>
+                        <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni3, Alumni Akuntansi</p>
+                    </div>
+                    <div class="testimonial-content hidden" data-slide="3">
+                        <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"Saya belajar banyak tentang multimedia dan berhasil membuat proyek animasi yang diakui industri."</p>
+                        <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni4, Alumni Multimedia</p>
+                    </div>
+                    <div class="testimonial-content hidden" data-slide="4">
+                        <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-4">"SMK Pelita IV membantu saya mengembangkan keterampilan administrasi yang sangat dibutuhkan dunia kerja."</p>
+                        <p class="text-blue-600 font-semibold text-sm sm:text-base">— Testimoni5, Alumni OTKP</p>
+                    </div>
+                    <div class="testimonial-indicators">
+                        <div class="testimonial-indicator active" data-slide="0"></div>
+                        <div class="testimonial-indicator" data-slide="1"></div>
+                        <div class="testimonial-indicator" data-slide="2"></div>
+                        <div class="testimonial-indicator" data-slide="3"></div>
+                        <div class="testimonial-indicator" data-slide="4"></div>
                     </div>
                 </div>
             </div>
@@ -557,7 +618,7 @@
             once: true
         });
 
-        // Desktop
+        // Desktop Hero Slider
         const slides = document.querySelectorAll('.hero-slide');
         const indicators = document.querySelectorAll('.indicator');
         const prevBtn = document.getElementById('prevBtn');
@@ -573,7 +634,7 @@
                 index = 0;
             }
 
-            slides.forEach((slide, i) => {
+            slides.forEach((slide) => {
                 slide.classList.remove('active');
                 slide.classList.add('inactive');
             });
@@ -605,17 +666,12 @@
         }
 
         function startAutoSlide() {
-            if (slideInterval) {
-                clearInterval(slideInterval);
-            }
+            if (slideInterval) clearInterval(slideInterval);
             slideInterval = setInterval(nextSlide, slideDelay);
         }
 
         function stopAutoSlide() {
-            if (slideInterval) {
-                clearInterval(slideInterval);
-                slideInterval = null;
-            }
+            if (slideInterval) clearInterval(slideInterval);
         }
 
         if (slides.length > 1) {
@@ -652,7 +708,7 @@
             heroSection.addEventListener('touchend', startAutoSlide, { passive: true });
         }
 
-        // Mobile
+        // Mobile Hero Slider
         const mobileSlides = document.querySelectorAll('.mobile-hero-slide');
         const mobileIndicators = document.querySelectorAll('.mobile-indicator');
         const mobilePrevBtn = document.getElementById('mobilePrevBtn');
@@ -669,7 +725,7 @@
                 index = 0;
             }
 
-            mobileSlides.forEach((slide, i) => {
+            mobileSlides.forEach((slide) => {
                 slide.classList.remove('active');
                 slide.classList.add('inactive');
             });
@@ -678,7 +734,7 @@
                 indicator.classList.remove('active');
             });
 
-            mobileContentSlides.forEach((content, i) => {
+            mobileContentSlides.forEach((content) => {
                 content.classList.add('hidden');
             });
 
@@ -706,17 +762,12 @@
         }
 
         function startMobileAutoSlide() {
-            if (mobileSlideInterval) {
-                clearInterval(mobileSlideInterval);
-            }
+            if (mobileSlideInterval) clearInterval(mobileSlideInterval);
             mobileSlideInterval = setInterval(nextMobileSlide, mobileSlideDelay);
         }
 
         function stopMobileAutoSlide() {
-            if (mobileSlideInterval) {
-                clearInterval(mobileSlideInterval);
-                mobileSlideInterval = null;
-            }
+            if (mobileSlideInterval) clearInterval(mobileSlideInterval);
         }
 
         if (mobileSlides.length > 1) {
@@ -753,21 +804,20 @@
             mobileHeroSection.addEventListener('touchend', startMobileAutoSlide, { passive: true });
         }
 
+        // Testimonial Slider
         const testimonialSlides = document.querySelectorAll('.testimonial-slide');
         const testimonialIndicators = document.querySelectorAll('.testimonial-indicator');
-        const testimonialPrevBtn = document.getElementById('testimonialPrevBtn');
-        const testimonialNextBtn = document.getElementById('testimonialNextBtn');
+        const testimonialPrevBtn = document.querySelector('.testimonial-prev-btn');
+        const testimonialNextBtn = document.querySelector('.testimonial-next-btn');
         const testimonialContents = document.querySelectorAll('.testimonial-content');
-        const testimonialSection = document.querySelector('section.bg-gray-50');
+        const testimonialSection = document.querySelector('.testimonial-container');
 
         let currentTestimonialSlide = 0;
         let testimonialSlideInterval = null;
         const testimonialSlideDelay = 5000;
 
         function showTestimonialSlide(index) {
-            if (index >= testimonialSlides.length || index < 0) {
-                index = 0;
-            }
+            if (index >= testimonialSlides.length || index < 0) index = 0;
 
             testimonialSlides.forEach(slide => {
                 slide.classList.remove('active');
@@ -808,24 +858,17 @@
         }
 
         function startTestimonialAutoSlide() {
-            if (testimonialSlideInterval) {
-                clearInterval(testimonialSlideInterval);
-            }
+            if (testimonialSlideInterval) clearInterval(testimonialSlideInterval);
             testimonialSlideInterval = setInterval(nextTestimonialSlide, testimonialSlideDelay);
         }
 
         function stopTestimonialAutoSlide() {
-            if (testimonialSlideInterval) {
-                clearInterval(testimonialSlideInterval);
-                testimonialSlideInterval = null;
-            }
+            if (testimonialSlideInterval) clearInterval(testimonialSlideInterval);
         }
 
         if (testimonialSlides.length > 0) {
             showTestimonialSlide(0);
-            if (testimonialSlides.length > 1) {
-                startTestimonialAutoSlide();
-            }
+            if (testimonialSlides.length > 1) startTestimonialAutoSlide();
         }
 
         testimonialPrevBtn?.addEventListener('click', () => {
@@ -851,29 +894,23 @@
         if (testimonialSection) {
             testimonialSection.addEventListener('mouseenter', stopTestimonialAutoSlide);
             testimonialSection.addEventListener('mouseleave', startTestimonialAutoSlide);
-            
-            let touchStartX = 0;
             testimonialSection.addEventListener('touchstart', (e) => {
-                touchStartX = e.touches[0].clientX;
+                const touchStartX = e.touches[0].clientX;
                 stopTestimonialAutoSlide();
-            }, { passive: true });
-            
-            testimonialSection.addEventListener('touchend', (e) => {
-                const touchEndX = e.changedTouches[0].clientX;
-                const diff = touchStartX - touchEndX;
-                const swipeThreshold = 50;
-                
-                if (Math.abs(diff) > swipeThreshold) {
-                    if (diff > 0) {
-                        nextTestimonialSlide();
-                    } else {
-                        prevTestimonialSlide();
+                testimonialSection.addEventListener('touchend', (e) => {
+                    const touchEndX = e.changedTouches[0].clientX;
+                    const diff = touchStartX - touchEndX;
+                    const swipeThreshold = 50;
+                    if (Math.abs(diff) > swipeThreshold) {
+                        if (diff > 0) nextTestimonialSlide();
+                        else prevTestimonialSlide();
                     }
-                }
-                startTestimonialAutoSlide();
+                    startTestimonialAutoSlide();
+                }, { once: true, passive: true });
             }, { passive: true });
         }
 
+        // Smooth Scroll for Anchor Links
         document.querySelectorAll('a[href="#main-content-wrapper"]').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -881,17 +918,15 @@
                 if (targetElement) {
                     const header = document.querySelector('header');
                     const headerHeight = header ? header.offsetHeight : 0;
-                    const targetPosition = targetElement.offsetTop - headerHeight;
-                    
                     window.scrollTo({
-                        top: targetPosition,
+                        top: targetElement.offsetTop - headerHeight,
                         behavior: 'smooth'
                     });
                 }
             });
         });
 
-
+        // Keyboard Navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowLeft') {
                 stopAutoSlide();
@@ -916,21 +951,16 @@
             }
         });
 
+        // Handle Tab Visibility
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 stopAutoSlide();
                 stopMobileAutoSlide();
                 stopTestimonialAutoSlide();
             } else {
-                if (slides.length > 1) {
-                    startAutoSlide();
-                }
-                if (mobileSlides.length > 1) {
-                    startMobileAutoSlide();
-                }
-                if (testimonialSlides.length > 1) {
-                    startTestimonialAutoSlide();
-                }
+                if (slides.length > 1) startAutoSlide();
+                if (mobileSlides.length > 1) startMobileAutoSlide();
+                if (testimonialSlides.length > 1) startTestimonialAutoSlide();
             }
         });
     });

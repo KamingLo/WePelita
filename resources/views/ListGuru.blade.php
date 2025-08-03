@@ -1,6 +1,6 @@
 @include('partials.header', ['NamaPage' => 'Daftar Guru'])
 
-<body class="bg-gray-100 font-sans">
+<body class="font-sans">
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-3xl font-bold text-center mb-8">Daftar Guru</h1>
         

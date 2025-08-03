@@ -969,11 +969,11 @@ class AdminController extends Controller
 
         $kelasList = [];
         if ($role === 'murid') {
-            $muridKelas = MuridKelas::with(['murid.profile', 'kelastahun'])->findOrFail($id);
+            $muridKelas = MuridKelas::with(['murid.profile', 'kelastahun.kelas', 'kelastahun.tahunajar'])->findOrFail($id);
             $user = $muridKelas;
             $kelasList = KelasTahun::whereHas('tahunAjar', function ($query) {
                 $query->where('status', 'Aktif');
-            })->get();
+            })->with(['kelas', 'tahunajar'])->get();
 
             return view('admin.ManajemenUserEdit', compact('user', 'role', 'admin', 'kelasList'))->with('id', $id);
         }
@@ -994,6 +994,22 @@ class AdminController extends Controller
         if ($role === 'murid') {
             $user = $model::with('murid.profile')->findOrFail($id);
             $profile = $user->murid->profile;
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:profiles,email,' . $profile->profile_id . ',profile_id',
+                'alamat' => 'required|string',
+                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                'tanggal_lahir' => 'required|date',
+                'tempat_lahir' => 'required|string',
+                'pendidikan' => 'required|string',
+                'no_telp' => 'required|string',
+                'asal_sekolah' => 'required|string',
+                'nis' => 'required|string',
+                'nisn' => 'required|string',
+                'kelas_tahun_id' => 'required|integer|exists:kelas_tahun,kelas_tahun_id',
+                'password' => 'nullable|string|min:8',
+            ]);
 
             $profile->name = $request->name;
             $profile->email = $request->email;
@@ -1016,10 +1032,30 @@ class AdminController extends Controller
             $user->murid->asal_sekolah = $request->asal_sekolah;
             $user->murid->save();
 
+            // Update kelas_tahun_id di murid_kelas
             $user->kelas_tahun_id = $request->kelas_tahun_id;
+            $user->save();
         } else {
             $user = $model::with('profile')->findOrFail($id);
             $profile = $user->profile;
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:profiles,email,' . $profile->profile_id . ',profile_id',
+                'alamat' => 'required|string',
+                'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
+                'tanggal_lahir' => 'required|date',
+                'tempat_lahir' => 'required|string',
+                'pendidikan' => 'required|string',
+                'no_telp' => 'required|string',
+                'password' => 'nullable|string|min:8',
+                // Validasi tambahan untuk role lain
+                'gelar' => $role === 'guru' ? 'required|string' : 'nullable',
+                'statusMenikah' => $role === 'guru' ? 'required|string' : 'nullable',
+                'statusKerja' => $role === 'guru' ? 'required|string' : 'nullable',
+                'nuptk' => $role === 'guru' ? 'required|string' : 'nullable',
+                'profesi' => $role === 'orang_tua' ? 'required|string' : 'nullable',
+            ]);
 
             $profile->name = $request->name;
             $profile->email = $request->email;
@@ -1052,9 +1088,9 @@ class AdminController extends Controller
                 case 'admin':
                     break;
             }
-        }
 
-        $user->save();
+            $user->save();
+        }
 
         return redirect()->route('admin.ManajemenUser', ['role' => $role])->with('success', 'User berhasil diperbarui.');
     }

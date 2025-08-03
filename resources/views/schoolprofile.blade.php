@@ -5,10 +5,10 @@
         
         {{-- Sambutan Pemilik Sekolah --}}
         <section class="py-12">
-            <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
+            <div class="text-center mb-10 md:mb-12">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Sambutan Pemilik Sekolah</h2>
             </div>
-            <div class="flex flex-col md:flex-row items-center gap-6 md:gap-8" data-aos="fade-up">
+            <div class="flex flex-col md:flex-row items-center gap-6 md:gap-8">
                 <div class="flex-1 text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed space-y-4 text-justify">
                     <p>
                         Puji dan syukur kita panjatkan kepada Tuhan Yang Maha Esa, karena atas berkat dan kasih karunia-Nya kita semua dapat menyambut tahun ajaran baru di SMK Pelita IV dengan penuh sukacita dan harapan baru.
@@ -35,18 +35,18 @@
                     </p>
                     <p class="font-semibold">Hormat kami,<br>Yohanes Sandjaja Wihardja<br>Pengurus Yayasan Pendidikan Budi Bhakti</p>
                 </div>
-                <div class="flex-1 min-w-[280px] max-w-[400px] rounded-xl overflow-hidden shadow-lg" data-aos="fade-left">
-                    <img src="{{ asset('image/PemilikSekolah.jpg') }}" alt="Pemilik Sekolah SMK Pelita IV" class="w-full h-full object-cover">
+                <div class="flex-1 min-w-[280px] max-w-[400px] rounded-xl overflow-hidden shadow-lg">
+                    <img src="{{ asset('image/PemilikSekolah.webp') }}" alt="Pemilik Sekolah SMK Pelita IV" loading="lazy" class="w-full h-full object-cover">
                 </div>
             </div>
         </section>
 
         {{-- Sejarah Sekolah --}}
         <section class="py-12">
-            <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
+            <div class="text-center mb-10 md:mb-12">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Sejarah SMK Pelita IV</h2>
             </div>
-            <div class="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed space-y-4 text-justify" data-aos="fade-up">
+            <div class="text-gray-600 text-sm sm:text-base md:text-lg leading-relaxed space-y-4 text-justify">
                 <p>
                     SMK Pelita IV Jakarta didirikan pada tahun 1987 oleh para pendidik yang peduli terhadap kebutuhan pendidikan kejuruan di Indonesia. Sejak awal, sekolah ini bertujuan untuk mencetak lulusan yang siap kerja dan memiliki kompetensi unggul di bidangnya.
                 </p>
@@ -62,14 +62,14 @@
         {{-- Visi dan Misi --}}
         <section class="py-12">
             <div class="flex flex-col md:flex-row flex-wrap gap-6 md:gap-8">
-                <div class="flex-1 min-w-[280px] p-6 md:p-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-lg relative overflow-hidden" data-aos="fade-right">
+                <div class="flex-1 min-w-[280px] p-6 md:p-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-lg relative overflow-hidden">
                     <div class="relative z-10">
                         <h2 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6 after:content-[''] after:absolute after:bottom-[-10px] after:left-0 after:w-10 after:h-1 after:bg-white relative">Visi</h2>
                         <p class="text-sm sm:text-base leading-relaxed">"Menjadi lembaga pendidikan kejuruan yang unggul, berkarakter, dan menghasilkan lulusan yang kompeten serta mampu bersaing di era global."</p>
                         <i class='bx bx-bulb absolute right-3 bottom-3 text-7xl sm:text-8xl opacity-20'></i>
                     </div>
                 </div>
-                <div class="flex-1 min-w-[280px] p-6 md:p-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500 text-white shadow-lg relative overflow-hidden" data-aos="fade-left">
+                <div class="flex-1 min-w-[280px] p-6 md:p-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-500 text-white shadow-lg relative overflow-hidden">
                     <div class="relative z-10">
                         <h2 class="text-xl sm:text-2xl font-bold mb-4 md:mb-6 after:content-[''] after:absolute after:bottom-[-10px] after:left-0 after:w-10 after:h-1 after:bg-white relative">Misi</h2>
                         <ul class="list-disc pl-5 text-sm sm:text-base">
@@ -87,44 +87,44 @@
 
         {{-- Struktur Organisasi --}}
         <section class="py-12 bg-gray-50">
-            <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
+            <div class="text-center mb-10 md:mb-12">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Struktur Organisasi</h2>
                 <p class="text-gray-600 text-sm sm:text-base">Struktur Kepemimpinan dan Staf Sekolah</p>
             </div>
-            <div class="flex justify-center" data-aos="zoom-in">
+            <div class="flex justify-center">
                 <img src="{{ asset('image/struktur-organisasi.png') }}" alt="Struktur Organisasi SMK Pelita IV" class="w-full md:max-w-3xl rounded-lg shadow-lg">
             </div>
         </section>
 
         {{-- Struktur OSIS --}}
         <section class="py-12 bg-gray-50">
-            <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
+            <div class="text-center mb-10 md:mb-12">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Struktur OSIS</h2>
                 <p class="text-gray-600 text-sm sm:text-base">Struktur Organisasi Siswa Intra Sekolah</p>
             </div>
-            <div class="flex justify-center" data-aos="zoom-in">
+            <div class="flex justify-center">
                 <img src="{{ asset('image/struktur-osis.png') }}" alt="Struktur OSIS SMK Pelita IV" class="w-full md:max-w-3xl rounded-lg shadow-lg">
             </div>
         </section>
 
         {{-- Fasilitas Sekolah --}}
         <section class="py-12">
-            <div class="text-center mb-10 md:mb-12" data-aos="fade-up">
+            <div class="text-center mb-10 md:mb-12">
                 <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 section-title">Fasilitas Sekolah</h2>
                 <p class="text-gray-600 text-sm sm:text-base">Lingkungan Belajar yang Nyaman dan Lengkap</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 @foreach ([
-                    ['src' => 'LabKomputer.jpg', 'title' => 'Laboratorium Komputer'],
-                    ['src' => 'Perpustakaan.jpg', 'title' => 'Perpustakaan'],
-                    ['src' => 'RuangKelas.jpg', 'title' => 'Ruang Kelas'],
-                    ['src' => 'Aula.jpg', 'title' => 'Aula Serbaguna'],
-                    ['src' => 'Lapangan.jpg', 'title' => 'Lapangan Olahraga'],
-                    ['src' => 'Kantin.jpg', 'title' => 'Kantin Sekolah']
+                    ['src' => 'LabKomputer.webp', 'title' => 'Laboratorium Komputer'],
+                    ['src' => 'Perpustakaan.webp', 'title' => 'Perpustakaan'],
+                    ['src' => 'RuangKelas.webp', 'title' => 'Ruang Kelas'],
+                    ['src' => 'Aula.webp', 'title' => 'Aula Serbaguna'],
+                    ['src' => 'Lapangan.webp', 'title' => 'Lapangan Olahraga'],
+                    ['src' => 'Kantin.webp', 'title' => 'Kantin Sekolah']
                 ] as $fasilitas)
-                    <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all" data-aos="fade-up">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:-translate-y-2 hover:shadow-xl transition-all">
                         <div class="h-48 overflow-hidden">
-                            <img src="{{ asset('image/Fasilitas/' . $fasilitas['src']) }}" alt="{{ $fasilitas['title'] }}" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                            <img src="{{ asset('image/Fasilitas/' . $fasilitas['src']) }}" alt="{{ $fasilitas['title'] }}" loading="lazy" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
                         </div>
                         <div class="p-4 text-center">
                             <h3 class="text-lg font-semibold text-blue-600">{{ $fasilitas['title'] }}</h3>
