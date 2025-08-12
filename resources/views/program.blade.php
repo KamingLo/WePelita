@@ -177,6 +177,14 @@
             <div class="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
                 <img src="{{ asset('image/Galeri/11.webp') }}" alt="Galeri 11" class="w-full h-40 sm:h-48 object-cover" loading="lazy">
             </div>
+            {{-- Galeri 12 --}}
+            <div class="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+                <img src="{{ asset('image/Galeri/12.webp') }}" alt="Galeri 12" class="w-full h-40 sm:h-48 object-cover" loading="lazy">
+            </div>
+            {{-- Galeri 13 --}}
+            <div class="rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+                <img src="{{ asset('image/Galeri/13.webp') }}" alt="Galeri 13" class="w-full h-40 sm:h-48 object-cover" loading="lazy">
+            </div>
         </div>
     </section>
 

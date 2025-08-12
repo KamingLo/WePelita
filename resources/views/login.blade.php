@@ -1,14 +1,15 @@
 @include('partials.header', ['NamaPage' => 'Login'])
 
-<div class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <div class="absolute inset-0 bg-cover bg-center bg-no-repeat z-0" style="background-image: url('/image/Welcome/imageSekolah.webp');">
-        <div class="absolute inset-0 bg-black opacity-50"></div>
-    </div>
-
+<div class="relative flex items-center justify-center overflow-hidden" style="margin-top: 10rem">
     <div class="relative z-10 w-full max-w-md rounded-xl overflow-hidden mx-4">
         <div class="w-full bg-white shadow-md backdrop-filter backdrop-blur-lg flex items-center justify-center p-6 sm:p-8 lg:p-10 rounded-xl">
             <div class="w-full">
-                <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-center text-gray-800">Login</h2>
+                    <div class="flex justify-center mb-8">
+                        <div class="w-12 h-12 bg-white rounded-full shadow-md flex items-center justify-center">
+                            <img src="{{ asset('image/logo_pelita.webp') }}" alt="User Icon" class="w-12 h-12">
+                        </div>
+                    </div>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-center text-gray-800">Selamat Datang</h2>
                 <form method="POST" action="{{ url('login') }}">
                     @csrf
                     <div class="mb-6">
@@ -40,5 +41,3 @@
         </div>
     </div>
 </div>
-
-@include('partials.footer')

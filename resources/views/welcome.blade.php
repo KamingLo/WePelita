@@ -415,7 +415,7 @@
                 </div>
                 <div class="flex-1 min-w-[280px] md:min-w-[300px] profile-video-wrapper">
                     <video id="introVideo" autoplay muted class="w-full rounded-lg shadow-lg" style="pointer-events: none;">
-                        <source src="{{ asset('image/Welcome/logo_pelita2.mp4') }}" type="video/mp4">
+                        <source src="{{ asset('image/Welcome/LogoPelita.webm') }}" type="video/mp4">
                         Browser Anda tidak mendukung tag video.
                     </video>
                 </div>
@@ -428,7 +428,7 @@
             </div>
             <div class="flex flex-col md:flex-row flex-wrap items-center gap-8 md:gap-10">
                 <div class="flex-1 min-w-[280px] md:min-w-[300px]" data-aos="fade-right">
-                    <img src="{{ asset('image/Welcome/KepalaSekolah1.webp') }}" alt="Kepala Sekolah SMK Pelita IV" loading="lazy" class="w-full max-w-xs sm:max-w-sm rounded-lg mx-auto">
+                    <img src="{{ asset('image/Welcome/KepalaSekolah.webp') }}" alt="Kepala Sekolah SMK Pelita IV" loading="lazy" class="w-full max-w-xs sm:max-w-sm rounded-lg mx-auto">
                 </div>
                 <div class="flex-1 min-w-[280px] md:min-w-[300px] px-4 md:pr-10">
                     <h3 class="text-xl sm:text-2xl font-bold text-blue-600 mb-2">Yohanes Sigit Widiatmaka, S.Pd</h3>
